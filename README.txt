@@ -3,6 +3,7 @@ README.txt
 
 MediaSpy requires at least Qt 4.5!
 
+
 How to build MediaSpy:
 =====================
 
@@ -25,6 +26,7 @@ With Mac OS X:
 
 * Open a terminal, and go to the sources directory.
         * qmake -spec macx-g++ && make
+
 
 How to execute MediaSpy:
 =======================

@@ -1,0 +1,40 @@
+==================
+== KNOWN ISSUES ==
+==================
+
+- cancel button of the Collection Dialog does not differ to Ok button,
+  need to store the state and restore it if cancel button is clicked
+
+
+
+
+=============
+== ROADMAP ==
+=============
+
+========
+v1.0:
+
+* scanning user-chosen directories to find media files (films in a first time)
+* extracting film titles from file names (tough one if files are not properly named)
+* create a list of these names in a database
+* get films information (duration, plot, cover) from imdb
+* display films list and information of the selected one
+* basic settings handling
+* clean and simple gui
+* basic filtering
+* browsing and searching film database (+ adding/deleting obviously)
+
+
+========
+v2.0 and upper:
+
+* subtitle downloader
+* playlist manager
+* get bigger covers than imdb
+* loaning manager
+* stats collector (total duration, which one has been already seen, etc.)
+* import/export filters (html, pdf)
+* automatic new files inclusion (directory survey)
+* music album and video series handling
+* dvd handling

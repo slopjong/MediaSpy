@@ -1,0 +1,5 @@
+CHANGELOG.txt
+=============
+
+0.1
+- first version, only collection adding and removing is implemented.

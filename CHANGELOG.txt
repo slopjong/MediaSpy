@@ -1,6 +1,9 @@
 CHANGELOG.txt
 =============
 
+0.1.2
+- database initialisation cleaning
+
 0.1.1
 - small copyright update
 

@@ -51,7 +51,6 @@ private:
     DatabaseManager* databaseManager_;
     Collection* collection_;
     QStandardItemModel* collectionModel_;
-    QStringList dataTables_;
     QString errorMessage_;
 
     void createCollectionModel();

@@ -28,7 +28,6 @@
   * \brief class constructor
   */
 Collection::Collection() {
-
 }
 
 /** \fn Collection::~Collection()

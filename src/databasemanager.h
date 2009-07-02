@@ -32,7 +32,7 @@ public:
     explicit DatabaseManager(const DatabaseManager &);
     ~DatabaseManager();
 
-    QSqlError init(QStringList&, const QString&);
+    QSqlError init(const QString&);
     QSqlError insertDirToCollection(QString&);
     QSqlError removeDirToCollection(QString&);
     bool hasDir(QString&);

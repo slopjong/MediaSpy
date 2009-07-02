@@ -31,9 +31,6 @@
 Controller::Controller(MediaSpy* mediaSpy) :
         view_(mediaSpy), databaseManager_(new DatabaseManager()),
         collection_(new Collection()), collectionModel_(new QStandardItemModel()) {
-
-    dataTables_ << "Collection"
-                << "Media";
 }
 
 /** \fn Controller::Controller(const Controller &controller)
@@ -53,9 +50,6 @@ Controller::~Controller() {
     delete collection_;
     delete collectionModel_;
 }
-
-
-
 
 
 /////////////
@@ -85,7 +79,7 @@ void Controller::init() {
         return;
     }
 
-    QSqlError qError = databaseManager_->init(dataTables_, view_->getAppDirectory() + view_->getDbFileName());
+    QSqlError qError = databaseManager_->init(view_->getAppDirectory() + view_->getDbFileName());
     if(!qError.type()) {
     // populating table view
     }

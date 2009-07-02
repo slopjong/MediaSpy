@@ -20,6 +20,8 @@
 #include "databasemanager.h"
 
 
+static const QStringList dataTables_ = QStringList() << "Collection" << "Media" << "ImdbInfo" << "MovieGenre" << "MusicGenre" << "Tag";
+
 /////////////////////////////
 // constructors/destructor //
 /////////////////////////////
@@ -43,26 +45,25 @@ DatabaseManager::~DatabaseManager() {
 }
 
 
-
 //////////////
 // methods //
 //////////////
 /** \fn DatabaseManager::init(QStringList &tables, const QString &dbFilePath)
   * \brief initiates the database
   */
-QSqlError DatabaseManager::init(QStringList &tables, const QString &dbFilePath) {
+QSqlError DatabaseManager::init(const QString &dbFilePath) {
 
     db_ = QSqlDatabase::addDatabase("QSQLITE"); // sqlite-dependancy
     db_.setDatabaseName(dbFilePath);
     if (!db_.open())
         return db_.lastError();
 
-    tables = db_.tables();
+    QStringList tables = db_.tables();
 
     // we check if tables are already in the db, if not,they are created
     // no table update is possible here!
-    if (tables.contains("Collection") && tables.contains("Media") && tables.contains("ImdbInfo") && tables.contains("MovieGenre")
-             && tables.contains("MusicGenre") && tables.contains("Tag"))
+    if (tables.contains("Collection") && tables.contains("Media") && tables.contains("ImdbInfo")
+            && tables.contains("MovieGenre") && tables.contains("MusicGenre") && tables.contains("Tag"))
         return QSqlError();
 
     // in case of proposing different sql backend (mysql, postgresql, etc.), we will have to put this

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Stéphane Péchard.
+ * Copyright (C) 2009 Stéphane Péchard <stephanepechard@gmail.com>
  *
  * This file is part of MediaSpy.
  *

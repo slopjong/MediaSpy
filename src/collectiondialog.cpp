@@ -29,13 +29,13 @@
   * \brief class constructor
   * \param parent the inherited QWidget object
   */
-CollectionDialog::CollectionDialog(MediaSpy *parent)
+CollectionDialog::CollectionDialog(QWidget *parent)
     : QDialog(parent)//, collectionDialog(new Ui::CollectionDialog)
 {
-    collectionDialog.setupUi(this);
-    collectionDialog.directoryListView->setModel(parent->getController()->getCollectionModel());
+    setupUi(this);
+//    collectionDialog.directoryListView->setModel(parent->getController()->getCollectionModel());
 
-    connect(collectionDialog.directoryListView, SIGNAL(clicked(const QModelIndex&)),
+    connect(this->directoryListView, SIGNAL(clicked(const QModelIndex&)),
             this, SLOT(enableRemoveDirButton()));
 }
 
@@ -49,7 +49,7 @@ CollectionDialog::~CollectionDialog() {}
 // methods //
 //////////////
 void CollectionDialog::enableRemoveDirButton() {
-    collectionDialog.delDirButton->setEnabled(true);
+    delDirButton->setEnabled(true);
 }
 
 
@@ -65,7 +65,7 @@ void CollectionDialog::on_addDirButton_clicked()
                      QFileDialog::DontResolveSymlinks);
 
     if (newDir.isEmpty()) {
-        collectionDialog.buttonBox->setFocus();
+        this->buttonBox->setFocus();
     } else {
         emit dirAdded(newDir);
     }
@@ -73,7 +73,7 @@ void CollectionDialog::on_addDirButton_clicked()
 
 
 void CollectionDialog::on_delDirButton_clicked() {
-    QModelIndexList selectedItemList = collectionDialog.directoryListView->selectionModel()->selectedIndexes();
+    QModelIndexList selectedItemList = this->directoryListView->selectionModel()->selectedIndexes();
     QModelIndex item = selectedItemList.at(0);
     QString delDir = item.data().toString();
     emit dirRemoved(delDir);

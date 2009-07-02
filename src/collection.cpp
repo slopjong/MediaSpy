@@ -27,14 +27,12 @@
 /** \fn Collection::Collection()
   * \brief class constructor
   */
-Collection::Collection() {
-}
+Collection::Collection() : model_(new QStandardItemModel()) {}
 
 /** \fn Collection::~Collection()
   * \brief class destructor
   */
-Collection::~Collection() {
-}
+Collection::~Collection() {}
 
 
 
@@ -48,36 +46,49 @@ Collection::~Collection() {
 void Collection::addDirectory(const QString& dir) {
     if(!this->contains(dir))
         this->append(dir);
+
+    model_->setItem(this->size()-1, new QStandardItem(dir));
 }
 
 
 /** \fn Collection::removeDirectory(const QString dir)
-  * \brief Removes the given directory from the list of directories.
+  * \brief Removes the given directory from the list of directories and from the model.
   * \param QString
   */
 void Collection::removeDirectory(const QString& dir) {
     if(this->contains(dir))
         this->removeAll(dir);
+
+    QList<QStandardItem *> listItems = model_->findItems(dir, Qt::MatchExactly, 0 ) ;
+
+    if(listItems.empty() || listItems.size() != 1)
+        return;
+
+    QStandardItem* item = listItems[0] ; // the item to be removed...
+    model_->removeRow(item->row()); // ...now!
 }
 
 
 /** \fn Collection::createCollection(const QStringList dirList)
-  * \brief Populates the collection with the QStringList dirList. It clears the list first.
+  * \brief Populates the collection object and the model with the QStringList dirList. It clears their content first.
   * \param QStringList dirList
   */
 void Collection::createCollection(const QStringList& dirList) {
     this->clear();
     this->append(dirList);
-}
 
+    model_->clear();
+    for (int i = 0; i < dirList.size(); ++i)
+        model_->setItem(i, new QStandardItem(dirList.at(i)));
+}
 
 
 
 ///////////////////////
 // accessors methods //
 ///////////////////////
-int Collection::getSize() const {
-    return this->size();
+QStandardItemModel* Collection::getModel() const {
+    return model_;
 }
 
 QString Collection::getDirAt(int i) {

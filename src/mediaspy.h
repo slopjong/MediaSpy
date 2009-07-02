@@ -27,6 +27,7 @@
 #include <QMessageBox>
 
 #include "controller.h"
+#include "collectiondialog.h"
 
 
 
@@ -75,8 +76,8 @@ private:
 
 
 private slots:
-    void addDirToCollection(QString&);
-    void removeDirToCollection(QString&);
+    void addDir(QString&);
+    void removeDir(QString&);
     void on_actionAdd_directory_triggered();
     void on_actionAbout_Qt_triggered();
 };

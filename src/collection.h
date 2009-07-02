@@ -22,12 +22,13 @@
 
 #include <QString>
 #include <QStringList>
+#include <QStandardItemModel>
 
 
 /** \class Collection
   *
   */
-class Collection : QStringList
+class Collection : public QStringList
 {
 public:
     // Fields
@@ -39,12 +40,17 @@ public:
     // Accessor Methods
     int getSize() const;
     QString getDirAt(int);
+    QStandardItemModel* getModel() const;
 
     // Operations
     void addDirectory(const QString&);
     void removeDirectory(const QString&);
     void createCollection(const QStringList&);
 
+
+private:
+    // Fields
+    QStandardItemModel* model_;
 
 };
 

@@ -20,7 +20,6 @@
 
 #include "mediaspy.h"
 #include "ui_mediaspy.h"
-#include "collectiondialog.h"
 
 
 /////////////////////////////
@@ -107,61 +106,33 @@ const QString MediaSpy::getDbFileName() {
 }
 
 
+Controller* MediaSpy::getController() {
+    return controller;
+}
 
 
-    Controller* MediaSpy::getController() {
-        return controller;
-    }
-
-void MediaSpy::on_actionAdd_directory_triggered()
-{
+///////////
+// slots //
+///////////
+void MediaSpy::on_actionAdd_directory_triggered() {
     CollectionDialog dialog(this);
-    connect(&dialog, SIGNAL(dirAdded(QString&)), this, SLOT(addDirToCollection(QString&)));
-    connect(&dialog, SIGNAL(dirRemoved(QString&)), this, SLOT(removeDirToCollection(QString&)));
-
+    connect(&dialog, SIGNAL(dirAdded(QString&)), this, SLOT(addDir(QString&)));
+    connect(&dialog, SIGNAL(dirRemoved(QString&)), this, SLOT(removeDir(QString&)));
+    controller->setCollectionModel(dialog);
 
     if (dialog.exec() != QDialog::Accepted)
         return;
 
-//    statusBar()->showMessage(s);
-
-/* as an example
-    if (dialog.useInMemoryDatabase()) {
-        QSqlDatabase::database("in_mem_db", false).close();
-        QSqlDatabase::removeDatabase("in_mem_db");
-        QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", "in_mem_db");
-        db.setDatabaseName(":memory:");
-        if (!db.open())
-            QMessageBox::warning(this, tr("Unable to open database"), tr("An error occurred while "
-                "opening the connection: ") + db.lastError().text());
-        QSqlQuery q("", db);
-        q.exec("drop table Movies");
-        q.exec("drop table Names");
-        q.exec("create table Movies (id integer primary key, Title varchar, Director varchar, Rating number)");
-        q.exec("insert into Movies values (0, 'Metropolis', 'Fritz Lang', '8.4')");
-        q.exec("insert into Movies values (1, 'Nosferatu, eine Symphonie des Grauens', 'F.W. Murnau', '8.1')");
-        connectionWidget->refresh();
-    } else {
-        QSqlError err = addConnection(dialog.driverName(), dialog.databaseName(), dialog.hostName(),
-            dialog.userName(), dialog.password(), dialog.port());
-        if (err.type() != QSqlError::NoError)
-            QMessageBox::warning(this, tr("Unable to open database"), tr("An error occurred while "
-                "opening the connection: ") + err.text());
-    }
-*/
-
-
-
-
+    // gérer les synchronisations entre bd et modèle (diff entre ok et cancel)
 }
 
 
-void MediaSpy::addDirToCollection(QString& s) {
-    controller->insertDirCollection(s);
+void MediaSpy::addDir(QString& s) {
+    controller->addDirCollection(s);
 }
 
 
-void MediaSpy::removeDirToCollection(QString& s) {
+void MediaSpy::removeDir(QString& s) {
     controller->removeDirCollection(s);
 }
 

@@ -30,7 +30,7 @@
   */
 Controller::Controller(MediaSpy* mediaSpy) :
         view_(mediaSpy), databaseManager_(new DatabaseManager()),
-        collection_(new Collection()), collectionModel_(new QStandardItemModel()) {
+        collection_(new Collection()) {//, collectionModel_(new QStandardItemModel()) {
 }
 
 /** \fn Controller::Controller(const Controller &controller)
@@ -48,7 +48,7 @@ Controller::Controller(const Controller &controller) :
 Controller::~Controller() {
     delete databaseManager_;
     delete collection_;
-    delete collectionModel_;
+    //delete collectionModel_;
 }
 
 
@@ -94,23 +94,23 @@ void Controller::init() {
     /////////////////////
     QStringList stringList = databaseManager_->getCollection(); // 1. read directories in db
     collection_->createCollection(stringList); // 2. put them in collection_
-    createCollectionModel();
+//    createCollectionModel();
 
     // 3. put a QFileSystemWatcher on them
 }
 
 
-void Controller::createCollectionModel() {
-    for (int i = 0; i < collection_->getSize(); ++i)
-        collectionModel_->setItem(i, new QStandardItem(collection_->getDirAt(i)));
-}
+//void Controller::createCollectionModel() {
+//    for (int i = 0; i < collection_->getSize(); ++i)
+//        collectionModel_->setItem(i, new QStandardItem(collection_->getDirAt(i)));
+//}
 
 
-void Controller::insertDirCollection(QString& s) {
+void Controller::addDirCollection(QString& s) {
     // no need to insert something already in the database
     if(!databaseManager_->hasDir(s)) {
         // inside the model
-        collectionModel_->setItem(collection_->getSize(), new QStandardItem(s));
+//        collectionModel_->setItem(collection_->getSize(), new QStandardItem(s));
 
         // inside the Collection object
         collection_->addDirectory(s);
@@ -127,13 +127,13 @@ void Controller::insertDirCollection(QString& s) {
 
 void Controller::removeDirCollection(QString& s) {
     // from the model
-    QList<QStandardItem *> listItems = collectionModel_->findItems(s, Qt::MatchExactly, 0 ) ;
+//    QList<QStandardItem *> listItems = collectionModel_->findItems(s, Qt::MatchExactly, 0 ) ;
 
-    if(listItems.empty() || listItems.size() != 1)
-        return;
+//    if(listItems.empty() || listItems.size() != 1)
+//        return;
 
-    QStandardItem* item = listItems[0] ; // the item to be removed...
-    collectionModel_->removeRow(item->row()); // ...now!
+//    QStandardItem* item = listItems[0] ; // the item to be removed...
+//    collectionModel_->removeRow(item->row()); // ...now!
 
     // from the Collection object
     collection_->removeDirectory(s);
@@ -149,7 +149,9 @@ void Controller::removeDirCollection(QString& s) {
 
 
 
-
+void Controller::setCollectionModel(CollectionDialog &dialog) {
+    dialog.directoryListView->setModel(collection_->getModel());
+}
 
 
 
@@ -160,9 +162,9 @@ QString Controller::getErrorMessage() {
     return errorMessage_;
 }
 
-QStandardItemModel* Controller::getCollectionModel() {
-    return collectionModel_;
-}
+//QStandardItemModel* Controller::getCollectionModel() {
+//    return collectionModel_;
+//}
 
 
 

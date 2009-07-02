@@ -25,19 +25,17 @@
 #include <QFileDialog>
 
 #include "ui_collectiondialog.h"
-#include "mediaspy.h"
 
 
-class CollectionDialog : public QDialog
+class CollectionDialog : public QDialog, public Ui_CollectionDialog
 {
     Q_OBJECT
 public:
-    CollectionDialog(MediaSpy *parent = 0);
+    CollectionDialog(QWidget *parent = 0);
     ~CollectionDialog();
 
 
 private:
-    Ui::CollectionDialog collectionDialog;
 
 
 signals:

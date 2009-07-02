@@ -22,8 +22,8 @@
 
 
 #include <QString>
-#include <QStandardItemModel>
 
+#include "collectiondialog.h"
 #include "databasemanager.h"
 #include "collection.h"
 
@@ -41,16 +41,16 @@ public:
 
     void init();
     QString getErrorMessage();
-    QStandardItemModel* getCollectionModel();
-    void insertDirCollection(QString& s);
+//    QStandardItemModel* getCollectionModel();
+    void addDirCollection(QString& s);
     void removeDirCollection(QString& s);
+    void setCollectionModel(CollectionDialog &);
 
 
 private:
     MediaSpy* view_;
     DatabaseManager* databaseManager_;
     Collection* collection_;
-    QStandardItemModel* collectionModel_;
     QString errorMessage_;
 
     void createCollectionModel();

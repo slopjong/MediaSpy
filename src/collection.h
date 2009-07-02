@@ -39,7 +39,7 @@ public:
 
     // Accessor Methods
     int getSize() const;
-    QString getDirAt(int);
+    QString getDirAt(const int) const;
     QStandardItemModel* getModel() const;
 
     // Operations

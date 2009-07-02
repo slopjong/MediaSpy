@@ -73,6 +73,7 @@ private:
     // Operations
     void readSettings();
     void writeDatabasePathSetting();
+    void updateCollection();
 
 
 private slots:

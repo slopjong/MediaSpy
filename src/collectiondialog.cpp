@@ -30,13 +30,13 @@
   * \param parent the inherited QWidget object
   */
 CollectionDialog::CollectionDialog(QWidget *parent)
-    : QDialog(parent)//, collectionDialog(new Ui::CollectionDialog)
+    : QDialog(parent)
 {
     setupUi(this);
-//    collectionDialog.directoryListView->setModel(parent->getController()->getCollectionModel());
-
     connect(this->directoryListView, SIGNAL(clicked(const QModelIndex&)),
             this, SLOT(enableRemoveDirButton()));
+
+    this->directoryListView->setAlternatingRowColors(true);
 }
 
 /** \fn CollectionDialog::CollectionDialog(QWidget *parent)
@@ -55,7 +55,7 @@ void CollectionDialog::enableRemoveDirButton() {
 
 /** \fn CollectionDialog::on_addDirButton_clicked()
   * \brief defines the action when the Add button is clicked
-  * Opens a directory selection dialog.
+  * Opens a directory selection dialog. Once the directory is selected, the dirAdded signal is emitted.
   */
 void CollectionDialog::on_addDirButton_clicked()
 {
@@ -64,9 +64,9 @@ void CollectionDialog::on_addDirButton_clicked()
                      QFileDialog::ShowDirsOnly |
                      QFileDialog::DontResolveSymlinks);
 
-    if (newDir.isEmpty()) {
+    if (newDir.isEmpty())
         this->buttonBox->setFocus();
-    } else {
+    else {
         emit dirAdded(newDir);
     }
 }

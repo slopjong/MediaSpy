@@ -116,14 +116,18 @@ Controller* MediaSpy::getController() {
 ///////////
 void MediaSpy::on_actionAdd_directory_triggered() {
     CollectionDialog dialog(this);
+    
     connect(&dialog, SIGNAL(dirAdded(QString&)), this, SLOT(addDir(QString&)));
     connect(&dialog, SIGNAL(dirRemoved(QString&)), this, SLOT(removeDir(QString&)));
     controller->setCollectionModel(dialog);
 
+    // je fais l'affichage des trucs mais pas de modif dans la bd
+
     if (dialog.exec() != QDialog::Accepted)
         return;
 
-    // gérer les synchronisations entre bd et modèle (diff entre ok et cancel)
+    // synchro entre modif et bd
+    updateCollection();
 }
 
 
@@ -137,4 +141,6 @@ void MediaSpy::removeDir(QString& s) {
 }
 
 
+void MediaSpy::updateCollection() {
 
+}

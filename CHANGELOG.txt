@@ -1,11 +1,5 @@
 CHANGELOG.txt
 =============
 
-0.1.2
-- database initialisation cleaning
-
-0.1.1
-- small copyright update
-
 0.1
 - first version, only collection adding and removing is implemented.

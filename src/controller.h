@@ -41,7 +41,6 @@ public:
 
     void init();
     QString getErrorMessage();
-//    QStandardItemModel* getCollectionModel();
     void addDirCollection(QString& s);
     void removeDirCollection(QString& s);
     void setCollectionModel(CollectionDialog &);

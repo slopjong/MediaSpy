@@ -91,7 +91,7 @@ QStandardItemModel* Collection::getModel() const {
     return model_;
 }
 
-QString Collection::getDirAt(int i) {
+QString Collection::getDirAt(const int i)  const {
     return this->at(i);
 }
 

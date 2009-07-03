@@ -62,13 +62,14 @@ public:
     // Accessor Methods
     static const QString getAppDirectory();
     static const QString getDbFileName();
-    Controller* getController();
 
-    
+    // Operations
+
+
 private:
     // Fields
-    Ui::MediaSpy* ui;
-    Controller* controller;
+    Ui::MediaSpy* ui_;
+    Controller* controller_;
 
     // Operations
     void readSettings();

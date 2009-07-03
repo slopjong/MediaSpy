@@ -95,26 +95,26 @@ QSqlError DatabaseManager::init(const QString &dbFilePath) {
     if (!q.exec(QLatin1String("create table Collection(id INTEGER PRIMARY KEY AUTOINCREMENT, directory VARCHAR(255))")))
         return q.lastError();
 
-    if (!q.exec(QLatin1String("create table Media(id INTEGER PRIMARY KEY, \
+    if (!q.exec(QLatin1String("create table Media(id INTEGER PRIMARY KEY AUTOINCREMENT, \
             type INTEGER, name VARCHAR(255), loaned BOOLEAN, seen BOOLEAN, recommended BOOLEAN, notes TEXT)")))
         return q.lastError();
 
-    if (!q.exec(QLatin1String("create table ImdbInfo(id INTEGER PRIMARY KEY, \
+    if (!q.exec(QLatin1String("create table ImdbInfo(id INTEGER PRIMARY KEY AUTOINCREMENT, \
             mediaId INTEGER, ImdbId INTEGER, genre INTEGER, year INTEGER, runtime INTEGER, rating DOUBLE, \
             title VARCHAR(255), director VARCHAR(255), country VARCHAR(255), image VARCHAR(255), \
             studio VARCHAR(255), cast TEXT, plot TEXT, notes TEXT)")))
         return q.lastError();
 
-    if (!q.exec(QLatin1String("create table MovieGenre(id INTEGER PRIMARY KEY, genre VARCHAR(255))")))
+    if (!q.exec(QLatin1String("create table MovieGenre(id INTEGER PRIMARY KEY AUTOINCREMENT, genre VARCHAR(255))")))
         return q.lastError();
 
-    if (!q.exec(QLatin1String("create table MusicGenre(id INTEGER PRIMARY KEY, genre VARCHAR(255))")))
+    if (!q.exec(QLatin1String("create table MusicGenre(id INTEGER PRIMARY KEY AUTOINCREMENT, genre VARCHAR(255))")))
         return q.lastError();
 
-    if (!q.exec(QLatin1String("create table Tag(id INTEGER PRIMARY KEY, mediaId INTEGER, name VARCHAR(255))")))
+    if (!q.exec(QLatin1String("create table Tag(id INTEGER PRIMARY KEY AUTOINCREMENT, mediaId INTEGER, name VARCHAR(255))")))
         return q.lastError();
 
-    if (!q.exec(QLatin1String("create table Loans(id INTEGER PRIMARY KEY, mediaId INTEGER, person VARCHAR(255))")))
+    if (!q.exec(QLatin1String("create table Loans(id INTEGER PRIMARY KEY AUTOINCREMENT, mediaId INTEGER, person VARCHAR(255))")))
         return q.lastError();
 
     return QSqlError();

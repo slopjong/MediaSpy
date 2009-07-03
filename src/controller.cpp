@@ -36,7 +36,7 @@ Controller* Controller::singleton_ = NULL;
   */
 Controller::Controller(MediaSpy* mediaSpy) :
         view_(mediaSpy), databaseManager_(DatabaseManager::getInstance()),
-        collection_(new Collection()) {
+        collection_(new Collection()), mediaCollection_(new MediaCollection()) {
 }
 
 /** \fn Controller::~Controller()
@@ -45,6 +45,7 @@ Controller::Controller(MediaSpy* mediaSpy) :
 Controller::~Controller() {
     databaseManager_->kill();
     delete collection_;
+    delete mediaCollection_;
 }
 
 
@@ -110,8 +111,12 @@ void Controller::init() {
     QStringList stringList = databaseManager_->getCollection(); // 1. read directories in db
     collection_->setDirList(stringList); // 2. put them in collection_
 
-//    QStringList mediaList = collection_->buildFileList();
     // 3. fetch the dir for content
+    QStringList mediaList = collection_->buildFileList();
+    mediaCollection_->createMedias(mediaList);
+
+
+
     // 4. put a QFileSystemWatcher on them
 }
 
@@ -148,7 +153,11 @@ void Controller::removeDirCollection(QString& s) {
 
 
 void Controller::setCollectionModel(CollectionDialog &dialog) {
-    dialog.directoryListView->setModel(collection_->getModel());
+    dialog.directoryListView->setModel(collection_->getDirModel());
+}
+
+void Controller::setMediaListModel(QListView* listView) {
+    listView->setModel(mediaCollection_->getMediaListModel());
 }
 
 

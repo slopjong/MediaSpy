@@ -30,16 +30,19 @@
   * \param parent the inherited QWidget object
   */
 MediaSpy::MediaSpy(QWidget *parent) :
-        QMainWindow(parent), ui(new Ui::MediaSpy), controller(Controller::getInstance(this)) {
+        QMainWindow(parent), ui_(new Ui::MediaSpy), controller_(Controller::getInstance(this)) {
 
-    ui->setupUi(this);
+    ui_->setupUi(this);
+
 
 //    readSettings();
 
 
-    controller->init();
-    if(!(controller->getErrorMessage().isEmpty()))
-        QMessageBox::critical(this, tr("Error"), controller->getErrorMessage());
+
+
+    controller_->init();
+    if(!(controller_->getErrorMessage().isEmpty()))
+        QMessageBox::critical(this, tr("Error"), controller_->getErrorMessage());
 
 
 }
@@ -48,8 +51,8 @@ MediaSpy::MediaSpy(QWidget *parent) :
   * \brief class destructor
   */
 MediaSpy::~MediaSpy() {
-    delete ui;
-    controller->kill();
+    delete ui_;
+    controller_->kill();
 }
 
 
@@ -99,10 +102,6 @@ const QString MediaSpy::getDbFileName() {
 }
 
 
-Controller* MediaSpy::getController() {
-    return controller;
-}
-
 
 
 ///////////
@@ -113,7 +112,8 @@ void MediaSpy::on_actionAdd_directory_triggered() {
     
     connect(&dialog, SIGNAL(dirAdded(QString&)), this, SLOT(addDir(QString&)));
     connect(&dialog, SIGNAL(dirRemoved(QString&)), this, SLOT(removeDir(QString&)));
-    controller->setCollectionModel(dialog);
+    controller_->setCollectionModel(dialog);
+    controller_->setMediaListModel(ui_->mediaListView);
 
     // je fais l'affichage des trucs mais pas de modif dans la bd - TODO
 
@@ -126,12 +126,12 @@ void MediaSpy::on_actionAdd_directory_triggered() {
 
 
 void MediaSpy::addDir(QString& s) {
-    controller->addDirCollection(s);
+    controller_->addDirCollection(s);
 }
 
 
 void MediaSpy::removeDir(QString& s) {
-    controller->removeDirCollection(s);
+    controller_->removeDirCollection(s);
 }
 
 
@@ -151,7 +151,6 @@ void MediaSpy::on_actionAbout_MediaSpy_triggered()
 
 }
 
-void MediaSpy::on_actionRebuild_collection_triggered()
-{
+void MediaSpy::on_actionRebuild_collection_triggered() {
 
 }

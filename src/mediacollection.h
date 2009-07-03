@@ -17,49 +17,31 @@
  * along with MediaSpy.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONTROLLER_H
-#define CONTROLLER_H
+#ifndef MEDIACOLLECTION_H
+#define MEDIACOLLECTION_H
 
+#include <QStandardItemModel>
 
-#include <QString>
-
-#include "collectiondialog.h"
 #include "databasemanager.h"
-#include "collection.h"
-#include "mediacollection.h"
 
 
-class MediaSpy;
-
-/** \class Controller
-  *
-  */
-class Controller {
-private:
-    explicit Controller(MediaSpy*);
-    ~Controller();
-
+class MediaCollection
+{
 public:
-    static Controller *getInstance(MediaSpy* mediaSpy);
-    static void kill();
-    void init();
-    QString getErrorMessage();
-    void addDirCollection(QString& s);
-    void removeDirCollection(QString& s);
-    void setCollectionModel(CollectionDialog &);
-    void setMediaListModel(QListView*);
+    // Constructors
+    MediaCollection();
+    ~MediaCollection();
+
+    void createMedias(const QStringList&);
+
+    QStandardItemModel* getMediaListModel() const;
 
 
 private:
-    static Controller *singleton_;
-    MediaSpy* view_;
+    QStandardItemModel* mediaListModel_;
     DatabaseManager* databaseManager_;
-    Collection* collection_;
-    MediaCollection* mediaCollection_;
-    QString errorMessage_;
 
-    void createCollectionModel();
 
 };
 
-#endif // CONTROLLER_H
+#endif // MEDIACOLLECTION_H

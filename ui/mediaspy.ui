@@ -20,7 +20,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <widget class="QListWidget" name="listWidget"/>
+     <widget class="QListView" name="mediaListView"/>
     </item>
    </layout>
   </widget>

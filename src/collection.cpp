@@ -30,13 +30,13 @@
   * \brief class constructor
   */
 Collection::Collection() :
-        model_(new QStandardItemModel()), databaseManager_(DatabaseManager::getInstance()) {}
+        dirListModel_(new QStandardItemModel()), databaseManager_(DatabaseManager::getInstance()) {}
 
 /** \fn Collection::~Collection()
   * \brief class destructor
   */
 Collection::~Collection() {
-    delete model_;
+    delete dirListModel_;
 }
 
 
@@ -52,7 +52,7 @@ void Collection::addDirectory(const QString& dir) {
     if(!this->dirList_.contains(dir))
         this->dirList_.append(dir);
 
-    model_->setItem(this->dirList_.size()-1, new QStandardItem(dir));
+    dirListModel_->setItem(this->dirList_.size()-1, new QStandardItem(dir));
 }
 
 
@@ -64,13 +64,13 @@ void Collection::removeDirectory(const QString& dir) {
     if(this->dirList_.contains(dir))
         this->dirList_.removeAll(dir);
 
-    QList<QStandardItem *> listItems = model_->findItems(dir, Qt::MatchExactly, 0 ) ;
+    QList<QStandardItem *> listItems = dirListModel_->findItems(dir, Qt::MatchExactly, 0 ) ;
 
     if(listItems.empty() || listItems.size() != 1)
         return;
 
     QStandardItem* item = listItems[0] ; // the item to be removed...
-    model_->removeRow(item->row()); // ...now!
+    dirListModel_->removeRow(item->row()); // ...now!
 }
 
 
@@ -82,14 +82,14 @@ void Collection::setDirList(const QStringList& dirs) {
     this->dirList_.clear();
     this->dirList_.append(dirs);
 
-    model_->clear();
+    dirListModel_->clear();
     for (int i = 0; i < dirs.size(); ++i)
-        model_->setItem(i, new QStandardItem(dirs.at(i)));
+        dirListModel_->setItem(i, new QStandardItem(dirs.at(i)));
 }
 
 
-/** \fn Collection::buildCollection()
-  * \brief Builds the collection .
+/** \fn Collection::buildFileList()
+  * \brief Builds the list of the media files found in the collection.
   */
 QStringList Collection::buildFileList() {
     QStringList fileList;
@@ -123,8 +123,8 @@ QStringList Collection::ScanRecDir(const QString& dir) {
 ///////////////////////
 // accessors methods //
 ///////////////////////
-QStandardItemModel* Collection::getModel() const {
-    return model_;
+QStandardItemModel* Collection::getDirModel() const {
+    return dirListModel_;
 }
 
 QString Collection::getDirAt(const int i)  const {

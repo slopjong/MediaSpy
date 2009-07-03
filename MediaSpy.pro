@@ -2,29 +2,27 @@
 # Project created by QtCreator 2009-06-26T13:39:09
 # -------------------------------------------------
 QT += sql
-TARGET = MediaSpy
+TARGET = mediaspy
 TEMPLATE = app
 UI_HEADERS_DIR = ui
 UI_SOURCES_DIR = ui
 MOC_DIR = src
+RCC_DIR = src
 OBJECTS_DIR = obj
-
 SOURCES += src/main.cpp \
     src/mediaspy.cpp \
     src/collection.cpp \
     src/controller.cpp \
     src/databasemanager.cpp \
     src/collectiondialog.cpp
-
 HEADERS += src/mediaspy.h \
     src/collection.h \
     src/controller.h \
     src/databasemanager.h \
     src/collectiondialog.h
-
 FORMS += ui/mediaspy.ui \
     ui/collectiondialog.ui
-
+RESOURCES += MediaSpy.qrc
 OTHER_FILES += README.txt \
     LICENSE.txt \
     TODO.txt \

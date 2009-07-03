@@ -77,10 +77,11 @@ private:
 
 
 private slots:
+    void on_actionAbout_MediaSpy_triggered();
+    void on_actionAbout_Qt_triggered();
+    void on_actionAdd_directory_triggered();
     void addDir(QString&);
     void removeDir(QString&);
-    void on_actionAdd_directory_triggered();
-    void on_actionAbout_Qt_triggered();
 };
 
 #endif // MEDIASPY_H

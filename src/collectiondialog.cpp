@@ -33,6 +33,7 @@ CollectionDialog::CollectionDialog(QWidget *parent)
     : QDialog(parent)
 {
     setupUi(this);
+
     connect(this->directoryListView, SIGNAL(clicked(const QModelIndex&)),
             this, SLOT(enableRemoveDirButton()));
 

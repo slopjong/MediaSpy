@@ -33,7 +33,7 @@ CollectionDialog::CollectionDialog(QWidget *parent)
     : QDialog(parent)//, collectionDialog(new Ui::CollectionDialog)
 {
     setupUi(this);
-//    collectionDialog.directoryListView->setModel(parent->getController()->getCollectionModel());
+    this->directoryListView->setAlternatingRowColors(true);
 
     connect(this->directoryListView, SIGNAL(clicked(const QModelIndex&)),
             this, SLOT(enableRemoveDirButton()));

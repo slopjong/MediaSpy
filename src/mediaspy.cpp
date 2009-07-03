@@ -34,7 +34,7 @@ MediaSpy::MediaSpy(QWidget *parent) :
 
     ui->setupUi(this);
 
-    readSettings();
+//    readSettings();
 
 
     controller->init();
@@ -75,13 +75,6 @@ void MediaSpy::writeDatabasePathSetting() {
 
 
 
-
-
-
-
-
-
-
 /////////////////////
 // actions methods //
 /////////////////////
@@ -111,6 +104,7 @@ Controller* MediaSpy::getController() {
 }
 
 
+
 ///////////
 // slots //
 ///////////
@@ -121,7 +115,7 @@ void MediaSpy::on_actionAdd_directory_triggered() {
     connect(&dialog, SIGNAL(dirRemoved(QString&)), this, SLOT(removeDir(QString&)));
     controller->setCollectionModel(dialog);
 
-    // je fais l'affichage des trucs mais pas de modif dans la bd
+    // je fais l'affichage des trucs mais pas de modif dans la bd - TODO
 
     if (dialog.exec() != QDialog::Accepted)
         return;

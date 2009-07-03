@@ -17,10 +17,20 @@
  * along with MediaSpy.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "databasemanager.h"
 
 
+/** \var static const QStringList dataTables_
+  * \brief list of the tables in the database
+  */
 static const QStringList dataTables_ = QStringList() << "Collection" << "Media" << "ImdbInfo" << "MovieGenre" << "MusicGenre" << "Tag";
+
+/** \var DatabaseManager* DatabaseManager::singleton_
+  * \brief pointer to the unique instance of DatabaseManager
+  */
+DatabaseManager* DatabaseManager::singleton_ = NULL;
+
 
 /////////////////////////////
 // constructors/destructor //
@@ -29,13 +39,6 @@ static const QStringList dataTables_ = QStringList() << "Collection" << "Media" 
   * \brief class constructor
   */
 DatabaseManager::DatabaseManager() {}
-
-/** \fn DatabaseManager::DatabaseManager(const DatabaseManager &databaseManager)
-  * \brief copy constructor
-  */
-DatabaseManager::DatabaseManager(const DatabaseManager &databaseManager) {
-    Q_UNUSED(databaseManager);
-}
 
 /** \fn DatabaseManager::~DatabaseManager()
   * \brief class destructor
@@ -48,6 +51,20 @@ DatabaseManager::~DatabaseManager() {
 //////////////
 // methods //
 //////////////
+DatabaseManager* DatabaseManager::getInstance() {
+    if (NULL == singleton_)
+        singleton_ =  new DatabaseManager;
+    return singleton_;
+}
+
+void DatabaseManager::kill() {
+    if (NULL != singleton_) {
+        delete singleton_;
+        singleton_ = NULL;
+    }
+}
+
+
 /** \fn DatabaseManager::init(QStringList &tables, const QString &dbFilePath)
   * \brief initiates the database
   */

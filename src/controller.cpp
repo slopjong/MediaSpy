@@ -29,7 +29,7 @@
   * \brief class constructor
   */
 Controller::Controller(MediaSpy* mediaSpy) :
-        view_(mediaSpy), databaseManager_(new DatabaseManager()),
+        view_(mediaSpy), databaseManager_(DatabaseManager::getInstance()),
         collection_(new Collection()) {
 }
 
@@ -37,7 +37,7 @@ Controller::Controller(MediaSpy* mediaSpy) :
   * \brief copy constructor
   */
 Controller::Controller(const Controller &controller) :
-        databaseManager_(new DatabaseManager()) {
+        databaseManager_(DatabaseManager::getInstance()) {
     databaseManager_ = controller.databaseManager_;
     view_ = controller.view_;
 }
@@ -46,7 +46,7 @@ Controller::Controller(const Controller &controller) :
   * \brief class destructor
   */
 Controller::~Controller() {
-    delete databaseManager_;
+    databaseManager_->kill();
     delete collection_;
 }
 

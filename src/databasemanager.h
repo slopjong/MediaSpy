@@ -27,11 +27,13 @@
   *
   */
 class DatabaseManager {
-public:
+private:
     DatabaseManager();
-    explicit DatabaseManager(const DatabaseManager &);
     ~DatabaseManager();
 
+public:
+    static DatabaseManager *getInstance();
+    static void kill();
     QSqlError init(const QString&);
     QSqlError insertDirToCollection(QString&);
     QSqlError removeDirToCollection(QString&);
@@ -41,8 +43,10 @@ public:
 
 
 private:
+    static DatabaseManager *singleton_;
     QSqlDatabase db_;
 
 };
+
 
 #endif // DATABASEMANAGER_H

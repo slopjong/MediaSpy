@@ -27,12 +27,15 @@
 /** \fn Collection::Collection()
   * \brief class constructor
   */
-Collection::Collection() : model_(new QStandardItemModel()) {}
+Collection::Collection() :
+        model_(new QStandardItemModel()), databaseManager_(DatabaseManager::getInstance()) {}
 
 /** \fn Collection::~Collection()
   * \brief class destructor
   */
-Collection::~Collection() {}
+Collection::~Collection() {
+    delete model_;
+}
 
 
 

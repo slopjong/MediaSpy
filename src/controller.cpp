@@ -22,6 +22,12 @@
 #include "mediaspy.h" // to avoid circular reference
 
 
+/** \var Controller* Controller::singleton_
+  * \brief pointer to the unique instance of Controller
+  */
+Controller* Controller::singleton_ = NULL;
+
+
 /////////////////////////////
 // constructors/destructor //
 /////////////////////////////
@@ -31,15 +37,6 @@
 Controller::Controller(MediaSpy* mediaSpy) :
         view_(mediaSpy), databaseManager_(DatabaseManager::getInstance()),
         collection_(new Collection()) {
-}
-
-/** \fn Controller::Controller(const Controller &controller)
-  * \brief copy constructor
-  */
-Controller::Controller(const Controller &controller) :
-        databaseManager_(DatabaseManager::getInstance()) {
-    databaseManager_ = controller.databaseManager_;
-    view_ = controller.view_;
 }
 
 /** \fn Controller::~Controller()
@@ -54,6 +51,26 @@ Controller::~Controller() {
 /////////////
 // methods //
 /////////////
+/** \fn Controller::getInstance()
+  * \brief returns the unique instance of Controller, creates it the first time
+  */
+Controller* Controller::getInstance(MediaSpy* mediaSpy) {
+    if (NULL == singleton_)
+        singleton_ =  new Controller(mediaSpy);
+    return singleton_;
+}
+
+/** \fn Controller::kill()
+  * \brief deletes the unique instance of Controller
+  */
+void Controller::kill() {
+    if (NULL != singleton_) {
+        delete singleton_;
+        singleton_ = NULL;
+    }
+}
+
+
 /** \fn Controller::init()
   * \brief initiates the controller with the database,
   */

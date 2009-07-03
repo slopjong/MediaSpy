@@ -51,12 +51,18 @@ DatabaseManager::~DatabaseManager() {
 //////////////
 // methods //
 //////////////
+/** \fn DatabaseManager* DatabaseManager::getInstance()
+  * \brief returns the unique instance of DatabaseManager, creates it the first time
+  */
 DatabaseManager* DatabaseManager::getInstance() {
     if (NULL == singleton_)
         singleton_ =  new DatabaseManager;
     return singleton_;
 }
 
+/** \fn DatabaseManager::kill()
+  * \brief deletes the unique instance of DatabaseManager
+  */
 void DatabaseManager::kill() {
     if (NULL != singleton_) {
         delete singleton_;

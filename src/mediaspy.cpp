@@ -30,7 +30,7 @@
   * \param parent the inherited QWidget object
   */
 MediaSpy::MediaSpy(QWidget *parent) :
-        QMainWindow(parent), ui(new Ui::MediaSpy), controller(new Controller(this)) {
+        QMainWindow(parent), ui(new Ui::MediaSpy), controller(Controller::getInstance(this)) {
 
     ui->setupUi(this);
 
@@ -49,7 +49,7 @@ MediaSpy::MediaSpy(QWidget *parent) :
   */
 MediaSpy::~MediaSpy() {
     delete ui;
-    delete controller;
+    controller->kill();
 }
 
 

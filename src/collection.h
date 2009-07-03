@@ -24,6 +24,8 @@
 #include <QStringList>
 #include <QStandardItemModel>
 
+#include "databasemanager.h"
+
 
 /** \class Collection
   *
@@ -51,6 +53,7 @@ public:
 private:
     // Fields
     QStandardItemModel* model_;
+    DatabaseManager* databaseManager_;
 
 };
 

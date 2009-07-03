@@ -34,11 +34,13 @@ class MediaSpy;
   *
   */
 class Controller {
-public:
+private:
     explicit Controller(MediaSpy*);
-    explicit Controller(const Controller &);
     ~Controller();
 
+public:
+    static Controller *getInstance(MediaSpy* mediaSpy);
+    static void kill();
     void init();
     QString getErrorMessage();
     void addDirCollection(QString& s);
@@ -47,6 +49,7 @@ public:
 
 
 private:
+    static Controller *singleton_;
     MediaSpy* view_;
     DatabaseManager* databaseManager_;
     Collection* collection_;

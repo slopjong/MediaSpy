@@ -139,15 +139,19 @@ void MediaSpy::updateCollection() {
 
 }
 
-
-//////////////////
-// about method //
-//////////////////
+/** \fn void MediaSpy::on_actionAbout_MediaSpy_triggered()
+ *  \brief Shows the MediaSpy About window.
+*/
 void MediaSpy::on_actionAbout_MediaSpy_triggered()
 {
     QString myCopyright = QString::fromUtf8(PACKAGE_COPYRIGHTS);
     QMessageBox::about(this, tr("About ") + PACKAGE_NAME,
     QString("<h3>") + PACKAGE_NAME + " " + PACKAGE_VERSION + QString("</h3><p>") + myCopyright +
     tr("<p>MediaSpy is a movie collection cataloging software. Still in heavy development!"));
+
+}
+
+void MediaSpy::on_actionRebuild_collection_triggered()
+{
 
 }

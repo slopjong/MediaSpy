@@ -24,6 +24,7 @@ v1.0:
 * clean and simple gui
 * basic filtering
 * browsing and searching film database (+ adding/deleting obviously)
+* color code for movie state (OK, no info from imdb, unreadable, etc.)
 
 
 ========

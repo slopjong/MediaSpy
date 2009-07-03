@@ -17,7 +17,13 @@
    <iconset resource="../MediaSpy.qrc">
     <normaloff>:/images/images/icon.png</normaloff>:/images/images/icon.png</iconset>
   </property>
-  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QListWidget" name="listWidget"/>
+    </item>
+   </layout>
+  </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
@@ -45,6 +51,7 @@
      <string>Options</string>
     </property>
     <addaction name="actionAdd_directory"/>
+    <addaction name="actionRebuild_collection"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuOptions"/>
@@ -83,6 +90,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+A</string>
+   </property>
+  </action>
+  <action name="actionRebuild_collection">
+   <property name="text">
+    <string>Rebuild collection</string>
    </property>
   </action>
  </widget>

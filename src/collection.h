@@ -23,6 +23,9 @@
 #include <QString>
 #include <QStringList>
 #include <QStandardItemModel>
+#include <QFileInfo>
+#include <QList>
+#include <QDir>
 
 #include "databasemanager.h"
 
@@ -30,7 +33,7 @@
 /** \class Collection
   *
   */
-class Collection : public QStringList
+class Collection// : public QStringList
 {
 public:
     // Fields
@@ -40,6 +43,8 @@ public:
     ~Collection();
 
     // Accessor Methods
+    QStringList getDirList() const;
+    void setDirList(const QStringList&);
     int getSize() const;
     QString getDirAt(const int) const;
     QStandardItemModel* getModel() const;
@@ -47,11 +52,13 @@ public:
     // Operations
     void addDirectory(const QString&);
     void removeDirectory(const QString&);
-    void createCollection(const QStringList&);
-
+//    void createCollection(const QStringList&);
+    QStringList buildFileList();
+    QStringList ScanRecDir(const QString&);
 
 private:
     // Fields
+    QStringList dirList_;
     QStandardItemModel* model_;
     DatabaseManager* databaseManager_;
 

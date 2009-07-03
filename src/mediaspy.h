@@ -77,6 +77,7 @@ private:
 
 
 private slots:
+    void on_actionRebuild_collection_triggered();
     void on_actionAbout_MediaSpy_triggered();
     void on_actionAbout_Qt_triggered();
     void on_actionAdd_directory_triggered();

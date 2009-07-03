@@ -20,6 +20,8 @@
 
 #include "collection.h"
 
+#include <QFileInfo>
+
 
 /////////////////////////////
 // constructors/destructor //
@@ -47,10 +49,10 @@ Collection::~Collection() {
   * \param QString
   */
 void Collection::addDirectory(const QString& dir) {
-    if(!this->contains(dir))
-        this->append(dir);
+    if(!this->dirList_.contains(dir))
+        this->dirList_.append(dir);
 
-    model_->setItem(this->size()-1, new QStandardItem(dir));
+    model_->setItem(this->dirList_.size()-1, new QStandardItem(dir));
 }
 
 
@@ -59,8 +61,8 @@ void Collection::addDirectory(const QString& dir) {
   * \param QString
   */
 void Collection::removeDirectory(const QString& dir) {
-    if(this->contains(dir))
-        this->removeAll(dir);
+    if(this->dirList_.contains(dir))
+        this->dirList_.removeAll(dir);
 
     QList<QStandardItem *> listItems = model_->findItems(dir, Qt::MatchExactly, 0 ) ;
 
@@ -72,19 +74,50 @@ void Collection::removeDirectory(const QString& dir) {
 }
 
 
-/** \fn Collection::createCollection(const QStringList dirList)
+/** \fn Collection::setDirList(const QStringList& dirList)
   * \brief Populates the collection object and the model with the QStringList dirList. It clears their content first.
   * \param QStringList dirList
   */
-void Collection::createCollection(const QStringList& dirList) {
-    this->clear();
-    this->append(dirList);
+void Collection::setDirList(const QStringList& dirs) {
+    this->dirList_.clear();
+    this->dirList_.append(dirs);
 
     model_->clear();
-    for (int i = 0; i < dirList.size(); ++i)
-        model_->setItem(i, new QStandardItem(dirList.at(i)));
+    for (int i = 0; i < dirs.size(); ++i)
+        model_->setItem(i, new QStandardItem(dirs.at(i)));
 }
 
+
+/** \fn Collection::buildCollection()
+  * \brief Builds the collection .
+  */
+QStringList Collection::buildFileList() {
+    QStringList fileList;
+
+    for (int i = 0; i < this->dirList_.size(); ++i)
+        fileList << ScanRecDir(this->dirList_.at(i));
+
+    return fileList;
+}
+
+
+QStringList Collection::ScanRecDir(const QString& dir) {
+    QStringList fileList;
+    QDir qdir(dir);
+
+    QStringList nameFilter = QStringList() << "*.avi" << "*.mpeg" << "*.mkv";
+    qdir.setNameFilters(nameFilter);
+    qdir.setFilter(QDir::Files | QDir::Readable | QDir::Hidden | QDir::NoSymLinks);
+    qdir.setSorting(QDir::Name);
+
+    fileList << qdir.entryList();
+    QStringList dirList = qdir.entryList(QDir::AllDirs | QDir::Drives | QDir::NoDotAndDotDot);
+
+    for (int i = 0; i < dirList.size(); ++i)
+        fileList << ScanRecDir( dir + QDir::separator() + dirList.at(i) );
+
+    return fileList;
+}
 
 
 ///////////////////////
@@ -95,6 +128,6 @@ QStandardItemModel* Collection::getModel() const {
 }
 
 QString Collection::getDirAt(const int i)  const {
-    return this->at(i);
+    return this->dirList_.at(i);
 }
 

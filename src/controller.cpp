@@ -104,14 +104,15 @@ void Controller::init() {
         return;
     }
 
-
     /////////////////////
     // collection init //
     /////////////////////
     QStringList stringList = databaseManager_->getCollection(); // 1. read directories in db
-    collection_->createCollection(stringList); // 2. put them in collection_
+    collection_->setDirList(stringList); // 2. put them in collection_
 
-    // 3. put a QFileSystemWatcher on them
+//    QStringList mediaList = collection_->buildFileList();
+    // 3. fetch the dir for content
+    // 4. put a QFileSystemWatcher on them
 }
 
 

@@ -15,13 +15,15 @@ SOURCES += src/main.cpp \
     src/controller.cpp \
     src/databasemanager.cpp \
     src/collectiondialog.cpp \
-    src/mediacollection.cpp
+    src/mediacollection.cpp \
+    src/media.cpp
 HEADERS += src/mediaspy.h \
     src/collection.h \
     src/controller.h \
     src/databasemanager.h \
     src/collectiondialog.h \
-    src/mediacollection.h
+    src/mediacollection.h \
+    src/media.h
 FORMS += ui/mediaspy.ui \
     ui/collectiondialog.ui
 RESOURCES += MediaSpy.qrc

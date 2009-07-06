@@ -105,60 +105,43 @@ void Controller::init() {
         return;
     }
 
-    /////////////////////
-    // collection init //
-    /////////////////////
-    QStringList stringList = databaseManager_->getCollection(); // 1. read directories in db
-    collection_->setDirList(stringList); // 2. put them in collection_
+    ///////////////////////////////
+    // directory collection init //
+    ///////////////////////////////
+    collection_->init();
+    QStringList mediaList = collection_->buildFileList(); // fetch the dir for content
 
-    // 3. fetch the dir for content
-    QStringList mediaList = collection_->buildFileList();
-    mediaCollection_->createMedias(mediaList);
-
-
-
-    // 4. put a QFileSystemWatcher on them
+    ///////////////////////////
+    // media collection init //
+    ///////////////////////////
+    mediaCollection_->init();
 }
 
 
-void Controller::addDirCollection(QString& s) {
-    // no need to insert something already in the database
-    if(!databaseManager_->hasDir(s)) {
-        // inside the model
-        collection_->addDirectory(s);
-
-        // inside the database
-        QSqlError qError = databaseManager_->insertDirToCollection(s);
-        if(qError.type()) {
-            errorMessage_ = qError.text();
-        }
+void Controller::addDirCollection(QString& dir) {
+    // no need to insert something already present
+    if(!databaseManager_->hasDir(dir)) {
+        collection_->addDirectory(dir);
+        QStringList mediaList = collection_->buildFileList();
+        mediaCollection_->update(mediaList);
     }
     return;
 }
 
 
-void Controller::removeDirCollection(QString& s) {
-    // from the model
-    collection_->removeDirectory(s);
-
-    // from the database
-    QSqlError qError = databaseManager_->removeDirToCollection(s);
-    if(qError.type()) {
-        errorMessage_ = qError.text();
+void Controller::removeDirCollection(QString& dir) {
+    // no need to insert something not present
+    if(databaseManager_->hasDir(dir)) {
+        collection_->removeDirectory(dir);
+        QStringList mediaList = collection_->buildFileList();
+        mediaCollection_->update(mediaList);
     }
+
     return;
 }
 
 
 
-
-void Controller::setCollectionModel(CollectionDialog &dialog) {
-    dialog.directoryListView->setModel(collection_->getDirModel());
-}
-
-void Controller::setMediaListModel(QListView* listView) {
-    listView->setModel(mediaCollection_->getMediaListModel());
-}
 
 
 
@@ -167,6 +150,15 @@ void Controller::setMediaListModel(QListView* listView) {
 ///////////////////////
 QString Controller::getErrorMessage() {
     return errorMessage_;
+}
+
+
+void Controller::setCollectionModel(CollectionDialog &dialog) {
+    dialog.directoryListView->setModel(collection_->getDirModel());
+}
+
+void Controller::setMediaListModel(QListView* listView) {
+    listView->setModel(mediaCollection_->getMediaListModel());
 }
 
 

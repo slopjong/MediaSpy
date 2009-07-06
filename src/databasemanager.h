@@ -17,10 +17,13 @@
  * along with MediaSpy.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #ifndef DATABASEMANAGER_H
 #define DATABASEMANAGER_H
 
 #include <QtSql>
+
+#include "media.h"
 
 
 /** \class DatabaseManager
@@ -35,11 +38,15 @@ public:
     static DatabaseManager *getInstance();
     static void kill();
     QSqlError init(const QString&);
-    QSqlError insertDirToCollection(QString&);
-    QSqlError removeDirToCollection(QString&);
-    bool hasDir(QString&);
+    QSqlError insertDirToCollection(const QString&);
+    QSqlError removeDirToCollection(const QString&);
+    bool hasDir(const QString&);
+
+    QSqlError insertMedia(const Media&);
+    bool hasMedia(const QString&);
 
     QStringList getCollection();
+    QSqlQuery queryMedias(QSqlQuery&);
 
 
 private:

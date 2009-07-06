@@ -45,15 +45,33 @@ Collection::~Collection() {
 /////////////
 // Methods //
 /////////////
+/** \fn Collection::init()
+  * \brief Initiates the Collection.
+  */
+void Collection::init() {
+    QStringList stringList = databaseManager_->getCollection(); // read directories in db
+    setDirList(stringList); // put them in the Collection
+    // TODO: put a QFileSystemWatcher on them
+}
+
+
+
 /** \fn Collection::addDirectory(const QString dir)
   * \brief Adds a new directory in the list of directories and in the model.
   * \param QString dir
   */
 void Collection::addDirectory(const QString& dir) {
+    // in the list
     if(!this->dirList_.contains(dir))
         this->dirList_.append(dir);
 
+    // in the model
     dirListModel_->setItem(this->dirList_.size() - 1, new QStandardItem(dir));
+
+    // in the database
+    QSqlError qError = databaseManager_->insertDirToCollection(dir);
+    if(qError.type())
+        throw(qError);
 }
 
 
@@ -62,9 +80,11 @@ void Collection::addDirectory(const QString& dir) {
   * \param QString dir
   */
 void Collection::removeDirectory(const QString& dir) {
+    // in the list
     if(this->dirList_.contains(dir))
         this->dirList_.removeAll(dir);
 
+    // in the model
     QList<QStandardItem *> listItems = dirListModel_->findItems(dir, Qt::MatchExactly, 0 ) ;
 
     if(listItems.empty() || listItems.size() != 1)
@@ -72,6 +92,11 @@ void Collection::removeDirectory(const QString& dir) {
 
     QStandardItem* item = listItems[0] ; // the item to be removed...
     dirListModel_->removeRow(item->row()); // ...now!
+
+    // in the database
+    QSqlError qError = databaseManager_->removeDirToCollection(dir);
+    if(qError.type())
+        throw(qError);
 }
 
 
@@ -80,9 +105,11 @@ void Collection::removeDirectory(const QString& dir) {
   * \param QStringList dirList
   */
 void Collection::setDirList(const QStringList& dirs) {
+    // in the list
     this->dirList_.clear();
     this->dirList_.append(dirs);
 
+    // in the model
     dirListModel_->clear();
     for (int i = 0; i < dirs.size(); ++i)
         dirListModel_->setItem(i, new QStandardItem(dirs.at(i)));
@@ -112,14 +139,21 @@ QStringList Collection::ScanRecDir(const QString& dir) {
     QStringList fileList;
     QDir qdir(dir);
 
+    // filtering the names of the files in the directory
     QStringList nameFilter = QStringList() << "*.avi" << "*.mpeg" << "*.mkv";
     qdir.setNameFilters(nameFilter);
     qdir.setFilter(QDir::Files | QDir::Readable | QDir::Hidden | QDir::NoSymLinks);
     qdir.setSorting(QDir::Name);
 
-    fileList << qdir.entryList();
+    // we need the full name
+    QString fileString;
+    foreach(fileString, qdir.entryList())
+        fileList << dir + QDir::separator() + fileString;
+
+    //filtering the sub-directories
     QStringList dirList = qdir.entryList(QDir::AllDirs | QDir::Drives | QDir::NoDotAndDotDot);
 
+    // recursive call
     for (int i = 0; i < dirList.size(); ++i)
         fileList << ScanRecDir( dir + QDir::separator() + dirList.at(i) );
 

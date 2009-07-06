@@ -23,6 +23,7 @@
 #include <QStandardItemModel>
 
 #include "databasemanager.h"
+#include "media.h"
 
 
 class MediaCollection
@@ -32,15 +33,15 @@ public:
     MediaCollection();
     ~MediaCollection();
 
-    void createMedias(const QStringList&);
-
+    void init();
     QStandardItemModel* getMediaListModel() const;
+    void update(QStringList&) ;
 
 
 private:
     QStandardItemModel* mediaListModel_;
     DatabaseManager* databaseManager_;
-
+    QMap<int, Media> mediaMap_;
 
 };
 

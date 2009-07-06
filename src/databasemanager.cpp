@@ -92,29 +92,30 @@ QSqlError DatabaseManager::init(const QString &dbFilePath) {
     // in case of proposing different sql backend (mysql, postgresql, etc.), we will have to put this
     // either in the controller or in a backend-independant class
     QSqlQuery q;
-    if (!q.exec(QLatin1String("create table Collection(id INTEGER PRIMARY KEY AUTOINCREMENT, directory VARCHAR(255))")))
+    if (!q.exec(QString("create table Collection(id INTEGER PRIMARY KEY AUTOINCREMENT, directory VARCHAR(255))")))
         return q.lastError();
 
-    if (!q.exec(QLatin1String("create table Media(id INTEGER PRIMARY KEY AUTOINCREMENT, \
-            type INTEGER, name VARCHAR(255), loaned BOOLEAN, seen BOOLEAN, recommended BOOLEAN, notes TEXT)")))
+    if (!q.exec(QString("create table Media(id INTEGER PRIMARY KEY AUTOINCREMENT, \
+            type INTEGER, baseName VARCHAR(255), fileName VARCHAR(255), loaned BOOLEAN, seen BOOLEAN, \
+            recommended BOOLEAN, notes TEXT)")))
         return q.lastError();
 
-    if (!q.exec(QLatin1String("create table ImdbInfo(id INTEGER PRIMARY KEY AUTOINCREMENT, \
+    if (!q.exec(QString("create table ImdbInfo(id INTEGER PRIMARY KEY AUTOINCREMENT, \
             mediaId INTEGER, ImdbId INTEGER, genre INTEGER, year INTEGER, runtime INTEGER, rating DOUBLE, \
             title VARCHAR(255), director VARCHAR(255), country VARCHAR(255), image VARCHAR(255), \
             studio VARCHAR(255), cast TEXT, plot TEXT, notes TEXT)")))
         return q.lastError();
 
-    if (!q.exec(QLatin1String("create table MovieGenre(id INTEGER PRIMARY KEY AUTOINCREMENT, genre VARCHAR(255))")))
+    if (!q.exec(QString("create table MovieGenre(id INTEGER PRIMARY KEY AUTOINCREMENT, genre VARCHAR(255))")))
         return q.lastError();
 
-    if (!q.exec(QLatin1String("create table MusicGenre(id INTEGER PRIMARY KEY AUTOINCREMENT, genre VARCHAR(255))")))
+    if (!q.exec(QString("create table MusicGenre(id INTEGER PRIMARY KEY AUTOINCREMENT, genre VARCHAR(255))")))
         return q.lastError();
 
-    if (!q.exec(QLatin1String("create table Tag(id INTEGER PRIMARY KEY AUTOINCREMENT, mediaId INTEGER, name VARCHAR(255))")))
+    if (!q.exec(QString("create table Tag(id INTEGER PRIMARY KEY AUTOINCREMENT, mediaId INTEGER, name VARCHAR(255))")))
         return q.lastError();
 
-    if (!q.exec(QLatin1String("create table Loans(id INTEGER PRIMARY KEY AUTOINCREMENT, mediaId INTEGER, person VARCHAR(255))")))
+    if (!q.exec(QString("create table Loans(id INTEGER PRIMARY KEY AUTOINCREMENT, mediaId INTEGER, person VARCHAR(255))")))
         return q.lastError();
 
     return QSqlError();
@@ -126,7 +127,7 @@ QSqlError DatabaseManager::init(const QString &dbFilePath) {
   */
 QStringList DatabaseManager::getCollection() {
     QSqlQuery q;
-    if (!q.exec(QLatin1String("SELECT * FROM Collection")))
+    if (!q.exec(QString("SELECT * FROM Collection")))
         QSqlError qError = q.lastError(); // TODO handle this!
 
     QStringList stringList;
@@ -138,30 +139,78 @@ QStringList DatabaseManager::getCollection() {
 }
 
 
-QSqlError DatabaseManager::insertDirToCollection(QString& s) {
+/** \fn DatabaseManager::insertDirToCollection(const QString& dir)
+  * \brief Inserts the directory \var dir into the Collection table.
+  */
+QSqlError DatabaseManager::insertDirToCollection(const QString& dir) {
     QSqlQuery q;
-    if (!q.exec(QString("INSERT INTO Collection(directory) VALUES('%1')").arg(s)))
-        return q.lastError();
+    if (!q.exec(QString("INSERT INTO Collection(directory) VALUES('%1')").arg(dir)))
+        throw(q.lastError()); // TODO handle this!
 
     return QSqlError();
 }
 
 
-QSqlError DatabaseManager::removeDirToCollection(QString& s) {
+/** \fn DatabaseManager::removeDirToCollection(const QString& dir)
+  * \brief Removes the directory \var dir from the Collection table.
+  */
+QSqlError DatabaseManager::removeDirToCollection(const QString& dir) {
     QSqlQuery q;
-    if (!q.exec(QString("DELETE FROM Collection WHERE directory = '%1'").arg(s)))
-        return q.lastError();
+    if (!q.exec(QString("DELETE FROM Collection WHERE directory = '%1'").arg(dir)))
+        throw(q.lastError()); // TODO handle this!
 
     return QSqlError();
 }
 
 
-bool DatabaseManager::hasDir(QString& s) {
+/** \fn DatabaseManager::hasDir(const QString& dir)
+  * \brief Returns whether the directory \var dir is in the Collection table or not.
+  */
+bool DatabaseManager::hasDir(const QString& dir) {
     QSqlQuery q;
-    if (!q.exec(QString("SELECT * FROM Collection WHERE directory = '%1'").arg(s)))
+    if (!q.exec(QString("SELECT id FROM Collection WHERE directory = '%1'").arg(dir)))
         return true;
 
     return q.next();
+}
+
+
+
+/** \fn DatabaseManager::queryMedias()
+  * \brief get medias from the database
+  * \return the database query
+  */
+QSqlQuery DatabaseManager::queryMedias(QSqlQuery& q) {
+    if (!q.exec(QString("SELECT * FROM Media")))
+        throw(q.lastError()); // TODO handle this!
+    return q;
+}
+
+
+/** \fn DatabaseManager::hasDir(const QString& dir)
+  * \brief Returns whether the directory \var dir is in the Collection table or not.
+  */
+bool DatabaseManager::hasMedia(const QString& fileName) {
+    QSqlQuery q;
+    if (!q.exec(QString("SELECT id FROM Media WHERE fileName = '%1'").arg(fileName)))
+        return true;
+
+    return q.next();
+}
+
+
+
+/** \fn DatabaseManager::insertMedia(const QString& fileName)
+  * \brief Inserts the directory \var dir into the Collection table.
+  */
+QSqlError DatabaseManager::insertMedia(const Media& media) {
+    QSqlQuery q;
+    if (!q.exec(QString("INSERT INTO Media(type, fileName, loaned, seen, recommended, notes) VALUES('%1', '%2', '%3', '%4', '%5', '%6')")
+            .arg(media.getType()).arg(media.getFileName()).arg(media.isLoaned()).arg(media.isSeen())
+            .arg(media.isRecommended()).arg(media.getNotes())))
+        throw(q.lastError()); // TODO handle this!
+
+    return QSqlError();
 }
 
 

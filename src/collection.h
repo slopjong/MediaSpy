@@ -50,6 +50,7 @@ public:
     void removeDirectory(const QString&);
     QStringList buildFileList();
     QStringList ScanRecDir(const QString&);
+    void init();
 
 
 private:

@@ -27,8 +27,10 @@
 #include "ui_collectiondialog.h"
 
 
-class CollectionDialog : public QDialog, public Ui_CollectionDialog
-{
+/** \class CollectionDialog
+  * \brief The CollectionDialog is the dialog used to add directories in the Collection.
+  */
+class CollectionDialog : public QDialog, public Ui_CollectionDialog {
     Q_OBJECT
 public:
     CollectionDialog(QWidget *parent = 0);

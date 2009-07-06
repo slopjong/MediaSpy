@@ -23,18 +23,15 @@
 #include <QString>
 #include <QStringList>
 #include <QStandardItemModel>
-//#include <QFileInfo>
-//#include <QList>
-//#include <QDir>
 
 #include "databasemanager.h"
 
 
 /** \class Collection
-  *
+  * \brief The Collection is the list of directories selected by the user.
+  * Media files present in these directories and their sub-directories are collected to fill the MediaCollection.
   */
-class Collection
-{
+class Collection {
 public:
     // Fields
 

@@ -40,7 +40,7 @@ CollectionDialog::CollectionDialog(QWidget *parent)
     this->directoryListView->setAlternatingRowColors(true);
 }
 
-/** \fn CollectionDialog::CollectionDialog(QWidget *parent)
+/** \fn CollectionDialog::~CollectionDialog()
   * \brief class destructor
   */
 CollectionDialog::~CollectionDialog() {}
@@ -49,13 +49,16 @@ CollectionDialog::~CollectionDialog() {}
 //////////////
 // methods //
 //////////////
+/** \fn CollectionDialog::enableRemoveDirButton()
+  * \brief Enables the 'remove directory' button when a directory is selected.
+  */
 void CollectionDialog::enableRemoveDirButton() {
     delDirButton->setEnabled(true);
 }
 
 
 /** \fn CollectionDialog::on_addDirButton_clicked()
-  * \brief defines the action when the Add button is clicked
+  * \brief Defines the action when the Add button is clicked.
   * Opens a directory selection dialog. Once the directory is selected, the dirAdded signal is emitted.
   */
 void CollectionDialog::on_addDirButton_clicked()
@@ -73,6 +76,10 @@ void CollectionDialog::on_addDirButton_clicked()
 }
 
 
+/** \fn CollectionDialog::on_delDirButton_clicked()
+  * \brief Defines the action when the Remove button is clicked.
+  * Removes the selected directory. Once the directory is removed, the dirRemoved signal is emitted.
+  */
 void CollectionDialog::on_delDirButton_clicked() {
     QModelIndexList selectedItemList = this->directoryListView->selectionModel()->selectedIndexes();
     QModelIndex item = selectedItemList.at(0);

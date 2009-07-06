@@ -30,7 +30,8 @@
   * \brief class constructor
   */
 Collection::Collection() :
-        dirListModel_(new QStandardItemModel()), databaseManager_(DatabaseManager::getInstance()) {}
+        dirListModel_(new QStandardItemModel()),
+        databaseManager_(DatabaseManager::getInstance()) {}
 
 /** \fn Collection::~Collection()
   * \brief class destructor
@@ -45,20 +46,20 @@ Collection::~Collection() {
 // Methods //
 /////////////
 /** \fn Collection::addDirectory(const QString dir)
-  * \brief Adds a new directory in the list of directories.
-  * \param QString
+  * \brief Adds a new directory in the list of directories and in the model.
+  * \param QString dir
   */
 void Collection::addDirectory(const QString& dir) {
     if(!this->dirList_.contains(dir))
         this->dirList_.append(dir);
 
-    dirListModel_->setItem(this->dirList_.size()-1, new QStandardItem(dir));
+    dirListModel_->setItem(this->dirList_.size() - 1, new QStandardItem(dir));
 }
 
 
 /** \fn Collection::removeDirectory(const QString dir)
-  * \brief Removes the given directory from the list of directories and from the model.
-  * \param QString
+  * \brief Removes the directory \var dir from the list of directories and from the model.
+  * \param QString dir
   */
 void Collection::removeDirectory(const QString& dir) {
     if(this->dirList_.contains(dir))
@@ -89,7 +90,8 @@ void Collection::setDirList(const QStringList& dirs) {
 
 
 /** \fn Collection::buildFileList()
-  * \brief Builds the list of the media files found in the collection.
+  * \brief Builds the list of the media files found in the directories of the collection.
+  * \return the list of the media
   */
 QStringList Collection::buildFileList() {
     QStringList fileList;
@@ -101,6 +103,11 @@ QStringList Collection::buildFileList() {
 }
 
 
+/** \fn Collection::ScanRecDir(const QString& dir)
+  * \brief Scans a directory recursively and creates a list of all movie files.
+  * \param dir the top directory
+  * \return the list of movie files
+  */
 QStringList Collection::ScanRecDir(const QString& dir) {
     QStringList fileList;
     QDir qdir(dir);
@@ -123,10 +130,18 @@ QStringList Collection::ScanRecDir(const QString& dir) {
 ///////////////////////
 // accessors methods //
 ///////////////////////
+/** \fn Collection::getDirModel() const
+  * \brief Returns the model of the list of directories.
+  * \return the model
+  */
 QStandardItemModel* Collection::getDirModel() const {
     return dirListModel_;
 }
 
+/** \fn QString Collection::getDirAt(const int i)  const
+  * \brief Returns the name of the directory at i-th rank in the model.
+  * \return the directory name
+  */
 QString Collection::getDirAt(const int i)  const {
     return this->dirList_.at(i);
 }

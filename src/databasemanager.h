@@ -45,7 +45,7 @@ public:
     QSqlError insertMedia(const Media&);
     bool hasMedia(const QString&);
 
-    QStringList getCollection();
+    QStringList getCollectionDir();
     QSqlQuery queryMedias(QSqlQuery&);
 
 

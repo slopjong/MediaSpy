@@ -22,7 +22,6 @@
 
 #include <QString>
 #include <QStringList>
-#include <QStandardItemModel>
 
 #include "databasemanager.h"
 
@@ -40,15 +39,15 @@ public:
     ~Collection();
 
     // Accessor Methods
-    QStringList getDirList() const;
-    void setDirDatabase(const QStringList&);
     void initDirList(const QStringList&);
+    QStringList getDirList() const;
     void setNDir(const int);
     int getNDir() const;
 
     QString getDirAt(const int) const;
 
     // Operations
+    void update(const QStringList&);
     QStringList buildFileList();
     QStringList ScanRecDir(const QString&);
     void init();

@@ -29,8 +29,8 @@
   * \brief class constructor
   * \param parent the inherited QWidget object
   */
-CollectionDialog::CollectionDialog(QWidget *parent)
-    : QDialog(parent)
+CollectionDialog::CollectionDialog(QWidget *parent) :
+    QDialog(parent)
 {
     setupUi(this);
 
@@ -61,8 +61,8 @@ void CollectionDialog::enableRemoveDirButton() {
   * \brief Defines the action when the Add button is clicked.
   * Opens a directory selection dialog. Once the directory is selected, the dirAdded signal is emitted.
   */
-void CollectionDialog::on_addDirButton_clicked()
-{
+void CollectionDialog::on_addDirButton_clicked() {
+
     QString newDir = QFileDialog::getExistingDirectory(this, tr("Choose a directory"),
                      QDir::homePath(),
                      QFileDialog::ShowDirsOnly |
@@ -79,16 +79,19 @@ void CollectionDialog::on_addDirButton_clicked()
 
 /** \fn CollectionDialog::on_delDirButton_clicked()
   * \brief Defines the action when the Remove button is clicked.
-  * Removes the selected directory. Once the directory is removed, the dirRemoved signal is emitted.
+  * Removes the selected directory from the widget.
   */
 void CollectionDialog::on_delDirButton_clicked() {
-    QList<QListWidgetItem *> selectedItemList = this->listWidget->selectedItems ();
+    QList<QListWidgetItem *> selectedItemList = this->listWidget->selectedItems();
     QListWidgetItem* item = selectedItemList.at(0);
     int r = this->listWidget->row(item);
     this->listWidget->takeItem(r);
 }
 
 
+/** \fn CollectionDialog::getUpdate()
+  * \brief Puts the listWidget items in a QStringList.
+  */
 QStringList CollectionDialog::getUpdate() {
     QStringList addedDirList;
 

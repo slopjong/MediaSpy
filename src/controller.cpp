@@ -83,7 +83,6 @@ void Controller::kill() {
   * \brief initiates the controller with the database,
   */
 void Controller::init() {
-
     //////////////////////////
     // local directory init //
     //////////////////////////
@@ -113,15 +112,17 @@ void Controller::init() {
     }
 
     ///////////////////////////////
-    // directory collection init //
+    // directory collection init // TODO in a different thread ??
     ///////////////////////////////
     collection_->init();
-    QStringList mediaList = collection_->buildFileList(); // fetch the dir for content
+    QStringList mediaList = collection_->buildFileList(); // fetch the dir for content TODO update
 
     ///////////////////////////
     // media collection init //
     ///////////////////////////
     mediaCollection_->init();
+    mediaCollection_->updateMediaCollection(mediaList);
+
 }
 
 
@@ -131,8 +132,10 @@ void Controller::populateDirList(CollectionDialog &dialog) {
 }
 
 
-void Controller::updateCollection(QStringList& dirList) {
-    collection_->setDirDatabase(dirList);
+void Controller::updateCollections(QStringList& dirList) {
+    collection_->update(dirList);
+    QStringList mediaList = collection_->buildFileList();
+    mediaCollection_->updateMediaCollection(mediaList);
 }
 
 
@@ -155,6 +158,8 @@ QString Controller::getErrorMessage() {
 
 void Controller::setMediaListModel(QListView* listView) {
     listView->setModel(mediaCollection_->getMediaListModel());
+    mediaCollection_->getMediaListModel()->setHorizontalHeaderLabels(QStringList() << qApp->tr("Date") << qApp->tr("Point"));
+
 }
 
 

@@ -42,9 +42,8 @@ MediaSpy::MediaSpy(QWidget *parent) :
 ui_->progressBar->setMinimum(0);
 
 
-
-    controller_->init();
     controller_->setMediaListModel(ui_->mediaListView);
+    controller_->init();
 
     if(!(controller_->getErrorMessage().isEmpty()))
         QMessageBox::critical(this, tr("Error"), controller_->getErrorMessage());
@@ -121,6 +120,9 @@ const QString MediaSpy::getDbFileName() {
 ///////////
 // slots //
 ///////////
+/** \fn void MediaSpy::on_actionAdd_directory_triggered()
+ *  \brief Opens the CollectionDialog dialog and gets the user's change to the controller.
+*/
 void MediaSpy::on_actionAdd_directory_triggered() {
     CollectionDialog dialog(this);
     controller_->populateDirList(dialog);
@@ -129,7 +131,7 @@ void MediaSpy::on_actionAdd_directory_triggered() {
         return;
 
     QStringList upCollectionList = dialog.getUpdate();
-    controller_->updateCollection(upCollectionList);
+    controller_->updateCollections(upCollectionList);
 }
 
 

@@ -45,7 +45,7 @@ public:
     static void kill();
     void init();
 
-    void updateCollection(QStringList&);
+    void updateCollections(QStringList&);
     void populateDirList(CollectionDialog &);
     QString getErrorMessage();
     void setMediaListModel(QListView*);

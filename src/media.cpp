@@ -34,7 +34,13 @@ Media::Media() {}
   */
 Media::Media(const Media &media) {
     id_ = media.id_;
+    type_ = media.type_;
+    baseName_ = media.baseName_;
     fileName_ = media.fileName_;
+    loaned_ = media.loaned_;
+    seen_ = media.seen_;
+    recommended_ = media.recommended_;
+    notes_ = media.notes_;
 }
 
 /** \fn Media::Media()
@@ -86,7 +92,7 @@ void Media::setNotes(const QString& note) { notes_ = note; }
 
 void Media::generateBaseName() {
     QFileInfo fileInfo = QFileInfo(fileName_ );
-    this->setBaseName(fileInfo.baseName());
+    this->setBaseName(fileInfo.completeBaseName());
 }
 
 

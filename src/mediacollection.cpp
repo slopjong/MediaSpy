@@ -22,9 +22,9 @@
 #include "controller.h"
 
 
-static const int MEDIA_TYPE_MOVIE = 0;
-static const int MEDIA_TYPE_MUSIC = 1;
-static const int MEDIA_TYPE_DOC = 2;
+static const int MEDIA_TYPE_MOVIE   = 0;
+static const int MEDIA_TYPE_MUSIC   = 1;
+static const int MEDIA_TYPE_DOC     = 2;
 
 
 /////////////////////////////
@@ -59,6 +59,7 @@ void MediaCollection::init() {
 
     int fieldId             = q.record().indexOf("id");
     int fieldType           = q.record().indexOf("type");
+    int fieldBaseName       = q.record().indexOf("baseName");
     int fieldFileName       = q.record().indexOf("fileName");
     int fieldLoaned         = q.record().indexOf("loaned");
     int fieldSeen           = q.record().indexOf("seen");
@@ -66,11 +67,12 @@ void MediaCollection::init() {
     int fieldNotes          = q.record().indexOf("notes");
 
     while (q.next()) {
-        qulonglong id = q.value(fieldId).toULongLong();
+        qulonglong id = q.value(fieldId).toULongLong() - 1;
 
         Media tempMedia;
         tempMedia.setId(id);
         tempMedia.setType(q.value(fieldType).toInt());
+        tempMedia.setBaseName(q.value(fieldBaseName).toString());
         tempMedia.setFileName(q.value(fieldFileName).toString());
         tempMedia.setLoaned(q.value(fieldLoaned).toBool());
         tempMedia.setSeen(q.value(fieldSeen).toBool());
@@ -79,11 +81,11 @@ void MediaCollection::init() {
 
         mediaMap_.insert(id, tempMedia);
     }
+    nMedia_ = mediaMap_.count();
 }
 
 
-void MediaCollection::update(QStringList& mediaList) {
-//    setNMedia(mediaList.size());
+void MediaCollection::updateMediaCollection(QStringList& mediaList) {
     QString mediaFileName;
     int i;
     foreach(mediaFileName, mediaList) {
@@ -92,8 +94,9 @@ void MediaCollection::update(QStringList& mediaList) {
         // if the file exists
         if(mediaFileInfo.exists()) {
             // and is not in the database
+            Media tempMedia;
             if(!databaseManager_->hasMedia(mediaFileName)) {
-                Media tempMedia;
+
                 tempMedia.setType(MEDIA_TYPE_MOVIE);
                 tempMedia.setFileName(mediaFileName);
                 tempMedia.setLoaned(false);
@@ -103,6 +106,8 @@ void MediaCollection::update(QStringList& mediaList) {
 
                 // let's add it!
                 databaseManager_->insertMedia(tempMedia);
+                mediaMap_.insert(nMedia_, tempMedia);
+                nMedia_++;
             }
             // and is already in the database
             else {
@@ -123,7 +128,20 @@ void MediaCollection::update(QStringList& mediaList) {
 //        controller_->setProgressStep(i);
         i++;
     }
+    updateListModel();
+
 //    controller_->progressStop();
+}
+
+
+void MediaCollection::updateListModel() {
+    mediaListModel_->clear();
+
+    for(unsigned int i = 0; i < (unsigned int)mediaMap_.count(); i++) {
+        Media tempMedia;
+        tempMedia = mediaMap_.value(i);
+        mediaListModel_->setItem(i, 0, new QStandardItem(QString(tempMedia.getBaseName())));
+    }
 }
 
 

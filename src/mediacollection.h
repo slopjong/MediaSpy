@@ -36,7 +36,8 @@ public:
 
     void init();
     QStandardItemModel* getMediaListModel() const;
-    void update(QStringList&) ;
+    void updateMediaCollection(QStringList&) ;
+    void updateListModel();
 
     unsigned int getNMedia() const;
     void setNMedia(const unsigned int);

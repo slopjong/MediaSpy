@@ -122,10 +122,10 @@ QSqlError DatabaseManager::init(const QString &dbFilePath) {
 }
 
 
-/** \fn DatabaseManager::getCollection()
+/** \fn DatabaseManager::getCollectionDir()
   * \brief get collection from the database
   */
-QStringList DatabaseManager::getCollection() {
+QStringList DatabaseManager::getCollectionDir() {
     QSqlQuery q;
     if (!q.exec(QString("SELECT * FROM Collection")))
         QSqlError qError = q.lastError(); // TODO handle this!
@@ -212,6 +212,3 @@ QSqlError DatabaseManager::insertMedia(const Media& media) {
 
     return QSqlError();
 }
-
-
-

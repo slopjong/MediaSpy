@@ -47,17 +47,18 @@ Collection::~Collection() {
   * \brief Initiates the Collection.
   */
 void Collection::init() {
-    QStringList stringList = databaseManager_->getCollection(); // read directories in db
+    QStringList stringList = databaseManager_->getCollectionDir(); // read directories in db
     initDirList(stringList); // put them in the Collection
     // TODO: put a QFileSystemWatcher on them
 }
 
 
-/** \fn Collection::setDirDatabase(const QStringList& dirList)
-  * \brief Populates the collection object and the database with the QStringList dirList. It clears their content first.
+/** \fn Collection::update(const QStringList& dirList)
+  * \brief Updates the database with the QStringList dirList. Then the list object is updated as well.
+  * It clears their content first.
   * \param QStringList dirList
   */
-void Collection::setDirDatabase(const QStringList& dirs) {
+void Collection::update(const QStringList& dirs) {
     databaseManager_->cleanCollection();
     for (int i = 0; i < dirs.size(); ++i)
         if(!databaseManager_->hasDir(dirs.at(i))) {

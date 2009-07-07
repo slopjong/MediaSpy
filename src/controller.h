@@ -41,14 +41,16 @@ private:
 
 public:
     static Controller *getInstance(MediaSpy* mediaSpy);
+    static Controller *getInstance();
     static void kill();
     void init();
-    QString getErrorMessage();
-    void addDirCollection(QString& s);
-    void removeDirCollection(QString& s);
-    void setCollectionModel(CollectionDialog &);
-    void setMediaListModel(QListView*);
 
+    void updateCollection(QStringList&);
+    void populateDirList(CollectionDialog &);
+    QString getErrorMessage();
+    void setMediaListModel(QListView*);
+    void setProgressMax(const int) const;
+    void setProgressStep(const int) const;
 
 private:
     static Controller *singleton_;
@@ -57,8 +59,6 @@ private:
     Collection* collection_;
     MediaCollection* mediaCollection_;
     QString errorMessage_;
-
-    void createCollectionModel();
 
 };
 

@@ -151,12 +151,12 @@ QSqlError DatabaseManager::insertDirToCollection(const QString& dir) {
 }
 
 
-/** \fn DatabaseManager::removeDirToCollection(const QString& dir)
-  * \brief Removes the directory \var dir from the Collection table.
+/** \fn DatabaseManager::cleanCollection()
+  * \brief Cleans the whole Collection table.
   */
-QSqlError DatabaseManager::removeDirToCollection(const QString& dir) {
+QSqlError DatabaseManager::cleanCollection() {
     QSqlQuery q;
-    if (!q.exec(QString("DELETE FROM Collection WHERE directory = '%1'").arg(dir)))
+    if (!q.exec(QString("DELETE FROM `Collection`")))
         throw(q.lastError()); // TODO handle this!
 
     return QSqlError();
@@ -205,9 +205,9 @@ bool DatabaseManager::hasMedia(const QString& fileName) {
   */
 QSqlError DatabaseManager::insertMedia(const Media& media) {
     QSqlQuery q;
-    if (!q.exec(QString("INSERT INTO Media(type, fileName, loaned, seen, recommended, notes) VALUES('%1', '%2', '%3', '%4', '%5', '%6')")
-            .arg(media.getType()).arg(media.getFileName()).arg(media.isLoaned()).arg(media.isSeen())
-            .arg(media.isRecommended()).arg(media.getNotes())))
+    if (!q.exec(QString("INSERT INTO Media(type, fileName, baseName, loaned, seen, recommended, notes) VALUES('%1', '%2', '%3', '%4', '%5', '%6', '%7')")
+            .arg(media.getType()).arg(media.getFileName()).arg(media.getBaseName()).arg(media.isLoaned())
+            .arg(media.isSeen()).arg(media.isRecommended()).arg(media.getNotes())))
         throw(q.lastError()); // TODO handle this!
 
     return QSqlError();

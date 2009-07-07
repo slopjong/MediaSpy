@@ -25,6 +25,7 @@
 #include "databasemanager.h"
 #include "media.h"
 
+class Controller;
 
 class MediaCollection
 {
@@ -37,11 +38,15 @@ public:
     QStandardItemModel* getMediaListModel() const;
     void update(QStringList&) ;
 
+    unsigned int getNMedia() const;
+    void setNMedia(const unsigned int);
 
 private:
     QStandardItemModel* mediaListModel_;
     DatabaseManager* databaseManager_;
     QMap<int, Media> mediaMap_;
+    unsigned int nMedia_;
+    Controller* controller_;
 
 };
 

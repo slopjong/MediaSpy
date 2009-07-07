@@ -64,6 +64,8 @@ public:
     static const QString getDbFileName();
 
     // Operations
+    void setProgressbarMaximum(const int) ;
+    void setProgressbarCurrent(const int) const;
 
 
 private:
@@ -74,7 +76,6 @@ private:
     // Operations
     void readSettings();
     void writeDatabasePathSetting();
-    void updateCollection();
 
 
 private slots:
@@ -82,8 +83,6 @@ private slots:
     void on_actionAbout_MediaSpy_triggered();
     void on_actionAbout_Qt_triggered();
     void on_actionAdd_directory_triggered();
-    void addDir(QString&);
-    void removeDir(QString&);
 };
 
 #endif // MEDIASPY_H

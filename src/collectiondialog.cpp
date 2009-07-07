@@ -34,10 +34,10 @@ CollectionDialog::CollectionDialog(QWidget *parent)
 {
     setupUi(this);
 
-    connect(this->directoryListView, SIGNAL(clicked(const QModelIndex&)),
+    connect(this->listWidget, SIGNAL(clicked(const QModelIndex&)),
             this, SLOT(enableRemoveDirButton()));
 
-    this->directoryListView->setAlternatingRowColors(true);
+    this->listWidget->setAlternatingRowColors(true);
 }
 
 /** \fn CollectionDialog::~CollectionDialog()
@@ -71,7 +71,8 @@ void CollectionDialog::on_addDirButton_clicked()
     if (newDir.isEmpty())
         this->buttonBox->setFocus();
     else {
-        emit dirAdded(newDir);
+        addedDirList_ << newDir;
+        this->listWidget->addItem(newDir);
     }
 }
 
@@ -81,13 +82,22 @@ void CollectionDialog::on_addDirButton_clicked()
   * Removes the selected directory. Once the directory is removed, the dirRemoved signal is emitted.
   */
 void CollectionDialog::on_delDirButton_clicked() {
-    QModelIndexList selectedItemList = this->directoryListView->selectionModel()->selectedIndexes();
-    QModelIndex item = selectedItemList.at(0);
-    QString delDir = item.data().toString();
-    emit dirRemoved(delDir);
+    QList<QListWidgetItem *> selectedItemList = this->listWidget->selectedItems ();
+    QListWidgetItem* item = selectedItemList.at(0);
+    int r = this->listWidget->row(item);
+    this->listWidget->takeItem(r);
 }
 
 
+QStringList CollectionDialog::getUpdate() {
+    QStringList addedDirList;
+
+    for(int i = 0; i < this->listWidget->count(); i++) {
+        QListWidgetItem* item = this->listWidget->item(i);
+        addedDirList << item->text();
+    }
+    return addedDirList;
+}
 
 
 

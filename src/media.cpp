@@ -66,7 +66,10 @@ int Media::getType() const { return type_; }
 void Media::setType(const int type) { type_ = type; }
 
 QString Media::getFileName() const { return fileName_; }
-void Media::setFileName(const QString& fileName) { fileName_ = fileName; }
+void Media::setFileName(const QString& fileName) {
+    fileName_ = fileName;
+    generateBaseName();
+}
 
 QString Media::getBaseName() const { return baseName_; }
 void Media::setBaseName(const QString& baseName) { baseName_ = baseName; }
@@ -80,5 +83,11 @@ void Media::setRecommended(const bool recommended) { recommended_ = recommended;
 
 QString Media::getNotes() const { return notes_; }
 void Media::setNotes(const QString& note) { notes_ = note; }
+
+void Media::generateBaseName() {
+    QFileInfo fileInfo = QFileInfo(fileName_ );
+    this->setBaseName(fileInfo.baseName());
+}
+
 
 

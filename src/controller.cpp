@@ -55,6 +55,13 @@ Controller::~Controller() {
 /** \fn Controller::getInstance()
   * \brief returns the unique instance of Controller, creates it the first time
   */
+Controller* Controller::getInstance() {
+    return singleton_;
+}
+
+/** \fn Controller::getInstance()
+  * \brief returns the unique instance of Controller, creates it the first time
+  */
 Controller* Controller::getInstance(MediaSpy* mediaSpy) {
     if (NULL == singleton_)
         singleton_ =  new Controller(mediaSpy);
@@ -118,31 +125,24 @@ void Controller::init() {
 }
 
 
-void Controller::addDirCollection(QString& dir) {
-    // no need to insert something already present
-    if(!databaseManager_->hasDir(dir)) {
-        collection_->addDirectory(dir);
-        QStringList mediaList = collection_->buildFileList();
-        mediaCollection_->update(mediaList);
-    }
-    return;
+void Controller::populateDirList(CollectionDialog &dialog) {
+    for(int i = 0; i < collection_->getNDir(); i++)
+        dialog.listWidget->addItem(collection_->getDirAt(i));
 }
 
 
-void Controller::removeDirCollection(QString& dir) {
-    // no need to insert something not present
-    if(databaseManager_->hasDir(dir)) {
-        collection_->removeDirectory(dir);
-        QStringList mediaList = collection_->buildFileList();
-        mediaCollection_->update(mediaList);
-    }
-
-    return;
+void Controller::updateCollection(QStringList& dirList) {
+    collection_->setDirDatabase(dirList);
 }
 
 
+void Controller::setProgressMax(const int n) const {
+    view_->setProgressbarMaximum(n);
+}
 
-
+void Controller::setProgressStep(const int n) const {
+    view_->setProgressbarCurrent(n);
+}
 
 
 ///////////////////////
@@ -152,10 +152,6 @@ QString Controller::getErrorMessage() {
     return errorMessage_;
 }
 
-
-void Controller::setCollectionModel(CollectionDialog &dialog) {
-    dialog.directoryListView->setModel(collection_->getDirModel());
-}
 
 void Controller::setMediaListModel(QListView* listView) {
     listView->setModel(mediaCollection_->getMediaListModel());

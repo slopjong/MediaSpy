@@ -19,10 +19,12 @@
 
 
 #include "mediacollection.h"
+#include "controller.h"
 
 
 static const int MEDIA_TYPE_MOVIE = 0;
 static const int MEDIA_TYPE_MUSIC = 1;
+static const int MEDIA_TYPE_DOC = 2;
 
 
 /////////////////////////////
@@ -32,7 +34,8 @@ static const int MEDIA_TYPE_MUSIC = 1;
   * \brief class constructor
   */
 MediaCollection::MediaCollection() :
-        mediaListModel_(new QStandardItemModel()), databaseManager_(DatabaseManager::getInstance()) {}
+        mediaListModel_(new QStandardItemModel()), databaseManager_(DatabaseManager::getInstance()),
+        controller_(Controller::getInstance()) {}
 
 /** \fn MediaCollection::~MediaCollection()
   * \brief class destructor
@@ -78,8 +81,11 @@ void MediaCollection::init() {
     }
 }
 
+
 void MediaCollection::update(QStringList& mediaList) {
+//    setNMedia(mediaList.size());
     QString mediaFileName;
+    int i;
     foreach(mediaFileName, mediaList) {
         QFileInfo mediaFileInfo = QFileInfo(mediaFileName);
 
@@ -114,7 +120,10 @@ void MediaCollection::update(QStringList& mediaList) {
                 // let's do nothing!
             }
         }
+//        controller_->setProgressStep(i);
+        i++;
     }
+//    controller_->progressStop();
 }
 
 
@@ -125,6 +134,14 @@ QStandardItemModel* MediaCollection::getMediaListModel() const {
     return mediaListModel_;
 }
 
+unsigned int MediaCollection::getNMedia() const {
+    return nMedia_;
+}
+
+void MediaCollection::setNMedia(const unsigned int nMedia) {
+    nMedia_ = nMedia;
+    controller_->setProgressMax(nMedia);
+}
 
 
 

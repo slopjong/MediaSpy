@@ -39,7 +39,7 @@ public:
     static void kill();
     QSqlError init(const QString&);
     QSqlError insertDirToCollection(const QString&);
-    QSqlError removeDirToCollection(const QString&);
+    QSqlError cleanCollection();
     bool hasDir(const QString&);
 
     QSqlError insertMedia(const Media&);

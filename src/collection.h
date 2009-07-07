@@ -41,13 +41,14 @@ public:
 
     // Accessor Methods
     QStringList getDirList() const;
-    void setDirList(const QStringList&);
+    void setDirDatabase(const QStringList&);
+    void initDirList(const QStringList&);
+    void setNDir(const int);
+    int getNDir() const;
+
     QString getDirAt(const int) const;
-    QStandardItemModel* getDirModel() const;
 
     // Operations
-    void addDirectory(const QString&);
-    void removeDirectory(const QString&);
     QStringList buildFileList();
     QStringList ScanRecDir(const QString&);
     void init();
@@ -56,8 +57,8 @@ public:
 private:
     // Fields
     QStringList dirList_;
-    QStandardItemModel* dirListModel_;
     DatabaseManager* databaseManager_;
+    int nDir_;
 
 };
 

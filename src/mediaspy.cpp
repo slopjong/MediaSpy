@@ -38,9 +38,14 @@ MediaSpy::MediaSpy(QWidget *parent) :
 //    readSettings();
 
 
+//ui_->progressBar->setVisible(false);
+ui_->progressBar->setMinimum(0);
+
 
 
     controller_->init();
+    controller_->setMediaListModel(ui_->mediaListView);
+
     if(!(controller_->getErrorMessage().isEmpty()))
         QMessageBox::critical(this, tr("Error"), controller_->getErrorMessage());
 
@@ -77,6 +82,15 @@ void MediaSpy::writeDatabasePathSetting() {
 }
 
 
+void MediaSpy::setProgressbarMaximum(const int n) {
+    ui_->progressBar->setMaximum(n);
+    ui_->progressBar->setVisible(true);
+}
+
+void MediaSpy::setProgressbarCurrent(const int n) const {
+    ui_->progressBar->setMaximum(n);
+}
+
 
 /////////////////////
 // actions methods //
@@ -109,35 +123,15 @@ const QString MediaSpy::getDbFileName() {
 ///////////
 void MediaSpy::on_actionAdd_directory_triggered() {
     CollectionDialog dialog(this);
-    
-    connect(&dialog, SIGNAL(dirAdded(QString&)), this, SLOT(addDir(QString&)));
-    connect(&dialog, SIGNAL(dirRemoved(QString&)), this, SLOT(removeDir(QString&)));
-    controller_->setCollectionModel(dialog);
-    controller_->setMediaListModel(ui_->mediaListView);
-
-    // je fais l'affichage des trucs mais pas de modif dans la bd - TODO
+    controller_->populateDirList(dialog);
 
     if (dialog.exec() != QDialog::Accepted)
         return;
 
-    // synchro entre modif et bd
-    updateCollection();
+    QStringList upCollectionList = dialog.getUpdate();
+    controller_->updateCollection(upCollectionList);
 }
 
-
-void MediaSpy::addDir(QString& s) {
-    controller_->addDirCollection(s);
-}
-
-
-void MediaSpy::removeDir(QString& s) {
-    controller_->removeDirCollection(s);
-}
-
-
-void MediaSpy::updateCollection() {
-
-}
 
 /** \fn void MediaSpy::on_actionAbout_MediaSpy_triggered()
  *  \brief Shows the MediaSpy About window.

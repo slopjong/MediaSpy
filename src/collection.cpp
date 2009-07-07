@@ -30,14 +30,12 @@
   * \brief class constructor
   */
 Collection::Collection() :
-        dirListModel_(new QStandardItemModel()),
-        databaseManager_(DatabaseManager::getInstance()) {}
+        databaseManager_(DatabaseManager::getInstance()), nDir_(0) {}
 
 /** \fn Collection::~Collection()
   * \brief class destructor
   */
 Collection::~Collection() {
-    delete dirListModel_;
 }
 
 
@@ -50,69 +48,31 @@ Collection::~Collection() {
   */
 void Collection::init() {
     QStringList stringList = databaseManager_->getCollection(); // read directories in db
-    setDirList(stringList); // put them in the Collection
+    initDirList(stringList); // put them in the Collection
     // TODO: put a QFileSystemWatcher on them
 }
 
 
-
-/** \fn Collection::addDirectory(const QString dir)
-  * \brief Adds a new directory in the list of directories and in the model.
-  * \param QString dir
-  */
-void Collection::addDirectory(const QString& dir) {
-    // in the list
-    if(!this->dirList_.contains(dir))
-        this->dirList_.append(dir);
-
-    // in the model
-    dirListModel_->setItem(this->dirList_.size() - 1, new QStandardItem(dir));
-
-    // in the database
-    QSqlError qError = databaseManager_->insertDirToCollection(dir);
-    if(qError.type())
-        throw(qError);
-}
-
-
-/** \fn Collection::removeDirectory(const QString dir)
-  * \brief Removes the directory \var dir from the list of directories and from the model.
-  * \param QString dir
-  */
-void Collection::removeDirectory(const QString& dir) {
-    // in the list
-    if(this->dirList_.contains(dir))
-        this->dirList_.removeAll(dir);
-
-    // in the model
-    QList<QStandardItem *> listItems = dirListModel_->findItems(dir, Qt::MatchExactly, 0 ) ;
-
-    if(listItems.empty() || listItems.size() != 1)
-        return;
-
-    QStandardItem* item = listItems[0] ; // the item to be removed...
-    dirListModel_->removeRow(item->row()); // ...now!
-
-    // in the database
-    QSqlError qError = databaseManager_->removeDirToCollection(dir);
-    if(qError.type())
-        throw(qError);
-}
-
-
-/** \fn Collection::setDirList(const QStringList& dirList)
-  * \brief Populates the collection object and the model with the QStringList dirList. It clears their content first.
+/** \fn Collection::setDirDatabase(const QStringList& dirList)
+  * \brief Populates the collection object and the database with the QStringList dirList. It clears their content first.
   * \param QStringList dirList
   */
-void Collection::setDirList(const QStringList& dirs) {
-    // in the list
+void Collection::setDirDatabase(const QStringList& dirs) {
+    databaseManager_->cleanCollection();
+    for (int i = 0; i < dirs.size(); ++i)
+        if(!databaseManager_->hasDir(dirs.at(i))) {
+            QSqlError qError = databaseManager_->insertDirToCollection(dirs.at(i));
+            if(qError.type())
+                throw(qError);
+        }
+    initDirList(dirs);
+}
+
+
+void Collection::initDirList(const QStringList& dirs) {
     this->dirList_.clear();
     this->dirList_.append(dirs);
-
-    // in the model
-    dirListModel_->clear();
-    for (int i = 0; i < dirs.size(); ++i)
-        dirListModel_->setItem(i, new QStandardItem(dirs.at(i)));
+    nDir_ = dirs.size();
 }
 
 
@@ -164,14 +124,6 @@ QStringList Collection::ScanRecDir(const QString& dir) {
 ///////////////////////
 // accessors methods //
 ///////////////////////
-/** \fn Collection::getDirModel() const
-  * \brief Returns the model of the list of directories.
-  * \return the model
-  */
-QStandardItemModel* Collection::getDirModel() const {
-    return dirListModel_;
-}
-
 /** \fn QString Collection::getDirAt(const int i)  const
   * \brief Returns the name of the directory at i-th rank in the model.
   * \return the directory name
@@ -180,3 +132,9 @@ QString Collection::getDirAt(const int i)  const {
     return this->dirList_.at(i);
 }
 
+void Collection::setNDir(const int nDir) {
+    nDir_ = nDir;
+}
+int Collection::getNDir() const {
+    return nDir_;
+}

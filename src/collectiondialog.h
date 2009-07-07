@@ -36,8 +36,12 @@ public:
     CollectionDialog(QWidget *parent = 0);
     ~CollectionDialog();
 
+    QStringList getUpdate();
+
 
 private:
+    QStringList addedDirList_;
+    QStringList removedDirList_;
 
 
 signals:

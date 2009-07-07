@@ -22,6 +22,7 @@
 #define MEDIA_H
 
 #include <QString>
+#include <QFileInfo>
 
 /** \class Media
   * A Media object represent any type of media found.
@@ -68,6 +69,7 @@ protected:
     // Accessor Methods
 
     // Operations
+    void generateBaseName();
 
 
 

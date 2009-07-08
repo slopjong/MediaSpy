@@ -19,7 +19,6 @@
 
 
 #include "mediacollection.h"
-#include "controller.h"
 
 
 static const int MEDIA_TYPE_MOVIE   = 0;
@@ -123,36 +122,25 @@ fprintf(stdout, "updating %s ?\n", mediaFileName.toAscii().constData());
             }
         }
 
-        // if the file does not exist
-        else {
-            // and is in the database
-            if(!DatabaseManager::getInstance()->hasMedia(mediaFileName)) {
-                // let's remove it!
-                DatabaseManager::getInstance()->removeMedia(mediaFileName);
-fprintf(stdout, "removing %s\n", mediaFileName.toAscii().constData());
-            } // if it is not in the database... let's do nothing!
-            else {
-fprintf(stdout, "do nothing\n");
-            }
-        }
-//        Controller::getInstance()->setProgressStep(i);
+//        setProgressStep(i);
         i++;
     }
-    updateListModel();
 
-//    Controller::getInstance()->progressStop();
-}
+    QSqlQuery q;
+    DatabaseManager::getInstance()->queryMedias(q);
+    int fieldFileName = q.record().indexOf("fileName");
 
-
-void MediaCollection::updateListModel() {
-    mediaListModel_->clear();
-
-    for(unsigned int i = 0; i < (unsigned int)mediaMap_.count(); i++) {
-        Media tempMedia = mediaMap_.value(i);
-        mediaListModel_->setItem(i, 0, new QStandardItem(QString(tempMedia.getBaseName())));
+    while (q.next()) {
+        QString fileName = q.value(fieldFileName).toString();
+        QFileInfo mediaFileInfo = QFileInfo(fileName);
+        if(!mediaList.contains(fileName)) {
+            // let's remove it!
+            DatabaseManager::getInstance()->removeMedia(fileName);
+fprintf(stdout, "removing %s\n", fileName.toAscii().constData());
+        }
     }
 
-    Controller::getInstance()->mediaListUpdated();
+// progressStop();
 }
 
 
@@ -169,7 +157,7 @@ unsigned int MediaCollection::getNMedia() const {
 
 void MediaCollection::setNMedia(const unsigned int nMedia) {
     nMedia_ = nMedia;
-    Controller::getInstance()->setProgressMax(nMedia);
+//    setProgressMax(nMedia);
 }
 
 

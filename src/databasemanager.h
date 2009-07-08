@@ -49,9 +49,6 @@ public:
     QStringList getCollectionDir();
     QSqlQuery queryMedias(QSqlQuery&);
 
-    QSqlTableModel* setSqlModel(QSqlTableModel*);
-
-
 
 private:
     static DatabaseManager *singleton_;

@@ -12,14 +12,12 @@ OBJECTS_DIR = obj
 SOURCES += src/main.cpp \
     src/mediaspy.cpp \
     src/collection.cpp \
-    src/controller.cpp \
     src/databasemanager.cpp \
     src/collectiondialog.cpp \
     src/mediacollection.cpp \
     src/media.cpp
 HEADERS += src/mediaspy.h \
     src/collection.h \
-    src/controller.h \
     src/databasemanager.h \
     src/collectiondialog.h \
     src/mediacollection.h \

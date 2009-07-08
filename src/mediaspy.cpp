@@ -22,6 +22,8 @@
 #include "ui_mediaspy.h"
 
 
+#include <QTableView>
+
 /////////////////////////////
 // constructors/destructor //
 /////////////////////////////
@@ -30,28 +32,26 @@
   * \param parent the inherited QWidget object
   */
 MediaSpy::MediaSpy(QWidget *parent) :
-        QMainWindow(parent), ui_(new Ui::MediaSpy), controller_(Controller::getInstance(this)) {
-
+        QMainWindow(parent),
+        ui_(new Ui::MediaSpy),
+        collection_(new Collection()),
+        mediaCollection_(new MediaCollection())//,
+//        sqlTableModel_(new QSqlTableModel())
+{
     ui_->setupUi(this);
 
+    // view settings
+    ui_->progressBar->setVisible(false);
+    ui_->progressBar->setMinimum(0);
 
-//    readSettings();
+//    ui_->mediaListView->sortByColumn(0, Qt::AscendingOrder);
+//    ui_->mediaListView->setAlternatingRowColors(true);
 
-
-//ui_->progressBar->setVisible(false);
-ui_->progressBar->setMinimum(0);
-
-
-    controller_->setMediaListModel(ui_->mediaTableView);
-    controller_->init();
-
-    ui_->mediaTableView->sortByColumn(0, Qt::AscendingOrder);
-    ui_->mediaTableView->setAlternatingRowColors(true);
-
-    if(!(controller_->getErrorMessage().isEmpty()))
-        QMessageBox::critical(this, tr("Error"), controller_->getErrorMessage());
+    init();
 
 
+    if(!(errorMessage_.isEmpty()))
+        QMessageBox::critical(this, tr("Error"), errorMessage_);
 }
 
 /** \fn MediaSpy::~MediaSpy()
@@ -59,7 +59,9 @@ ui_->progressBar->setMinimum(0);
   */
 MediaSpy::~MediaSpy() {
     delete ui_;
-    controller_->kill();
+    delete collection_;
+    delete mediaCollection_;
+    DatabaseManager::getInstance()->kill();
 }
 
 
@@ -67,20 +69,62 @@ MediaSpy::~MediaSpy() {
 /////////////
 // methods //
 /////////////
-void MediaSpy::readSettings() {
-    QSettings settings;
+void MediaSpy::init() {
+    //////////////////////////
+    // local directory init //
+    //////////////////////////
+    if (!QDir(getAppDirectory()).exists()) {
+        QDir localDir(QDir::homePath());
+        if(!localDir.mkdir(getAppDirectory())) {
+            errorMessage_ = qApp->tr("Cannot create local directory!");
+            return;
+        }
+    }
 
-//    if(settings.contains("DatabasePath"))
-//        controller->initDatabase(settings.value("DatabasePath").toString());
-//    else
-//        controller->initDatabase();
+    ///////////////////
+    // database init //
+    ///////////////////
+    if (!QSqlDatabase::drivers().contains("QSQLITE")) {
+        errorMessage_ = qApp->tr("This program needs the SQLITE driver.");
+        return;
+    }
+
+    QSqlError qError = DatabaseManager::getInstance()->init(this->getAppDirectory() + this->getDbFileName());
+    if(qError.type()) {
+        errorMessage_ = qError.text();
+        return;
+    }
+
+    ///////////////////////////////
+    // directory collection init // TODO in a different thread ??
+    ///////////////////////////////
+    collection_->init();
+    QStringList mediaList = collection_->buildFileList(); // fetch the dir for content TODO update
+
+    ///////////////////////////
+    // media collection init //
+    ///////////////////////////
+    mediaCollection_->init();
+    mediaCollection_->updateMediaCollection(mediaList);
+
+    ////////////////////
+    // tableView init //
+    ////////////////////
+    sqlTableModel_ = new QSqlTableModel;
+    sqlTableModel_->setTable("Media");
+    sqlTableModel_->select();
+    sqlTableModel_->removeColumns(0, 2);
+    sqlTableModel_->removeColumns(1, 5);
+    sqlTableModel_->setHeaderData(0, Qt::Horizontal, tr("Title"));
+    ui_->mediaListView->setModel(sqlTableModel_);
 }
 
 
-void MediaSpy::writeDatabasePathSetting() {
-    QSettings settings;
-//    QString DatabasePath = appDirectory + dbFileName;
-//    settings.setValue("DatabasePath", DatabasePath);
+void MediaSpy::updateCollections(QStringList& dirList) {
+    collection_->update(dirList);
+    QStringList mediaList = collection_->buildFileList();
+    mediaCollection_->updateMediaCollection(mediaList);
+    sqlTableModel_->select();
 }
 
 
@@ -94,20 +138,47 @@ void MediaSpy::setProgressbarCurrent(const int n) const {
 }
 
 
-void MediaSpy::tableViewUpdated() {
-    ui_->mediaTableView->resizeColumnsToContents();
-    ui_->mediaTableView->resizeRowsToContents();
+//void MediaSpy::tableViewUpdated() {
+//    ui_->mediaListView->resizeColumnsToContents();
+//    ui_->mediaListView->resizeRowsToContents();
+//}
+
+
+
+///////////
+// slots //
+///////////
+/** \fn void MediaSpy::on_actionAdd_directory_triggered()
+ *  \brief Opens the CollectionDialog dialog and gets the user's choice into the Collection.
+*/
+void MediaSpy::on_actionAdd_directory_triggered() {
+    CollectionDialog dialog(this);
+    for(int i = 0; i < collection_->getNDir(); i++)
+        dialog.listWidget->addItem(collection_->getDirAt(i));
+
+    if (dialog.exec() != QDialog::Accepted)
+        return;
+
+    QStringList upCollectionList = dialog.getUpdate();
+    updateCollections(upCollectionList);
 }
 
 
-/////////////////////
-// actions methods //
-/////////////////////
-/** \fn void MediaSpy::on_actionAbout_Qt_triggered()
- *  \brief Simply shows the built-in Qt About window.
+void MediaSpy::on_actionRebuild_collection_triggered() {
+
+}
+
+
+/** \fn void MediaSpy::on_actionAbout_MediaSpy_triggered()
+ *  \brief Shows the MediaSpy About window.
 */
-void MediaSpy::on_actionAbout_Qt_triggered() {
-    qApp->aboutQt();
+void MediaSpy::on_actionAbout_MediaSpy_triggered()
+{
+    QString myCopyright = QString::fromUtf8(PACKAGE_COPYRIGHTS);
+    QMessageBox::about(this, tr("About ") + PACKAGE_NAME,
+    QString("<h3>") + PACKAGE_NAME + " " + PACKAGE_VERSION + QString("</h3><p>") + myCopyright +
+    tr("<p>MediaSpy is a movie collection cataloging software. Still in heavy development!"));
+
 }
 
 
@@ -125,48 +196,14 @@ const QString MediaSpy::getDbFileName() {
 
 
 
-
-///////////
-// slots //
-///////////
-/** \fn void MediaSpy::on_actionAdd_directory_triggered()
- *  \brief Opens the CollectionDialog dialog and gets the user's change to the controller.
+/////////////////////
+// actions methods //
+/////////////////////
+/** \fn void MediaSpy::on_actionAbout_Qt_triggered()
+ *  \brief Simply shows the built-in Qt About window.
 */
-void MediaSpy::on_actionAdd_directory_triggered() {
-    CollectionDialog dialog(this);
-    controller_->populateDirList(dialog);
-
-    if (dialog.exec() != QDialog::Accepted)
-        return;
-
-    QStringList upCollectionList = dialog.getUpdate();
-    controller_->updateCollections(upCollectionList);
-}
-
-
-/** \fn void MediaSpy::on_actionAbout_MediaSpy_triggered()
- *  \brief Shows the MediaSpy About window.
-*/
-void MediaSpy::on_actionAbout_MediaSpy_triggered()
-{
-    QString myCopyright = QString::fromUtf8(PACKAGE_COPYRIGHTS);
-    QMessageBox::about(this, tr("About ") + PACKAGE_NAME,
-    QString("<h3>") + PACKAGE_NAME + " " + PACKAGE_VERSION + QString("</h3><p>") + myCopyright +
-    tr("<p>MediaSpy is a movie collection cataloging software. Still in heavy development!"));
-
-}
-
-void MediaSpy::on_actionRebuild_collection_triggered() {
-
-}
-
-
-
-
-
-
-void MediaSpy::setTableModel(QSqlTableModel* model) {
-    ui_->mediaTableView->setModel(model);
+void MediaSpy::on_actionAbout_Qt_triggered() {
+    qApp->aboutQt();
 }
 
 

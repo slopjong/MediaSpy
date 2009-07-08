@@ -25,9 +25,11 @@
 #include <QDir>
 #include <QSqlDatabase>
 #include <QMessageBox>
+#include <QSqlTableModel>
 
-#include "controller.h"
 #include "collectiondialog.h"
+#include "collection.h"
+#include "mediacollection.h"
 
 
 
@@ -68,18 +70,18 @@ public:
     void setProgressbarCurrent(const int) const;
     void tableViewUpdated();
 
-    void setTableModel(QSqlTableModel*);
-
 
 private:
     // Fields
     Ui::MediaSpy* ui_;
-    Controller* controller_;
+    Collection* collection_;
+    MediaCollection* mediaCollection_;
+    QString errorMessage_;
+    QSqlTableModel* sqlTableModel_;
 
     // Operations
-    void readSettings();
-    void writeDatabasePathSetting();
-
+    void init();
+    void updateCollections(QStringList&);
 
 private slots:
     void on_actionRebuild_collection_triggered();

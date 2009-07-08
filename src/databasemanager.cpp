@@ -91,7 +91,7 @@ QSqlError DatabaseManager::init(const QString &dbFilePath) {
         return QSqlError();
 
     // in case of proposing different sql backend (mysql, postgresql, etc.), we will have to put this
-    // either in the controller or in a backend-independant class
+    // in a backend-independant class
     QSqlQuery q;
     if (!q.exec(QString("create table Collection(id INTEGER PRIMARY KEY AUTOINCREMENT, directory VARCHAR(255))")))
         return q.lastError();
@@ -121,18 +121,6 @@ QSqlError DatabaseManager::init(const QString &dbFilePath) {
 
     return QSqlError();
 }
-
-
-QSqlTableModel* DatabaseManager::setSqlModel(QSqlTableModel* model) {
-    model->setTable("Media");
-    model->removeColumns(0, 2); // we remove all columns except the title
-    model->removeColumns(1, 5);
-    model->select();
-
-    model->setHeaderData(0, Qt::Horizontal, qApp->tr("Title"));
-    return model;
-}
-
 
 
 /** \fn DatabaseManager::getCollectionDir()
@@ -236,7 +224,4 @@ QSqlError DatabaseManager::removeMedia(const QString& mediaFileName) {
 
     return QSqlError();
 }
-
-
-
 

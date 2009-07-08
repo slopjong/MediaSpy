@@ -66,6 +66,9 @@ public:
     // Operations
     void setProgressbarMaximum(const int) ;
     void setProgressbarCurrent(const int) const;
+    void tableViewUpdated();
+
+    void setTableModel(QSqlTableModel*);
 
 
 private:

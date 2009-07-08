@@ -102,25 +102,26 @@ void Controller::init() {
     }
 
     QSqlError qError = DatabaseManager::getInstance()->init(view_->getAppDirectory() + view_->getDbFileName());
-    if(!qError.type()) {
-    // populating table view
-    }
-    else {
+    if(qError.type()) {
         errorMessage_ = qError.text();
         return;
     }
 
+    QSqlTableModel* model = new QSqlTableModel;
+    DatabaseManager::getInstance()->setSqlModel(model);
+    view_->setTableModel(model);
+
     ///////////////////////////////
     // directory collection init // TODO in a different thread ??
     ///////////////////////////////
-    collection_->init();
-    QStringList mediaList = collection_->buildFileList(); // fetch the dir for content TODO update
+//    collection_->init();
+//    QStringList mediaList = collection_->buildFileList(); // fetch the dir for content TODO update
 
     ///////////////////////////
     // media collection init //
     ///////////////////////////
-    mediaCollection_->init();
-    mediaCollection_->updateMediaCollection(mediaList);
+//    mediaCollection_->init();
+//    mediaCollection_->updateMediaCollection(mediaList);
 
 }
 
@@ -137,6 +138,10 @@ void Controller::updateCollections(QStringList& dirList) {
     mediaCollection_->updateMediaCollection(mediaList);
 }
 
+
+void Controller::mediaListUpdated() {
+    view_->tableViewUpdated();
+}
 
 void Controller::setProgressMax(const int n) const {
     view_->setProgressbarMaximum(n);

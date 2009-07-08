@@ -24,16 +24,13 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <widget class="QTableView" name="mediaTableView">
           <property name="sortingEnabled">
            <bool>true</bool>
           </property>
-          <attribute name="verticalHeaderVisible">
-           <bool>false</bool>
-          </attribute>
           <attribute name="verticalHeaderVisible">
            <bool>false</bool>
           </attribute>
@@ -50,7 +47,13 @@
       </widget>
       <widget class="QGroupBox" name="groupBox">
        <property name="title">
-        <string>GroupBox</string>
+        <string>Movie Information</string>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+       <property name="checkable">
+        <bool>false</bool>
        </property>
       </widget>
      </widget>

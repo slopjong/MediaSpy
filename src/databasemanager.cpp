@@ -24,7 +24,8 @@
 /** \var static const QStringList dataTables_
   * \brief list of the tables in the database
   */
-static const QStringList dataTables_ = QStringList() << "Collection" << "Media" << "ImdbInfo" << "MovieGenre" << "MusicGenre" << "Tag";
+static const QStringList dataTables_ =
+        QStringList() << "Collection" << "Media" << "ImdbInfo" << "MovieGenre" << "MusicGenre" << "Tag";
 
 /** \var DatabaseManager* DatabaseManager::singleton_
   * \brief pointer to the unique instance of DatabaseManager
@@ -78,7 +79,7 @@ QSqlError DatabaseManager::init(const QString &dbFilePath) {
 
     db_ = QSqlDatabase::addDatabase("QSQLITE"); // sqlite-dependancy
     db_.setDatabaseName(dbFilePath);
-    if (!db_.open())
+    if (!db_.isValid() || !db_.open())
         return db_.lastError();
 
     QStringList tables = db_.tables();
@@ -120,6 +121,18 @@ QSqlError DatabaseManager::init(const QString &dbFilePath) {
 
     return QSqlError();
 }
+
+
+QSqlTableModel* DatabaseManager::setSqlModel(QSqlTableModel* model) {
+    model->setTable("Media");
+    model->removeColumns(0, 2); // we remove all columns except the title
+    model->removeColumns(1, 5);
+    model->select();
+
+    model->setHeaderData(0, Qt::Horizontal, qApp->tr("Title"));
+    return model;
+}
+
 
 
 /** \fn DatabaseManager::getCollectionDir()
@@ -175,7 +188,6 @@ bool DatabaseManager::hasDir(const QString& dir) {
 }
 
 
-
 /** \fn DatabaseManager::queryMedias()
   * \brief get medias from the database
   * \return the database query
@@ -199,16 +211,32 @@ bool DatabaseManager::hasMedia(const QString& fileName) {
 }
 
 
-
-/** \fn DatabaseManager::insertMedia(const QString& fileName)
-  * \brief Inserts the directory \var dir into the Collection table.
+/** \fn DatabaseManager::insertMedia(const Media& media)
+  * \brief Inserts the media \var Media into the Media table.
   */
 QSqlError DatabaseManager::insertMedia(const Media& media) {
     QSqlQuery q;
-    if (!q.exec(QString("INSERT INTO Media(type, fileName, baseName, loaned, seen, recommended, notes) VALUES('%1', '%2', '%3', '%4', '%5', '%6', '%7')")
+    if (!q.exec(QString("INSERT INTO Media(type, fileName, baseName, loaned, seen, recommended, notes) \
+                         VALUES('%1', '%2', '%3', '%4', '%5', '%6', '%7')")
             .arg(media.getType()).arg(media.getFileName()).arg(media.getBaseName()).arg(media.isLoaned())
             .arg(media.isSeen()).arg(media.isRecommended()).arg(media.getNotes())))
         throw(q.lastError()); // TODO handle this!
 
     return QSqlError();
 }
+
+
+/** \fn DatabaseManager::removeMedia(const QString& mediaFileName)
+  * \brief Removes the media called \var mediaFileName from the Media table.
+  */
+QSqlError DatabaseManager::removeMedia(const QString& mediaFileName) {
+    QSqlQuery q;
+    if (!q.exec(QString("DELETE FROM Media WHERE fileName = '%1'").arg(mediaFileName)))
+        throw(q.lastError()); // TODO handle this!
+
+    return QSqlError();
+}
+
+
+
+

@@ -43,10 +43,14 @@ public:
     bool hasDir(const QString&);
 
     QSqlError insertMedia(const Media&);
+    QSqlError removeMedia(const QString&);
     bool hasMedia(const QString&);
 
     QStringList getCollectionDir();
     QSqlQuery queryMedias(QSqlQuery&);
+
+    QSqlTableModel* setSqlModel(QSqlTableModel*);
+
 
 
 private:

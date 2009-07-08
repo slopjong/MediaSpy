@@ -45,10 +45,8 @@ ui_->progressBar->setMinimum(0);
     controller_->setMediaListModel(ui_->mediaTableView);
     controller_->init();
 
-    ui_->mediaTableView->resizeColumnsToContents();
-    ui_->mediaTableView->resizeRowsToContents();
     ui_->mediaTableView->sortByColumn(0, Qt::AscendingOrder);
-
+    ui_->mediaTableView->setAlternatingRowColors(true);
 
     if(!(controller_->getErrorMessage().isEmpty()))
         QMessageBox::critical(this, tr("Error"), controller_->getErrorMessage());
@@ -93,6 +91,12 @@ void MediaSpy::setProgressbarMaximum(const int n) {
 
 void MediaSpy::setProgressbarCurrent(const int n) const {
     ui_->progressBar->setMaximum(n);
+}
+
+
+void MediaSpy::tableViewUpdated() {
+    ui_->mediaTableView->resizeColumnsToContents();
+    ui_->mediaTableView->resizeRowsToContents();
 }
 
 
@@ -155,3 +159,14 @@ void MediaSpy::on_actionAbout_MediaSpy_triggered()
 void MediaSpy::on_actionRebuild_collection_triggered() {
 
 }
+
+
+
+
+
+
+void MediaSpy::setTableModel(QSqlTableModel* model) {
+    ui_->mediaTableView->setModel(model);
+}
+
+

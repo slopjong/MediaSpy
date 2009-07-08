@@ -34,7 +34,10 @@ static const int MEDIA_TYPE_DOC     = 2;
   * \brief class constructor
   */
 MediaCollection::MediaCollection() :
-        mediaListModel_(new QStandardItemModel()) {}
+        mediaListModel_(new QStandardItemModel()) {
+
+    mediaListModel_->setHorizontalHeaderLabels(QStringList() << qApp->tr("Title")); // TODO
+}
 
 /** \fn MediaCollection::~MediaCollection()
   * \brief class destructor
@@ -52,8 +55,6 @@ MediaCollection::~MediaCollection() {
   * \brief creates Media objects from stored data
   */
 void MediaCollection::init() {
-
-    mediaListModel_->setHorizontalHeaderLabels(QStringList() << qApp->tr("Title") << qApp->tr("Id"));
 
     QSqlQuery q;
     DatabaseManager::getInstance()->queryMedias(q);
@@ -94,8 +95,9 @@ void MediaCollection::updateMediaCollection(QStringList& mediaList) {
 
         // if the file exists
         if(mediaFileInfo.exists()) {
-            // and is not in the database
             Media tempMedia;
+
+            // and is not in the database
             if(!DatabaseManager::getInstance()->hasMedia(mediaFileName)) {
 
                 tempMedia.setType(MEDIA_TYPE_MOVIE);
@@ -109,29 +111,36 @@ void MediaCollection::updateMediaCollection(QStringList& mediaList) {
                 DatabaseManager::getInstance()->insertMedia(tempMedia);
                 mediaMap_.insert(nMedia_, tempMedia);
                 nMedia_++;
+
+fprintf(stdout, "adding %s\n", mediaFileName.toAscii().constData());
+
             }
+
             // and is already in the database
             else {
                 // let's check if it needs an update!
+fprintf(stdout, "updating %s ?\n", mediaFileName.toAscii().constData());
             }
         }
+
         // if the file does not exist
         else {
             // and is in the database
             if(!DatabaseManager::getInstance()->hasMedia(mediaFileName)) {
                 // let's remove it!
-            }
-            // and is not in the database
+                DatabaseManager::getInstance()->removeMedia(mediaFileName);
+fprintf(stdout, "removing %s\n", mediaFileName.toAscii().constData());
+            } // if it is not in the database... let's do nothing!
             else {
-                // let's do nothing!
+fprintf(stdout, "do nothing\n");
             }
         }
-//        controller_->setProgressStep(i);
+//        Controller::getInstance()->setProgressStep(i);
         i++;
     }
     updateListModel();
 
-//    controller_->progressStop();
+//    Controller::getInstance()->progressStop();
 }
 
 
@@ -141,8 +150,9 @@ void MediaCollection::updateListModel() {
     for(unsigned int i = 0; i < (unsigned int)mediaMap_.count(); i++) {
         Media tempMedia = mediaMap_.value(i);
         mediaListModel_->setItem(i, 0, new QStandardItem(QString(tempMedia.getBaseName())));
-//        mediaListModel_->setItem(i, 1, new QStandardItem(QString("%1").arg((int)tempMedia.getId())));
     }
+
+    Controller::getInstance()->mediaListUpdated();
 }
 
 

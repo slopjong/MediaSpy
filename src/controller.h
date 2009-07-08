@@ -47,11 +47,13 @@ public:
     void init();
 
     void updateCollections(QStringList&);
+    void mediaListUpdated();
     void populateDirList(CollectionDialog &);
-    QString getErrorMessage();
     void setMediaListModel(QTableView*);
     void setProgressMax(const int) const;
     void setProgressStep(const int) const;
+    QString getErrorMessage();
+
 
 private:
     static Controller *singleton_;

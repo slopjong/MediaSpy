@@ -56,7 +56,6 @@ public:
 private:
     // Fields
     QStringList dirList_;
-    DatabaseManager* databaseManager_;
     int nDir_;
 
 };

@@ -22,6 +22,7 @@
 
 
 #include <QString>
+#include <QTableView>
 
 #include "collectiondialog.h"
 #include "databasemanager.h"
@@ -48,14 +49,13 @@ public:
     void updateCollections(QStringList&);
     void populateDirList(CollectionDialog &);
     QString getErrorMessage();
-    void setMediaListModel(QListView*);
+    void setMediaListModel(QTableView*);
     void setProgressMax(const int) const;
     void setProgressStep(const int) const;
 
 private:
     static Controller *singleton_;
     MediaSpy* view_;
-    DatabaseManager* databaseManager_;
     Collection* collection_;
     MediaCollection* mediaCollection_;
     QString errorMessage_;

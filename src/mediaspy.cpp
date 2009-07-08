@@ -42,8 +42,13 @@ MediaSpy::MediaSpy(QWidget *parent) :
 ui_->progressBar->setMinimum(0);
 
 
-    controller_->setMediaListModel(ui_->mediaListView);
+    controller_->setMediaListModel(ui_->mediaTableView);
     controller_->init();
+
+    ui_->mediaTableView->resizeColumnsToContents();
+    ui_->mediaTableView->resizeRowsToContents();
+    ui_->mediaTableView->sortByColumn(0, Qt::AscendingOrder);
+
 
     if(!(controller_->getErrorMessage().isEmpty()))
         QMessageBox::critical(this, tr("Error"), controller_->getErrorMessage());

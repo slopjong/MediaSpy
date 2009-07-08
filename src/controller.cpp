@@ -35,15 +35,14 @@ Controller* Controller::singleton_ = NULL;
   * \brief class constructor
   */
 Controller::Controller(MediaSpy* mediaSpy) :
-        view_(mediaSpy), databaseManager_(DatabaseManager::getInstance()),
-        collection_(new Collection()), mediaCollection_(new MediaCollection()) {
+        view_(mediaSpy), collection_(new Collection()), mediaCollection_(new MediaCollection()) {
 }
 
 /** \fn Controller::~Controller()
   * \brief class destructor
   */
 Controller::~Controller() {
-    databaseManager_->kill();
+    DatabaseManager::getInstance()->kill();
     delete collection_;
     delete mediaCollection_;
 }
@@ -102,7 +101,7 @@ void Controller::init() {
         return;
     }
 
-    QSqlError qError = databaseManager_->init(view_->getAppDirectory() + view_->getDbFileName());
+    QSqlError qError = DatabaseManager::getInstance()->init(view_->getAppDirectory() + view_->getDbFileName());
     if(!qError.type()) {
     // populating table view
     }
@@ -156,10 +155,8 @@ QString Controller::getErrorMessage() {
 }
 
 
-void Controller::setMediaListModel(QListView* listView) {
+void Controller::setMediaListModel(QTableView* listView) {
     listView->setModel(mediaCollection_->getMediaListModel());
-    mediaCollection_->getMediaListModel()->setHorizontalHeaderLabels(QStringList() << qApp->tr("Date") << qApp->tr("Point"));
-
 }
 
 

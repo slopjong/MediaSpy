@@ -29,8 +29,7 @@
 /** \fn Collection::Collection()
   * \brief class constructor
   */
-Collection::Collection() :
-        databaseManager_(DatabaseManager::getInstance()), nDir_(0) {}
+Collection::Collection() : nDir_(0) {}
 
 /** \fn Collection::~Collection()
   * \brief class destructor
@@ -47,7 +46,7 @@ Collection::~Collection() {
   * \brief Initiates the Collection.
   */
 void Collection::init() {
-    QStringList stringList = databaseManager_->getCollectionDir(); // read directories in db
+    QStringList stringList = DatabaseManager::getInstance()->getCollectionDir(); // read directories in db
     initDirList(stringList); // put them in the Collection
     // TODO: put a QFileSystemWatcher on them
 }
@@ -59,10 +58,10 @@ void Collection::init() {
   * \param QStringList dirList
   */
 void Collection::update(const QStringList& dirs) {
-    databaseManager_->cleanCollection();
+    DatabaseManager::getInstance()->cleanCollection();
     for (int i = 0; i < dirs.size(); ++i)
-        if(!databaseManager_->hasDir(dirs.at(i))) {
-            QSqlError qError = databaseManager_->insertDirToCollection(dirs.at(i));
+        if(!DatabaseManager::getInstance()->hasDir(dirs.at(i))) {
+            QSqlError qError = DatabaseManager::getInstance()->insertDirToCollection(dirs.at(i));
             if(qError.type())
                 throw(qError);
         }

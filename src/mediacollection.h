@@ -44,10 +44,8 @@ public:
 
 private:
     QStandardItemModel* mediaListModel_;
-    DatabaseManager* databaseManager_;
     QMap<int, Media> mediaMap_;
     unsigned int nMedia_;
-    Controller* controller_;
 
 };
 

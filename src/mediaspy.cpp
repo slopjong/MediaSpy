@@ -33,10 +33,7 @@
   */
 MediaSpy::MediaSpy(QWidget *parent) :
         QMainWindow(parent),
-        ui_(new Ui::MediaSpy),
-        collection_(new Collection())//,
-//        mediaCollection_(new MediaCollection())//,
-//        sqlTableModel_(new QSqlTableModel())
+        ui_(new Ui::MediaSpy)
 {
     ui_->setupUi(this);
 
@@ -60,7 +57,6 @@ MediaSpy::MediaSpy(QWidget *parent) :
   */
 MediaSpy::~MediaSpy() {
     delete ui_;
-    delete collection_;
     DatabaseManager::getInstance()->kill();
 }
 
@@ -98,8 +94,8 @@ void MediaSpy::init() {
     ///////////////////////////////
     // directory collection init // TODO in a different thread ??
     ///////////////////////////////
-    collection_->init();
-    QStringList mediaList = collection_->buildFileList(); // fetch the dir for content TODO update
+    Collection::getInstance()->init();
+    QStringList mediaList = Collection::getInstance()->buildFileList(); // fetch the dir for content TODO update
 
     ///////////////////////////
     // media collection init //
@@ -128,8 +124,8 @@ void MediaSpy::init() {
 
 
 void MediaSpy::updateCollections(QStringList& dirList) {
-    collection_->update(dirList);
-    QStringList mediaList = collection_->buildFileList();
+    Collection::getInstance()->update(dirList);
+    QStringList mediaList = Collection::getInstance()->buildFileList();
     MediaCollection::getInstance()->updateMediaCollection(mediaList);
     sqlTableModel_->select();
 }
@@ -145,12 +141,6 @@ void MediaSpy::setProgressbarCurrent(const int n) const {
 }
 
 
-//void MediaSpy::tableViewUpdated() {
-//    ui_->mediaListView->resizeColumnsToContents();
-//    ui_->mediaListView->resizeRowsToContents();
-//}
-
-
 
 ///////////
 // slots //
@@ -160,8 +150,8 @@ void MediaSpy::setProgressbarCurrent(const int n) const {
 */
 void MediaSpy::on_actionAdd_directory_triggered() {
     CollectionDialog dialog(this);
-    for(int i = 0; i < collection_->getNDir(); i++)
-        dialog.listWidget->addItem(collection_->getDirAt(i));
+    for(int i = 0; i < Collection::getInstance()->getNDir(); i++)
+        dialog.listWidget->addItem(Collection::getInstance()->getDirAt(i));
 
     if (dialog.exec() != QDialog::Accepted)
         return;

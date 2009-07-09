@@ -38,17 +38,12 @@ MediaCollection* MediaCollection::singleton_ = NULL;
 /** \fn MediaCollection::MediaCollection()
   * \brief class constructor
   */
-MediaCollection::MediaCollection() {
-//        mediaListModel_(new QStandardItemModel()) {
-
-}
+MediaCollection::MediaCollection() {}
 
 /** \fn MediaCollection::~MediaCollection()
   * \brief class destructor
   */
-MediaCollection::~MediaCollection() {
-//    delete mediaListModel_;
-}
+MediaCollection::~MediaCollection() {}
 
 
 
@@ -165,10 +160,6 @@ void MediaCollection::updateMediaCollection(QStringList& mediaList) {
 ///////////////////////
 // accessors methods //
 ///////////////////////
-/*QStandardItemModel* MediaCollection::getMediaListModel() const {
-    return mediaListModel_;
-}*/
-
 unsigned int MediaCollection::getNMedia() const {
     return nMedia_;
 }

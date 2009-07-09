@@ -26,6 +26,7 @@
 #include <QSqlDatabase>
 #include <QMessageBox>
 #include <QSqlTableModel>
+#include <QSortFilterProxyModel>
 
 #include "collectiondialog.h"
 #include "collection.h"
@@ -78,7 +79,9 @@ private:
     MediaCollection* mediaCollection_;
     QString errorMessage_;
     QSqlTableModel* sqlTableModel_;
+    QSortFilterProxyModel* mediaListProxyModel_;
 
+    
     // Operations
     void init();
     void updateCollections(QStringList&);

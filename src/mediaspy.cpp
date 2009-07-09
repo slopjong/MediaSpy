@@ -110,13 +110,20 @@ void MediaSpy::init() {
     ////////////////////
     // tableView init //
     ////////////////////
-    sqlTableModel_ = new QSqlTableModel;
+    sqlTableModel_ = new QSqlTableModel(this);
     sqlTableModel_->setTable("Media");
     sqlTableModel_->select();
     sqlTableModel_->removeColumns(0, 2);
     sqlTableModel_->removeColumns(1, 5);
     sqlTableModel_->setHeaderData(0, Qt::Horizontal, tr("Title"));
-    ui_->mediaListView->setModel(sqlTableModel_);
+
+    // sorting the list by alphabetical order without case sensitivity
+    mediaListProxyModel_ = new QSortFilterProxyModel(this);
+    mediaListProxyModel_->setSourceModel(sqlTableModel_);
+    mediaListProxyModel_->sort(0, Qt::AscendingOrder);
+    mediaListProxyModel_->setSortCaseSensitivity(Qt::CaseInsensitive);
+
+    ui_->mediaListView->setModel(mediaListProxyModel_);
 }
 
 

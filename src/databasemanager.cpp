@@ -225,37 +225,17 @@ bool DatabaseManager::hasMedia(const QString& fileName) {
 }
 
 
-/** \fn DatabaseManager::insertMedia(const Media& media)
-  * \brief Inserts the media \var Media into the Media table and returns its id.
+/** \fn DatabaseManager::insertMedias(const QList<Media>& mediaList)
+  * \brief Inserts the medias from the list \var mediaList into the Media table.
   */
-void DatabaseManager::insertMedia(const Media& media) {
-
+void DatabaseManager::insertMedias(const QList<Media>& mediaList) {
+    QSqlDatabase::database().transaction();
     QSqlQuery q;
     q.prepare("INSERT INTO Media (type, fileName, baseName, loaned, seen, recommended, notes) "
               "VALUES (?, ?, ?, ?, ?, ?, ?)");
-    q.bindValue(0, media.getType());
-    q.bindValue(1, media.getFileName());
-    q.bindValue(2, media.getBaseName());
-    q.bindValue(3, media.isLoaned());
-    q.bindValue(4, media.isSeen());
-    q.bindValue(5, media.isRecommended());
-    q.bindValue(6, media.getNotes());
-
-    if (!q.exec())
-        throw(q.lastError()); // TODO handle this!
-
-    return;
-}
-
-
-void DatabaseManager::insertMedias(const QList<Media> mediaList) {
-    QSqlDatabase::database().transaction();
-    QSqlQuery q;
 
     Media media;
     foreach(media, mediaList) {
-        q.prepare("INSERT INTO Media (type, fileName, baseName, loaned, seen, recommended, notes) "
-              "VALUES (?, ?, ?, ?, ?, ?, ?)");
         q.bindValue(0, media.getType());
         q.bindValue(1, media.getFileName());
         q.bindValue(2, media.getBaseName());
@@ -271,22 +251,16 @@ void DatabaseManager::insertMedias(const QList<Media> mediaList) {
 }
 
 
-
-
-
-
-
-
 /** \fn DatabaseManager::removeMedias(const QStringList& mediaFileNames)
   * \brief Removes the medias from the list called \var mediaFileNames off the Media table.
   */
 QSqlError DatabaseManager::removeMedias(const QStringList& mediaFileNames) {
     QSqlDatabase::database().transaction();
     QSqlQuery q;
+    q.prepare("DELETE FROM Media WHERE fileName = ?");
 
     QString s;
     foreach(s, mediaFileNames) {
-        q.prepare("DELETE FROM Media WHERE fileName = ?");
         q.bindValue(0, s);
         if (!q.exec())
             throw(q.lastError()); // TODO handle this!

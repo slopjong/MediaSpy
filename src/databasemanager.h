@@ -37,17 +37,17 @@ private:
 public:
     static DatabaseManager *getInstance();
     static void kill();
+
     QSqlError init(const QString&);
+
     QSqlError insertDirToCollection(const QString&);
     QSqlError cleanCollection();
     bool hasDir(const QString&);
+    QStringList getCollectionDir();
 
-    void insertMedia(const Media&);
-    void insertMedias(const QList<Media>);
+    void insertMedias(const QList<Media>&);
     QSqlError removeMedias(const QStringList&);
     bool hasMedia(const QString&);
-
-    QStringList getCollectionDir();
     QStringList queryMediaNames();
     QSqlQuery queryMedias(QSqlQuery&);
 

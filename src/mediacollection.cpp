@@ -61,7 +61,7 @@ MediaCollection* MediaCollection::getInstance() {
 }
 
 
-/** \fn MediaCollection::kill()
+/** \fn void MediaCollection::kill()
   * \brief deletes the unique instance of MediaCollection
   */
 void MediaCollection::kill() {
@@ -72,7 +72,7 @@ void MediaCollection::kill() {
 }
 
 
-/** \fn MediaCollection::init()
+/** \fn void MediaCollection::init()
   * \brief creates Media objects from stored data
   */
 void MediaCollection::init() {
@@ -108,6 +108,9 @@ void MediaCollection::init() {
 }
 
 
+/** \fn void MediaCollection::updateMediaCollection(QStringList& mediaList)
+  * \brief updates the database MediaCollection table with the current list of media
+  */
 void MediaCollection::updateMediaCollection(QStringList& mediaList) {
 
     nMedia_ = mediaList.count();
@@ -155,6 +158,10 @@ void MediaCollection::updateMediaCollection(QStringList& mediaList) {
 ///////////////////////
 // accessors methods //
 ///////////////////////
+/** \fn int MediaCollection::getNMedia() const
+ *  \brief Returns the number of Media files.
+ *  \return the number of Media files
+ */
 unsigned int MediaCollection::getNMedia() const {
     return nMedia_;
 }

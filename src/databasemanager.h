@@ -30,11 +30,17 @@
   *
   */
 class DatabaseManager {
-private:
+    // Constructors
     DatabaseManager();
     ~DatabaseManager();
 
+    // Fields
+    static DatabaseManager *singleton_;
+    QSqlDatabase db_;
+
+
 public:
+    // Operations
     static DatabaseManager *getInstance();
     static void kill();
 
@@ -50,12 +56,6 @@ public:
     bool hasMedia(const QString&);
     QStringList queryMediaNames();
     QSqlQuery queryMedias(QSqlQuery&);
-
-
-private:
-    static DatabaseManager *singleton_;
-    QSqlDatabase db_;
-
 };
 
 

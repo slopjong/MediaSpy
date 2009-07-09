@@ -24,6 +24,7 @@
 #include <QString>
 #include <QFileInfo>
 
+
 /** \class Media
   * A Media object represent any type of media found.
   */

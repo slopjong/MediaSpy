@@ -44,6 +44,9 @@ static const QString appDirectory   = QDir::homePath() + "/.MediaSpy/";
 static const QString dbFileName     = "MediaSpy.sqlite";
 
 
+/** \namespace Ui
+  * \brief the namespace used for the .ui Object
+  */
 namespace Ui {
     class MediaSpy;
 }

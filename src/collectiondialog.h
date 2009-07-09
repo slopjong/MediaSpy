@@ -32,16 +32,18 @@
   */
 class CollectionDialog : public QDialog, public Ui_CollectionDialog {
     Q_OBJECT
+
+    // Fields
+    QStringList addedDirList_;
+    QStringList removedDirList_;
+
 public:
+    // Constructors
     CollectionDialog(QWidget *parent = 0);
     ~CollectionDialog();
 
+    // Operations
     QStringList getUpdate();
-
-
-private:
-    QStringList addedDirList_;
-    QStringList removedDirList_;
 
 
 signals:

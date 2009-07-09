@@ -66,6 +66,9 @@ MediaSpy::~MediaSpy() {
 /////////////
 // methods //
 /////////////
+/** \fn void MediaSpy::init()
+  * \brief Initiates all parts of the program.
+  */
 void MediaSpy::init() {
     //////////////////////////
     // local directory init //
@@ -96,7 +99,7 @@ void MediaSpy::init() {
     // directory collection init // TODO in a different thread ??
     ///////////////////////////////
     Collection::getInstance()->init();
-    QStringList mediaList = Collection::getInstance()->buildFileList(); // fetch the dir for content TODO update
+    QStringList mediaList = Collection::getInstance()->buildFileList();
 
     ///////////////////////////
     // media collection init //
@@ -124,6 +127,9 @@ void MediaSpy::init() {
 }
 
 
+/** \fn void MediaSpy::updateCollections(QStringList& dirList)
+  * \brief Updates the Collections.
+  */
 void MediaSpy::updateCollections(QStringList& dirList) {
     ui_->statusBar->showMessage(QString(tr("Building the list of files...")));
     Collection::getInstance()->update(dirList);
@@ -143,7 +149,7 @@ void MediaSpy::updateCollections(QStringList& dirList) {
 ///////////
 /** \fn void MediaSpy::on_actionAdd_directory_triggered()
  *  \brief Opens the CollectionDialog dialog and gets the user's choice into the Collection.
-*/
+ */
 void MediaSpy::on_actionAdd_directory_triggered() {
     CollectionDialog dialog(this);
     for(int i = 0; i < Collection::getInstance()->getNDir(); i++)
@@ -161,25 +167,35 @@ void MediaSpy::on_actionRebuild_collection_triggered() {
 
 }
 
+/** \fn void MediaSpy::setProgressbarMaximum(const int maximum) const
+ *  \brief Sets the maximum of the progress bar.
+ *  \param the maximum value of the progress bar.
+ */
 void MediaSpy::setProgressbarMaximum(const int maximum) const {
     ui_->progressBar->setMaximum(maximum);
     ui_->progressBar->setVisible(true);
 }
 
+/** \fn void MediaSpy::setProgressbarCurrent(const int value) const
+ *  \brief Sets the current value of the progress bar.
+ *  \param the progress bar value
+ */
 void MediaSpy::setProgressbarCurrent(const int value) const {
     ui_->progressBar->setValue(value);
 }
 
+/** \fn void MediaSpy::setProgressbarOff() const
+ *  \brief Ends the progress bar and shows a status message with the number of Media in the collection.
+ */
 void MediaSpy::setProgressbarOff() const {
     ui_->progressBar->setVisible(false);
-    QString message = QString(tr("%1 movies in the collection").arg(MediaCollection::getInstance()->getNMedia()));
+    QString message = QString(tr("%n movie(s) in the collection", "", MediaCollection::getInstance()->getNMedia()));
     ui_->statusBar->showMessage(message);
 }
 
-
 /** \fn void MediaSpy::on_actionAbout_MediaSpy_triggered()
  *  \brief Shows the MediaSpy About window.
-*/
+ */
 void MediaSpy::on_actionAbout_MediaSpy_triggered()
 {
     QString myCopyright = QString::fromUtf8(PACKAGE_COPYRIGHTS);
@@ -190,13 +206,21 @@ void MediaSpy::on_actionAbout_MediaSpy_triggered()
 
 
 
-///////////////////////
-// accessors methods //
-///////////////////////
+//////////////////////
+// accessor methods //
+//////////////////////
+/** \fn const QString MediaSpy::getAppDirectory()
+ *  \brief Returns the app directory.
+ *  \return the app directory
+ */
 const QString MediaSpy::getAppDirectory() {
     return appDirectory;
 }
 
+/** \fn const QString MediaSpy::getDbFileName()
+ *  \brief Returns the name of the database file.
+ *  \return the name of the database file
+ */
 const QString MediaSpy::getDbFileName() {
     return dbFileName;
 }
@@ -208,7 +232,7 @@ const QString MediaSpy::getDbFileName() {
 /////////////////////
 /** \fn void MediaSpy::on_actionAbout_Qt_triggered()
  *  \brief Simply shows the built-in Qt About window.
-*/
+ */
 void MediaSpy::on_actionAbout_Qt_triggered() {
     qApp->aboutQt();
 }

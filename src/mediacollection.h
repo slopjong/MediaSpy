@@ -34,20 +34,21 @@ class MediaCollection : public QObject {
     MediaCollection();
     ~MediaCollection();
 
+    // Fields
+    static MediaCollection *singleton_;
+    QMap<int, Media> mediaMap_;
+    unsigned int nMedia_;
+
 
 public:
+    // Operations
     static MediaCollection *getInstance();
     static void kill();
     void init();
     void updateMediaCollection(QStringList&) ;
 
+    // Accessor Methods
     unsigned int getNMedia() const;
-
-
-private:
-    static MediaCollection *singleton_;
-    QMap<int, Media> mediaMap_;
-    unsigned int nMedia_;
 
 
 signals:

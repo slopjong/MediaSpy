@@ -144,7 +144,6 @@ QStringList DatabaseManager::getCollectionDir() {
   * \brief Inserts the directory \var dir into the Collection table.
   */
 QSqlError DatabaseManager::insertDirToCollection(const QString& dir) {
-
     QSqlQuery q;
     q.prepare("INSERT INTO Collection (directory) "
               "VALUES (?)");
@@ -174,8 +173,11 @@ QSqlError DatabaseManager::cleanCollection() {
   */
 bool DatabaseManager::hasDir(const QString& dir) {
     QSqlQuery q;
-    if (!q.exec(QString("SELECT id FROM Collection WHERE directory = '%1'").arg(dir)))
-        return true;
+    q.prepare("SELECT id FROM Collection WHERE directory = ?");
+    q.bindValue(0, dir);
+
+    if (!q.exec())
+        throw(q.lastError()); // TODO handle this!
 
     return q.next();
 }
@@ -202,7 +204,6 @@ QStringList DatabaseManager::queryMediaNames() {
         throw(q.lastError()); // TODO handle this!
 
     QStringList list;
-
     while (q.next())
         list << q.value(0).toString();
 

@@ -26,7 +26,10 @@
          <item>
           <widget class="QPushButton" name="addDirButton">
            <property name="text">
-            <string>Add</string>
+            <string>&amp;Add</string>
+           </property>
+           <property name="shortcut">
+            <string>Ctrl+A</string>
            </property>
            <property name="default">
             <bool>true</bool>
@@ -39,7 +42,10 @@
             <bool>false</bool>
            </property>
            <property name="text">
-            <string>Remove</string>
+            <string>&amp;Remove</string>
+           </property>
+           <property name="shortcut">
+            <string>Ctrl+R</string>
            </property>
           </widget>
          </item>

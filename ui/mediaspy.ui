@@ -125,7 +125,7 @@
   </action>
   <action name="actionAdd_directory">
    <property name="text">
-    <string>Add directory</string>
+    <string>Select directories</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+A</string>

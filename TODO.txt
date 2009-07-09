@@ -2,9 +2,6 @@
 == KNOWN ISSUES ==
 ==================
 
-- cancel button of the Collection Dialog does not differ to Ok button,
-  need to store the state and restore it if cancel button is clicked
-
 
 
 

@@ -82,7 +82,7 @@ void CollectionDialog::on_addDirButton_clicked() {
   * Removes the selected directory from the widget.
   */
 void CollectionDialog::on_delDirButton_clicked() {
-    QList<QListWidgetItem *> selectedItemList = this->listWidget->selectedItems();
+    QList<QListWidgetItem*> selectedItemList = this->listWidget->selectedItems();
     QListWidgetItem* item = selectedItemList.at(0);
     int r = this->listWidget->row(item);
     this->listWidget->takeItem(r);

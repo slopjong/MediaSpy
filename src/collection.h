@@ -34,6 +34,11 @@ class Collection {
     Collection();
     ~Collection();
 
+    // Fields
+    static Collection *singleton_;
+    QStringList dirList_;
+    int nDir_;
+
 
 public:
     // Operations
@@ -50,13 +55,6 @@ public:
     void setNDir(const int);
     int getNDir() const;
     QString getDirAt(const int) const;
-
-
-private:
-    // Fields
-    static Collection *singleton_;
-    QStringList dirList_;
-    int nDir_;
 };
 
 #endif // COLLECTION_H

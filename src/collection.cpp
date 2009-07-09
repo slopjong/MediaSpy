@@ -58,7 +58,7 @@ Collection* Collection::getInstance() {
 
 
 /** \fn Collection::kill()
-  * \brief deletes the unique instance of Collection
+  * \brief Deletes the unique instance of Collection.
   */
 void Collection::kill() {
     if (NULL != singleton_) {
@@ -81,7 +81,7 @@ void Collection::init() {
 /** \fn Collection::update(const QStringList& dirList)
   * \brief Updates the database with the QStringList dirList. Then the list object is updated as well.
   * It clears their content first.
-  * \param QStringList dirList
+  * \param QStringList& dirList
   */
 void Collection::update(const QStringList& dirs) {
     DatabaseManager::getInstance()->cleanCollection();
@@ -95,6 +95,10 @@ void Collection::update(const QStringList& dirs) {
 }
 
 
+/** \fn void Collection::initDirList(const QStringList& dirs)
+  * \brief Initiates the list of directories. It clears its content first.
+  * \param QStringList& dirList
+  */
 void Collection::initDirList(const QStringList& dirs) {
     this->dirList_.clear();
     this->dirList_.append(dirs);
@@ -151,7 +155,7 @@ QStringList Collection::ScanRecDir(const QString& dir) {
 ///////////////////////
 // accessors methods //
 ///////////////////////
-/** \fn QString Collection::getDirAt(const int i)  const
+/** \fn QString Collection::getDirAt(const int i) const
   * \brief Returns the name of the directory at i-th rank in the model.
   * \return the directory name
   */
@@ -159,9 +163,18 @@ QString Collection::getDirAt(const int i)  const {
     return this->dirList_.at(i);
 }
 
+/** \fn void Collection::setNDir(const int nDir)
+  * \brief Sets the number of directories in the Collection.
+  * \param the number of directories in the Collection
+  */
 void Collection::setNDir(const int nDir) {
     nDir_ = nDir;
 }
+
+/** \fn int Collection::getNDir() const
+  * \brief Returns the number of directories in the Collection.
+  * \return the numbeer of directories in the Collection
+  */
 int Collection::getNDir() const {
     return nDir_;
 }

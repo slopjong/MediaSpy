@@ -104,13 +104,3 @@ QStringList CollectionDialog::getUpdate() {
 
 
 
-
-
-
-
-///////////////////////
-// accessors methods //
-///////////////////////
-
-
-

@@ -34,6 +34,7 @@ class Collection {
     Collection();
     ~Collection();
 
+
 public:
     // Operations
     static Collection *getInstance();
@@ -43,13 +44,11 @@ public:
     QStringList ScanRecDir(const QString&);
     void init();
 
-
     // Accessor Methods
     void initDirList(const QStringList&);
     QStringList getDirList() const;
     void setNDir(const int);
     int getNDir() const;
-
     QString getDirAt(const int) const;
 
 
@@ -58,7 +57,6 @@ private:
     static Collection *singleton_;
     QStringList dirList_;
     int nDir_;
-
 };
 
 #endif // COLLECTION_H

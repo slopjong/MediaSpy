@@ -205,9 +205,9 @@ bool DatabaseManager::hasMedia(const QString& fileName) {
 
 
 /** \fn DatabaseManager::insertMedia(const Media& media)
-  * \brief Inserts the media \var Media into the Media table.
+  * \brief Inserts the media \var Media into the Media table and returns its id.
   */
-QSqlError DatabaseManager::insertMedia(const Media& media) {
+int DatabaseManager::insertMedia(const Media& media) {
 
     QSqlQuery q;
     q.prepare("INSERT INTO Media (type, fileName, baseName, loaned, seen, recommended, notes) "
@@ -223,7 +223,14 @@ QSqlError DatabaseManager::insertMedia(const Media& media) {
     if (!q.exec())
         throw(q.lastError()); // TODO handle this!
 
-    return QSqlError();
+    QSqlQuery q2;
+    q2.prepare("SELECT id FROM Media WHERE fileName = ?");
+    q2.bindValue(0, media.getFileName());
+
+    if (!q2.exec())
+        throw(q.lastError()); // TODO handle this!
+
+    return q2.value(0).toInt();
 }
 
 
@@ -231,11 +238,11 @@ QSqlError DatabaseManager::insertMedia(const Media& media) {
   * \brief Removes the media called \var mediaFileName from the Media table.
   */
 QSqlError DatabaseManager::removeMedia(const QString& mediaFileName) {
-
-    fprintf(stdout, "%s\n", mediaFileName.toAscii().constData());
-
     QSqlQuery q;
-    if (!q.exec(QString("DELETE FROM Media WHERE fileName = '%1'").arg(mediaFileName)))
+    q.prepare("DELETE FROM Media WHERE fileName = ?");
+    q.bindValue(0, mediaFileName);
+
+    if (!q.exec())
         throw(q.lastError()); // TODO handle this!
 
     return QSqlError();

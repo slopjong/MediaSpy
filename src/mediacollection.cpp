@@ -113,25 +113,24 @@ void MediaCollection::updateMediaCollection(QStringList& mediaList) {
     nMedia_ = mediaList.count();
     emit startUpdate(nMedia_);
     int currentStep = 0;
-
-    // we get the whole Media data table
-    QSqlQuery q;
-    DatabaseManager::getInstance()->queryMedias(q);
-    int fieldFileName = q.record().indexOf("fileName");
+    QStringList mediaInDb = DatabaseManager::getInstance()->queryMediaNames();
+    QString mediaFileName;
 
     // first step, we check what is in the database and not in the list
+    QStringList removeList;
     QStringList tempMediaList = mediaList;
-    while (q.next()) {
-        QString fileName = q.value(fieldFileName).toString();
-        if(!tempMediaList.contains(fileName)) // let's remove it!
-            DatabaseManager::getInstance()->removeMedia(fileName);
+    foreach(mediaFileName, mediaInDb) {
+        if(!tempMediaList.contains(mediaFileName)) // let's remove it!
+            removeList << mediaFileName;
 
-        currentStep += tempMediaList.removeAll(fileName);
+        currentStep += tempMediaList.removeAll(mediaFileName);
         emit stepUpdate(currentStep);
     }
+    DatabaseManager::getInstance()->removeMedias(removeList);
+
 
     // second step, we check what is in the list and not in the database
-    QString mediaFileName;
+    QList<Media> insertList;
     foreach(mediaFileName, tempMediaList) {
             // let's create it!
             Media tempMedia;
@@ -143,12 +142,12 @@ void MediaCollection::updateMediaCollection(QStringList& mediaList) {
             tempMedia.setNotes(NULL);
 
             // let's add it!
-            int mediaId = DatabaseManager::getInstance()->insertMedia(tempMedia);
-            mediaMap_.insert(mediaId, tempMedia);
+            insertList << tempMedia;
 
             currentStep += tempMediaList.removeAll(mediaFileName);
             emit stepUpdate(currentStep);
     }
+    DatabaseManager::getInstance()->insertMedias(insertList);
     emit finishedUpdate();
 }
 

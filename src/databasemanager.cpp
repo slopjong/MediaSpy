@@ -128,12 +128,12 @@ QSqlError DatabaseManager::init(const QString &dbFilePath) {
   */
 QStringList DatabaseManager::getCollectionDir() {
     QSqlQuery q;
-    if (!q.exec(QString("SELECT * FROM Collection")))
+    if (!q.exec(QString("SELECT directory FROM Collection")))
         QSqlError qError = q.lastError(); // TODO handle this!
 
     QStringList stringList;
     while (q.next()) {
-        stringList << q.value(1).toString();
+        stringList << q.value(0).toString();
     }
 
    return stringList;
@@ -182,7 +182,7 @@ bool DatabaseManager::hasDir(const QString& dir) {
 
 
 /** \fn DatabaseManager::queryMedias()
-  * \brief get medias from the database
+  * \brief get a query with all medias from the database
   * \return the database query
   */
 QSqlQuery DatabaseManager::queryMedias(QSqlQuery& q) {
@@ -192,12 +192,33 @@ QSqlQuery DatabaseManager::queryMedias(QSqlQuery& q) {
 }
 
 
-/** \fn DatabaseManager::hasDir(const QString& dir)
-  * \brief Returns whether the directory \var dir is in the Collection table or not.
+/** \fn DatabaseManager::queryMediaNames()
+  * \brief get all media fileName from the database
+  * \return the fileName list
+  */
+QStringList DatabaseManager::queryMediaNames() {
+    QSqlQuery q;
+    if (!q.exec(QString("SELECT fileName FROM Media")))
+        throw(q.lastError()); // TODO handle this!
+
+    QStringList list;
+
+    while (q.next())
+        list << q.value(0).toString();
+
+    return list;
+}
+
+
+/** \fn DatabaseManager::hasMedia(const QString& fileName)
+  * \brief Returns whether the media \var fileName is in the MediaCollection table or not.
   */
 bool DatabaseManager::hasMedia(const QString& fileName) {
     QSqlQuery q;
-    if (!q.exec(QString("SELECT id FROM Media WHERE fileName = '%1'").arg(fileName)))
+    q.prepare("SELECT id FROM Media WHERE fileName = ?");
+    q.bindValue(0, fileName);
+
+    if (!q.exec())
         return true;
 
     return q.next();
@@ -207,7 +228,7 @@ bool DatabaseManager::hasMedia(const QString& fileName) {
 /** \fn DatabaseManager::insertMedia(const Media& media)
   * \brief Inserts the media \var Media into the Media table and returns its id.
   */
-int DatabaseManager::insertMedia(const Media& media) {
+void DatabaseManager::insertMedia(const Media& media) {
 
     QSqlQuery q;
     q.prepare("INSERT INTO Media (type, fileName, baseName, loaned, seen, recommended, notes) "
@@ -223,28 +244,56 @@ int DatabaseManager::insertMedia(const Media& media) {
     if (!q.exec())
         throw(q.lastError()); // TODO handle this!
 
-    QSqlQuery q2;
-    q2.prepare("SELECT id FROM Media WHERE fileName = ?");
-    q2.bindValue(0, media.getFileName());
-
-    if (!q2.exec())
-        throw(q.lastError()); // TODO handle this!
-
-    return q2.value(0).toInt();
+    return;
 }
 
 
-/** \fn DatabaseManager::removeMedia(const QString& mediaFileName)
-  * \brief Removes the media called \var mediaFileName from the Media table.
-  */
-QSqlError DatabaseManager::removeMedia(const QString& mediaFileName) {
+void DatabaseManager::insertMedias(const QList<Media> mediaList) {
+    QSqlDatabase::database().transaction();
     QSqlQuery q;
-    q.prepare("DELETE FROM Media WHERE fileName = ?");
-    q.bindValue(0, mediaFileName);
 
-    if (!q.exec())
-        throw(q.lastError()); // TODO handle this!
+    Media media;
+    foreach(media, mediaList) {
+        q.prepare("INSERT INTO Media (type, fileName, baseName, loaned, seen, recommended, notes) "
+              "VALUES (?, ?, ?, ?, ?, ?, ?)");
+        q.bindValue(0, media.getType());
+        q.bindValue(1, media.getFileName());
+        q.bindValue(2, media.getBaseName());
+        q.bindValue(3, media.isLoaned());
+        q.bindValue(4, media.isSeen());
+        q.bindValue(5, media.isRecommended());
+        q.bindValue(6, media.getNotes());
 
+        if (!q.exec())
+            throw(q.lastError()); // TODO handle this!
+    }
+    QSqlDatabase::database().commit();
+}
+
+
+
+
+
+
+
+
+/** \fn DatabaseManager::removeMedias(const QStringList& mediaFileNames)
+  * \brief Removes the medias from the list called \var mediaFileNames off the Media table.
+  */
+QSqlError DatabaseManager::removeMedias(const QStringList& mediaFileNames) {
+    QSqlDatabase::database().transaction();
+    QSqlQuery q;
+
+    QString s;
+    foreach(s, mediaFileNames) {
+        q.prepare("DELETE FROM Media WHERE fileName = ?");
+        q.bindValue(0, s);
+        if (!q.exec())
+            throw(q.lastError()); // TODO handle this!
+    }
+
+    QSqlDatabase::database().commit();
     return QSqlError();
 }
+
 

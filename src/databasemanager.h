@@ -42,11 +42,13 @@ public:
     QSqlError cleanCollection();
     bool hasDir(const QString&);
 
-    int insertMedia(const Media&);
-    QSqlError removeMedia(const QString&);
+    void insertMedia(const Media&);
+    void insertMedias(const QList<Media>);
+    QSqlError removeMedias(const QStringList&);
     bool hasMedia(const QString&);
 
     QStringList getCollectionDir();
+    QStringList queryMediaNames();
     QSqlQuery queryMedias(QSqlQuery&);
 
 

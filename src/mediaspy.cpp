@@ -125,8 +125,11 @@ void MediaSpy::init() {
 
 
 void MediaSpy::updateCollections(QStringList& dirList) {
+    ui_->statusBar->showMessage(QString(tr("Building the list of files...")));
     Collection::getInstance()->update(dirList);
     QStringList mediaList = Collection::getInstance()->buildFileList();
+
+    ui_->statusBar->showMessage(QString(tr("Updating your media Collection...")));
     MediaCollection::getInstance()->updateMediaCollection(mediaList);
     sqlTableModel_->select();
 }

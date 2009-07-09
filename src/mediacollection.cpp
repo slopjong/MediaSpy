@@ -26,23 +26,28 @@ static const int MEDIA_TYPE_MUSIC   = 1;
 static const int MEDIA_TYPE_DOC     = 2;
 
 
+/** \var MediaCollection* MediaCollection::singleton_
+  * \brief pointer to the unique instance of MediaCollection
+  */
+MediaCollection* MediaCollection::singleton_ = NULL;
+
+
 /////////////////////////////
 // constructors/destructor //
 /////////////////////////////
 /** \fn MediaCollection::MediaCollection()
   * \brief class constructor
   */
-MediaCollection::MediaCollection() :
-        mediaListModel_(new QStandardItemModel()) {
+MediaCollection::MediaCollection() {
+//        mediaListModel_(new QStandardItemModel()) {
 
-    mediaListModel_->setHorizontalHeaderLabels(QStringList() << qApp->tr("Title")); // TODO
 }
 
 /** \fn MediaCollection::~MediaCollection()
   * \brief class destructor
   */
 MediaCollection::~MediaCollection() {
-    delete mediaListModel_;
+//    delete mediaListModel_;
 }
 
 
@@ -50,6 +55,26 @@ MediaCollection::~MediaCollection() {
 /////////////
 // methods //
 /////////////
+/** \fn MediaCollection* MediaCollection::getInstance()
+  * \brief returns the unique instance of MediaCollection, creates it the first time
+  */
+MediaCollection* MediaCollection::getInstance() {
+    if (NULL == singleton_)
+        singleton_ =  new MediaCollection;
+    return singleton_;
+}
+
+/** \fn MediaCollection::kill()
+  * \brief deletes the unique instance of MediaCollection
+  */
+void MediaCollection::kill() {
+    if (NULL != singleton_) {
+        delete singleton_;
+        singleton_ = NULL;
+    }
+}
+
+
 /** \fn MediaCollection::init()
   * \brief creates Media objects from stored data
   */
@@ -87,59 +112,52 @@ void MediaCollection::init() {
 
 
 void MediaCollection::updateMediaCollection(QStringList& mediaList) {
-    QString mediaFileName;
-    int i;
-    foreach(mediaFileName, mediaList) {
-        QFileInfo mediaFileInfo = QFileInfo(mediaFileName);
 
-        // if the file exists
-        if(mediaFileInfo.exists()) {
-            Media tempMedia;
+//    mediasetProgressbarMaximum(mediaList.count());
+//    int nStep = mediaList.count();
+    int currentStep = 0;
 
-            // and is not in the database
-            if(!DatabaseManager::getInstance()->hasMedia(mediaFileName)) {
-
-                tempMedia.setType(MEDIA_TYPE_MOVIE);
-                tempMedia.setFileName(mediaFileName);
-                tempMedia.setLoaned(false);
-                tempMedia.setSeen(false);
-                tempMedia.setRecommended(false);
-                tempMedia.setNotes(NULL);
-
-                // let's add it!
-                DatabaseManager::getInstance()->insertMedia(tempMedia);
-                mediaMap_.insert(nMedia_, tempMedia);
-                nMedia_++;
-
-fprintf(stdout, "adding %s\n", mediaFileName.toAscii().constData());
-
-            }
-
-            // and is already in the database
-            else {
-                // let's check if it needs an update!
-fprintf(stdout, "updating %s ?\n", mediaFileName.toAscii().constData());
-            }
-        }
-
-//        setProgressStep(i);
-        i++;
-    }
-
+    // we get the whole Media data table
     QSqlQuery q;
     DatabaseManager::getInstance()->queryMedias(q);
     int fieldFileName = q.record().indexOf("fileName");
 
+    // first step, we check what is in the database and not in the list
+    QStringList tempMediaList = mediaList;
     while (q.next()) {
         QString fileName = q.value(fieldFileName).toString();
-        QFileInfo mediaFileInfo = QFileInfo(fileName);
-        if(!mediaList.contains(fileName)) {
+        if(!tempMediaList.contains(fileName)) {
             // let's remove it!
             DatabaseManager::getInstance()->removeMedia(fileName);
-fprintf(stdout, "removing %s\n", fileName.toAscii().constData());
+            fprintf(stdout, "removing %s\n", fileName.toAscii().constData()); // DEBUG
         }
+        currentStep += tempMediaList.removeAll(fileName);
     }
 
+    for(int i=0; i<tempMediaList.count(); i++)
+        fprintf(stdout, "%s\n", tempMediaList.at(i).toAscii().constData());
+
+    // second step, we check what is in the list and not in the database
+    QString mediaFileName;
+    foreach(mediaFileName, tempMediaList) {
+            // let's create it!
+            Media tempMedia;
+            tempMedia.setType(MEDIA_TYPE_MOVIE);
+            tempMedia.setFileName(mediaFileName);
+            tempMedia.setLoaned(false);
+            tempMedia.setSeen(false);
+            tempMedia.setRecommended(false);
+            tempMedia.setNotes(NULL);
+
+            // let's add it!
+            DatabaseManager::getInstance()->insertMedia(tempMedia);
+//            mediaMap_.insert(nMedia_, tempMedia);
+            nMedia_++;
+            fprintf(stdout, "adding %s\n", mediaFileName.toAscii().constData());
+
+            currentStep += tempMediaList.removeAll(mediaFileName);
+    }
+//    nMedia_ =
 // progressStop();
 }
 
@@ -147,9 +165,9 @@ fprintf(stdout, "removing %s\n", fileName.toAscii().constData());
 ///////////////////////
 // accessors methods //
 ///////////////////////
-QStandardItemModel* MediaCollection::getMediaListModel() const {
+/*QStandardItemModel* MediaCollection::getMediaListModel() const {
     return mediaListModel_;
-}
+}*/
 
 unsigned int MediaCollection::getNMedia() const {
     return nMedia_;

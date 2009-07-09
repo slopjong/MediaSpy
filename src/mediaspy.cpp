@@ -33,16 +33,14 @@
   */
 MediaSpy::MediaSpy(QWidget *parent) :
         QMainWindow(parent),
-        ui_(new Ui::MediaSpy),
-        collection_(new Collection()),
-        mediaCollection_(new MediaCollection())//,
-//        sqlTableModel_(new QSqlTableModel())
+        ui_(new Ui::MediaSpy)
 {
     ui_->setupUi(this);
 
     // view settings
     ui_->progressBar->setVisible(false);
     ui_->progressBar->setMinimum(0);
+
 
 //    ui_->mediaListView->sortByColumn(0, Qt::AscendingOrder);
 //    ui_->mediaListView->setAlternatingRowColors(true);
@@ -59,8 +57,6 @@ MediaSpy::MediaSpy(QWidget *parent) :
   */
 MediaSpy::~MediaSpy() {
     delete ui_;
-    delete collection_;
-    delete mediaCollection_;
     DatabaseManager::getInstance()->kill();
 }
 
@@ -98,32 +94,39 @@ void MediaSpy::init() {
     ///////////////////////////////
     // directory collection init // TODO in a different thread ??
     ///////////////////////////////
-    collection_->init();
-    QStringList mediaList = collection_->buildFileList(); // fetch the dir for content TODO update
+    Collection::getInstance()->init();
+    QStringList mediaList = Collection::getInstance()->buildFileList(); // fetch the dir for content TODO update
 
     ///////////////////////////
     // media collection init //
     ///////////////////////////
-    mediaCollection_->init();
-    mediaCollection_->updateMediaCollection(mediaList);
+    MediaCollection::getInstance()->init();
+    MediaCollection::getInstance()->updateMediaCollection(mediaList);
 
     ////////////////////
     // tableView init //
     ////////////////////
-    sqlTableModel_ = new QSqlTableModel;
+    sqlTableModel_ = new QSqlTableModel(this);
     sqlTableModel_->setTable("Media");
     sqlTableModel_->select();
     sqlTableModel_->removeColumns(0, 2);
     sqlTableModel_->removeColumns(1, 5);
     sqlTableModel_->setHeaderData(0, Qt::Horizontal, tr("Title"));
-    ui_->mediaListView->setModel(sqlTableModel_);
+
+    // sorting the list by alphabetical order without case sensitivity
+    mediaListProxyModel_ = new QSortFilterProxyModel(this);
+    mediaListProxyModel_->setSourceModel(sqlTableModel_);
+    mediaListProxyModel_->sort(0, Qt::AscendingOrder);
+    mediaListProxyModel_->setSortCaseSensitivity(Qt::CaseInsensitive);
+
+    ui_->mediaListView->setModel(mediaListProxyModel_);
 }
 
 
 void MediaSpy::updateCollections(QStringList& dirList) {
-    collection_->update(dirList);
-    QStringList mediaList = collection_->buildFileList();
-    mediaCollection_->updateMediaCollection(mediaList);
+    Collection::getInstance()->update(dirList);
+    QStringList mediaList = Collection::getInstance()->buildFileList();
+    MediaCollection::getInstance()->updateMediaCollection(mediaList);
     sqlTableModel_->select();
 }
 
@@ -138,12 +141,6 @@ void MediaSpy::setProgressbarCurrent(const int n) const {
 }
 
 
-//void MediaSpy::tableViewUpdated() {
-//    ui_->mediaListView->resizeColumnsToContents();
-//    ui_->mediaListView->resizeRowsToContents();
-//}
-
-
 
 ///////////
 // slots //
@@ -153,8 +150,8 @@ void MediaSpy::setProgressbarCurrent(const int n) const {
 */
 void MediaSpy::on_actionAdd_directory_triggered() {
     CollectionDialog dialog(this);
-    for(int i = 0; i < collection_->getNDir(); i++)
-        dialog.listWidget->addItem(collection_->getDirAt(i));
+    for(int i = 0; i < Collection::getInstance()->getNDir(); i++)
+        dialog.listWidget->addItem(Collection::getInstance()->getDirAt(i));
 
     if (dialog.exec() != QDialog::Accepted)
         return;

@@ -31,12 +31,18 @@
   * Media files present in these directories and their sub-directories are collected to fill the MediaCollection.
   */
 class Collection {
-public:
-    // Fields
-
-    // Constructors
     Collection();
     ~Collection();
+
+public:
+    // Operations
+    static Collection *getInstance();
+    static void kill();
+    void update(const QStringList&);
+    QStringList buildFileList();
+    QStringList ScanRecDir(const QString&);
+    void init();
+
 
     // Accessor Methods
     void initDirList(const QStringList&);
@@ -46,15 +52,10 @@ public:
 
     QString getDirAt(const int) const;
 
-    // Operations
-    void update(const QStringList&);
-    QStringList buildFileList();
-    QStringList ScanRecDir(const QString&);
-    void init();
-
 
 private:
     // Fields
+    static Collection *singleton_;
     QStringList dirList_;
     int nDir_;
 

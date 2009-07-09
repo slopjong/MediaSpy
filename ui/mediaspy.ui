@@ -24,6 +24,12 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
+      <property name="opaqueResize">
+       <bool>true</bool>
+      </property>
+      <property name="childrenCollapsible">
+       <bool>false</bool>
+      </property>
       <widget class="QWidget" name="layoutWidget">
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>

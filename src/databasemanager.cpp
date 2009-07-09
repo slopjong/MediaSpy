@@ -144,8 +144,13 @@ QStringList DatabaseManager::getCollectionDir() {
   * \brief Inserts the directory \var dir into the Collection table.
   */
 QSqlError DatabaseManager::insertDirToCollection(const QString& dir) {
+
     QSqlQuery q;
-    if (!q.exec(QString("INSERT INTO Collection(directory) VALUES('%1')").arg(dir)))
+    q.prepare("INSERT INTO Collection (directory) "
+              "VALUES (?)");
+    q.bindValue(0, dir);
+
+    if (!q.exec())
         throw(q.lastError()); // TODO handle this!
 
     return QSqlError();
@@ -203,11 +208,19 @@ bool DatabaseManager::hasMedia(const QString& fileName) {
   * \brief Inserts the media \var Media into the Media table.
   */
 QSqlError DatabaseManager::insertMedia(const Media& media) {
+
     QSqlQuery q;
-    if (!q.exec(QString("INSERT INTO Media(type, fileName, baseName, loaned, seen, recommended, notes) \
-                         VALUES('%1', '%2', '%3', '%4', '%5', '%6', '%7')")
-            .arg(media.getType()).arg(media.getFileName()).arg(media.getBaseName()).arg(media.isLoaned())
-            .arg(media.isSeen()).arg(media.isRecommended()).arg(media.getNotes())))
+    q.prepare("INSERT INTO Media (type, fileName, baseName, loaned, seen, recommended, notes) "
+              "VALUES (?, ?, ?, ?, ?, ?, ?)");
+    q.bindValue(0, media.getType());
+    q.bindValue(1, media.getFileName());
+    q.bindValue(2, media.getBaseName());
+    q.bindValue(3, media.isLoaned());
+    q.bindValue(4, media.isSeen());
+    q.bindValue(5, media.isRecommended());
+    q.bindValue(6, media.getNotes());
+
+    if (!q.exec())
         throw(q.lastError()); // TODO handle this!
 
     return QSqlError();
@@ -218,6 +231,9 @@ QSqlError DatabaseManager::insertMedia(const Media& media) {
   * \brief Removes the media called \var mediaFileName from the Media table.
   */
 QSqlError DatabaseManager::removeMedia(const QString& mediaFileName) {
+
+    fprintf(stdout, "%s\n", mediaFileName.toAscii().constData());
+
     QSqlQuery q;
     if (!q.exec(QString("DELETE FROM Media WHERE fileName = '%1'").arg(mediaFileName)))
         throw(q.lastError()); // TODO handle this!

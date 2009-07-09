@@ -24,6 +24,7 @@
 
 #include <QTableView>
 
+
 /////////////////////////////
 // constructors/destructor //
 /////////////////////////////
@@ -41,12 +42,12 @@ MediaSpy::MediaSpy(QWidget *parent) :
     ui_->progressBar->setVisible(false);
     ui_->progressBar->setMinimum(0);
 
-
-//    ui_->mediaListView->sortByColumn(0, Qt::AscendingOrder);
-//    ui_->mediaListView->setAlternatingRowColors(true);
+    // first connections
+    connect(MediaCollection::getInstance(), SIGNAL(startUpdate(const int)), this, SLOT(setProgressbarMaximum(const int)));
+    connect(MediaCollection::getInstance(), SIGNAL(stepUpdate(const int)), this, SLOT(setProgressbarCurrent(const int)));
+    connect(MediaCollection::getInstance(), SIGNAL(finishedUpdate()), this, SLOT(setProgressbarOff()));
 
     init();
-
 
     if(!(errorMessage_.isEmpty()))
         QMessageBox::critical(this, tr("Error"), errorMessage_);
@@ -131,14 +132,6 @@ void MediaSpy::updateCollections(QStringList& dirList) {
 }
 
 
-void MediaSpy::setProgressbarMaximum(const int n) {
-    ui_->progressBar->setMaximum(n);
-    ui_->progressBar->setVisible(true);
-}
-
-void MediaSpy::setProgressbarCurrent(const int n) const {
-    ui_->progressBar->setMaximum(n);
-}
 
 
 
@@ -165,6 +158,21 @@ void MediaSpy::on_actionRebuild_collection_triggered() {
 
 }
 
+void MediaSpy::setProgressbarMaximum(const int maximum) const {
+    ui_->progressBar->setMaximum(maximum);
+    ui_->progressBar->setVisible(true);
+}
+
+void MediaSpy::setProgressbarCurrent(const int value) const {
+    ui_->progressBar->setValue(value);
+}
+
+void MediaSpy::setProgressbarOff() const {
+    ui_->progressBar->setVisible(false);
+    QString message = QString(tr("%1 movies in the collection").arg(MediaCollection::getInstance()->getNMedia()));
+    ui_->statusBar->showMessage(message);
+}
+
 
 /** \fn void MediaSpy::on_actionAbout_MediaSpy_triggered()
  *  \brief Shows the MediaSpy About window.
@@ -175,7 +183,6 @@ void MediaSpy::on_actionAbout_MediaSpy_triggered()
     QMessageBox::about(this, tr("About ") + PACKAGE_NAME,
     QString("<h3>") + PACKAGE_NAME + " " + PACKAGE_VERSION + QString("</h3><p>") + myCopyright +
     tr("<p>MediaSpy is a movie collection cataloging software. Still in heavy development!"));
-
 }
 
 

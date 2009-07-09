@@ -32,23 +32,19 @@ static const int MEDIA_TYPE_DOC     = 2;
 MediaCollection* MediaCollection::singleton_ = NULL;
 
 
+
 /////////////////////////////
 // constructors/destructor //
 /////////////////////////////
 /** \fn MediaCollection::MediaCollection()
   * \brief class constructor
   */
-MediaCollection::MediaCollection() {
-//        mediaListModel_(new QStandardItemModel()) {
-
-}
+MediaCollection::MediaCollection() {}
 
 /** \fn MediaCollection::~MediaCollection()
   * \brief class destructor
   */
-MediaCollection::~MediaCollection() {
-//    delete mediaListModel_;
-}
+MediaCollection::~MediaCollection() {}
 
 
 
@@ -63,6 +59,7 @@ MediaCollection* MediaCollection::getInstance() {
         singleton_ =  new MediaCollection;
     return singleton_;
 }
+
 
 /** \fn MediaCollection::kill()
   * \brief deletes the unique instance of MediaCollection
@@ -113,8 +110,8 @@ void MediaCollection::init() {
 
 void MediaCollection::updateMediaCollection(QStringList& mediaList) {
 
-//    mediasetProgressbarMaximum(mediaList.count());
-//    int nStep = mediaList.count();
+    nMedia_ = mediaList.count();
+    emit startUpdate(nMedia_);
     int currentStep = 0;
 
     // we get the whole Media data table
@@ -126,16 +123,12 @@ void MediaCollection::updateMediaCollection(QStringList& mediaList) {
     QStringList tempMediaList = mediaList;
     while (q.next()) {
         QString fileName = q.value(fieldFileName).toString();
-        if(!tempMediaList.contains(fileName)) {
-            // let's remove it!
+        if(!tempMediaList.contains(fileName)) // let's remove it!
             DatabaseManager::getInstance()->removeMedia(fileName);
-            fprintf(stdout, "removing %s\n", fileName.toAscii().constData()); // DEBUG
-        }
-        currentStep += tempMediaList.removeAll(fileName);
-    }
 
-    for(int i=0; i<tempMediaList.count(); i++)
-        fprintf(stdout, "%s\n", tempMediaList.at(i).toAscii().constData());
+        currentStep += tempMediaList.removeAll(fileName);
+        emit stepUpdate(currentStep);
+    }
 
     // second step, we check what is in the list and not in the database
     QString mediaFileName;
@@ -150,32 +143,21 @@ void MediaCollection::updateMediaCollection(QStringList& mediaList) {
             tempMedia.setNotes(NULL);
 
             // let's add it!
-            DatabaseManager::getInstance()->insertMedia(tempMedia);
-//            mediaMap_.insert(nMedia_, tempMedia);
-            nMedia_++;
-            fprintf(stdout, "adding %s\n", mediaFileName.toAscii().constData());
+            int mediaId = DatabaseManager::getInstance()->insertMedia(tempMedia);
+            mediaMap_.insert(mediaId, tempMedia);
 
             currentStep += tempMediaList.removeAll(mediaFileName);
+            emit stepUpdate(currentStep);
     }
-//    nMedia_ =
-// progressStop();
+    emit finishedUpdate();
 }
 
 
 ///////////////////////
 // accessors methods //
 ///////////////////////
-/*QStandardItemModel* MediaCollection::getMediaListModel() const {
-    return mediaListModel_;
-}*/
-
 unsigned int MediaCollection::getNMedia() const {
     return nMedia_;
-}
-
-void MediaCollection::setNMedia(const unsigned int nMedia) {
-    nMedia_ = nMedia;
-//    setProgressMax(nMedia);
 }
 
 

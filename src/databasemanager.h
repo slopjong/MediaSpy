@@ -42,7 +42,7 @@ public:
     QSqlError cleanCollection();
     bool hasDir(const QString&);
 
-    QSqlError insertMedia(const Media&);
+    int insertMedia(const Media&);
     QSqlError removeMedia(const QString&);
     bool hasMedia(const QString&);
 

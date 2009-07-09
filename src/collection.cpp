@@ -40,8 +40,7 @@ Collection::Collection() : nDir_(0) {}
 /** \fn Collection::~Collection()
   * \brief class destructor
   */
-Collection::~Collection() {
-}
+Collection::~Collection() {}
 
 
 
@@ -56,6 +55,7 @@ Collection* Collection::getInstance() {
         singleton_ =  new Collection;
     return singleton_;
 }
+
 
 /** \fn Collection::kill()
   * \brief deletes the unique instance of Collection
@@ -145,6 +145,7 @@ QStringList Collection::ScanRecDir(const QString& dir) {
 
     return fileList;
 }
+
 
 
 ///////////////////////

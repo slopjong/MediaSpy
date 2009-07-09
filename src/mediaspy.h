@@ -33,7 +33,6 @@
 #include "mediacollection.h"
 
 
-
 /** \var appDirectory
   * \brief name of the local directory used by the program
   */
@@ -43,7 +42,6 @@ static const QString appDirectory   = QDir::homePath() + "/.MediaSpy/";
   * \brief name of the database file
   */
 static const QString dbFileName     = "MediaSpy.sqlite";
-
 
 
 namespace Ui {
@@ -67,8 +65,6 @@ public:
     static const QString getDbFileName();
 
     // Operations
-    void setProgressbarMaximum(const int) ;
-    void setProgressbarCurrent(const int) const;
     void tableViewUpdated();
 
 
@@ -78,13 +74,16 @@ private:
     QString errorMessage_;
     QSqlTableModel* sqlTableModel_;
     QSortFilterProxyModel* mediaListProxyModel_;
-
     
     // Operations
     void init();
     void updateCollections(QStringList&);
 
+
 private slots:
+    void setProgressbarMaximum(const int) const;
+    void setProgressbarCurrent(const int) const;
+    void setProgressbarOff() const;
     void on_actionRebuild_collection_triggered();
     void on_actionAbout_MediaSpy_triggered();
     void on_actionAbout_Qt_triggered();

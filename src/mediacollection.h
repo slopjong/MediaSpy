@@ -28,11 +28,13 @@
 
 class MediaCollection
 {
-public:
     // Constructors
     MediaCollection();
     ~MediaCollection();
 
+public:
+    static MediaCollection *getInstance();
+    static void kill();
     void init();
     QStandardItemModel* getMediaListModel() const;
     void updateMediaCollection(QStringList&) ;
@@ -41,6 +43,7 @@ public:
     void setNMedia(const unsigned int);
 
 private:
+    static MediaCollection *singleton_;
     QStandardItemModel* mediaListModel_;
     QMap<int, Media> mediaMap_;
     unsigned int nMedia_;

@@ -34,8 +34,8 @@
 MediaSpy::MediaSpy(QWidget *parent) :
         QMainWindow(parent),
         ui_(new Ui::MediaSpy),
-        collection_(new Collection()),
-        mediaCollection_(new MediaCollection())//,
+        collection_(new Collection())//,
+//        mediaCollection_(new MediaCollection())//,
 //        sqlTableModel_(new QSqlTableModel())
 {
     ui_->setupUi(this);
@@ -43,6 +43,7 @@ MediaSpy::MediaSpy(QWidget *parent) :
     // view settings
     ui_->progressBar->setVisible(false);
     ui_->progressBar->setMinimum(0);
+
 
 //    ui_->mediaListView->sortByColumn(0, Qt::AscendingOrder);
 //    ui_->mediaListView->setAlternatingRowColors(true);
@@ -60,7 +61,6 @@ MediaSpy::MediaSpy(QWidget *parent) :
 MediaSpy::~MediaSpy() {
     delete ui_;
     delete collection_;
-    delete mediaCollection_;
     DatabaseManager::getInstance()->kill();
 }
 
@@ -104,8 +104,8 @@ void MediaSpy::init() {
     ///////////////////////////
     // media collection init //
     ///////////////////////////
-    mediaCollection_->init();
-    mediaCollection_->updateMediaCollection(mediaList);
+    MediaCollection::getInstance()->init();
+    MediaCollection::getInstance()->updateMediaCollection(mediaList);
 
     ////////////////////
     // tableView init //
@@ -130,7 +130,7 @@ void MediaSpy::init() {
 void MediaSpy::updateCollections(QStringList& dirList) {
     collection_->update(dirList);
     QStringList mediaList = collection_->buildFileList();
-    mediaCollection_->updateMediaCollection(mediaList);
+    MediaCollection::getInstance()->updateMediaCollection(mediaList);
     sqlTableModel_->select();
 }
 

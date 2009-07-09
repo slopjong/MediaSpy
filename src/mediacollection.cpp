@@ -26,6 +26,12 @@ static const int MEDIA_TYPE_MUSIC   = 1;
 static const int MEDIA_TYPE_DOC     = 2;
 
 
+/** \var MediaCollection* MediaCollection::singleton_
+  * \brief pointer to the unique instance of MediaCollection
+  */
+MediaCollection* MediaCollection::singleton_ = NULL;
+
+
 /////////////////////////////
 // constructors/destructor //
 /////////////////////////////
@@ -35,7 +41,6 @@ static const int MEDIA_TYPE_DOC     = 2;
 MediaCollection::MediaCollection() :
         mediaListModel_(new QStandardItemModel()) {
 
-    mediaListModel_->setHorizontalHeaderLabels(QStringList() << qApp->tr("Title")); // TODO
 }
 
 /** \fn MediaCollection::~MediaCollection()
@@ -50,6 +55,26 @@ MediaCollection::~MediaCollection() {
 /////////////
 // methods //
 /////////////
+/** \fn MediaCollection* MediaCollection::getInstance()
+  * \brief returns the unique instance of MediaCollection, creates it the first time
+  */
+MediaCollection* MediaCollection::getInstance() {
+    if (NULL == singleton_)
+        singleton_ =  new MediaCollection;
+    return singleton_;
+}
+
+/** \fn MediaCollection::kill()
+  * \brief deletes the unique instance of MediaCollection
+  */
+void MediaCollection::kill() {
+    if (NULL != singleton_) {
+        delete singleton_;
+        singleton_ = NULL;
+    }
+}
+
+
 /** \fn MediaCollection::init()
   * \brief creates Media objects from stored data
   */

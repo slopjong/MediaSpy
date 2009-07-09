@@ -76,7 +76,6 @@ private:
     // Fields
     Ui::MediaSpy* ui_;
     Collection* collection_;
-    MediaCollection* mediaCollection_;
     QString errorMessage_;
     QSqlTableModel* sqlTableModel_;
     QSortFilterProxyModel* mediaListProxyModel_;

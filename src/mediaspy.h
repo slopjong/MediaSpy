@@ -31,6 +31,7 @@
 #include "collectiondialog.h"
 #include "collection.h"
 #include "mediacollection.h"
+#include "updatethread.h"
 
 
 /** \var appDirectory
@@ -77,6 +78,7 @@ private:
     QString errorMessage_;
     QSqlTableModel* sqlTableModel_;
     QSortFilterProxyModel* mediaListProxyModel_;
+    UpdateThread* updateThread_;
     
     // Operations
     void init();
@@ -84,13 +86,15 @@ private:
 
 
 private slots:
+    void on_actionAbout_MediaSpy_triggered();
+    void on_actionAbout_Qt_triggered();
+    void on_actionSelectdirectories_triggered();
     void setProgressbarMaximum(const int) const;
     void setProgressbarCurrent(const int) const;
     void setProgressbarOff() const;
-    void on_actionRebuild_collection_triggered();
-    void on_actionAbout_MediaSpy_triggered();
-    void on_actionAbout_Qt_triggered();
-    void on_actionAdd_directory_triggered();
+    void displayMessage(QString);
+    void finishedUpdate();
+
 };
 
 #endif // MEDIASPY_H

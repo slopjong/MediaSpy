@@ -35,7 +35,7 @@ public:
 
     // Constructors
     Media();
-    Media(const Media&);
+    explicit Media(const Media&);
     virtual ~Media();
 
     // Accessor Methods

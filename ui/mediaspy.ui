@@ -89,8 +89,7 @@
     <property name="title">
      <string>Options</string>
     </property>
-    <addaction name="actionAdd_directory"/>
-    <addaction name="actionRebuild_collection"/>
+    <addaction name="actionSelectdirectories"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuOptions"/>
@@ -123,17 +122,12 @@
     <string>Ctrl+Q</string>
    </property>
   </action>
-  <action name="actionAdd_directory">
+  <action name="actionSelectdirectories">
    <property name="text">
     <string>Select directories</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+A</string>
-   </property>
-  </action>
-  <action name="actionRebuild_collection">
-   <property name="text">
-    <string>Rebuild collection</string>
+    <string>Ctrl+D</string>
    </property>
   </action>
  </widget>

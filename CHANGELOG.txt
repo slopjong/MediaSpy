@@ -1,5 +1,15 @@
 CHANGELOG.txt
 =============
 
+0.5
+- first version of multithreading collection update
+
+0.4
+- directories can be added or removed
+- directories are fetched for media files which are displayed in a list
+
+0.3
+- first display of added directories
+
 0.1
 - first version, only collection adding and removing is implemented.

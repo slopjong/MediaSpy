@@ -113,6 +113,8 @@ void MediaCollection::init() {
   */
 void MediaCollection::updateMediaCollection(QStringList& mediaList) {
 
+    emit messageToStatus(QString(tr("Constructing the media collection...")));
+
     nMedia_ = mediaList.count();
     emit startUpdate(nMedia_);
     int currentStep = 0;
@@ -129,7 +131,6 @@ void MediaCollection::updateMediaCollection(QStringList& mediaList) {
         currentStep += tempMediaList.removeAll(mediaFileName);
         emit stepUpdate(currentStep);
     }
-    DatabaseManager::getInstance()->removeMedias(removeList);
 
 
     // second step, we check what is in the list and not in the database
@@ -150,6 +151,9 @@ void MediaCollection::updateMediaCollection(QStringList& mediaList) {
             currentStep += tempMediaList.removeAll(mediaFileName);
             emit stepUpdate(currentStep);
     }
+
+    // updating the database
+    DatabaseManager::getInstance()->removeMedias(removeList);
     DatabaseManager::getInstance()->insertMedias(insertList);
     emit finishedUpdate();
 }

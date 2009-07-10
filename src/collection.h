@@ -30,7 +30,9 @@
   * \brief The Collection is the list of directories selected by the user.
   * Media files present in these directories and their sub-directories are collected to fill the MediaCollection.
   */
-class Collection {
+class Collection : public QObject {
+    Q_OBJECT
+
     Collection();
     ~Collection();
 
@@ -55,6 +57,11 @@ public:
     void setNDir(const int);
     int getNDir() const;
     QString getDirAt(const int) const;
+
+
+signals:
+    void messageToStatus(QString);
+
 };
 
 #endif // COLLECTION_H

@@ -17,46 +17,27 @@
  * along with MediaSpy.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MEDIACOLLECTION_H
-#define MEDIACOLLECTION_H
 
-#include <QStandardItemModel>
+#include <QStringList>
 
-#include "databasemanager.h"
-#include "media.h"
-
-
-class MediaCollection : public QObject {
-
-    Q_OBJECT
-
-    // Constructors
-    MediaCollection();
-    ~MediaCollection();
-
-    // Fields
-    static MediaCollection *singleton_;
-    QMap<int, Media> mediaMap_;
-    unsigned int nMedia_;
+#include "updatethread.h"
+#include "collection.h"
+#include "mediacollection.h"
 
 
-public:
-    // Operations
-    static MediaCollection *getInstance();
-    static void kill();
-    void init();
-    void updateMediaCollection(QStringList&) ;
-
-    // Accessor Methods
-    unsigned int getNMedia() const;
+UpdateThread::UpdateThread(QObject* parent): QThread(parent) {}
 
 
-signals:
-    void startUpdate(const int);
-    void stepUpdate(const int);
-    void finishedUpdate();
-    void messageToStatus(QString);
+UpdateThread::~UpdateThread() {
+    wait();
+}
 
-};
 
-#endif // MEDIACOLLECTION_H
+void UpdateThread::run() {
+    emit messageToStatus(QString(tr("Updating...")));
+    QStringList mediaList = Collection::getInstance()->buildFileList();
+    MediaCollection::getInstance()->updateMediaCollection(mediaList);
+//    exec(); // blocks the thread if used, what is used for then?
+}
+
+

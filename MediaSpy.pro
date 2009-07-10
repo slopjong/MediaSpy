@@ -15,13 +15,15 @@ SOURCES += src/main.cpp \
     src/databasemanager.cpp \
     src/collectiondialog.cpp \
     src/mediacollection.cpp \
-    src/media.cpp
+    src/media.cpp \
+    src/updatethread.cpp
 HEADERS += src/mediaspy.h \
     src/collection.h \
     src/databasemanager.h \
     src/collectiondialog.h \
     src/mediacollection.h \
-    src/media.h
+    src/media.h \
+    src/updatethread.h
 FORMS += ui/mediaspy.ui \
     ui/collectiondialog.ui
 RESOURCES += MediaSpy.qrc
@@ -31,7 +33,7 @@ OTHER_FILES += README.txt \
     CHANGELOG.txt
 
 # define some useful values
-PACKAGE_VERSION = 0.4.2
+PACKAGE_VERSION = 0.5
 QMAKE_TARGET_PRODUCT = "MediaSpy"
 QMAKE_TARGET_COPYRIGHT = "Copyright &copy; 2009 Stéphane Péchard"
 win32:QMAKE_TARGET_COPYRIGHT = "Copyright (C) 2009 Stéphane Péchard"

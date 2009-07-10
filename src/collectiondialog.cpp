@@ -95,7 +95,7 @@ void CollectionDialog::on_delDirButton_clicked() {
 QStringList CollectionDialog::getUpdate() {
     QStringList addedDirList;
 
-    for(int i = 0; i < this->listWidget->count(); i++) {
+    for(int i = 0; i < this->listWidget->count(); ++i) {
         QListWidgetItem* item = this->listWidget->item(i);
         addedDirList << item->text();
     }

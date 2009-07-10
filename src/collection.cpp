@@ -112,7 +112,6 @@ void Collection::initDirList(const QStringList& dirs) {
   */
 QStringList Collection::buildFileList() {
     QStringList fileList;
-
     for (int i = 0; i < this->dirList_.size(); ++i)
         fileList << ScanRecDir(this->dirList_.at(i));
 
@@ -128,6 +127,8 @@ QStringList Collection::buildFileList() {
 QStringList Collection::ScanRecDir(const QString& dir) {
     QStringList fileList;
     QDir qdir(dir);
+
+    emit messageToStatus(QString(qApp->tr("Searching in %1...").arg(dir)));
 
     // filtering the names of the files in the directory
     QStringList nameFilterMovie = QStringList() << "*.avi" << "*.mpeg" << "*.mpg" << "*.mkv" << "*.mp4" << "*.wmv";

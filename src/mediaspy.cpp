@@ -22,9 +22,6 @@
 #include "ui_mediaspy.h"
 
 
-#include <QTableView>
-
-
 /////////////////////////////
 // constructors/destructor //
 /////////////////////////////
@@ -36,9 +33,10 @@ MediaSpy::MediaSpy(QWidget *parent) :
         QMainWindow(parent),
         ui_(new Ui::MediaSpy)
 {
-    ui_->setupUi(this);
+    updateThread_ = new UpdateThread(this);
 
     // view settings
+    ui_->setupUi(this);
     ui_->progressBar->setVisible(false);
     ui_->progressBar->setMinimum(0);
 
@@ -47,8 +45,17 @@ MediaSpy::MediaSpy(QWidget *parent) :
     connect(MediaCollection::getInstance(), SIGNAL(stepUpdate(const int)), this, SLOT(setProgressbarCurrent(const int)));
     connect(MediaCollection::getInstance(), SIGNAL(finishedUpdate()), this, SLOT(setProgressbarOff()));
 
-    init();
+    connect(updateThread_, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
+    connect(Collection::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
+    connect(MediaCollection::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
 
+    connect(updateThread_, SIGNAL(finished()), this, SLOT(finishedUpdate()) );
+
+    // program really begins here!
+    init();
+    updateThread_->start();
+
+    // (light) error management
     if(!(errorMessage_.isEmpty()))
         QMessageBox::critical(this, tr("Error"), errorMessage_);
 }
@@ -67,7 +74,7 @@ MediaSpy::~MediaSpy() {
 // methods //
 /////////////
 /** \fn void MediaSpy::init()
-  * \brief Initiates all parts of the program.
+  * \brief Initiates required parts of the program.
   */
 void MediaSpy::init() {
     //////////////////////////
@@ -95,18 +102,6 @@ void MediaSpy::init() {
         return;
     }
 
-    ///////////////////////////////
-    // directory collection init // TODO in a different thread ??
-    ///////////////////////////////
-    Collection::getInstance()->init();
-    QStringList mediaList = Collection::getInstance()->buildFileList();
-
-    ///////////////////////////
-    // media collection init //
-    ///////////////////////////
-    MediaCollection::getInstance()->init();
-    MediaCollection::getInstance()->updateMediaCollection(mediaList);
-
     ////////////////////
     // tableView init //
     ////////////////////
@@ -124,6 +119,12 @@ void MediaSpy::init() {
     mediaListProxyModel_->setSortCaseSensitivity(Qt::CaseInsensitive);
 
     ui_->mediaListView->setModel(mediaListProxyModel_);
+
+    ///////////////////////////////
+    // collections init //
+    ///////////////////////////////
+    Collection::getInstance()->init();
+    MediaCollection::getInstance()->init();
 }
 
 
@@ -131,28 +132,22 @@ void MediaSpy::init() {
   * \brief Updates the Collections.
   */
 void MediaSpy::updateCollections(QStringList& dirList) {
-    ui_->statusBar->showMessage(QString(tr("Building the list of files...")));
     Collection::getInstance()->update(dirList);
-    QStringList mediaList = Collection::getInstance()->buildFileList();
-
-    ui_->statusBar->showMessage(QString(tr("Updating your media Collection...")));
-    MediaCollection::getInstance()->updateMediaCollection(mediaList);
-    sqlTableModel_->select();
+    updateThread_->start();
+//    sqlTableModel_->select();
 }
-
-
 
 
 
 ///////////
 // slots //
 ///////////
-/** \fn void MediaSpy::on_actionAdd_directory_triggered()
+/** \fn void MediaSpy::on_actionSelectdirectories_triggered()
  *  \brief Opens the CollectionDialog dialog and gets the user's choice into the Collection.
  */
-void MediaSpy::on_actionAdd_directory_triggered() {
+void MediaSpy::on_actionSelectdirectories_triggered() {
     CollectionDialog dialog(this);
-    for(int i = 0; i < Collection::getInstance()->getNDir(); i++)
+    for(int i = 0; i < Collection::getInstance()->getNDir(); ++i)
         dialog.listWidget->addItem(Collection::getInstance()->getDirAt(i));
 
     if (dialog.exec() != QDialog::Accepted)
@@ -163,10 +158,6 @@ void MediaSpy::on_actionAdd_directory_triggered() {
 }
 
 
-void MediaSpy::on_actionRebuild_collection_triggered() {
-
-}
-
 /** \fn void MediaSpy::setProgressbarMaximum(const int maximum) const
  *  \brief Sets the maximum of the progress bar.
  *  \param the maximum value of the progress bar.
@@ -176,6 +167,7 @@ void MediaSpy::setProgressbarMaximum(const int maximum) const {
     ui_->progressBar->setVisible(true);
 }
 
+
 /** \fn void MediaSpy::setProgressbarCurrent(const int value) const
  *  \brief Sets the current value of the progress bar.
  *  \param the progress bar value
@@ -183,6 +175,7 @@ void MediaSpy::setProgressbarMaximum(const int maximum) const {
 void MediaSpy::setProgressbarCurrent(const int value) const {
     ui_->progressBar->setValue(value);
 }
+
 
 /** \fn void MediaSpy::setProgressbarOff() const
  *  \brief Ends the progress bar and shows a status message with the number of Media in the collection.
@@ -193,15 +186,28 @@ void MediaSpy::setProgressbarOff() const {
     ui_->statusBar->showMessage(message);
 }
 
+
 /** \fn void MediaSpy::on_actionAbout_MediaSpy_triggered()
  *  \brief Shows the MediaSpy About window.
  */
-void MediaSpy::on_actionAbout_MediaSpy_triggered()
-{
+void MediaSpy::on_actionAbout_MediaSpy_triggered() {
     QString myCopyright = QString::fromUtf8(PACKAGE_COPYRIGHTS);
     QMessageBox::about(this, tr("About ") + PACKAGE_NAME,
     QString("<h3>") + PACKAGE_NAME + " " + PACKAGE_VERSION + QString("</h3><p>") + myCopyright +
     tr("<p>MediaSpy is a movie collection cataloging software. Still in heavy development!"));
+}
+
+
+/** \fn void MediaSpy::displayMessage(QString message)
+ *  \brief Displays a message in the status bar.
+ */
+void MediaSpy::displayMessage(QString message) {
+    ui_->statusBar->showMessage(message);
+}
+
+
+void MediaSpy::finishedUpdate() {
+    sqlTableModel_->select();
 }
 
 
@@ -216,6 +222,7 @@ void MediaSpy::on_actionAbout_MediaSpy_triggered()
 const QString MediaSpy::getAppDirectory() {
     return appDirectory;
 }
+
 
 /** \fn const QString MediaSpy::getDbFileName()
  *  \brief Returns the name of the database file.
@@ -236,5 +243,4 @@ const QString MediaSpy::getDbFileName() {
 void MediaSpy::on_actionAbout_Qt_triggered() {
     qApp->aboutQt();
 }
-
 

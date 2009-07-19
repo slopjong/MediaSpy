@@ -1,6 +1,9 @@
 CHANGELOG.txt
 =============
 
+0.5.1
+- first version of internationalization
+
 0.5
 - first version of multithreading collection update
 

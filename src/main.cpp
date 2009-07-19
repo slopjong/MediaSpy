@@ -23,6 +23,14 @@
 int main(int argc, char *argv[]) {
     QApplication MediaSpyApp(argc, argv);
 
+    // translations handling via locale
+    QTranslator mediaspyTranslator;
+    QString filename = QString("ts/mediaspy_%1").arg(QLocale::system().name());
+    filename = filename.toLower();
+    mediaspyTranslator.load(filename);
+    MediaSpyApp.installTranslator(&mediaspyTranslator);
+
+    // settings
     MediaSpyApp.setOrganizationName("spechard");
     MediaSpyApp.setOrganizationDomain("spechard.wordpress.com");
     MediaSpyApp.setApplicationName("MediaSpy");
@@ -33,3 +41,4 @@ int main(int argc, char *argv[]) {
 
     return MediaSpyApp.exec();
 }
+

@@ -83,7 +83,7 @@ void MediaSpy::init() {
     if (!QDir(getAppDirectory()).exists()) {
         QDir localDir(QDir::homePath());
         if(!localDir.mkdir(getAppDirectory())) {
-            errorMessage_ = qApp->tr("Cannot create local directory!");
+            errorMessage_ = tr("Cannot create local directory!");
             return;
         }
     }
@@ -92,7 +92,7 @@ void MediaSpy::init() {
     // database init //
     ///////////////////
     if (!QSqlDatabase::drivers().contains("QSQLITE")) {
-        errorMessage_ = qApp->tr("This program needs the SQLITE driver.");
+        errorMessage_ = tr("This program needs the SQLITE driver.");
         return;
     }
 

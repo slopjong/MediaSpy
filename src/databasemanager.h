@@ -52,7 +52,7 @@ public:
     QStringList getCollectionDir();
 
     void insertMedias(const QList<Media>&);
-    QSqlError removeMedias(const QStringList&);
+    void removeMedias(const QStringList&);
     bool hasMedia(const QString&);
     QStringList queryMediaNames();
     QSqlQuery queryMedias(QSqlQuery&);

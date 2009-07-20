@@ -255,7 +255,7 @@ void DatabaseManager::insertMedias(const QList<Media>& mediaList) {
 /** \fn DatabaseManager::removeMedias(const QStringList& mediaFileNames)
   * \brief Removes the medias from the list called \var mediaFileNames off the Media table.
   */
-QSqlError DatabaseManager::removeMedias(const QStringList& mediaFileNames) {
+void DatabaseManager::removeMedias(const QStringList& mediaFileNames) {
     QSqlDatabase::database().transaction();
     QSqlQuery q;
     q.prepare("DELETE FROM Media WHERE fileName = ?");
@@ -268,7 +268,6 @@ QSqlError DatabaseManager::removeMedias(const QStringList& mediaFileNames) {
     }
 
     QSqlDatabase::database().commit();
-    return QSqlError();
 }
 
 

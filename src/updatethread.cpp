@@ -37,7 +37,6 @@ void UpdateThread::run() {
     emit messageToStatus(QString(tr("Updating...")));
     QStringList mediaList = Collection::getInstance()->buildFileList();
     MediaCollection::getInstance()->updateMediaCollection(mediaList);
-//    exec(); // blocks the thread if used, what is used for then?
 }
 
 

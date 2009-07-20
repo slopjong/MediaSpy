@@ -44,7 +44,9 @@ MediaCollection::MediaCollection() {}
 /** \fn MediaCollection::~MediaCollection()
   * \brief class destructor
   */
-MediaCollection::~MediaCollection() {}
+MediaCollection::~MediaCollection() {
+    mediaMap_.clear();
+}
 
 
 
@@ -77,7 +79,7 @@ void MediaCollection::kill() {
   */
 void MediaCollection::init() {
 
-    QSqlQuery q;
+/*    QSqlQuery q;
     DatabaseManager::getInstance()->queryMedias(q);
 
     int fieldId             = q.record().indexOf("id");
@@ -104,7 +106,7 @@ void MediaCollection::init() {
 
         mediaMap_.insert(id, tempMedia);
     }
-    nMedia_ = mediaMap_.count();
+    nMedia_ = mediaMap_.count();*/
 }
 
 

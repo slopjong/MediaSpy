@@ -16,14 +16,16 @@ SOURCES += src/main.cpp \
     src/collectiondialog.cpp \
     src/mediacollection.cpp \
     src/media.cpp \
-    src/updatethread.cpp
+    src/updatethread.cpp \
+    src/mediafilter.cpp
 HEADERS += src/mediaspy.h \
     src/collection.h \
     src/databasemanager.h \
     src/collectiondialog.h \
     src/mediacollection.h \
     src/media.h \
-    src/updatethread.h
+    src/updatethread.h \
+    src/mediafilter.h
 FORMS += ui/mediaspy.ui \
     ui/collectiondialog.ui
 TRANSLATIONS += ts/mediaspy_fr.ts

@@ -27,11 +27,13 @@
 #include <QMessageBox>
 #include <QSqlTableModel>
 #include <QSortFilterProxyModel>
+#include <QToolButton>
 
 #include "collectiondialog.h"
 #include "collection.h"
 #include "mediacollection.h"
 #include "updatethread.h"
+#include "mediafilter.h"
 
 
 /** \var appDirectory
@@ -79,13 +81,25 @@ private:
     QSqlTableModel* sqlTableModel_;
     QSortFilterProxyModel* mediaListProxyModel_;
     UpdateThread* updateThread_;
-    
+    MediaFilter* filter_;
+    const int filterLimit_;
+    int nFilter_;
+    QLabel* newFilterLabel;
+    QComboBox* newFilterComboBox;
+    QLineEdit* newFilterLineEdit;
+    QToolButton* newFilterToolButton;
+    QHBoxLayout* newFilterLayout;
+    QWidget* newFilterWidget;
+
+
     // Operations
     void init();
     void updateCollections(QStringList&);
 
 
 private slots:
+    void minusFilter_clicked();
+    void on_filterToolButton_clicked();
     void on_actionAbout_MediaSpy_triggered();
     void on_actionAbout_Qt_triggered();
     void on_actionSelectdirectories_triggered();
@@ -94,7 +108,7 @@ private slots:
     void setProgressbarOff() const;
     void displayMessage(QString);
     void finishedUpdate();
-
+    void selectedMovie(QModelIndex);
 };
 
 #endif // MEDIASPY_H

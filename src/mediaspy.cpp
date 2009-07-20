@@ -31,25 +31,27 @@
   */
 MediaSpy::MediaSpy(QWidget *parent) :
         QMainWindow(parent),
-        ui_(new Ui::MediaSpy)
+        ui_(new Ui::MediaSpy),
+        updateThread_(new UpdateThread(this)),
+        filter_(new MediaFilter()),
+        filterLimit_(filter_->getFilterLimit() - 1),
+        nFilter_(0)
 {
-    updateThread_ = new UpdateThread(this);
-
     // view settings
     ui_->setupUi(this);
-    ui_->progressBar->setVisible(false);
     ui_->progressBar->setMinimum(0);
 
-    // first connections
+    // connections
     connect(MediaCollection::getInstance(), SIGNAL(startUpdate(const int)), this, SLOT(setProgressbarMaximum(const int)));
     connect(MediaCollection::getInstance(), SIGNAL(stepUpdate(const int)), this, SLOT(setProgressbarCurrent(const int)));
     connect(MediaCollection::getInstance(), SIGNAL(finishedUpdate()), this, SLOT(setProgressbarOff()));
 
+    connect(updateThread_, SIGNAL(finished()), this, SLOT(finishedUpdate()) );
     connect(updateThread_, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
     connect(Collection::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
     connect(MediaCollection::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
 
-    connect(updateThread_, SIGNAL(finished()), this, SLOT(finishedUpdate()) );
+    connect(ui_->mediaListView, SIGNAL(activated(QModelIndex)), this, SLOT(selectedMovie(QModelIndex)));
 
     // program really begins here!
     init();
@@ -65,7 +67,15 @@ MediaSpy::MediaSpy(QWidget *parent) :
   */
 MediaSpy::~MediaSpy() {
     delete ui_;
+    delete updateThread_;
+    delete filter_;
     DatabaseManager::getInstance()->kill();
+    delete[] newFilterLabel;
+    delete[] newFilterComboBox;
+    delete[] newFilterLineEdit;
+    delete[] newFilterToolButton;
+    delete[] newFilterLayout;
+    delete[] newFilterWidget;
 }
 
 
@@ -102,6 +112,38 @@ void MediaSpy::init() {
         return;
     }
 
+    /////////////////////////
+    // filter objects init //
+    /////////////////////////
+    newFilterLabel      = new QLabel[filterLimit_];
+    newFilterComboBox   = new QComboBox[filterLimit_];
+    newFilterLineEdit   = new QLineEdit[filterLimit_];
+    newFilterToolButton = new QToolButton[filterLimit_];
+    newFilterLayout     = new QHBoxLayout[filterLimit_];
+    newFilterWidget     = new QWidget[filterLimit_];
+
+    for(int iFilter = 0; iFilter < filterLimit_; ++iFilter) {
+        newFilterLabel[iFilter].setText(tr("Filter"));
+        newFilterLabel[iFilter].setAlignment(Qt::AlignVCenter | Qt::AlignRight);
+
+        newFilterComboBox[iFilter].setModel(filter_->getModel());
+        newFilterComboBox[iFilter].setSizeAdjustPolicy(QComboBox::AdjustToContentsOnFirstShow);
+
+        newFilterToolButton[iFilter].setIcon(QIcon("images/minus.png"));
+        connect(&newFilterToolButton[iFilter], SIGNAL(clicked()), this, SLOT(minusFilter_clicked()));
+
+        newFilterLayout[iFilter].addWidget(&newFilterLabel[iFilter]);
+        newFilterLayout[iFilter].addWidget(&newFilterComboBox[iFilter]);
+        newFilterLayout[iFilter].addWidget(&newFilterLineEdit[iFilter]);
+        newFilterLayout[iFilter].addWidget(&newFilterToolButton[iFilter]);
+
+        newFilterWidget[iFilter].setLayout(&newFilterLayout[iFilter]);
+        newFilterWidget[iFilter].setVisible(false);
+        newFilterLayout[iFilter].setMargin(0);
+
+        ui_->verticalLayout->addWidget(&newFilterWidget[iFilter]);
+    }
+
     ////////////////////
     // tableView init //
     ////////////////////
@@ -120,9 +162,15 @@ void MediaSpy::init() {
 
     ui_->mediaListView->setModel(mediaListProxyModel_);
 
-    ///////////////////////////////
+
+    //////////////////////
+    // mediafilter init //
+    //////////////////////
+    ui_->filterComboBox->setModel(filter_->getModel());
+
+    //////////////////////
     // collections init //
-    ///////////////////////////////
+    //////////////////////
     Collection::getInstance()->init();
     MediaCollection::getInstance()->init();
 }
@@ -134,7 +182,6 @@ void MediaSpy::init() {
 void MediaSpy::updateCollections(QStringList& dirList) {
     Collection::getInstance()->update(dirList);
     updateThread_->start();
-//    sqlTableModel_->select();
 }
 
 
@@ -157,6 +204,14 @@ void MediaSpy::on_actionSelectdirectories_triggered() {
     updateCollections(upCollectionList);
 }
 
+void MediaSpy::selectedMovie(QModelIndex item) {
+
+//int row = ui_->mediaListView->currentIndex().row();
+//QModelIndex index = ui_->mediaListView->currentIndex();
+
+    QString s = QString(item.data().toString());
+    ui_->movieTitleLabel->setText(QString(tr("Title: %1").arg(s)));
+}
 
 /** \fn void MediaSpy::setProgressbarMaximum(const int maximum) const
  *  \brief Sets the maximum of the progress bar.
@@ -244,3 +299,23 @@ void MediaSpy::on_actionAbout_Qt_triggered() {
     qApp->aboutQt();
 }
 
+
+void MediaSpy::on_filterToolButton_clicked() {
+    if(nFilter_<filterLimit_) {
+        newFilterWidget[nFilter_].setVisible(true);
+        newFilterLineEdit[nFilter_].setFocus(Qt::MouseFocusReason);
+        nFilter_++;
+    }
+
+    if(nFilter_==filterLimit_)
+        ui_->filterToolButton->setEnabled(false);
+}
+
+
+void MediaSpy::minusFilter_clicked() {
+    nFilter_--;
+    if(nFilter_ >= 0) {
+        newFilterWidget[nFilter_].setVisible(false);
+        ui_->filterToolButton->setEnabled(true);
+    }
+}

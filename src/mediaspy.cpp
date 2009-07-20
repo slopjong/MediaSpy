@@ -51,11 +51,13 @@ MediaSpy::MediaSpy(QWidget *parent) :
     connect(Collection::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
     connect(MediaCollection::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
 
-    connect(ui_->mediaListView, SIGNAL(activated(QModelIndex)), this, SLOT(selectedMovie(QModelIndex)));
-
     // program really begins here!
     init();
     updateThread_->start();
+
+    // some connections need to be after init()
+    connect(ui_->mediaListView->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)),
+            this, SLOT(selectedMovie(QModelIndex, QModelIndex)));
 
     // (light) error management
     if(!(errorMessage_.isEmpty()))
@@ -204,14 +206,15 @@ void MediaSpy::on_actionSelectdirectories_triggered() {
     updateCollections(upCollectionList);
 }
 
-void MediaSpy::selectedMovie(QModelIndex item) {
 
-//int row = ui_->mediaListView->currentIndex().row();
-//QModelIndex index = ui_->mediaListView->currentIndex();
+void MediaSpy::selectedMovie(QModelIndex current, QModelIndex previous) {
+    Q_UNUSED(previous);
 
-    QString s = QString(item.data().toString());
+    QString s = QString(current.data().toString());
     ui_->movieTitleLabel->setText(QString(tr("Title: %1").arg(s)));
+    ui_->mediaInfoView->setHtml(s);
 }
+
 
 /** \fn void MediaSpy::setProgressbarMaximum(const int maximum) const
  *  \brief Sets the maximum of the progress bar.

@@ -108,7 +108,7 @@ private slots:
     void setProgressbarOff() const;
     void displayMessage(QString);
     void finishedUpdate();
-    void selectedMovie(QModelIndex);
+    void selectedMovie(QModelIndex, QModelIndex);
 };
 
 #endif // MEDIASPY_H

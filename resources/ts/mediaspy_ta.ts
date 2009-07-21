@@ -1,24 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
-<context>
-    <name></name>
-    <message>
-        <location filename="../../src/mediafilter.cpp" line="34"/>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/mediafilter.cpp" line="34"/>
-        <source>Seen</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/mediafilter.cpp" line="34"/>
-        <source>Tag</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
+<TS version="2.0" language="ta_IN">
 <context>
     <name>Collection</name>
     <message>
@@ -77,6 +59,24 @@
     </message>
 </context>
 <context>
+    <name>MediaFilter</name>
+    <message>
+        <location filename="../../src/mediafilter.cpp" line="34"/>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/mediafilter.cpp" line="34"/>
+        <source>Seen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/mediafilter.cpp" line="34"/>
+        <source>Tag</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MediaSpy</name>
     <message>
         <location filename="../../src/mediaspy.cpp" line="54"/>
@@ -118,6 +118,7 @@
         <location filename="../../src/mediaspy.cpp" line="286"/>
         <source>%n movie(s) in the collection</source>
         <translation type="unfinished">
+            <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
     </message>

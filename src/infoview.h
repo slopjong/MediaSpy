@@ -23,7 +23,8 @@
 #include <QString>
 #include <QtWebKit>
 
-class InfoView {
+class InfoView : public QObject {
+    Q_OBJECT
 
     // Constructors
     InfoView();

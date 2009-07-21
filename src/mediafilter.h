@@ -24,7 +24,9 @@
 
 #include <QStringListModel>
 
-class MediaFilter {
+class MediaFilter : public QObject {
+    Q_OBJECT
+
 public:
     MediaFilter();
     ~MediaFilter();

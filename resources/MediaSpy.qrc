@@ -4,7 +4,7 @@
         <file>images/add.png</file>
         <file>images/minus.png</file>
         <file>templates/default.css</file>
-        <file>ts/mediaspy_fr.ts</file>
-        <file>ts/mediaspy_ta.ts</file>
+        <file>ts/mediaspy_fr.qm</file>
+        <file>ts/mediaspy_ta.qm</file>
     </qresource>
 </RCC>

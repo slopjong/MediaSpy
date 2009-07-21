@@ -31,7 +31,7 @@ static const int FILTER_TYPE_BOOL = 1;
   * \brief list of the filters available
   */
 static const QStringList filterNames_ =
-        QStringList() << qApp->tr("Title") << qApp->tr("Seen") << qApp->tr("Tag");
+        QStringList() << MediaFilter::tr("Title") << MediaFilter::tr("Seen") << MediaFilter::tr("Tag");
 
 /** \var static const int filterTypes_
   * \brief array of the filters types (text or bool)

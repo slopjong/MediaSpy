@@ -6,6 +6,7 @@ CHANGELOG.txt
 - changes all NULL pointer to 00 (zero in octal)
 - new InfoView class
 - resources folder for all MediaSpy.qrc files
+- first approach of info panel styling
 
 0.5.2
 - filter widget (just visual, not functional)

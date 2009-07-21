@@ -2,24 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="fr_FR">
 <context>
-    <name></name>
-    <message>
-        <location filename="../../src/mediafilter.cpp" line="34"/>
-        <source>Title</source>
-        <translation>Titre</translation>
-    </message>
-    <message>
-        <location filename="../../src/mediafilter.cpp" line="34"/>
-        <source>Seen</source>
-        <translation>Vu</translation>
-    </message>
-    <message>
-        <location filename="../../src/mediafilter.cpp" line="34"/>
-        <source>Tag</source>
-        <translation>Tag</translation>
-    </message>
-</context>
-<context>
     <name>Collection</name>
     <message>
         <location filename="../../src/collection.cpp" line="131"/>
@@ -77,6 +59,24 @@
     </message>
 </context>
 <context>
+    <name>MediaFilter</name>
+    <message>
+        <location filename="../../src/mediafilter.cpp" line="34"/>
+        <source>Title</source>
+        <translation>Titre</translation>
+    </message>
+    <message>
+        <location filename="../../src/mediafilter.cpp" line="34"/>
+        <source>Seen</source>
+        <translation>Vu</translation>
+    </message>
+    <message>
+        <location filename="../../src/mediafilter.cpp" line="34"/>
+        <source>Tag</source>
+        <translation>Tag</translation>
+    </message>
+</context>
+<context>
     <name>MediaSpy</name>
     <message>
         <location filename="../../src/mediaspy.cpp" line="54"/>
@@ -97,6 +97,12 @@
         <location filename="../../src/mediaspy.cpp" line="139"/>
         <source>This program needs the SQLITE driver.</source>
         <translation>Ce programme nécessite le driver SQLITE.</translation>
+    </message>
+    <message>
+        <location filename="../../src/mediaspy.cpp" line="166"/>
+        <location filename="../../ui/mediaspy.ui" line="36"/>
+        <source>Filter</source>
+        <translation>Filtre</translation>
     </message>
     <message>
         <location filename="../../src/mediaspy.cpp" line="195"/>
@@ -127,12 +133,6 @@
         <translation>&lt;p&gt;MediaSpy est un logiciel de gestion de catalogue de film, en perpétuel développement !</translation>
     </message>
     <message>
-        <location filename="../../src/mediaspy.cpp" line="166"/>
-        <location filename="../../ui/mediaspy.ui" line="36"/>
-        <source>Filter</source>
-        <translation>Filtre</translation>
-    </message>
-    <message>
         <location filename="../../ui/mediaspy.ui" line="14"/>
         <source>MediaSpy</source>
         <translation>MediaSpy</translation>
@@ -142,10 +142,6 @@
         <location filename="../../ui/mediaspy.ui" line="109"/>
         <source>...</source>
         <translation>...</translation>
-    </message>
-    <message>
-        <source>Movie Information</source>
-        <translation type="obsolete">Informations sur le film</translation>
     </message>
     <message>
         <location filename="../../ui/mediaspy.ui" line="90"/>

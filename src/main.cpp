@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
 
     // translations handling via locale
     QTranslator mediaspyTranslator;
-    QString filename = QString("ts/mediaspy_%1").arg(QLocale::system().name());
+    QString filename = QString(":/ts/mediaspy_%1").arg(QLocale::system().name());
     filename = filename.toLower();
     mediaspyTranslator.load(filename);
     MediaSpyApp.installTranslator(&mediaspyTranslator);

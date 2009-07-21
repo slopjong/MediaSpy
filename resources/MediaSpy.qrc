@@ -1,8 +1,10 @@
 <RCC>
-<qresource>
-    <file>images/icon.png</file>
-    <file>images/add.png</file>
-    <file>images/minus.png</file>
-    <file>templates/default.css</file>
-</qresource>
+    <qresource prefix="/" >
+        <file>images/icon.png</file>
+        <file>images/add.png</file>
+        <file>images/minus.png</file>
+        <file>templates/default.css</file>
+        <file>ts/mediaspy_fr.ts</file>
+        <file>ts/mediaspy_ta.ts</file>
+    </qresource>
 </RCC>

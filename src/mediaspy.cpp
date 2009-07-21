@@ -34,30 +34,20 @@ MediaSpy::MediaSpy(QWidget *parent) :
         ui_(new Ui::MediaSpy),
         updateThread_(new UpdateThread(this)),
         filter_(new MediaFilter()),
+        infoView_(InfoView::getInstance()),
         filterLimit_(filter_->getFilterLimit() - 1),
         nFilter_(0)
 {
     // view settings
     ui_->setupUi(this);
     ui_->progressBar->setMinimum(0);
-
-    // connections
-    connect(MediaCollection::getInstance(), SIGNAL(startUpdate(const int)), this, SLOT(setProgressbarMaximum(const int)));
-    connect(MediaCollection::getInstance(), SIGNAL(stepUpdate(const int)), this, SLOT(setProgressbarCurrent(const int)));
-    connect(MediaCollection::getInstance(), SIGNAL(finishedUpdate()), this, SLOT(setProgressbarOff()));
-
-    connect(updateThread_, SIGNAL(finished()), this, SLOT(finishedUpdate()) );
-    connect(updateThread_, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
-    connect(Collection::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
-    connect(MediaCollection::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
+    ui_->splitter->setSizes(QList<int>() << ui_->centralWidget->size().width()/2 << ui_->centralWidget->size().width()/2);
 
     // program really begins here!
+    readSettings();
     init();
+    makeConnections();
     updateThread_->start();
-
-    // some connections need to be after init()
-    connect(ui_->mediaListView->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)),
-            this, SLOT(selectedMovie(QModelIndex, QModelIndex)));
 
     // (light) error management
     if(!(errorMessage_.isEmpty()))
@@ -71,13 +61,13 @@ MediaSpy::~MediaSpy() {
     delete ui_;
     delete updateThread_;
     delete filter_;
-    DatabaseManager::getInstance()->kill();
     delete[] newFilterLabel;
     delete[] newFilterComboBox;
     delete[] newFilterLineEdit;
     delete[] newFilterToolButton;
     delete[] newFilterLayout;
     delete[] newFilterWidget;
+    DatabaseManager::getInstance()->kill();
 }
 
 
@@ -85,17 +75,59 @@ MediaSpy::~MediaSpy() {
 /////////////
 // methods //
 /////////////
+ void MediaSpy::writeSettings() {
+     QSettings settings;
+
+     settings.beginGroup("MediaSpy");
+     settings.setValue("size", size());
+     settings.setValue("pos", pos());
+     settings.endGroup();
+ }
+
+
+ void MediaSpy::readSettings() {
+     QSettings settings;
+
+     settings.beginGroup("MediaSpy");
+     resize(settings.value("size", QSize(800, 600)).toSize());
+     move(settings.value("pos", QPoint(0, 0)).toPoint());
+     settings.endGroup();
+ }
+
+
+ void MediaSpy::makeConnections() {
+    connect(MediaCollection::getInstance(), SIGNAL(startUpdate(const int)), this, SLOT(setProgressbarMaximum(const int)));
+    connect(MediaCollection::getInstance(), SIGNAL(stepUpdate(const int)), this, SLOT(setProgressbarCurrent(const int)));
+    connect(MediaCollection::getInstance(), SIGNAL(finishedUpdate()), this, SLOT(setProgressbarOff()));
+
+    connect(updateThread_, SIGNAL(finished()), this, SLOT(finishedUpdate()) );
+    connect(updateThread_, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
+    connect(Collection::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
+    connect(MediaCollection::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
+
+    connect(ui_->mediaListView->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)),
+            this, SLOT(selectedMovie(QModelIndex, QModelIndex)));
+}
+
+
 /** \fn void MediaSpy::init()
   * \brief Initiates required parts of the program.
   */
 void MediaSpy::init() {
-    //////////////////////////
-    // local directory init //
-    //////////////////////////
+    ////////////////////////////
+    // local directories init //
+    ////////////////////////////
     if (!QDir(getAppDirectory()).exists()) {
         QDir localDir(QDir::homePath());
         if(!localDir.mkdir(getAppDirectory())) {
             errorMessage_ = tr("Cannot create local directory!");
+            return;
+        }
+    }
+    if (!QDir(getCssDirectory()).exists()) {
+        QDir localDir(QDir::homePath());
+        if(!localDir.mkdir(getCssDirectory())) {
+            errorMessage_ = tr("Cannot create local style directory!");
             return;
         }
     }
@@ -114,6 +146,12 @@ void MediaSpy::init() {
         return;
     }
 
+    ///////////////////
+    // infoview init //
+    ///////////////////
+    QString voidInfoView = infoView_->init(ui_->mediaInfoView->settings());
+    ui_->mediaInfoView->setHtml(voidInfoView);
+
     /////////////////////////
     // filter objects init //
     /////////////////////////
@@ -131,7 +169,7 @@ void MediaSpy::init() {
         newFilterComboBox[iFilter].setModel(filter_->getModel());
         newFilterComboBox[iFilter].setSizeAdjustPolicy(QComboBox::AdjustToContentsOnFirstShow);
 
-        newFilterToolButton[iFilter].setIcon(QIcon("images/minus.png"));
+        newFilterToolButton[iFilter].setIcon(QIcon(":/images/minus.png"));
         connect(&newFilterToolButton[iFilter], SIGNAL(clicked()), this, SLOT(minusFilter_clicked()));
 
         newFilterLayout[iFilter].addWidget(&newFilterLabel[iFilter]);
@@ -164,7 +202,6 @@ void MediaSpy::init() {
 
     ui_->mediaListView->setModel(mediaListProxyModel_);
 
-
     //////////////////////
     // mediafilter init //
     //////////////////////
@@ -175,6 +212,12 @@ void MediaSpy::init() {
     //////////////////////
     Collection::getInstance()->init();
     MediaCollection::getInstance()->init();
+}
+
+
+void MediaSpy::closeEvent(QCloseEvent *event) {
+    Q_UNUSED(event);
+    writeSettings();
 }
 
 
@@ -281,6 +324,13 @@ const QString MediaSpy::getAppDirectory() {
     return appDirectory;
 }
 
+/** \fn const QString MediaSpy::getCssDirectory()
+ *  \brief Returns the app directory.
+ *  \return the app directory
+ */
+const QString MediaSpy::getCssDirectory() {
+    return cssDirectory;
+}
 
 /** \fn const QString MediaSpy::getDbFileName()
  *  \brief Returns the name of the database file.

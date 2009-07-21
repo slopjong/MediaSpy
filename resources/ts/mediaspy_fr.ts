@@ -4,16 +4,19 @@
 <context>
     <name></name>
     <message>
+        <location filename="../src/mediafilter.cpp" line="34"/>
         <source>Title</source>
-        <translation type="obsolete">Titre</translation>
+        <translation type="unfinished">Titre</translation>
     </message>
     <message>
+        <location filename="../src/mediafilter.cpp" line="34"/>
         <source>Seen</source>
-        <translation type="obsolete">Vu</translation>
+        <translation type="unfinished">Vu</translation>
     </message>
     <message>
+        <location filename="../src/mediafilter.cpp" line="34"/>
         <source>Tag</source>
-        <translation type="obsolete">Tag</translation>
+        <translation type="unfinished">Tag</translation>
     </message>
 </context>
 <context>
@@ -60,7 +63,7 @@
 <context>
     <name>MediaCollection</name>
     <message>
-        <location filename="../src/mediacollection.cpp" line="116"/>
+        <location filename="../src/mediacollection.cpp" line="118"/>
         <source>Constructing the media collection...</source>
         <translation>Construction de la collection de média en cours...</translation>
     </message>
@@ -68,31 +71,32 @@
 <context>
     <name>MediaSpy</name>
     <message>
-        <location filename="../src/mediaspy.cpp" line="60"/>
+        <location filename="../src/mediaspy.cpp" line="65"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="86"/>
+        <location filename="../src/mediaspy.cpp" line="99"/>
         <source>Cannot create local directory!</source>
         <translation>Création du répertoire local impossible !</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="95"/>
+        <location filename="../src/mediaspy.cpp" line="108"/>
         <source>This program needs the SQLITE driver.</source>
         <translation>Ce programme nécessite le driver SQLITE.</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="113"/>
+        <location filename="../src/mediaspy.cpp" line="158"/>
         <source>Title</source>
         <translation>Titre</translation>
     </message>
     <message>
+        <location filename="../src/mediaspy.cpp" line="221"/>
         <source>Title: %1</source>
-        <translation type="obsolete">Titre : %1</translation>
+        <translation type="unfinished">Titre : %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mediaspy.cpp" line="185"/>
+        <location filename="../src/mediaspy.cpp" line="250"/>
         <source>%n movie(s) in the collection</source>
         <translation>
             <numerusform>%n film dans la collection</numerusform>
@@ -100,18 +104,20 @@
         </translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="195"/>
+        <location filename="../src/mediaspy.cpp" line="260"/>
         <source>About </source>
         <translation>À propos</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="197"/>
+        <location filename="../src/mediaspy.cpp" line="262"/>
         <source>&lt;p&gt;MediaSpy is a movie collection cataloging software. Still in heavy development!</source>
         <translation>&lt;p&gt;MediaSpy est un logiciel de gestion de catalogue de film, en perpétuel développement !</translation>
     </message>
     <message>
+        <location filename="../src/mediaspy.cpp" line="129"/>
+        <location filename="../ui/mediaspy.ui" line="36"/>
         <source>Filter</source>
-        <translation type="obsolete">Filtre</translation>
+        <translation type="unfinished">Filtre</translation>
     </message>
     <message>
         <location filename="../ui/mediaspy.ui" line="14"/>
@@ -119,60 +125,72 @@
         <translation>MediaSpy</translation>
     </message>
     <message>
-        <source>...</source>
-        <translation type="obsolete">...</translation>
-    </message>
-    <message>
         <location filename="../ui/mediaspy.ui" line="53"/>
+        <location filename="../ui/mediaspy.ui" line="109"/>
+        <source>...</source>
+        <translation type="unfinished">...</translation>
+    </message>
+    <message>
         <source>Movie Information</source>
-        <translation>Informations sur le film</translation>
+        <translation type="obsolete">Informations sur le film</translation>
     </message>
     <message>
+        <location filename="../ui/mediaspy.ui" line="90"/>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/mediaspy.ui" line="100"/>
+        <source>about:blank</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/mediaspy.ui" line="121"/>
         <source>Title:</source>
-        <translation type="obsolete">Titre :</translation>
+        <translation type="unfinished">Titre :</translation>
     </message>
     <message>
-        <location filename="../ui/mediaspy.ui" line="77"/>
+        <location filename="../ui/mediaspy.ui" line="141"/>
         <source>File</source>
         <translation>Fichier</translation>
     </message>
     <message>
-        <location filename="../ui/mediaspy.ui" line="83"/>
+        <location filename="../ui/mediaspy.ui" line="147"/>
         <source>Help</source>
         <translation>Aide</translation>
     </message>
     <message>
-        <location filename="../ui/mediaspy.ui" line="90"/>
+        <location filename="../ui/mediaspy.ui" line="154"/>
         <source>Options</source>
         <translation>Options</translation>
     </message>
     <message>
-        <location filename="../ui/mediaspy.ui" line="109"/>
+        <location filename="../ui/mediaspy.ui" line="173"/>
         <source>About MediaSpy</source>
         <translation>À propos de MediaSpy</translation>
     </message>
     <message>
-        <location filename="../ui/mediaspy.ui" line="114"/>
+        <location filename="../ui/mediaspy.ui" line="178"/>
         <source>About Qt</source>
         <translation>À propos de Qt</translation>
     </message>
     <message>
-        <location filename="../ui/mediaspy.ui" line="119"/>
+        <location filename="../ui/mediaspy.ui" line="183"/>
         <source>Quit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="../ui/mediaspy.ui" line="122"/>
+        <location filename="../ui/mediaspy.ui" line="186"/>
         <source>Ctrl+Q</source>
         <translation>Ctrl+Q</translation>
     </message>
     <message>
-        <location filename="../ui/mediaspy.ui" line="127"/>
+        <location filename="../ui/mediaspy.ui" line="191"/>
         <source>Select directories</source>
         <translation>Choisissez des répertoires</translation>
     </message>
     <message>
-        <location filename="../ui/mediaspy.ui" line="130"/>
+        <location filename="../ui/mediaspy.ui" line="194"/>
         <source>Ctrl+D</source>
         <translation>Ctrl+D</translation>
     </message>

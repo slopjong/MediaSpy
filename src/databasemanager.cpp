@@ -30,7 +30,7 @@ static const QStringList dataTables_ =
 /** \var DatabaseManager* DatabaseManager::singleton_
   * \brief pointer to the unique instance of DatabaseManager
   */
-DatabaseManager* DatabaseManager::singleton_ = NULL;
+DatabaseManager* DatabaseManager::singleton_ = 00;
 
 
 /////////////////////////////
@@ -56,7 +56,7 @@ DatabaseManager::~DatabaseManager() {
   * \brief returns the unique instance of DatabaseManager, creates it the first time
   */
 DatabaseManager* DatabaseManager::getInstance() {
-    if (NULL == singleton_)
+    if (00 == singleton_)
         singleton_ =  new DatabaseManager;
     return singleton_;
 }
@@ -65,9 +65,9 @@ DatabaseManager* DatabaseManager::getInstance() {
   * \brief deletes the unique instance of DatabaseManager
   */
 void DatabaseManager::kill() {
-    if (NULL != singleton_) {
+    if (00 != singleton_) {
         delete singleton_;
-        singleton_ = NULL;
+        singleton_ = 00;
     }
 }
 

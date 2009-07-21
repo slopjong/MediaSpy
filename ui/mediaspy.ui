@@ -14,7 +14,7 @@
    <string>MediaSpy</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../MediaSpy.qrc">
+   <iconset>
     <normaloff>:/images/images/icon.png</normaloff>:/images/images/icon.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -54,7 +54,7 @@
               </property>
               <property name="icon">
                <iconset resource="../MediaSpy.qrc">
-                <normaloff>:/images/images/add.png</normaloff>:/images/images/add.png</iconset>
+                <normaloff>:/images/add.png</normaloff>:/images/add.png</iconset>
               </property>
              </widget>
             </item>

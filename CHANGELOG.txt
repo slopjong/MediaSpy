@@ -1,6 +1,10 @@
 CHANGELOG.txt
 =============
 
+0.5.3
+- window size and position memorize through settings
+- changes all NULL pointer to 00 (zero in octal)
+
 0.5.2
 - filter widget (just visual, not functional)
 

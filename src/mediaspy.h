@@ -21,7 +21,7 @@
 #define MEDIASPY_H
 
 #include <QtGui/QMainWindow>
-#include <QSettings>
+//#include <QSettings>
 #include <QDir>
 #include <QSqlDatabase>
 #include <QMessageBox>
@@ -34,12 +34,14 @@
 #include "mediacollection.h"
 #include "updatethread.h"
 #include "mediafilter.h"
+#include "infoview.h"
 
 
 /** \var appDirectory
   * \brief name of the local directory used by the program
   */
 static const QString appDirectory   = QDir::homePath() + "/.MediaSpy/";
+static const QString cssDirectory   = QDir::homePath() + "/.MediaSpy/stylesheets/";
 
 /** \var dbFileName
   * \brief name of the database file
@@ -69,6 +71,7 @@ public:
     // Accessor Methods
     static const QString getAppDirectory();
     static const QString getDbFileName();
+    static const QString getCssDirectory();
 
     // Operations
     void tableViewUpdated();
@@ -77,13 +80,14 @@ public:
 private:
     // Fields
     Ui::MediaSpy* ui_;
+    UpdateThread* updateThread_;
+    MediaFilter* filter_;
+    InfoView* infoView_;
+    const int filterLimit_;
+    int nFilter_;
     QString errorMessage_;
     QSqlTableModel* sqlTableModel_;
     QSortFilterProxyModel* mediaListProxyModel_;
-    UpdateThread* updateThread_;
-    MediaFilter* filter_;
-    const int filterLimit_;
-    int nFilter_;
     QLabel* newFilterLabel;
     QComboBox* newFilterComboBox;
     QLineEdit* newFilterLineEdit;
@@ -95,6 +99,10 @@ private:
     // Operations
     void init();
     void updateCollections(QStringList&);
+    void writeSettings();
+    void readSettings();
+    void closeEvent(QCloseEvent*);
+    void makeConnections();
 
 
 private slots:

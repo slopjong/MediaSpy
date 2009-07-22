@@ -168,7 +168,7 @@ void MediaSpy::init() {
         newFilterComboBox[iFilter].setModel(filter_->getModel());
         newFilterComboBox[iFilter].setSizeAdjustPolicy(QComboBox::AdjustToContentsOnFirstShow);
 
-        newFilterToolButton[iFilter].setIcon(QIcon(":/images/minus.png"));
+        newFilterToolButton[iFilter].setIcon(QIcon(":/icons/minus.png"));
         connect(&newFilterToolButton[iFilter], SIGNAL(clicked()), this, SLOT(minusFilter_clicked()));
 
         newFilterLayout[iFilter].addWidget(&newFilterLabel[iFilter]);

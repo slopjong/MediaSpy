@@ -34,7 +34,6 @@ MediaSpy::MediaSpy(QWidget *parent) :
         ui_(new Ui::MediaSpy),
         updateThread_(new UpdateThread(this)),
         filter_(new MediaFilter()),
-        infoView_(InfoView::getInstance()),
         filterLimit_(filter_->getFilterLimit() - 1),
         nFilter_(0)
 {
@@ -100,7 +99,7 @@ MediaSpy::~MediaSpy() {
     connect(MediaCollection::getInstance(), SIGNAL(stepUpdate(const int)), this, SLOT(setProgressbarCurrent(const int)));
     connect(MediaCollection::getInstance(), SIGNAL(finishedUpdate()), this, SLOT(setProgressbarOff()));
 
-    connect(updateThread_, SIGNAL(finished()), this, SLOT(finishedUpdate()) );
+    connect(updateThread_, SIGNAL(finished()), this, SLOT(finishedThread()) );
     connect(updateThread_, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
     connect(Collection::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
     connect(MediaCollection::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
@@ -149,7 +148,7 @@ void MediaSpy::init() {
     ///////////////////
     // infoview init //
     ///////////////////
-    QString voidInfoView = infoView_->init(ui_->mediaInfoView->settings());
+    QString voidInfoView = InfoView::getInstance()->init(ui_->mediaInfoView->settings());
     ui_->mediaInfoView->setHtml(voidInfoView);
 
     /////////////////////////
@@ -189,7 +188,6 @@ void MediaSpy::init() {
     ////////////////////
     sqlTableModel_ = new QSqlTableModel(this);
     sqlTableModel_->setTable("Media");
-    sqlTableModel_->select();
     sqlTableModel_->removeColumns(0, 2);
     sqlTableModel_->removeColumns(1, 5);
     sqlTableModel_->setHeaderData(0, Qt::Horizontal, tr("Title"));
@@ -307,8 +305,11 @@ void MediaSpy::displayMessage(QString message) {
 }
 
 
-void MediaSpy::finishedUpdate() {
+void MediaSpy::finishedThread() {
     sqlTableModel_->select();
+    // this may freeze window with long table!
+    while(sqlTableModel_->canFetchMore())
+        sqlTableModel_->fetchMore();
 }
 
 

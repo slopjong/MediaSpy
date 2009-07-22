@@ -82,7 +82,6 @@ private:
     Ui::MediaSpy* ui_;
     UpdateThread* updateThread_;
     MediaFilter* filter_;
-    InfoView* infoView_;
     const int filterLimit_;
     int nFilter_;
     QString errorMessage_;
@@ -115,7 +114,7 @@ private slots:
     void setProgressbarCurrent(const int) const;
     void setProgressbarOff() const;
     void displayMessage(QString);
-    void finishedUpdate();
+    void finishedThread();
     void selectedMovie(QModelIndex, QModelIndex);
 };
 

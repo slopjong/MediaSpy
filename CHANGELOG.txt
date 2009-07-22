@@ -1,6 +1,9 @@
 CHANGELOG.txt
 =============
 
+0.5.4
+- media list is now completely filled when program starts (may freeze)
+
 0.5.3
 - window size and position memorize through settings
 - changes all NULL pointer to 00 (zero in octal)

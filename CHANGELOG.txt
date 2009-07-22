@@ -1,6 +1,9 @@
 CHANGELOG.txt
 =============
 
+0.5.5
+- use of MEDIASPY_HOME environment variable to handle translations location
+
 0.5.4
 - media list is now completely filled when program starts (may freeze)
 

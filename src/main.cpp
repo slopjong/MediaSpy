@@ -23,11 +23,22 @@
 int main(int argc, char *argv[]) {
     QApplication MediaSpyApp(argc, argv);
 
+    // MediaSpyHome handling
+    QString MediaSpyHome = QString(getenv("MEDIASPY_HOME"));
+    if (MediaSpyHome.isEmpty()) {
+        #ifdef MEDIASPY_HOME
+            MediaSpyHome = QString(MEDIASPY_HOME);
+            if (MediaSpyHome.isEmpty())
+                MediaSpyHome = QCoreApplication::applicationDirPath();
+        #else
+            MediaSpyHome = QCoreApplication::applicationDirPath();
+        #endif
+    }
+
     // translations handling via locale
+    const QString languageFile = MediaSpyHome + QString("/translations/mediaspy_%1").arg(QLocale::system().name());
     QTranslator mediaspyTranslator;
-    QString filename = QString(":/ts/mediaspy_%1").arg(QLocale::system().name());
-    filename = filename.toLower();
-    mediaspyTranslator.load(filename);
+    mediaspyTranslator.load(languageFile);
     MediaSpyApp.installTranslator(&mediaspyTranslator);
 
     // settings

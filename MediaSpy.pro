@@ -31,16 +31,16 @@ HEADERS += src/mediaspy.h \
     src/infoview.h
 FORMS += ui/mediaspy.ui \
     ui/collectiondialog.ui
-RESOURCES += resources/MediaSpy.qrc
-TRANSLATIONS += resources/ts/mediaspy_fr.ts \
-    resources/ts/mediaspy_ta.ts
+RESOURCES += src/resources/MediaSpy.qrc
+TRANSLATIONS += translations/mediaspy_fr.ts \
+    translations/mediaspy_ta.ts
 OTHER_FILES += README.txt \
     LICENSE.txt \
     TODO.txt \
     CHANGELOG.txt
 
 # define some useful values
-PACKAGE_VERSION = 0.5.4-testing
+PACKAGE_VERSION = 0.5.5-testing
 QMAKE_TARGET_PRODUCT = "MediaSpy"
 QMAKE_TARGET_COPYRIGHT = "Copyright &copy; 2009 Stéphane Péchard"
 win32:QMAKE_TARGET_COPYRIGHT = "Copyright (C) 2009 Stéphane Péchard"
@@ -48,4 +48,5 @@ win32:QMAKE_TARGET_COPYRIGHT = "Copyright (C) 2009 Stéphane Péchard"
 # define variable for source code
 DEFINES *= "PACKAGE_NAME=\"\\\"$${QMAKE_TARGET_PRODUCT}\\\"\"" \
     "PACKAGE_VERSION=\"\\\"$${PACKAGE_VERSION}\\\"\"" \
-    "PACKAGE_COPYRIGHTS=\"\\\"$${QMAKE_TARGET_COPYRIGHT}\\\"\""
+    "PACKAGE_COPYRIGHTS=\"\\\"$${QMAKE_TARGET_COPYRIGHT}\\\"\"" \
+    "MEDIASPY_HOME=\"$(MEDIASPY_HOME)\""

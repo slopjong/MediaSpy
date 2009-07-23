@@ -110,7 +110,7 @@ void InfoManager::finishSearchImdbReply(QNetworkReply* networkReply) {
 
     // If the URL is not empty, we're being redirected.
     if(!urlRedirectedTo.isEmpty())
-        searchRedirectedToMoviePage(urlRedirectedTo);
+        searchRedirectedToMoviePage(possibleRedirectUrl.toUrl(), urlRedirectedTo);
 //        this->networkManager_->get(QNetworkRequest(urlRedirectedTo));
     else
         urlRedirectedTo.clear();
@@ -170,8 +170,8 @@ QUrl InfoManager::redirectUrl(const QUrl& possibleRedirectUrl, const QUrl& oldRe
 }
 
 
-void InfoManager::searchRedirectedToMoviePage(const QUrl& url) {
-
+void InfoManager::searchRedirectedToMoviePage(const QUrl& requestUrl, const QUrl& fullUrl) {
+    QString requestMedia = imdbUrl2MediaName(requestUrl);
 }
 
 

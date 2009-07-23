@@ -25,7 +25,6 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
-#include <QDomDocument>
 
 #include "databasemanager.h"
 
@@ -44,7 +43,7 @@ class InfoManager : public QObject {
     // Operations
     bool processImdbPage(QNetworkReply*);
     QUrl redirectUrl(const QUrl&, const QUrl&) const;
-    void searchRedirectedToMoviePage(const QUrl&);
+    void searchRedirectedToMoviePage(const QUrl&, const QUrl&);
     QString imdbUrl2MediaName(const QUrl&);
 
 

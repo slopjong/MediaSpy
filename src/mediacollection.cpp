@@ -142,6 +142,7 @@ void MediaCollection::updateMediaCollection(QStringList& mediaList) {
             Media tempMedia;
             tempMedia.setType(MEDIA_TYPE_MOVIE);
             tempMedia.setFileName(mediaFileName);
+            tempMedia.setImdbInfo(false);
             tempMedia.setLoaned(false);
             tempMedia.setSeen(false);
             tempMedia.setRecommended(false);

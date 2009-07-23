@@ -50,6 +50,9 @@ public:
     QString getNotes() const;
     void setNotes(const QString&);
 
+    bool hasImdbInfo() const;
+    void setImdbInfo(const bool);
+
     bool isLoaned() const;
     void setLoaned(const bool);
     bool isSeen() const;
@@ -80,6 +83,7 @@ private:
     int         type_;
     QString     baseName_;
     QString     fileName_;
+    bool        imdbInfo_;
     bool        loaned_;
     bool        seen_;
     bool        recommended_;

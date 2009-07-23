@@ -1,6 +1,17 @@
 CHANGELOG.txt
 =============
 
+0.5.5
+- use of MEDIASPY_HOME environment variable to handle translations location
+- initial commit of imdb api (not fully functional yet)
+    1. added InfoManager class (which is a singleton)
+    2. added imdbInfo field in Media database table and in Media class
+    3. created a db query to fetch empty imdb info
+
+FIX
+- static QComboxBox content was non translated (dumbass!)
+
+
 0.5.4
 - media list is now completely filled when program starts (may freeze)
 

@@ -35,6 +35,7 @@
 #include "updatethread.h"
 #include "mediafilter.h"
 #include "infoview.h"
+#include "infomanager.h"
 
 
 /** \var appDirectory

@@ -103,6 +103,7 @@ MediaSpy::~MediaSpy() {
     connect(updateThread_, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
     connect(Collection::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
     connect(MediaCollection::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
+    connect(InfoManager::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
 
     connect(ui_->mediaListView->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)),
             this, SLOT(selectedMovie(QModelIndex, QModelIndex)));
@@ -310,6 +311,8 @@ void MediaSpy::finishedThread() {
     // this may freeze window with long table!
     while(sqlTableModel_->canFetchMore())
         sqlTableModel_->fetchMore();
+
+    InfoManager::getInstance()->updateMediaCollectionInfo();
 }
 
 

@@ -97,8 +97,9 @@ QSqlError DatabaseManager::init(const QString &dbFilePath) {
         return q.lastError();
 
     if (!q.exec(QString("create table Media(id INTEGER PRIMARY KEY AUTOINCREMENT, \
-            type INTEGER, baseName VARCHAR(255), fileName VARCHAR(255), loaned BOOLEAN, seen BOOLEAN, \
-            recommended BOOLEAN, notes TEXT)")))
+            type INTEGER, baseName VARCHAR(255), fileName VARCHAR(255), \
+            imdbInfo BOOLEAN, \
+            loaned BOOLEAN, seen BOOLEAN, recommended BOOLEAN, notes TEXT)")))
         return q.lastError();
 
     if (!q.exec(QString("create table ImdbInfo(id INTEGER PRIMARY KEY AUTOINCREMENT, \
@@ -232,18 +233,19 @@ bool DatabaseManager::hasMedia(const QString& fileName) {
 void DatabaseManager::insertMedias(const QList<Media>& mediaList) {
     QSqlDatabase::database().transaction();
     QSqlQuery q;
-    q.prepare("INSERT INTO Media (type, fileName, baseName, loaned, seen, recommended, notes) "
-              "VALUES (?, ?, ?, ?, ?, ?, ?)");
+    q.prepare("INSERT INTO Media (type, baseName, fileName, imdbInfo, loaned, seen, recommended, notes) "
+              "VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 
     Media media;
     foreach(media, mediaList) {
         q.bindValue(0, media.getType());
-        q.bindValue(1, media.getFileName());
-        q.bindValue(2, media.getBaseName());
-        q.bindValue(3, media.isLoaned());
-        q.bindValue(4, media.isSeen());
-        q.bindValue(5, media.isRecommended());
-        q.bindValue(6, media.getNotes());
+        q.bindValue(1, media.getBaseName());
+        q.bindValue(2, media.getFileName());
+        q.bindValue(3, media.hasImdbInfo());
+        q.bindValue(4, media.isLoaned());
+        q.bindValue(5, media.isSeen());
+        q.bindValue(6, media.isRecommended());
+        q.bindValue(7, media.getNotes());
 
         if (!q.exec())
             throw(q.lastError()); // TODO handle this!
@@ -270,4 +272,17 @@ void DatabaseManager::removeMedias(const QStringList& mediaFileNames) {
     QSqlDatabase::database().commit();
 }
 
+
+
+QStringList DatabaseManager::queryMediaWithImdbInfo() {
+    QSqlQuery q;
+    if (!q.exec(QString("SELECT baseName FROM Media WHERE NOT imdbInfo")))
+        throw(q.lastError()); // TODO handle this!
+
+    QStringList list;
+    while (q.next())
+        list << q.value(0).toString();
+
+    return list;
+}
 

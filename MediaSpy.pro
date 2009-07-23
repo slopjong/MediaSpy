@@ -2,7 +2,8 @@
 # Project created by QtCreator 2009-06-26T13:39:09
 # -------------------------------------------------
 QT += sql \
-    webkit
+    webkit \
+    network
 TARGET = mediaspy
 TEMPLATE = app
 UI_HEADERS_DIR = ui
@@ -19,7 +20,8 @@ SOURCES += src/main.cpp \
     src/media.cpp \
     src/updatethread.cpp \
     src/mediafilter.cpp \
-    src/infoview.cpp
+    src/infoview.cpp \
+    src/infomanager.cpp
 HEADERS += src/mediaspy.h \
     src/collection.h \
     src/databasemanager.h \
@@ -28,7 +30,8 @@ HEADERS += src/mediaspy.h \
     src/media.h \
     src/updatethread.h \
     src/mediafilter.h \
-    src/infoview.h
+    src/infoview.h \
+    src/infomanager.h
 FORMS += ui/mediaspy.ui \
     ui/collectiondialog.ui
 RESOURCES += src/resources/MediaSpy.qrc

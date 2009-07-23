@@ -27,12 +27,6 @@
 static const int FILTER_TYPE_TEXT = 0;
 static const int FILTER_TYPE_BOOL = 1;
 
-/** \var static const QStringList mediaFilters_
-  * \brief list of the filters available
-  */
-static const QStringList filterNames_ =
-        QStringList() << MediaFilter::tr("Title") << MediaFilter::tr("Seen") << MediaFilter::tr("Tag");
-
 /** \var static const int filterTypes_
   * \brief array of the filters types (text or bool)
   */
@@ -47,6 +41,11 @@ static const int filterTypes_[] =
   * \brief class constructor
   */
 MediaFilter::MediaFilter() : model_(new QStringListModel()) {
+    // if adding filters, don't forget to update filterTypes_ list
+    filterNames_ << MediaFilter::tr("Title");
+    filterNames_ << MediaFilter::tr("Seen");
+    filterNames_ << MediaFilter::tr("Tag");
+
     model_->setStringList(filterNames_);
 }
 
@@ -62,9 +61,6 @@ MediaFilter::~MediaFilter() {
 /////////////
 // methods //
 /////////////
-
-
-
 int MediaFilter::getFilterLimit() const {
     return filterNames_.count();
 }

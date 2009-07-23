@@ -37,6 +37,7 @@ Media::Media(const Media &media) {
     type_ = media.type_;
     baseName_ = media.baseName_;
     fileName_ = media.fileName_;
+    imdbInfo_ = media.imdbInfo_;
     loaned_ = media.loaned_;
     seen_ = media.seen_;
     recommended_ = media.recommended_;
@@ -117,6 +118,10 @@ QString Media::getBaseName() const { return baseName_; }
  *  \param the new baseName of the media file
  */
 void Media::setBaseName(const QString& baseName) { baseName_ = baseName; }
+
+bool Media::hasImdbInfo() const { return imdbInfo_; }
+
+void Media::setImdbInfo(const bool loaned) { imdbInfo_ = loaned; }
 
 /** \fn bool Media::isLoaned() const
  *  \brief Returns true if the media has been loaned.

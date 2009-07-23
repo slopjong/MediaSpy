@@ -54,8 +54,10 @@ public:
     void insertMedias(const QList<Media>&);
     void removeMedias(const QStringList&);
     bool hasMedia(const QString&);
+
     QStringList queryMediaNames();
     QSqlQuery queryMedias(QSqlQuery&);
+    QStringList queryMediaWithImdbInfo();
 };
 
 

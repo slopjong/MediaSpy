@@ -36,6 +36,10 @@ public:
 private:
     QStringListModel* model_;
 
+    /** \var static const QStringList filterNames_
+      * \brief list of the filters available
+      */
+    QStringList filterNames_;
 };
 
 #endif // MEDIAFILTER_H

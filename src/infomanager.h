@@ -45,6 +45,7 @@ class InfoManager : public QObject {
     QUrl redirectUrl(const QUrl&, const QUrl&) const;
     void searchRedirectedToMoviePage(const QUrl&, const QUrl&);
     QString imdbUrl2MediaName(const QUrl&);
+    int imdbUrl2Id(const QUrl&);
 
 
 public:

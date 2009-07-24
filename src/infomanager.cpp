@@ -22,6 +22,8 @@
 
 
 static const QString ImdbSearchPrefix = "http://www.imdb.com/find?s=all&q=";
+static const QString ImdbTitlePrefix = "http://www.imdb.com/title/";
+
 
 /** \var InfoManager* InfoManager::singleton_
   * \brief pointer to the unique instance of InfoManager
@@ -171,7 +173,11 @@ QUrl InfoManager::redirectUrl(const QUrl& possibleRedirectUrl, const QUrl& oldRe
 
 
 void InfoManager::searchRedirectedToMoviePage(const QUrl& requestUrl, const QUrl& fullUrl) {
-    QString requestMedia = imdbUrl2MediaName(requestUrl);
+    QString requestMediaName = imdbUrl2MediaName(requestUrl);
+    int mediaImdbId = imdbUrl2Id(fullUrl);
+    // we have both media name and imdb id, let's fill the database!
+    MovieMedia tempMedia = getImdbInfoFromId(mediaImdbId);
+    DatabaseManager::getInstance()->insertMediaImdbInfo();
 }
 
 
@@ -180,5 +186,10 @@ QString InfoManager::imdbUrl2MediaName(const QUrl& url) {
 }
 
 
+int InfoManager::imdbUrl2Id(const QUrl& url) {
+    QString string = url.toString().remove(ImdbTitlePrefix + "tt");
+    string.chop(string.indexOf("/"));
+    return string.toInt();
+}
 
 

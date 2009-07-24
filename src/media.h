@@ -23,6 +23,7 @@
 
 #include <QString>
 #include <QFileInfo>
+#include <QSqlQuery>
 
 
 /** \class Media
@@ -30,8 +31,21 @@
   */
 class Media {
 
+    // Fields
+    qulonglong  id_;
+    int         type_;
+    QString     baseName_;
+    QString     fileName_;
+    bool        imdbInfo_;
+    bool        loaned_;
+    bool        seen_;
+    bool        recommended_;
+    QString     notes_;
+
+
 public:
     // Fields
+    // Operations
 
     // Constructors
     Media();
@@ -61,39 +75,15 @@ public:
     void setRecommended(const bool);
 
 
-    // Operations
-
-
-
 protected:
     // Fields
-
     // Constructors
-
     // Accessor Methods
-
     // Operations
     void generateBaseName();
+    void setInfoFromMediaName(QString&);
 
 
-
-private:
-    // Fields
-    qulonglong  id_;
-    int         type_;
-    QString     baseName_;
-    QString     fileName_;
-    bool        imdbInfo_;
-    bool        loaned_;
-    bool        seen_;
-    bool        recommended_;
-    QString     notes_;
-
-    // Constructors
-
-    // Accessor Methods
-
-    // Operations
 };
 
 #endif // MEDIA_H

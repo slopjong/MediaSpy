@@ -18,6 +18,7 @@
  */
 
 
+#include "databasemanager.h"
 #include "media.h"
 
 
@@ -54,6 +55,34 @@ Media::~Media() {}
 /////////////
 // methods //
 /////////////
+void Media::setInfoFromMediaName(QString& mediaName) {
+    QSqlQuery q;
+    QString whereName = "baseName";
+    DatabaseManager::getInstance()->queryMediaWhere(q, whereName, mediaName);
+
+    int fieldId             = q.record().indexOf("id");
+    int fieldType           = q.record().indexOf("type");
+    int fieldFileName       = q.record().indexOf("fileName");
+    int fieldLoaned         = q.record().indexOf("loaned");
+    int fieldSeen           = q.record().indexOf("seen");
+    int fieldRecommended    = q.record().indexOf("recommended");
+    int fieldNotes          = q.record().indexOf("notes");
+
+    while (q.next()) {
+        qulonglong id = q.value(fieldId).toULongLong() - 1;
+
+        this->setId(id);
+        this->setType(q.value(fieldType).toInt());
+        this->setBaseName(mediaName);
+        this->setFileName(q.value(fieldFileName).toString());
+        this->setLoaned(q.value(fieldLoaned).toBool());
+        this->setSeen(q.value(fieldSeen).toBool());
+        this->setRecommended(q.value(fieldRecommended).toBool());
+        this->setNotes(q.value(fieldNotes).toString());
+    }
+}
+
+
 /** \fn void Media::generateBaseName()
  *  \brief Generates the baseName based on the fileName.
  */

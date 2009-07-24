@@ -18,39 +18,49 @@
  */
 
 
-#ifndef INFOMANAGER_H
-#define INFOMANAGER_H
+#ifndef INFOIMDB_H
+#define INFOIMDB_H
 
 #include <QtGui>
-#include <QNetworkRequest>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
 
 #include "databasemanager.h"
+#include "infosupplier.h"
 #include "moviemedia.h"
-#include "infoimdb.h"
 
 
-class InfoManager : public QObject {
+class InfoImdb : public InfoSupplier {
     Q_OBJECT
 
-    // Constructors
-    InfoManager();
-    ~InfoManager();
+    // Operations
+    bool processSearchPage(QNetworkReply*);
+    bool processMoviePage(QNetworkReply*);
+    void searchRedirectedToMoviePage(const QUrl&, const QUrl&);
+    QString url2MediaName(const QUrl&);
+    unsigned int url2Id(const QUrl&);
+    MovieMedia getInfoFromId(unsigned int);
+    void makeRequest(QString&);
 
     // Fields
-    static InfoManager *singleton_;
-    InfoImdb infoImdb_;
+    QNetworkAccessManager* networkManager_;
+    unsigned int nRequests_;
+    QMap<QString, QNetworkReply*> replyMap_;
 
 
 public:
+    // Constructors
+    InfoImdb();
+    virtual ~InfoImdb();
+
     // Operations
-    static InfoManager *getInstance();
-    static void kill();
-    void updateMediaCollectionInfo();
-    void searchImdb(QString);
+    void searchImdb(QString&);
+    void getMoviePage(unsigned int);
 
 
-signals:
-    void messageToStatus(QString);
+private slots:
+    void finishReply(QNetworkReply*);
+
 };
 
-#endif // INFOMANAGER_H
+#endif // INFOIMDB_H

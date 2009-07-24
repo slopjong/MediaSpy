@@ -59,7 +59,7 @@ public:
     QSqlQuery queryMedias(QSqlQuery&);
     QSqlQuery queryMediaWhere(QSqlQuery&, QString&, QString&);
     QSqlQuery queryImdbInfoWhere(QSqlQuery&, QString&, QString&);
-    QStringList queryMediaWithImdbInfo();
+    QStringList queryMediaWithNoImdbInfo();
 
     void insertMovieMedia(MovieMedia*);
 

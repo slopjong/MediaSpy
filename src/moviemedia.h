@@ -26,7 +26,7 @@
 class MovieMedia : public Media {
 
     // Operations
-    void setInfoFromImdbId(unsigned int);
+    void getInfoFromMediaId(unsigned int);
 
 public:
     // Constructors
@@ -34,6 +34,7 @@ public:
     MovieMedia(QString&);
     MovieMedia(unsigned int);
     MovieMedia(QString&, unsigned int);
+    explicit MovieMedia(const MovieMedia&);
     virtual ~MovieMedia();
 
     // Accessor Methods

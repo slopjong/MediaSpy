@@ -28,28 +28,62 @@
 /** \fn MovieMedia::MovieMedia()
   * \brief class constructor
   */
-MovieMedia::MovieMedia() {}
+MovieMedia::MovieMedia() :
+    Media(),
+    imdbId_(0),
+    genre_(0),
+    year_(0),
+    runtime_(0),
+    rating_(0.0),
+    title_(0),
+    director_(0),
+    country_(0),
+    image_(0),
+    studio_(0),
+    cast_(0),
+    plot_(0),
+    notes_(0)
+{}
+
+/** \fn MovieMedia::MovieMedia()
+  * \brief copy constructor
+  */
+MovieMedia::MovieMedia(const MovieMedia &movieMedia) : Media(movieMedia) {
+    imdbId_ = movieMedia.imdbId_;
+    genre_ = movieMedia.genre_;
+    year_ = movieMedia.year_;
+    runtime_ = movieMedia.runtime_;
+    rating_ = movieMedia.rating_;
+    title_ = movieMedia.title_;
+    director_ = movieMedia.director_;
+    country_ = movieMedia.country_;
+    image_ = movieMedia.image_;
+    studio_ = movieMedia.studio_;
+    cast_ = movieMedia.cast_;
+    plot_ = movieMedia.plot_;
+    notes_ = movieMedia.notes_;
+}
 
 /** \fn MovieMedia::MovieMedia(QString& mediaName)
   * \brief class constructor
   */
 MovieMedia::MovieMedia(QString& mediaName) {
-    setInfoFromMediaName(mediaName);
+    getInfoFromMediaName(mediaName);
 }
 
-/** \fn MovieMedia::MovieMedia(unsigned int imdbId)
+/** \fn MovieMedia::MovieMedia(unsigned int mediaId)
   * \brief class constructor
   */
-MovieMedia::MovieMedia(unsigned int imdbId) {
-    setInfoFromImdbId(imdbId);
+MovieMedia::MovieMedia(unsigned int mediaId) {
+    getInfoFromMediaId(mediaId);
 }
 
-/** \fn MovieMedia::MovieMedia(QString& mediaName, unsigned int imdbId)
+/** \fn MovieMedia::MovieMedia(QString& mediaName, unsigned int mediaId)
   * \brief class constructor
   */
-MovieMedia::MovieMedia(QString& mediaName, unsigned int imdbId) {
-    setInfoFromMediaName(mediaName);
-    setInfoFromImdbId(imdbId);
+MovieMedia::MovieMedia(QString& mediaName, unsigned int mediaId) {
+    getInfoFromMediaName(mediaName);
+    getInfoFromMediaId(mediaId);
 }
 
 /** \fn MovieMedia::~MovieMedia()
@@ -62,7 +96,7 @@ MovieMedia::~MovieMedia() {}
 /////////////
 // methods //
 /////////////
-void MovieMedia::setInfoFromImdbId(unsigned int id) {
+void MovieMedia::getInfoFromMediaId(unsigned int id) {
     QSqlQuery q;
     QString whereName = "mediaId";
     QString idString = QString("%1").arg(id);
@@ -115,7 +149,12 @@ void MovieMedia::setRuntime(const int runtime) {runtime_ = runtime;}
 int MovieMedia::getRuntime() const {return runtime_;}
 void MovieMedia::setRating(const double rating) {rating_ = rating;}
 double MovieMedia::getRating() const {return rating_;}
-void MovieMedia::setTitle(const QString& title) {title_ = title;}
+void MovieMedia::setTitle(const QString& title) {
+
+    fprintf(stdout, "plop=%s\n", title.toAscii().constData());
+//    title_ = QString("");
+
+}
 QString MovieMedia::getTitle() const {return title_;}
 void MovieMedia::setDirector(const QString& director) {director_ = director;}
 QString MovieMedia::getDirector() const {return director_;}

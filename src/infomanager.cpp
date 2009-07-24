@@ -70,11 +70,11 @@ void InfoManager::updateMediaCollectionInfo() {
 
     // which media ? TODO: arrange this in order to search only for empty info
     // maybe get the id more than the name?
-    QStringList mediaWithoutInfoList = DatabaseManager::getInstance()->queryMediaWithImdbInfo();
-    QString mediaName;
+    QStringList mediaIdWithNoInfoList = DatabaseManager::getInstance()->queryMediaWithNoImdbInfo();
+    QString mediaId;
 
-    foreach(mediaName, mediaWithoutInfoList) {
-        infoImdb_.searchImdb(mediaName);
+    foreach(mediaId, mediaIdWithNoInfoList) {
+        infoImdb_.searchImdb(mediaId);
     }
     //}
 }

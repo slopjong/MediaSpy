@@ -297,9 +297,9 @@ void DatabaseManager::removeMedias(const QStringList& mediaFileNames) {
 
 
 
-QStringList DatabaseManager::queryMediaWithImdbInfo() {
+QStringList DatabaseManager::queryMediaWithNoImdbInfo() {
     QSqlQuery q;
-    if (!q.exec(QString("SELECT baseName FROM Media WHERE NOT imdbInfo")))
+    if (!q.exec(QString("SELECT fileName FROM Media WHERE NOT imdbInfo")))
         throw(q.lastError()); // TODO handle this!
 
     QStringList list;

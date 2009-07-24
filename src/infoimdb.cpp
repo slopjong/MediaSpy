@@ -43,6 +43,11 @@ InfoImdb::InfoImdb() :
   */
 InfoImdb::~InfoImdb() {
     delete networkManager_;
+
+    // deleting the MovieMedia objects
+    MovieMedia* movieMediaPointer;
+    foreach(movieMediaPointer, replyMap_.uniqueKeys())
+        delete movieMediaPointer;
 }
 
 
@@ -51,20 +56,24 @@ InfoImdb::~InfoImdb() {
 // methods //
 //////////////
 void InfoImdb::searchImdb(QString& mediaName) {
-    QString url = QString(searchPrefix + mediaName);
-    makeRequest(url);
+    // construct a MediaMovie from mediaName
+    MovieMedia* movieMedia = new MovieMedia(mediaName);
+
+    QString url = QString(searchPrefix + movieMedia->getBaseName());
+    makeRequest(url, movieMedia);
 }
 
 
-void InfoImdb::getMoviePage(unsigned int id) {
+void InfoImdb::getMoviePage(unsigned int id, MovieMedia* movieMedia) {
     // id is padded to 7 char to avoid infinite redirection loop
     QString url = QString(titlePrefix + "tt" + QString("%1/").arg(id, 7, 10, QLatin1Char('0')));
-    makeRequest(url);
+    makeRequest(url, movieMedia);
 }
 
 
-void InfoImdb::makeRequest(QString& url) {
-    networkManager_->get(QNetworkRequest(QUrl(url)));
+void InfoImdb::makeRequest(QString& url, MovieMedia* movieMedia) {
+    QNetworkReply* reply = networkManager_->get(QNetworkRequest(QUrl(url)));
+    replyMap_.insert(movieMedia, reply);
 }
 
 
@@ -86,24 +95,25 @@ void InfoImdb::finishReply(QNetworkReply* networkReply) {
         QUrl urlRedirectedTo = redirectUrl(possibleRedirectUrl.toUrl(), urlRedirectedTo);
 
         // If the URL is not empty, we're being redirected.
-        if(!urlRedirectedTo.isEmpty())
-            searchRedirectedToMoviePage(possibleRedirectUrl.toUrl(), urlRedirectedTo);
-        else
+        if(!urlRedirectedTo.isEmpty()) {
+            searchRedirectedToMoviePage(possibleRedirectUrl.toUrl(), urlRedirectedTo, replyMap_.key(networkReply));
+        }
+        else {
             urlRedirectedTo.clear();
 
-        // finally, process the page
-        bool ok = processSearchPage(networkReply);
-        emit searchFinished(ok);
+            // process the search page
+            bool ok = processSearchPage(networkReply);
+            emit searchFinished(ok);
+        }
     }
     else if(networkReply->url().toString().contains(titlePrefix)) { // this was a getMoviePage() request
-        // finally, process the page
+        // process the movie page
         bool ok = processMoviePage(networkReply);
         emit searchFinished(ok);
     }
-    else { // this was a strange request!
+    else { // this was a strange request! Please, do nothing stupid with it!
         return;
     }
-
 
     networkReply->close();
     networkReply->deleteLater();
@@ -147,26 +157,53 @@ bool InfoImdb::processMoviePage(QNetworkReply* source) {
     QUrl requestUrl = source->url();
     fprintf(stdout, "Movie Page: %s\n", requestUrl.toString().toAscii().constData());
 
+    // get the movieMedia object from the map
+    QList<MovieMedia*> movieMediaKeys = replyMap_.keys(source);
+    MovieMedia* movieMedia = movieMediaKeys.last();
+
+    // from QIODevice to QString
+    QTextStream* textStream = new QTextStream(source);
+    QString line;
+    QString titleString;
+    QString titleContent = "<meta name=\"title\" content=\"";
+
+    do { // looking for special lines to get data
+        line = textStream->readLine();
+        if(line.contains(titleContent)) {
+            titleString = line.remove(titleContent);
+            titleString.chop(2);
+        }
+
+    } while (!line.isNull());
+
+    fprintf(stdout, "The title of the movie is: %s\n", titleString.toAscii().constData());
+
+//    QString i = movieMedia->getTitle();
+
+    movieMedia->setTitle(titleString);
+
+//    fprintf(stdout, "The title of the movie is: %s\n", movieMedia->getTitle().toAscii().constData());
+
     return true;
 }
 
 
-void InfoImdb::searchRedirectedToMoviePage(const QUrl& requestUrl, const QUrl& fullUrl) {
+void InfoImdb::searchRedirectedToMoviePage(const QUrl& requestUrl, const QUrl& movieUrl, MovieMedia* movieMedia) {
     QString requestMediaName = url2MediaName(requestUrl);
-    int mediaImdbId = url2Id(fullUrl);
+    int mediaImdbId = url2Id(movieUrl);
+    getMoviePage(mediaImdbId, movieMedia);
+
     // we have both media name and imdb id, let's fill the database!
-    MovieMedia* movieMedia = new MovieMedia();
+//    movieMedia->setImdbInfo();
 //    DatabaseManager::getInstance()->insertMovieMedia(movieMedia);
     delete movieMedia;
 }
 
 
-MovieMedia InfoImdb::getInfoFromId(unsigned int id) {
-    MovieMedia out;
-    getMoviePage(id);
-
-    return out;
-}
+//const MovieMedia* InfoImdb::getInfoFromId(unsigned int id, const MovieMedia* movieMedia) {
+//    getMoviePage(id, movieMedia);
+//    return movieMedia;
+//}
 
 
 QString InfoImdb::url2MediaName(const QUrl& url) {

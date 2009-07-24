@@ -28,7 +28,17 @@
 /** \fn Media::Media()
   * \brief class constructor
   */
-Media::Media() {}
+Media::Media() :
+    id_(0),
+    type_(0),
+    baseName_(0),
+    fileName_(0),
+    imdbInfo_(0),
+    loaned_(false),
+    seen_(false),
+    recommended_(false),
+    notes_(0)
+{}
 
 /** \fn Media::Media(const Media &media)
   * \brief copy constructor
@@ -55,14 +65,14 @@ Media::~Media() {}
 /////////////
 // methods //
 /////////////
-void Media::setInfoFromMediaName(QString& mediaName) {
+void Media::getInfoFromMediaName(QString& mediaName) {
     QSqlQuery q;
-    QString whereName = "baseName";
+    QString whereName = "fileName";
     DatabaseManager::getInstance()->queryMediaWhere(q, whereName, mediaName);
 
     int fieldId             = q.record().indexOf("id");
     int fieldType           = q.record().indexOf("type");
-    int fieldFileName       = q.record().indexOf("fileName");
+    int fieldBaseName       = q.record().indexOf("baseName");
     int fieldLoaned         = q.record().indexOf("loaned");
     int fieldSeen           = q.record().indexOf("seen");
     int fieldRecommended    = q.record().indexOf("recommended");
@@ -73,8 +83,8 @@ void Media::setInfoFromMediaName(QString& mediaName) {
 
         this->setId(id);
         this->setType(q.value(fieldType).toInt());
-        this->setBaseName(mediaName);
-        this->setFileName(q.value(fieldFileName).toString());
+        this->setFileName(mediaName);
+        this->setBaseName(q.value(fieldBaseName).toString());
         this->setLoaned(q.value(fieldLoaned).toBool());
         this->setSeen(q.value(fieldSeen).toBool());
         this->setRecommended(q.value(fieldRecommended).toBool());
@@ -90,7 +100,6 @@ void Media::generateBaseName() {
     QFileInfo fileInfo = QFileInfo(fileName_);
     this->setBaseName(fileInfo.completeBaseName());
 }
-
 
 
 

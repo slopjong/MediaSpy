@@ -81,7 +81,7 @@ protected:
     // Accessor Methods
     // Operations
     void generateBaseName();
-    void setInfoFromMediaName(QString&);
+    void getInfoFromMediaName(QString&);
 
 
 };

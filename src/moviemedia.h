@@ -56,14 +56,10 @@ public:
     void setCountry(const QString&);
     QString getImage() const;
     void setImage(const QString&);
-    QString getStudio() const;
-    void setStudio(const QString&);
     QString getCast() const;
     void setCast(const QString&);
     QString getPlot() const;
     void setPlot(const QString&);
-    QString getNotes() const;
-    void setNotes(const QString&);
 
 //    bool hasImdbInfo() const;
 //    void setImdbInfo(const bool);
@@ -89,10 +85,8 @@ private:
     QString     director_;
     QString     country_;
     QString     image_;
-    QString     studio_;
     QString     cast_;
     QString     plot_;
-    QString     notes_;
 
     // Constructors
     // Accessor Methods

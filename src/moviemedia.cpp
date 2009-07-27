@@ -29,20 +29,18 @@
   * \brief class constructor
   */
 MovieMedia::MovieMedia() :
-    Media(),
-    imdbId_(0),
-    genre_(0),
-    year_(0),
-    runtime_(0),
-    rating_(0.0),
-    title_(0),
-    director_(0),
-    country_(0),
-    image_(0),
-    studio_(0),
-    cast_(0),
-    plot_(0),
-    notes_(0)
+    Media()
+    , imdbId_(0)
+    , genre_(0)
+    , year_(0)
+    , runtime_(0)
+    , rating_(0.0)
+    , title_(0)
+    , director_(0)
+    , country_(0)
+    , image_(0)
+    , cast_(0)
+    , plot_(0)
 {}
 
 /** \fn MovieMedia::MovieMedia()
@@ -58,10 +56,8 @@ MovieMedia::MovieMedia(const MovieMedia &movieMedia) : Media(movieMedia) {
     director_ = movieMedia.director_;
     country_ = movieMedia.country_;
     image_ = movieMedia.image_;
-    studio_ = movieMedia.studio_;
     cast_ = movieMedia.cast_;
     plot_ = movieMedia.plot_;
-    notes_ = movieMedia.notes_;
 }
 
 /** \fn MovieMedia::MovieMedia(QString& mediaName)
@@ -111,10 +107,8 @@ void MovieMedia::getInfoFromMediaId(unsigned int id) {
     int fieldDirector       = q.record().indexOf("director");
     int fieldCountry        = q.record().indexOf("country");
     int fieldImage          = q.record().indexOf("image");
-    int fieldStudio         = q.record().indexOf("studio");
     int fieldCast           = q.record().indexOf("cast");
     int fieldPlot           = q.record().indexOf("plot");
-    int fieldNotes          = q.record().indexOf("notes");
 
     while (q.next()) {
         this->setImdbId(q.value(fieldImdbId).toInt());
@@ -126,10 +120,8 @@ void MovieMedia::getInfoFromMediaId(unsigned int id) {
         this->setDirector(q.value(fieldDirector).toString());
         this->setCountry(q.value(fieldCountry).toString());
         this->setImage(q.value(fieldImage).toString());
-        this->setStudio(q.value(fieldStudio).toString());
         this->setCast(q.value(fieldCast).toString());
         this->setPlot(q.value(fieldPlot).toString());
-        this->setNotes(q.value(fieldNotes).toString());
     }
 }
 
@@ -146,10 +138,8 @@ void MovieMedia::printInfo() {
     fprintf(stdout, "[INFO] director= %s\n", director_.toAscii().constData());
     fprintf(stdout, "[INFO] country= %s\n", country_.toAscii().constData());
     fprintf(stdout, "[INFO] image= %s\n", image_.toAscii().constData());
-    fprintf(stdout, "[INFO] studio= %s\n", studio_.toAscii().constData());
     fprintf(stdout, "[INFO] cast= %s\n", cast_.toAscii().constData());
     fprintf(stdout, "[INFO] plot= %s\n", plot_.toAscii().constData());
-    fprintf(stdout, "[INFO] notes= %s\n", notes_.toAscii().constData());
 
     fprintf(stdout, "[INFO] MovieMedia [ENDED]\n");
 }
@@ -177,12 +167,9 @@ void MovieMedia::setCountry(const QString& country) {country_ = country;}
 QString MovieMedia::getCountry() const {return country_;}
 void MovieMedia::setImage(const QString& image) {image_ = image;}
 QString MovieMedia::getImage() const {return image_;}
-void MovieMedia::setStudio(const QString& studio) {studio_ = studio;}
-QString MovieMedia::getStudio() const {return studio_;}
 void MovieMedia::setCast(const QString& cast) {cast_ = cast;}
 QString MovieMedia::getCast() const {return cast_;}
 void MovieMedia::setPlot(const QString& plot) {plot_ = plot;}
 QString MovieMedia::getPlot() const {return plot_;}
-void MovieMedia::setNotes(const QString& notes) {notes_ = notes;}
-QString MovieMedia::getNotes() const {return notes_;}
+
 

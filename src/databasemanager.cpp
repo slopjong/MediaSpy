@@ -105,7 +105,7 @@ QSqlError DatabaseManager::init(const QString &dbFilePath) {
     if (!q.exec(QString("create table ImdbInfo(id INTEGER PRIMARY KEY AUTOINCREMENT, \
             mediaId INTEGER, ImdbId INTEGER, genre VARCHAR(255), year INTEGER, runtime INTEGER, rating DOUBLE, \
             title VARCHAR(255), director VARCHAR(255), country VARCHAR(255), image VARCHAR(255), \
-            studio VARCHAR(255), cast TEXT, plot TEXT, notes TEXT)")))
+            cast TEXT, plot TEXT)")))
         return q.lastError();
 
     if (!q.exec(QString("create table MovieGenre(id INTEGER PRIMARY KEY AUTOINCREMENT, genre VARCHAR(255))")))
@@ -326,15 +326,14 @@ void DatabaseManager::insertMovieMedia(MovieMedia* movieMedia) {
         q.bindValue(4, movieMedia->isLoaned());
         q.bindValue(5, movieMedia->isSeen());
         q.bindValue(6, movieMedia->isRecommended());
-        q.bindValue(7, movieMedia->getNotes());
 
         if (!q.exec())
             throw(q.lastError()); // TODO handle this!
     }
 
     // insert InfoImdb
-    q.prepare("INSERT INTO ImdbInfo (mediaId, ImdbId, genre, year, runtime, rating, title, director, country, image, studio, cast, plot, notes) "
-              "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    q.prepare("INSERT INTO ImdbInfo (mediaId, ImdbId, genre, year, runtime, rating, title, director, country, image, cast, plot) "
+              "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
     q.bindValue(0, movieMedia->getId());
     q.bindValue(1, movieMedia->getImdbId());
@@ -346,10 +345,8 @@ void DatabaseManager::insertMovieMedia(MovieMedia* movieMedia) {
     q.bindValue(7, movieMedia->getDirector());
     q.bindValue(8, movieMedia->getCountry());
     q.bindValue(9, movieMedia->getImage());
-    q.bindValue(10, movieMedia->getStudio());
-    q.bindValue(11, movieMedia->getCast());
-    q.bindValue(12, movieMedia->getPlot());
-    q.bindValue(13, movieMedia->getNotes());
+    q.bindValue(10, movieMedia->getCast());
+    q.bindValue(11, movieMedia->getPlot());
 
     if (!q.exec())
         throw(q.lastError()); // TODO handle this!

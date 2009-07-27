@@ -200,19 +200,56 @@ bool InfoImdb::processMoviePage(QNetworkReply* source) {
     QRegExp directorRegExpNL("<a href=\"/name/(.*) onclick=(.*)>(.*)</a><br(.?)/>");
     bool directorNextLine = false;
 
+    // country regexp
+    QString countryString;
+    QRegExp countryRegExp("<h5>Country:</h5>");
+    QRegExp countryRegExpNL("<a href=\"/Sections/Countries/(.*)/\">");
+    bool countryNextLine = false;
+
+    // image regexp
+    QString imageString;
+    QRegExp imageRegExp("<a name=\"poster\" href=(.*)><img border=(.*) src=\"(.*)\" /></a>");
+
+    // cast regexp
+    QString castString;
+    QRegExp castRegExp("<div class=\"headerinline\"><h3>Cast</h3>(.*)<table> \
+                        <tr class=\"odd\"> \
+                            <td class=\"hs\">(.*)</td> \
+                            <td class=\"nm\"><a href=\"/name/(.*)\">(.*)</a></td> \
+                            <td class=\"ddd\">(.*)</td> \
+                            <td class=\"char\">(.*)</td> \
+                        </tr></table>");
+
+    // plot regexp
+    QString plotString;
+    QRegExp plotRegExp("<h5>Plot:</h5>");
+    QRegExp plotRegExpNL("(.*)<a class=\"tn15more inline\" href=\"/title/tt(.*)$");
+    bool plotNextLine = false;
+
+
     do { // looking for special lines to get data
         line = textStream->readLine();
 
         // next lines regexp
         if(runtimeNextLine)
-            if (runtimeRegExpNL.indexIn(line) != -1) {
+            if(runtimeRegExpNL.indexIn(line) != -1) {
                 runtimeString = runtimeRegExpNL.cap(1);
                 runtimeNextLine = false;
             }
         if(directorNextLine)
-            if (directorRegExpNL.indexIn(line) != -1) {
+            if(directorRegExpNL.indexIn(line) != -1) {
                 directorString = directorRegExpNL.cap(3);
                 directorNextLine = false;
+            }
+        if(countryNextLine)
+            if(countryRegExpNL.indexIn(line) != -1) {
+                countryString = countryRegExpNL.cap(1);
+                countryNextLine = false;
+            }
+        if(plotNextLine)
+            if(plotRegExpNL.indexIn(line) != -1) {
+                plotString = plotRegExpNL.cap(1);
+                plotNextLine = false;
             }
 
         // regexp
@@ -222,15 +259,22 @@ bool InfoImdb::processMoviePage(QNetworkReply* source) {
             titleString = titleYearRegExp.cap(1);
             yearString = titleYearRegExp.cap(2);
         }
-        else if (genreRegExp.indexIn(line) != -1)
+        else if(genreRegExp.indexIn(line) != -1)
             genreString = genreRegExp.cap(2);
-        else if  (runtimeRegExp.indexIn(line) != -1)
+        else if(runtimeRegExp.indexIn(line) != -1)
             runtimeNextLine = true;
-        else if  (ratingRegExp.indexIn(line) != -1)
+        else if(ratingRegExp.indexIn(line) != -1)
             ratingString = ratingRegExp.cap(1);
-        else if  (directorRegExp.indexIn(line) != -1)
+        else if(directorRegExp.indexIn(line) != -1)
             directorNextLine = true;
-
+        else if(countryRegExp.indexIn(line) != -1)
+            countryNextLine = true;
+        else if(imageRegExp.indexIn(line) != -1)
+            imageString = imageRegExp.cap(3);
+        else if(castRegExp.indexIn(line) != -1)
+            castString = castRegExp.cap(3);
+        else if(plotRegExp.indexIn(line) != -1)
+            plotNextLine = true;
 
 
 
@@ -244,15 +288,11 @@ bool InfoImdb::processMoviePage(QNetworkReply* source) {
     movieMedia_[movieMediaIndex].setRuntime(runtimeString.toInt());
     movieMedia_[movieMediaIndex].setRating(ratingString.toDouble());
     movieMedia_[movieMediaIndex].setTitle(titleString);
-
     movieMedia_[movieMediaIndex].setDirector(directorString);
-//movieMedia_[movieMediaIndex].setCountry();
-//movieMedia_[movieMediaIndex].setImage();
-//movieMedia_[movieMediaIndex].setStudio();
-//movieMedia_[movieMediaIndex].setCast();
-//movieMedia_[movieMediaIndex].setPlot();
-//movieMedia_[movieMediaIndex].setNotes();
-
+    movieMedia_[movieMediaIndex].setCountry(countryString);
+    movieMedia_[movieMediaIndex].setImage(imageString);
+    movieMedia_[movieMediaIndex].setCast(castString);
+    movieMedia_[movieMediaIndex].setPlot(plotString);
 
     movieMedia_[movieMediaIndex].printInfo();
 

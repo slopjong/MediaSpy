@@ -38,7 +38,7 @@ class InfoManager : public QObject {
 
     // Fields
     static InfoManager *singleton_;
-    InfoImdb infoImdb_;
+    InfoImdb* infoImdb_;
 
 
 public:

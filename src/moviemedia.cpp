@@ -118,7 +118,7 @@ void MovieMedia::getInfoFromMediaId(unsigned int id) {
 
     while (q.next()) {
         this->setImdbId(q.value(fieldImdbId).toInt());
-        this->setGenre(q.value(fieldGenre).toInt());
+        this->setGenre(q.value(fieldGenre).toString());
         this->setYear(q.value(fieldYear).toInt());
         this->setRuntime(q.value(fieldRuntime).toInt());
         this->setRating(q.value(fieldRating).toDouble());
@@ -134,6 +134,26 @@ void MovieMedia::getInfoFromMediaId(unsigned int id) {
 }
 
 
+void MovieMedia::printInfo() {
+
+    fprintf(stdout, "[INFO] MovieMedia [BEGIN]\n");
+    fprintf(stdout, "[INFO] imdbId= %d\n", imdbId_);
+    fprintf(stdout, "[INFO] genre= %s\n", genre_.toAscii().constData());
+    fprintf(stdout, "[INFO] year= %d\n", year_);
+    fprintf(stdout, "[INFO] runtime= %d\n", runtime_);
+    fprintf(stdout, "[INFO] rating= %f\n", rating_);
+    fprintf(stdout, "[INFO] title= %s\n", title_.toAscii().constData());
+    fprintf(stdout, "[INFO] director= %s\n", director_.toAscii().constData());
+    fprintf(stdout, "[INFO] country= %s\n", country_.toAscii().constData());
+    fprintf(stdout, "[INFO] image= %s\n", image_.toAscii().constData());
+    fprintf(stdout, "[INFO] studio= %s\n", studio_.toAscii().constData());
+    fprintf(stdout, "[INFO] cast= %s\n", cast_.toAscii().constData());
+    fprintf(stdout, "[INFO] plot= %s\n", plot_.toAscii().constData());
+    fprintf(stdout, "[INFO] notes= %s\n", notes_.toAscii().constData());
+
+    fprintf(stdout, "[INFO] MovieMedia [ENDED]\n");
+}
+
 
 
 ///////////////////////
@@ -141,20 +161,15 @@ void MovieMedia::getInfoFromMediaId(unsigned int id) {
 ///////////////////////
 void MovieMedia::setImdbId(const int imdbId) {imdbId_ = imdbId;}
 int MovieMedia::getImdbId() const {return imdbId_;}
-void MovieMedia::setGenre(const int genre) {genre_ = genre;}
-int MovieMedia::getGenre() const {return genre_;}
+void MovieMedia::setGenre(const QString& genre) {genre_ = genre;}
+QString MovieMedia::getGenre() const {return genre_;}
 void MovieMedia::setYear(const int year) {year_ = year;}
 int MovieMedia::getYear() const {return year_;}
 void MovieMedia::setRuntime(const int runtime) {runtime_ = runtime;}
 int MovieMedia::getRuntime() const {return runtime_;}
 void MovieMedia::setRating(const double rating) {rating_ = rating;}
 double MovieMedia::getRating() const {return rating_;}
-void MovieMedia::setTitle(const QString& title) {
-
-    fprintf(stdout, "plop=%s\n", title.toAscii().constData());
-//    title_ = QString("");
-
-}
+void MovieMedia::setTitle(const QString& title) { title_ = title;}
 QString MovieMedia::getTitle() const {return title_;}
 void MovieMedia::setDirector(const QString& director) {director_ = director;}
 QString MovieMedia::getDirector() const {return director_;}

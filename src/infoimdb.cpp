@@ -32,8 +32,19 @@ static const QString titlePrefix = "http://www.imdb.com/title/";
   * \brief class constructor
   */
 InfoImdb::InfoImdb() :
-    networkManager_(new QNetworkAccessManager(this)),
-    nRequests_(0)
+    networkManager_(new QNetworkAccessManager(this))
+{
+    connect(networkManager_, SIGNAL(finished(QNetworkReply*)), this, SLOT(finishReply(QNetworkReply*)));
+}
+
+/** \fn InfoImdb::InfoImdb(unsigned int nMedia)
+  * \brief class constructor
+  */
+InfoImdb::InfoImdb(int nMedia) :
+    networkManager_(new QNetworkAccessManager(this))
+    , movieMedia_(new MovieMedia[nMedia])
+    , iMedia_(0)
+
 {
     connect(networkManager_, SIGNAL(finished(QNetworkReply*)), this, SLOT(finishReply(QNetworkReply*)));
 }
@@ -43,11 +54,7 @@ InfoImdb::InfoImdb() :
   */
 InfoImdb::~InfoImdb() {
     delete networkManager_;
-
-    // deleting the MovieMedia objects
-    MovieMedia* movieMediaPointer;
-    foreach(movieMediaPointer, replyMap_.uniqueKeys())
-        delete movieMediaPointer;
+    delete[] movieMedia_;
 }
 
 
@@ -56,24 +63,23 @@ InfoImdb::~InfoImdb() {
 // methods //
 //////////////
 void InfoImdb::searchImdb(QString& mediaName) {
-    // construct a MediaMovie from mediaName
-    MovieMedia* movieMedia = new MovieMedia(mediaName);
-
-    QString url = QString(searchPrefix + movieMedia->getBaseName());
-    makeRequest(url, movieMedia);
+    movieMedia_[iMedia_].getInfoFromMediaName(mediaName);
+    QString url = QString(searchPrefix + movieMedia_[iMedia_].getBaseName());
+    makeRequest(url, iMedia_);
+    iMedia_++;
 }
 
 
-void InfoImdb::getMoviePage(unsigned int id, MovieMedia* movieMedia) {
+void InfoImdb::getMoviePage(unsigned int id, int movieMediaIndex) {
     // id is padded to 7 char to avoid infinite redirection loop
     QString url = QString(titlePrefix + "tt" + QString("%1/").arg(id, 7, 10, QLatin1Char('0')));
-    makeRequest(url, movieMedia);
+    makeRequest(url, movieMediaIndex);
 }
 
 
-void InfoImdb::makeRequest(QString& url, MovieMedia* movieMedia) {
+void InfoImdb::makeRequest(QString& url, int movieMediaIndex) {
     QNetworkReply* reply = networkManager_->get(QNetworkRequest(QUrl(url)));
-    replyMap_.insert(movieMedia, reply);
+    replyMap_.insert(movieMediaIndex, reply);
 }
 
 
@@ -158,50 +164,117 @@ bool InfoImdb::processMoviePage(QNetworkReply* source) {
     fprintf(stdout, "Movie Page: %s\n", requestUrl.toString().toAscii().constData());
 
     // get the movieMedia object from the map
-    QList<MovieMedia*> movieMediaKeys = replyMap_.keys(source);
-    MovieMedia* movieMedia = movieMediaKeys.last();
+    QList<int> movieMediaKeys = replyMap_.keys(source);
+    int movieMediaIndex = movieMediaKeys.last();
 
     // from QIODevice to QString
     QTextStream* textStream = new QTextStream(source);
     QString line;
+
+    // imdbId regular expression
+    QString imdbIdString;
+    QRegExp imdbIdRegExp("<link rel=\"canonical\" href=\"http://www.imdb.com/title/tt(.*)/\" />");
+
+    // title and year regexp
     QString titleString;
-    QString titleContent = "<meta name=\"title\" content=\"";
+    QString yearString;
+    QRegExp titleYearRegExp("<title>(.*) \\((\\d{4})\\)</title>");
+
+    // genre regexp
+    QString genreString;
+    QRegExp genreRegExp("<a href=\"/Sections/Genres/(\\w*)/\">(\\w*)</a>");
+
+    // runtime regexp
+    QString runtimeString;
+    QRegExp runtimeRegExp("<h5>Runtime:</h5>");
+    QRegExp runtimeRegExpNL("^(\\d*) min*");
+    bool runtimeNextLine = false;
+
+    // rating regexp
+    QString ratingString;
+    QRegExp ratingRegExp("<b>(.*)/10</b>");
+
+    // director regexp
+    QString directorString;
+    QRegExp directorRegExp("<h5>Director:</h5>");
+    QRegExp directorRegExpNL("<a href=\"/name/(.*) onclick=(.*)>(.*)</a><br(.?)/>");
+    bool directorNextLine = false;
 
     do { // looking for special lines to get data
         line = textStream->readLine();
-        if(line.contains(titleContent)) {
-            titleString = line.remove(titleContent);
-            titleString.chop(2);
+
+        // next lines regexp
+        if(runtimeNextLine)
+            if (runtimeRegExpNL.indexIn(line) != -1) {
+                runtimeString = runtimeRegExpNL.cap(1);
+                runtimeNextLine = false;
+            }
+        if(directorNextLine)
+            if (directorRegExpNL.indexIn(line) != -1) {
+                directorString = directorRegExpNL.cap(3);
+                directorNextLine = false;
+            }
+
+        // regexp
+        if (imdbIdRegExp.indexIn(line) != -1)
+            imdbIdString = imdbIdRegExp.cap(1);
+        else if (titleYearRegExp.indexIn(line) != -1) {
+            titleString = titleYearRegExp.cap(1);
+            yearString = titleYearRegExp.cap(2);
         }
+        else if (genreRegExp.indexIn(line) != -1)
+            genreString = genreRegExp.cap(2);
+        else if  (runtimeRegExp.indexIn(line) != -1)
+            runtimeNextLine = true;
+        else if  (ratingRegExp.indexIn(line) != -1)
+            ratingString = ratingRegExp.cap(1);
+        else if  (directorRegExp.indexIn(line) != -1)
+            directorNextLine = true;
+
+
+
 
     } while (!line.isNull());
 
-    fprintf(stdout, "The title of the movie is: %s\n", titleString.toAscii().constData());
+//    fprintf(stdout, "year=%s\n", yearString.toAscii().constData());
 
-//    QString i = movieMedia->getTitle();
+    movieMedia_[movieMediaIndex].setImdbId(imdbIdString.toInt());
+    movieMedia_[movieMediaIndex].setGenre(genreString);
+    movieMedia_[movieMediaIndex].setYear(yearString.toInt());
+    movieMedia_[movieMediaIndex].setRuntime(runtimeString.toInt());
+    movieMedia_[movieMediaIndex].setRating(ratingString.toDouble());
+    movieMedia_[movieMediaIndex].setTitle(titleString);
 
-    movieMedia->setTitle(titleString);
+    movieMedia_[movieMediaIndex].setDirector(directorString);
+//movieMedia_[movieMediaIndex].setCountry();
+//movieMedia_[movieMediaIndex].setImage();
+//movieMedia_[movieMediaIndex].setStudio();
+//movieMedia_[movieMediaIndex].setCast();
+//movieMedia_[movieMediaIndex].setPlot();
+//movieMedia_[movieMediaIndex].setNotes();
 
-//    fprintf(stdout, "The title of the movie is: %s\n", movieMedia->getTitle().toAscii().constData());
+
+    movieMedia_[movieMediaIndex].printInfo();
 
     return true;
 }
 
 
-void InfoImdb::searchRedirectedToMoviePage(const QUrl& requestUrl, const QUrl& movieUrl, MovieMedia* movieMedia) {
+void InfoImdb::searchRedirectedToMoviePage(const QUrl& requestUrl, const QUrl& movieUrl, int movieMediaIndex) {
     QString requestMediaName = url2MediaName(requestUrl);
     int mediaImdbId = url2Id(movieUrl);
-    getMoviePage(mediaImdbId, movieMedia);
+    getMoviePage(mediaImdbId, movieMediaIndex);
 
     // we have both media name and imdb id, let's fill the database!
+
 //    movieMedia->setImdbInfo();
 //    DatabaseManager::getInstance()->insertMovieMedia(movieMedia);
-    delete movieMedia;
+//    delete movieMedia;
 }
 
 
-//const MovieMedia* InfoImdb::getInfoFromId(unsigned int id, const MovieMedia* movieMedia) {
-//    getMoviePage(id, movieMedia);
+//const MovieMedia* InfoImdb::getInfoFromId(unsigned int id) {
+//    getMoviePage(id);
 //    return movieMedia;
 //}
 
@@ -218,3 +291,8 @@ unsigned int InfoImdb::url2Id(const QUrl& url) {
     return string.toInt();
 }
 
+
+
+//////////////////////
+// accessor methods //
+//////////////////////

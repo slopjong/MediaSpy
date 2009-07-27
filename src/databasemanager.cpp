@@ -103,7 +103,7 @@ QSqlError DatabaseManager::init(const QString &dbFilePath) {
         return q.lastError();
 
     if (!q.exec(QString("create table ImdbInfo(id INTEGER PRIMARY KEY AUTOINCREMENT, \
-            mediaId INTEGER, ImdbId INTEGER, genre INTEGER, year INTEGER, runtime INTEGER, rating DOUBLE, \
+            mediaId INTEGER, ImdbId INTEGER, genre VARCHAR(255), year INTEGER, runtime INTEGER, rating DOUBLE, \
             title VARCHAR(255), director VARCHAR(255), country VARCHAR(255), image VARCHAR(255), \
             studio VARCHAR(255), cast TEXT, plot TEXT, notes TEXT)")))
         return q.lastError();

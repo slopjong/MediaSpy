@@ -73,8 +73,10 @@ void InfoManager::updateMediaCollectionInfo() {
     QStringList mediaIdWithNoInfoList = DatabaseManager::getInstance()->queryMediaWithNoImdbInfo();
     QString mediaId;
 
+    infoImdb_ = new InfoImdb(mediaIdWithNoInfoList.count());
+
     foreach(mediaId, mediaIdWithNoInfoList) {
-        infoImdb_.searchImdb(mediaId);
+        infoImdb_->searchImdb(mediaId);
     }
     //}
 }

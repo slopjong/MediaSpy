@@ -40,8 +40,8 @@ public:
     // Accessor Methods
     void setImdbId(const int);
     int getImdbId() const;
-    void setGenre(const int);
-    int getGenre() const;
+    void setGenre(const QString&);
+    QString getGenre() const;
     void setYear(const int);
     int getYear() const;
     void setRuntime(const int);
@@ -75,11 +75,13 @@ public:
 //    bool isRecommended() const;
 //    void setRecommended(const bool);
 
+    // Operations
+    void printInfo();
 
 private:
     // Fields
     int         imdbId_;
-    int         genre_;
+    QString     genre_;
     int         year_;
     int         runtime_;
     double      rating_;

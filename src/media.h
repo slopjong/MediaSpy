@@ -46,6 +46,7 @@ class Media {
 public:
     // Fields
     // Operations
+    void getInfoFromMediaName(QString&);
 
     // Constructors
     Media();
@@ -81,7 +82,6 @@ protected:
     // Accessor Methods
     // Operations
     void generateBaseName();
-    void getInfoFromMediaName(QString&);
 
 
 };

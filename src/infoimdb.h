@@ -36,26 +36,28 @@ class InfoImdb : public InfoSupplier {
     // Operations
     bool processSearchPage(QNetworkReply*);
     bool processMoviePage(QNetworkReply*);
-    void searchRedirectedToMoviePage(const QUrl&, const QUrl&, MovieMedia*);
+    void searchRedirectedToMoviePage(const QUrl&, const QUrl&, int);
     QString url2MediaName(const QUrl&);
     unsigned int url2Id(const QUrl&);
 //    const MovieMedia* getInfoFromId(unsigned int, const MovieMedia*);
-    void makeRequest(QString&, MovieMedia*);
+    void makeRequest(QString&, int);
 
     // Fields
     QNetworkAccessManager* networkManager_;
-    unsigned int nRequests_;
-    QMap<MovieMedia*, QNetworkReply*> replyMap_;
-
+    MovieMedia* movieMedia_;
+    QMap<int, QNetworkReply*> replyMap_;
+    int iMedia_;
+//    unsigned int nMedia_;
 
 public:
     // Constructors
     InfoImdb();
+    InfoImdb(int);
     virtual ~InfoImdb();
 
     // Operations
     void searchImdb(QString&);
-    void getMoviePage(unsigned int, MovieMedia*);
+    void getMoviePage(unsigned int, int);
 
 
 private slots:

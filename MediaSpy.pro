@@ -21,7 +21,10 @@ SOURCES += src/main.cpp \
     src/updatethread.cpp \
     src/mediafilter.cpp \
     src/infoview.cpp \
-    src/infomanager.cpp
+    src/infomanager.cpp \
+    src/infoimdb.cpp \
+    src/moviemedia.cpp \
+    src/infosupplier.cpp
 HEADERS += src/mediaspy.h \
     src/collection.h \
     src/databasemanager.h \
@@ -31,7 +34,10 @@ HEADERS += src/mediaspy.h \
     src/updatethread.h \
     src/mediafilter.h \
     src/infoview.h \
-    src/infomanager.h
+    src/infomanager.h \
+    src/infoimdb.h \
+    src/moviemedia.h \
+    src/infosupplier.h
 FORMS += ui/mediaspy.ui \
     ui/collectiondialog.ui
 RESOURCES += src/resources/MediaSpy.qrc

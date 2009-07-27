@@ -18,39 +18,30 @@
  */
 
 
-#ifndef INFOMANAGER_H
-#define INFOMANAGER_H
+#ifndef INFOSUPPLIER_H
+#define INFOSUPPLIER_H
 
 #include <QtGui>
-#include <QNetworkRequest>
-
-#include "databasemanager.h"
-#include "moviemedia.h"
-#include "infoimdb.h"
+#include <QNetworkReply>
 
 
-class InfoManager : public QObject {
+class InfoSupplier : public QObject {
     Q_OBJECT
 
-    // Constructors
-    InfoManager();
-    ~InfoManager();
-
-    // Fields
-    static InfoManager *singleton_;
-    InfoImdb* infoImdb_;
-
-
 public:
+    InfoSupplier();
+    virtual ~InfoSupplier();
+
+
+protected:
     // Operations
-    static InfoManager *getInstance();
-    static void kill();
-    void updateMediaCollectionInfo();
-    void searchImdb(QString);
+    QUrl redirectUrl(const QUrl&, const QUrl&) const;
+    bool replyOk(QNetworkReply*);
 
 
 signals:
-    void messageToStatus(QString);
+    void searchFinished(bool);
+
 };
 
-#endif // INFOMANAGER_H
+#endif // INFOSUPPLIER_H

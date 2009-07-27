@@ -24,7 +24,7 @@
 #include <QtSql>
 
 #include "media.h"
-
+#include "moviemedia.h"
 
 /** \class DatabaseManager
   *
@@ -57,7 +57,12 @@ public:
 
     QStringList queryMediaNames();
     QSqlQuery queryMedias(QSqlQuery&);
-    QStringList queryMediaWithImdbInfo();
+    QSqlQuery queryMediaWhere(QSqlQuery&, QString&, QString&);
+    QSqlQuery queryImdbInfoWhere(QSqlQuery&, QString&, QString&);
+    QStringList queryMediaWithNoImdbInfo();
+
+    void insertMovieMedia(MovieMedia*);
+
 };
 
 

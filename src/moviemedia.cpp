@@ -39,6 +39,7 @@ MovieMedia::MovieMedia() :
     , director_(0)
     , country_(0)
     , image_(0)
+    , imageUrl_(0)
     , cast_(0)
     , plot_(0)
 {}
@@ -47,17 +48,18 @@ MovieMedia::MovieMedia() :
   * \brief copy constructor
   */
 MovieMedia::MovieMedia(const MovieMedia &movieMedia) : Media(movieMedia) {
-    imdbId_ = movieMedia.imdbId_;
-    genre_ = movieMedia.genre_;
-    year_ = movieMedia.year_;
-    runtime_ = movieMedia.runtime_;
-    rating_ = movieMedia.rating_;
-    title_ = movieMedia.title_;
-    director_ = movieMedia.director_;
-    country_ = movieMedia.country_;
-    image_ = movieMedia.image_;
-    cast_ = movieMedia.cast_;
-    plot_ = movieMedia.plot_;
+    imdbId_     = movieMedia.imdbId_;
+    genre_      = movieMedia.genre_;
+    year_       = movieMedia.year_;
+    runtime_    = movieMedia.runtime_;
+    rating_     = movieMedia.rating_;
+    title_      = movieMedia.title_;
+    director_   = movieMedia.director_;
+    country_    = movieMedia.country_;
+    image_      = movieMedia.image_;
+    imageUrl_   = movieMedia.imageUrl_;
+    cast_       = movieMedia.cast_;
+    plot_       = movieMedia.plot_;
 }
 
 /** \fn MovieMedia::MovieMedia(QString& mediaName)
@@ -138,6 +140,7 @@ void MovieMedia::printInfo() {
     fprintf(stdout, "[INFO] director= %s\n", director_.toAscii().constData());
     fprintf(stdout, "[INFO] country= %s\n", country_.toAscii().constData());
     fprintf(stdout, "[INFO] image= %s\n", image_.toAscii().constData());
+    fprintf(stdout, "[INFO] imageUrl= %s\n", imageUrl_.toAscii().constData());
     fprintf(stdout, "[INFO] cast= %s\n", cast_.toAscii().constData());
     fprintf(stdout, "[INFO] plot= %s\n", plot_.toAscii().constData());
 
@@ -145,31 +148,47 @@ void MovieMedia::printInfo() {
 }
 
 
+void MovieMedia::url2image() {
+    Q_ASSERT(!title_.isEmpty());
+
+    QString fileName = title_;
+    string2fileName(fileName);
+    image_ = fileName;
+}
+
+
+void MovieMedia::string2fileName(QString& string) {
+    string.replace(QRegExp("[ \"\\*?<>|:,&]"), "");
+    string.append(".jpg");
+}
+
 
 ///////////////////////
 // accessors methods //
 ///////////////////////
-void MovieMedia::setImdbId(const int imdbId) {imdbId_ = imdbId;}
-int MovieMedia::getImdbId() const {return imdbId_;}
-void MovieMedia::setGenre(const QString& genre) {genre_ = genre;}
-QString MovieMedia::getGenre() const {return genre_;}
-void MovieMedia::setYear(const int year) {year_ = year;}
-int MovieMedia::getYear() const {return year_;}
-void MovieMedia::setRuntime(const int runtime) {runtime_ = runtime;}
-int MovieMedia::getRuntime() const {return runtime_;}
-void MovieMedia::setRating(const double rating) {rating_ = rating;}
-double MovieMedia::getRating() const {return rating_;}
-void MovieMedia::setTitle(const QString& title) { title_ = title;}
-QString MovieMedia::getTitle() const {return title_;}
-void MovieMedia::setDirector(const QString& director) {director_ = director;}
-QString MovieMedia::getDirector() const {return director_;}
-void MovieMedia::setCountry(const QString& country) {country_ = country;}
-QString MovieMedia::getCountry() const {return country_;}
-void MovieMedia::setImage(const QString& image) {image_ = image;}
-QString MovieMedia::getImage() const {return image_;}
-void MovieMedia::setCast(const QString& cast) {cast_ = cast;}
-QString MovieMedia::getCast() const {return cast_;}
-void MovieMedia::setPlot(const QString& plot) {plot_ = plot;}
-QString MovieMedia::getPlot() const {return plot_;}
+void    MovieMedia::setImdbId(const int imdbId)             {imdbId_ = imdbId;}
+int     MovieMedia::getImdbId() const                       {return imdbId_;}
+void    MovieMedia::setGenre(const QString& genre)          {genre_ = genre;}
+QString MovieMedia::getGenre() const                        {return genre_;}
+void    MovieMedia::setYear(const int year)                 {year_ = year;}
+int     MovieMedia::getYear() const                         {return year_;}
+void    MovieMedia::setRuntime(const int runtime)           {runtime_ = runtime;}
+int     MovieMedia::getRuntime() const                      {return runtime_;}
+void    MovieMedia::setRating(const double rating)          {rating_ = rating;}
+double  MovieMedia::getRating() const                       {return rating_;}
+void    MovieMedia::setTitle(const QString& title)          {title_ = title;}
+QString MovieMedia::getTitle() const                        {return title_;}
+void    MovieMedia::setDirector(const QString& director)    {director_ = director;}
+QString MovieMedia::getDirector() const                     {return director_;}
+void    MovieMedia::setCountry(const QString& country)      {country_ = country;}
+QString MovieMedia::getCountry() const                      {return country_;}
+void    MovieMedia::setImage(const QString& image)          {image_ = image;}
+QString MovieMedia::getImage() const                        {return image_;}
+void    MovieMedia::setImageUrl(const QString& imageUrl)    {imageUrl_ = imageUrl; url2image();}
+QString MovieMedia::getImageUrl() const                     {return imageUrl_;}
+void    MovieMedia::setCast(const QString& cast)            {cast_ = cast;}
+QString MovieMedia::getCast() const                         {return cast_;}
+void    MovieMedia::setPlot(const QString& plot)            {plot_ = plot;}
+QString MovieMedia::getPlot() const                         {return plot_;}
 
 

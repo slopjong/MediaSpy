@@ -47,7 +47,7 @@ class InfoImdb : public InfoSupplier {
     MovieMedia* movieMedia_;
     QMap<int, QNetworkReply*> replyMap_;
     int iMedia_;
-//    unsigned int nMedia_;
+
 
 public:
     // Constructors

@@ -43,6 +43,7 @@
   */
 static const QString appDirectory   = QDir::homePath() + "/.MediaSpy/";
 static const QString cssDirectory   = QDir::homePath() + "/.MediaSpy/stylesheets/";
+static const QString coverDirectory = QDir::homePath() + "/.MediaSpy/covers/";
 
 /** \var dbFileName
   * \brief name of the database file
@@ -73,6 +74,7 @@ public:
     static const QString getAppDirectory();
     static const QString getDbFileName();
     static const QString getCssDirectory();
+    static const QString getCoverDirectory();
 
     // Operations
     void tableViewUpdated();

@@ -131,6 +131,13 @@ void MediaSpy::init() {
             return;
         }
     }
+    if (!QDir(getCoverDirectory()).exists()) {
+        QDir localDir(QDir::homePath());
+        if(!localDir.mkdir(getCoverDirectory())) {
+            errorMessage_ = tr("Cannot create local cover directory!");
+            return;
+        }
+    }
 
     ///////////////////
     // database init //
@@ -334,6 +341,14 @@ const QString MediaSpy::getAppDirectory() {
  */
 const QString MediaSpy::getCssDirectory() {
     return cssDirectory;
+}
+
+/** \fn const QString MediaSpy::getCoverDirectory()
+ *  \brief Returns the app directory.
+ *  \return the app directory
+ */
+const QString MediaSpy::getCoverDirectory() {
+    return coverDirectory;
 }
 
 /** \fn const QString MediaSpy::getDbFileName()

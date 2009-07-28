@@ -56,23 +56,16 @@ public:
     void setCountry(const QString&);
     QString getImage() const;
     void setImage(const QString&);
+    QString getImageUrl() const;
+    void setImageUrl(const QString&);
     QString getCast() const;
     void setCast(const QString&);
     QString getPlot() const;
     void setPlot(const QString&);
 
-//    bool hasImdbInfo() const;
-//    void setImdbInfo(const bool);
-//
-//    bool isLoaned() const;
-//    void setLoaned(const bool);
-//    bool isSeen() const;
-//    void setSeen(const bool);
-//    bool isRecommended() const;
-//    void setRecommended(const bool);
-
     // Operations
     void printInfo();
+    void url2image();
 
 private:
     // Fields
@@ -85,12 +78,14 @@ private:
     QString     director_;
     QString     country_;
     QString     image_;
+    QString     imageUrl_;
     QString     cast_;
     QString     plot_;
 
     // Constructors
     // Accessor Methods
     // Operations
+    void string2fileName(QString&);
 
 
 protected:

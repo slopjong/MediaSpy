@@ -101,9 +101,8 @@ void InfoImdb::finishReply(QNetworkReply* networkReply) {
         QUrl urlRedirectedTo = redirectUrl(possibleRedirectUrl.toUrl(), urlRedirectedTo);
 
         // If the URL is not empty, we're being redirected.
-        if(!urlRedirectedTo.isEmpty()) {
+        if(!urlRedirectedTo.isEmpty())
             searchRedirectedToMoviePage(possibleRedirectUrl.toUrl(), urlRedirectedTo, replyMap_.key(networkReply));
-        }
         else {
             urlRedirectedTo.clear();
 
@@ -117,9 +116,8 @@ void InfoImdb::finishReply(QNetworkReply* networkReply) {
         bool ok = processMoviePage(networkReply);
         emit searchFinished(ok);
     }
-    else { // this was a strange request! Please, do nothing stupid with it!
+    else // this was a strange request! Please, do nothing stupid with it!
         return;
-    }
 
     networkReply->close();
     networkReply->deleteLater();
@@ -160,10 +158,7 @@ bool InfoImdb::processSearchPage(QNetworkReply* source) {
 
 bool InfoImdb::processMoviePage(QNetworkReply* source) {
 
-    QUrl requestUrl = source->url();
-    fprintf(stdout, "Movie Page: %s\n", requestUrl.toString().toAscii().constData());
-
-    // get the movieMedia object from the map
+    // get the movieMedia index from the map
     QList<int> movieMediaKeys = replyMap_.keys(source);
     int movieMediaIndex = movieMediaKeys.last();
 
@@ -207,8 +202,8 @@ bool InfoImdb::processMoviePage(QNetworkReply* source) {
     bool countryNextLine = false;
 
     // image regexp
-    QString imageString;
-    QRegExp imageRegExp("<a name=\"poster\" href=(.*)><img border=(.*) src=\"(.*)\" /></a>");
+    QString imageUrlString;
+    QRegExp imageUrlRegExp("<a name=\"poster\" href=(.*)><img border=(.*) src=\"(.*)\" /></a>");
 
     // cast regexp
     QString castString;
@@ -269,18 +264,14 @@ bool InfoImdb::processMoviePage(QNetworkReply* source) {
             directorNextLine = true;
         else if(countryRegExp.indexIn(line) != -1)
             countryNextLine = true;
-        else if(imageRegExp.indexIn(line) != -1)
-            imageString = imageRegExp.cap(3);
+        else if(imageUrlRegExp.indexIn(line) != -1)
+            imageUrlString = imageUrlRegExp.cap(3);
         else if(castRegExp.indexIn(line) != -1)
             castString = castRegExp.cap(3);
         else if(plotRegExp.indexIn(line) != -1)
             plotNextLine = true;
 
-
-
     } while (!line.isNull());
-
-//    fprintf(stdout, "year=%s\n", yearString.toAscii().constData());
 
     movieMedia_[movieMediaIndex].setImdbId(imdbIdString.toInt());
     movieMedia_[movieMediaIndex].setGenre(genreString);
@@ -290,7 +281,7 @@ bool InfoImdb::processMoviePage(QNetworkReply* source) {
     movieMedia_[movieMediaIndex].setTitle(titleString);
     movieMedia_[movieMediaIndex].setDirector(directorString);
     movieMedia_[movieMediaIndex].setCountry(countryString);
-    movieMedia_[movieMediaIndex].setImage(imageString);
+    movieMedia_[movieMediaIndex].setImageUrl(imageUrlString);
     movieMedia_[movieMediaIndex].setCast(castString);
     movieMedia_[movieMediaIndex].setPlot(plotString);
 

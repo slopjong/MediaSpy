@@ -20,6 +20,8 @@
 #ifndef INFOVIEW_H
 #define INFOVIEW_H
 
+#include "moviemedia.h"
+
 #include <QString>
 #include <QtWebKit>
 
@@ -41,7 +43,8 @@ public:
     QString init(QWebSettings*);
     QString header();
     QString footer();
-    QString cssCode();
+    QString getImdbInfo(QString&);
+
 };
 
 #endif // INFOVIEW_H

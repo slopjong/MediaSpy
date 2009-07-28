@@ -206,14 +206,8 @@ bool InfoImdb::processMoviePage(QNetworkReply* source) {
     QRegExp imageUrlRegExp("<a name=\"poster\" href=(.*)><img border=(.*) src=\"(.*)\" /></a>");
 
     // cast regexp
-    QString castString;
-    QRegExp castRegExp("<div class=\"headerinline\"><h3>Cast</h3>(.*)<table> \
-                        <tr class=\"odd\"> \
-                            <td class=\"hs\">(.*)</td> \
-                            <td class=\"nm\"><a href=\"/name/(.*)\">(.*)</a></td> \
-                            <td class=\"ddd\">(.*)</td> \
-                            <td class=\"char\">(.*)</td> \
-                        </tr></table>");
+    QRegExp castRegExp("<h3>Cast</h3>");
+    QList<QStringList> castList;
 
     // plot regexp
     QString plotString;
@@ -267,7 +261,7 @@ bool InfoImdb::processMoviePage(QNetworkReply* source) {
         else if(imageUrlRegExp.indexIn(line) != -1)
             imageUrlString = imageUrlRegExp.cap(3);
         else if(castRegExp.indexIn(line) != -1)
-            castString = castRegExp.cap(3);
+            castList = parseHtmlTable( line, true );
         else if(plotRegExp.indexIn(line) != -1)
             plotNextLine = true;
 
@@ -282,10 +276,18 @@ bool InfoImdb::processMoviePage(QNetworkReply* source) {
     movieMedia_[movieMediaIndex].setDirector(directorString);
     movieMedia_[movieMediaIndex].setCountry(countryString);
     movieMedia_[movieMediaIndex].setImageUrl(imageUrlString);
-    movieMedia_[movieMediaIndex].setCast(castString);
     movieMedia_[movieMediaIndex].setPlot(plotString);
 
-    movieMedia_[movieMediaIndex].printInfo();
+    // processing cast
+    QString castString;
+    for(int i = 0; i < castList.count(); i++)
+        castString.append(castList.value( i ).value( 1 )).append(", ");
+    castString.chop(2);
+
+    movieMedia_[movieMediaIndex].setCast(castString);
+
+    // putting the MovieMedia information in the database
+    DatabaseManager::getInstance()->insertMovieMedia(movieMedia_[movieMediaIndex]);
 
     return true;
 }
@@ -295,19 +297,7 @@ void InfoImdb::searchRedirectedToMoviePage(const QUrl& requestUrl, const QUrl& m
     QString requestMediaName = url2MediaName(requestUrl);
     int mediaImdbId = url2Id(movieUrl);
     getMoviePage(mediaImdbId, movieMediaIndex);
-
-    // we have both media name and imdb id, let's fill the database!
-
-//    movieMedia->setImdbInfo();
-//    DatabaseManager::getInstance()->insertMovieMedia(movieMedia);
-//    delete movieMedia;
 }
-
-
-//const MovieMedia* InfoImdb::getInfoFromId(unsigned int id) {
-//    getMoviePage(id);
-//    return movieMedia;
-//}
 
 
 QString InfoImdb::url2MediaName(const QUrl& url) {
@@ -323,7 +313,51 @@ unsigned int InfoImdb::url2Id(const QUrl& url) {
 }
 
 
+/** \fn QString InfoImdb::toPlainText( const QString& html )
+  * \brief convertS html string to plain text
+  * \author PasNox
+  */
+QString InfoImdb::toPlainText( const QString& html ) {
+    QTextDocument doc;
+    doc.setHtml( html );
+    return doc.toPlainText();
+}
 
-//////////////////////
-// accessor methods //
-//////////////////////
+
+/** \fn QList<QStringList> InfoImdb::parseHtmlTable( const QString& table, bool plainText = true )
+  * \brief parses a html table and return the result
+  * \author PasNox
+  */
+QList<QStringList> InfoImdb::parseHtmlTable( const QString& table, bool plainText = true ) {
+    QList<QStringList> mResult;
+    // td regexp
+    QRegExp tdrx( "<td.*>((.*))</td>" );
+    tdrx.setMinimal( true );
+    // get tr tags
+    QRegExp rx( "<tr.*>(.*)</tr>" );
+    rx.setMinimal( true );
+    int rxpos = 0;
+    while ( ( rxpos = rx.indexIn( table, rxpos ) ) != -1 ) {
+        // increment pos
+        rxpos += rx.matchedLength();
+        // get tr tag
+        QString tr = rx.cap( 0 ).simplified();
+        // get td tags
+        int tdrxpos = 0;
+        QStringList row;
+        while ( ( tdrxpos = tdrx.indexIn( tr, tdrxpos ) ) != -1 ) {
+            // increment pos
+            tdrxpos += tdrx.matchedLength();
+            // get tr tag
+            QString td = tdrx.cap( 1 ).simplified();
+            if ( plainText )
+                td = toPlainText( td );
+            // add value
+            row << td;
+        }
+        if ( !row.isEmpty() )
+            mResult << row;
+    }
+    return mResult;
+}
+

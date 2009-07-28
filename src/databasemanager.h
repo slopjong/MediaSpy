@@ -38,7 +38,6 @@ class DatabaseManager {
     static DatabaseManager *singleton_;
     QSqlDatabase db_;
 
-
 public:
     // Operations
     static DatabaseManager *getInstance();
@@ -60,8 +59,11 @@ public:
     QSqlQuery queryMediaWhere(QSqlQuery&, QString&, QString&);
     QSqlQuery queryImdbInfoWhere(QSqlQuery&, QString&, QString&);
     QStringList queryMediaWithNoImdbInfo();
+    QString getMediaFullName(QString&);
 
-    void insertMovieMedia(MovieMedia*);
+    void insertMovieMedia(MovieMedia);
+    bool hasImdbInfo(const QString&);
+
 
 };
 

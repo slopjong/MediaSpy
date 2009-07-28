@@ -31,10 +31,9 @@ class MovieMedia : public Media {
 public:
     // Constructors
     MovieMedia();
-    MovieMedia(QString&);
-    MovieMedia(unsigned int);
-    MovieMedia(QString&, unsigned int);
-    explicit MovieMedia(const MovieMedia&);
+    explicit MovieMedia(QString&);
+    explicit MovieMedia(unsigned int);
+    MovieMedia(const MovieMedia&);
     virtual ~MovieMedia();
 
     // Accessor Methods
@@ -66,6 +65,7 @@ public:
     // Operations
     void printInfo();
     void url2image();
+    void getImdbInfoFromDb();
 
 private:
     // Fields

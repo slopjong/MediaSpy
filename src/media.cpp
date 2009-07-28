@@ -79,7 +79,7 @@ void Media::getInfoFromMediaName(QString& mediaName) {
     int fieldNotes          = q.record().indexOf("notes");
 
     while (q.next()) {
-        qulonglong id = q.value(fieldId).toULongLong() - 1;
+        qulonglong id = q.value(fieldId).toULongLong();
 
         this->setId(id);
         this->setType(q.value(fieldType).toInt());

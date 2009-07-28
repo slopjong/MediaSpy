@@ -42,6 +42,12 @@ class InfoImdb : public InfoSupplier {
 //    const MovieMedia* getInfoFromId(unsigned int, const MovieMedia*);
     void makeRequest(QString&, int);
 
+
+    QString toPlainText( const QString& );
+    QList<QStringList> parseHtmlTable( const QString&, bool plainText);
+
+
+
     // Fields
     QNetworkAccessManager* networkManager_;
     MovieMedia* movieMedia_;
@@ -52,7 +58,7 @@ class InfoImdb : public InfoSupplier {
 public:
     // Constructors
     InfoImdb();
-    InfoImdb(int);
+    explicit InfoImdb(int);
     virtual ~InfoImdb();
 
     // Operations

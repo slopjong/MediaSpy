@@ -39,7 +39,7 @@ class CollectionDialog : public QDialog, public Ui_CollectionDialog {
 
 public:
     // Constructors
-    CollectionDialog(QWidget *parent = 0);
+    explicit CollectionDialog(QWidget *parent = 0);
     ~CollectionDialog();
 
     // Operations

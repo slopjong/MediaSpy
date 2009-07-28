@@ -27,7 +27,7 @@ class UpdateThread : public QThread {
     Q_OBJECT
 
 public:
-    UpdateThread(QObject* parent = 00);
+    explicit UpdateThread(QObject* parent = 00);
     virtual ~UpdateThread();
 
 

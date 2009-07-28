@@ -55,7 +55,6 @@ InfoView* InfoView::getInstance() {
     return singleton_;
 }
 
-
 /** \fn void InfoView::kill()
   * \brief deletes the unique instance of InfoView
   */
@@ -87,8 +86,21 @@ QString InfoView::footer() {
 }
 
 
-QString InfoView::cssCode() {
-    QString cssOut = "";
-    return cssOut;
-}
+// add link to imdb pages (film, actors, director, etc.)
+QString InfoView::getImdbInfo(QString& mediaName) {
+    MovieMedia* m = new MovieMedia(mediaName);
+    m->getImdbInfoFromDb();
 
+    QString view = QString("<h1>%1 (%2)</h1>").arg(m->getTitle()).arg(m->getYear());
+    view        += QString("<img src=\"%1\" />").arg(m->getImage());
+    view        += QString("<p class=\"plot\">%1</p>").arg(m->getPlot());
+    view        += QString("<hr /><p><span class=\"key\">%1</span> %2</p>").arg(tr("Genre:")).arg(m->getGenre());
+    view        += QString("<p><span class=\"key\">%1</span> %2</p>").arg(tr("Runtime:")).arg(m->getRuntime());
+    view        += QString("<p><span class=\"key\">%1</span> %2</p>").arg(tr("With:")).arg(m->getCast());
+    view        += QString("<p><span class=\"key\">%1</span> %2</p>").arg(tr("Director:")).arg(m->getDirector());
+    view        += QString("<p><span class=\"key\">%1</span> %2</p>").arg(tr("Country:")).arg(m->getCountry());
+    view        += QString("<p><span class=\"key\">%1</span> %2/10</p>").arg(tr("Rating:")).arg(m->getRating());
+    view        += QString("<p><span class=\"key\">%1</span> %2</p>").arg(tr("Image:")).arg(m->getImage());
+
+    return header() + view + footer();
+}

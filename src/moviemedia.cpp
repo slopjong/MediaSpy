@@ -76,14 +76,6 @@ MovieMedia::MovieMedia(unsigned int mediaId) {
     getInfoFromMediaId(mediaId);
 }
 
-/** \fn MovieMedia::MovieMedia(QString& mediaName, unsigned int mediaId)
-  * \brief class constructor
-  */
-MovieMedia::MovieMedia(QString& mediaName, unsigned int mediaId) {
-    getInfoFromMediaName(mediaName);
-    getInfoFromMediaId(mediaId);
-}
-
 /** \fn MovieMedia::~MovieMedia()
   * \brief class destructor
   */
@@ -94,6 +86,11 @@ MovieMedia::~MovieMedia() {}
 /////////////
 // methods //
 /////////////
+void MovieMedia::getImdbInfoFromDb() {
+    if(DatabaseManager::getInstance()->hasImdbInfo(this->getFileName()))
+        getInfoFromMediaId(this->getId());
+}
+
 void MovieMedia::getInfoFromMediaId(unsigned int id) {
     QSqlQuery q;
     QString whereName = "mediaId";

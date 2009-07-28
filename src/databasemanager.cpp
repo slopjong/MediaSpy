@@ -296,7 +296,6 @@ void DatabaseManager::removeMedias(const QStringList& mediaFileNames) {
 }
 
 
-
 QStringList DatabaseManager::queryMediaWithNoImdbInfo() {
     QSqlQuery q;
     if (!q.exec(QString("SELECT fileName FROM Media WHERE NOT imdbInfo")))
@@ -310,22 +309,41 @@ QStringList DatabaseManager::queryMediaWithNoImdbInfo() {
 }
 
 
-void DatabaseManager::insertMovieMedia(MovieMedia* movieMedia) {
+/** \fn DatabaseManager::hasImdbInfo(const QString& fileName)
+  * \brief Returns whether the media \var fileName is in the MediaCollection table or not.
+  */
+bool DatabaseManager::hasImdbInfo(const QString& fileName) {
+    QSqlQuery q;
+    q.prepare("SELECT imdbInfo FROM Media WHERE fileName = ?");
+    q.bindValue(0, fileName);
+
+    if (!q.exec())
+        return false;
+
+    bool hasInfo;
+    while (q.next())
+         hasInfo = q.value(0).toBool();
+
+    return hasInfo;
+}
+
+
+void DatabaseManager::insertMovieMedia(MovieMedia movieMedia) {
     QSqlDatabase::database().transaction();
     QSqlQuery q;
 
     // insert Media in case it is not yet
-    if(!hasMedia(movieMedia->getFileName())) {
+    if(!hasMedia(movieMedia.getFileName())) {
         q.prepare("INSERT INTO Media (type, baseName, fileName, imdbInfo, loaned, seen, recommended, notes) "
                   "VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 
-        q.bindValue(0, movieMedia->getType());
-        q.bindValue(1, movieMedia->getBaseName());
-        q.bindValue(2, movieMedia->getFileName());
-        q.bindValue(3, movieMedia->hasImdbInfo());
-        q.bindValue(4, movieMedia->isLoaned());
-        q.bindValue(5, movieMedia->isSeen());
-        q.bindValue(6, movieMedia->isRecommended());
+        q.bindValue(0, movieMedia.getType());
+        q.bindValue(1, movieMedia.getBaseName());
+        q.bindValue(2, movieMedia.getFileName());
+        q.bindValue(3, movieMedia.hasImdbInfo());
+        q.bindValue(4, movieMedia.isLoaned());
+        q.bindValue(5, movieMedia.isSeen());
+        q.bindValue(6, movieMedia.isRecommended());
 
         if (!q.exec())
             throw(q.lastError()); // TODO handle this!
@@ -335,25 +353,25 @@ void DatabaseManager::insertMovieMedia(MovieMedia* movieMedia) {
     q.prepare("INSERT INTO ImdbInfo (mediaId, ImdbId, genre, year, runtime, rating, title, director, country, image, cast, plot) "
               "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-    q.bindValue(0, movieMedia->getId());
-    q.bindValue(1, movieMedia->getImdbId());
-    q.bindValue(2, movieMedia->getGenre());
-    q.bindValue(3, movieMedia->getYear());
-    q.bindValue(4, movieMedia->getRuntime());
-    q.bindValue(5, movieMedia->getRating());
-    q.bindValue(6, movieMedia->getTitle());
-    q.bindValue(7, movieMedia->getDirector());
-    q.bindValue(8, movieMedia->getCountry());
-    q.bindValue(9, movieMedia->getImage());
-    q.bindValue(10, movieMedia->getCast());
-    q.bindValue(11, movieMedia->getPlot());
+    q.bindValue(0, movieMedia.getId());
+    q.bindValue(1, movieMedia.getImdbId());
+    q.bindValue(2, movieMedia.getGenre());
+    q.bindValue(3, movieMedia.getYear());
+    q.bindValue(4, movieMedia.getRuntime());
+    q.bindValue(5, movieMedia.getRating());
+    q.bindValue(6, movieMedia.getTitle());
+    q.bindValue(7, movieMedia.getDirector());
+    q.bindValue(8, movieMedia.getCountry());
+    q.bindValue(9, movieMedia.getImage());
+    q.bindValue(10, movieMedia.getCast());
+    q.bindValue(11, movieMedia.getPlot());
 
     if (!q.exec())
         throw(q.lastError()); // TODO handle this!
 
     // change infoImdb in Media
-    q.prepare("UPDATE Media SET imdbInfo = 'TRUE' WHERE fileName = ?");
-    q.bindValue(0, movieMedia->getFileName());
+    q.prepare("UPDATE Media SET imdbInfo = 'true' WHERE fileName = ?");
+    q.bindValue(0, movieMedia.getFileName());
 
     if (!q.exec())
         throw(q.lastError()); // TODO handle this!
@@ -361,4 +379,32 @@ void DatabaseManager::insertMovieMedia(MovieMedia* movieMedia) {
     QSqlDatabase::database().commit();
 }
 
+
+QString DatabaseManager::getMediaFullName(QString& baseName) {
+    QSqlQuery q;
+    q.prepare("SELECT fileName FROM Media WHERE baseName = ?");
+    q.bindValue(0, baseName);
+
+    if (!q.exec())
+        throw(q.lastError()); // TODO handle this!
+
+    QString fullName;
+    while (q.next())
+         fullName = q.value(0).toString();
+
+    return fullName;
+}
+
+
+/*QStringList DatabaseManager::queryImdbInfoJoinMediaId() {
+    QSqlQuery q;
+    if (!q.exec(QString("SELECT * FROM imdbInfo JOIN Media ON imdbInfo.mediaId = Media.id")))
+        throw(q.lastError()); // TODO handle this!
+
+    QStringList list;
+    while (q.next())
+        list << q.value(0).toString();
+
+    return list;
+}*/
 

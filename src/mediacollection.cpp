@@ -134,7 +134,6 @@ void MediaCollection::updateMediaCollection(QStringList& mediaList) {
         emit stepUpdate(currentStep);
     }
 
-
     // second step, we check what is in the list and not in the database
     QList<Media> insertList;
     foreach(mediaFileName, tempMediaList) {

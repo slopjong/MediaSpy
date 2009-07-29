@@ -36,23 +36,21 @@ class InfoImdb : public InfoSupplier {
     // Operations
     bool processSearchPage(QNetworkReply*);
     bool processMoviePage(QNetworkReply*);
-    void searchRedirectedToMoviePage(const QUrl&, const QUrl&, int);
+    void redirectSearchToMoviePage(const QUrl&, const QUrl&, int);
     QString url2MediaName(const QUrl&);
     unsigned int url2Id(const QUrl&);
-//    const MovieMedia* getInfoFromId(unsigned int, const MovieMedia*);
     void makeRequest(QString&, int);
-
-
     QString toPlainText( const QString& );
     QList<QStringList> parseHtmlTable( const QString&, bool plainText);
-
-
+    void copyImage(QString&, const QString);
 
     // Fields
     QNetworkAccessManager* networkManager_;
     MovieMedia* movieMedia_;
     QMap<int, QNetworkReply*> replyMap_;
     int iMedia_;
+    QMap<QString, QNetworkReply*> imageMap_;
+
 
 
 public:
@@ -68,6 +66,9 @@ public:
 
 private slots:
     void finishReply(QNetworkReply*);
+
+signals:
+    void searchFinished(bool, QString);
 
 };
 

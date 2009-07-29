@@ -199,15 +199,14 @@ QSqlQuery DatabaseManager::queryMedias(QSqlQuery& q) {
   * \brief get a query with the media whom \var whereName attribute is \var whereValue
   * \return the database query
   */
+
 QSqlQuery DatabaseManager::queryMediaWhere(QSqlQuery& q, QString& whereName, QString& whereValue) {
-    q.prepare("SELECT * FROM Media WHERE ? = ?");
-    q.bindValue(0, whereName);
-    q.bindValue(1, whereValue);
-
-    qWarning() << q.executedQuery();
-
+    QString preparedQuery = QString("SELECT * FROM Media WHERE %1 = ?").arg(whereName);
+    q.prepare(preparedQuery);
+    q.bindValue(0, whereValue);
     if (!q.exec())
         throw(q.lastError()); // TODO handle this!
+
     return q;
 }
 
@@ -217,10 +216,9 @@ QSqlQuery DatabaseManager::queryMediaWhere(QSqlQuery& q, QString& whereName, QSt
   * \return the database query
   */
 QSqlQuery DatabaseManager::queryImdbInfoWhere(QSqlQuery& q, QString& whereName, QString& whereValue) {
-    q.prepare("SELECT * FROM ImdbInfo WHERE ? = ?");
-    q.bindValue(0, whereName);
-    q.bindValue(1, whereValue);
-
+    QString preparedQuery = QString("SELECT * FROM ImdbInfo WHERE %1 = ?").arg(whereName);
+    q.prepare(preparedQuery);
+    q.bindValue(0, whereValue);
     if (!q.exec())
         throw(q.lastError()); // TODO handle this!
     return q;
@@ -307,7 +305,7 @@ void DatabaseManager::removeMedias(const QStringList& mediaFileNames) {
 
 QStringList DatabaseManager::queryMediaWithNoImdbInfo() {
     QSqlQuery q;
-    if (!q.exec(QString("SELECT fileName FROM Media WHERE NOT imdbInfo")))
+    if (!q.exec(QString("SELECT fileName FROM Media WHERE imdbInfo = 'false'")))
         throw(q.lastError()); // TODO handle this!
 
     QStringList list;

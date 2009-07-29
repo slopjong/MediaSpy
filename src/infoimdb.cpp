@@ -19,6 +19,7 @@
 
 
 #include "infoimdb.h"
+#include "mediaspy.h"
 
 
 static const QString searchPrefix = "http://www.imdb.com/find?s=all&q=";
@@ -39,6 +40,7 @@ InfoImdb::InfoImdb() :
 
 /** \fn InfoImdb::InfoImdb(unsigned int nMedia)
   * \brief class constructor
+  * \param nMedia the number of media to be created
   */
 InfoImdb::InfoImdb(int nMedia) :
     networkManager_(new QNetworkAccessManager(this))
@@ -62,6 +64,10 @@ InfoImdb::~InfoImdb() {
 //////////////
 // methods //
 //////////////
+/** \fn void InfoImdb::searchImdb(QString& mediaName)
+  * \brief launches the imdb research for the \var mediaName media
+  * \param mediaName the name of the media to be searched
+  */
 void InfoImdb::searchImdb(QString& mediaName) {
     movieMedia_[iMedia_].getInfoFromMediaName(mediaName);
     QString url = QString(searchPrefix + movieMedia_[iMedia_].getBaseName());
@@ -70,23 +76,48 @@ void InfoImdb::searchImdb(QString& mediaName) {
 }
 
 
-void InfoImdb::getMoviePage(unsigned int id, int movieMediaIndex) {
+/** \fn void InfoImdb::getMoviePage(unsigned int id, int movieMediaIndex)
+  * \brief gets the page of the movie identified by its imdb id
+  * \param imdbId the imdb id of the movie
+  * \param movieMediaIndex the index of the MovieMedia object in the map
+  */
+void InfoImdb::getMoviePage(unsigned int imdbId, int movieMediaIndex) {
     // id is padded to 7 char to avoid infinite redirection loop
-    QString url = QString(titlePrefix + "tt" + QString("%1/").arg(id, 7, 10, QLatin1Char('0')));
+    QString url = QString(titlePrefix + "tt" + QString("%1/").arg(imdbId, 7, 10, QLatin1Char('0')));
     makeRequest(url, movieMediaIndex);
 }
 
 
+/** \fn void InfoImdb::makeRequest(QString& url, int movieMediaIndex)
+  * \brief makes the request
+  * \param url the url of the request to be done
+  * \param movieMediaIndex the index of the MovieMedia object in the map
+  */
 void InfoImdb::makeRequest(QString& url, int movieMediaIndex) {
     QNetworkReply* reply = networkManager_->get(QNetworkRequest(QUrl(url)));
     replyMap_.insert(movieMediaIndex, reply);
 }
 
 
+void InfoImdb::copyImage(QString& url, const QString localFileName) {
+    QNetworkReply* reply = networkManager_->get(QNetworkRequest(QUrl(url)));
+    imageMap_.insert(localFileName, reply);
+}
+
+
+/** \fn void InfoImdb::finishReply(QNetworkReply* networkReply)
+  * \brief this slot is activated when a network request for a page is terminated
+  * \param networkReply the network reply containing the page
+  */
 void InfoImdb::finishReply(QNetworkReply* networkReply) {
 
     if(!replyOk(networkReply))
         return;
+
+    // get the movieMedia index from the map
+    QList<int> movieMediaKeys = replyMap_.keys(networkReply);
+    int movieMediaIndex = movieMediaKeys.last();
+
 
     if(networkReply->url().toString().contains(searchPrefix)) { // this was a searchImdb() request
 
@@ -102,19 +133,26 @@ void InfoImdb::finishReply(QNetworkReply* networkReply) {
 
         // If the URL is not empty, we're being redirected.
         if(!urlRedirectedTo.isEmpty())
-            searchRedirectedToMoviePage(possibleRedirectUrl.toUrl(), urlRedirectedTo, replyMap_.key(networkReply));
+            redirectSearchToMoviePage(possibleRedirectUrl.toUrl(), urlRedirectedTo, replyMap_.key(networkReply));
         else {
             urlRedirectedTo.clear();
 
             // process the search page
             bool ok = processSearchPage(networkReply);
-            emit searchFinished(ok);
+            emit searchFinished(ok, movieMedia_[movieMediaIndex].getFileName());
         }
     }
     else if(networkReply->url().toString().contains(titlePrefix)) { // this was a getMoviePage() request
         // process the movie page
         bool ok = processMoviePage(networkReply);
-        emit searchFinished(ok);
+        emit searchFinished(ok, movieMedia_[movieMediaIndex].getFileName());
+    }
+    else if(networkReply->url().toString().contains("http://ia.media-imdb.com/images/")) { // this was a copyImage() request
+        QString imageFileName = imageMap_.key(networkReply);
+        QFile file(imageFileName);
+        file.open(QIODevice::WriteOnly);
+        file.write(networkReply->readAll());
+        file.close();
     }
     else // this was a strange request! Please, do nothing stupid with it!
         return;
@@ -124,46 +162,39 @@ void InfoImdb::finishReply(QNetworkReply* networkReply) {
 }
 
 
-bool InfoImdb::processSearchPage(QNetworkReply* source) {
-
-    QUrl requestUrl = source->url();
-    fprintf(stdout, "Search Page: %s\n", requestUrl.toString().toAscii().constData());
-
+/** \fn bool InfoImdb::processSearchPage(QNetworkReply* networkReply)
+  * \brief processes an imdb research page
+  * \param networkReply the network reply containing the page
+  */
+bool InfoImdb::processSearchPage(QNetworkReply* networkReply) {
     // from QIODevice to QString
-    QTextStream* textStream = new QTextStream(source);
-    bool noMatches;
-    QString line, keep;
+    QTextStream* textStream = new QTextStream(networkReply);
+    bool isMatch = true;
+    QString line;
 
     do { // looking for special lines
         line = textStream->readLine();
-        keep += line;
         if(line.contains("<b>No Matches.</b>"))
-            noMatches = true;
-
+            isMatch = false;
     } while (!line.isNull());
 
-    // temporary writing files on disk
-//    QString s = QString("/tmp/a_%1.html").arg(nRequests_);
-//    QFile file(s);
-//    file.open(QIODevice::WriteOnly);
-//    QTextStream out(&file);
-//    out << keep;
-//    nRequests_++;
-
     delete textStream;
-
-    return true;
+    return isMatch;
 }
 
 
-bool InfoImdb::processMoviePage(QNetworkReply* source) {
+/** \fn bool InfoImdb::processMoviePage(QNetworkReply* networkReply)
+  * \brief processes an imdb movie page
+  * \param networkReply the network reply containing the page
+  */
+bool InfoImdb::processMoviePage(QNetworkReply* networkReply) {
 
     // get the movieMedia index from the map
-    QList<int> movieMediaKeys = replyMap_.keys(source);
+    QList<int> movieMediaKeys = replyMap_.keys(networkReply);
     int movieMediaIndex = movieMediaKeys.last();
 
     // from QIODevice to QString
-    QTextStream* textStream = new QTextStream(source);
+    QTextStream* textStream = new QTextStream(networkReply);
     QString line;
 
     // imdbId regular expression
@@ -286,6 +317,8 @@ bool InfoImdb::processMoviePage(QNetworkReply* source) {
 
     movieMedia_[movieMediaIndex].setCast(castString);
 
+    // copying cover file
+    copyImage(imageUrlString, MediaSpy::getCoverDirectory() + movieMedia_[movieMediaIndex].getImage());
     // putting the MovieMedia information in the database
     DatabaseManager::getInstance()->insertMovieMedia(movieMedia_[movieMediaIndex]);
 
@@ -293,18 +326,34 @@ bool InfoImdb::processMoviePage(QNetworkReply* source) {
 }
 
 
-void InfoImdb::searchRedirectedToMoviePage(const QUrl& requestUrl, const QUrl& movieUrl, int movieMediaIndex) {
+/** \fn void InfoImdb::redirectSearchToMoviePage(const QUrl& requestUrl, const QUrl& movieUrl, int movieMediaIndex)
+  * \brief redirects a search page to a movie page
+  * \param requestUrl the original url of the search page
+  * \param movieUrl the movie page url
+  * \param movieMediaIndex the index of the MovieMedia object in the map
+  */
+void InfoImdb::redirectSearchToMoviePage(const QUrl& requestUrl, const QUrl& movieUrl, int movieMediaIndex) {
     QString requestMediaName = url2MediaName(requestUrl);
     int mediaImdbId = url2Id(movieUrl);
     getMoviePage(mediaImdbId, movieMediaIndex);
 }
 
 
+/** \fn QString InfoImdb::url2MediaName(const QUrl& url)
+  * \brief converts a url to the corresponding media name
+  * \param url the url to convert
+  * \return the name of the media
+  */
 QString InfoImdb::url2MediaName(const QUrl& url) {
     return url.toString().remove(searchPrefix);
 }
 
 
+/** \fn unsigned int InfoImdb::url2Id(const QUrl& url)
+  * \brief converts a url to the corresponding imdb id
+  * \param url the url to convert
+  * \return the imdb id of the movie
+  */
 unsigned int InfoImdb::url2Id(const QUrl& url) {
     QString string = url.toString().remove(titlePrefix + "tt");
     unsigned int slashIndex = string.indexOf("/");
@@ -314,7 +363,7 @@ unsigned int InfoImdb::url2Id(const QUrl& url) {
 
 
 /** \fn QString InfoImdb::toPlainText( const QString& html )
-  * \brief convertS html string to plain text
+  * \brief converts html string to plain text
   * \author PasNox
   */
 QString InfoImdb::toPlainText( const QString& html ) {
@@ -325,7 +374,7 @@ QString InfoImdb::toPlainText( const QString& html ) {
 
 
 /** \fn QList<QStringList> InfoImdb::parseHtmlTable( const QString& table, bool plainText = true )
-  * \brief parses a html table and return the result
+  * \brief parses a html table and returns the result
   * \author PasNox
   */
 QList<QStringList> InfoImdb::parseHtmlTable( const QString& table, bool plainText = true ) {

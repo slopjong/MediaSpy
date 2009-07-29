@@ -21,7 +21,6 @@
 #define MEDIASPY_H
 
 #include <QtGui/QMainWindow>
-//#include <QSettings>
 #include <QDir>
 #include <QSqlDatabase>
 #include <QMessageBox>
@@ -108,6 +107,7 @@ private:
 
 
 private slots:
+    void isMediaFound(bool, QString);
     void minusFilter_clicked();
     void on_filterToolButton_clicked();
     void on_actionAbout_MediaSpy_triggered();

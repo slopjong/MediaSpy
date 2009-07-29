@@ -104,3 +104,15 @@ QString InfoView::getImdbInfo(QString& mediaName) {
 
     return header() + view + footer();
 }
+
+
+QString InfoView::noImdbInfo() {
+    QString view = QString("<h1>%1 :-(</h1>").arg(tr("No imdb info available!"));
+    return header() + view + footer();
+}
+
+
+
+
+
+

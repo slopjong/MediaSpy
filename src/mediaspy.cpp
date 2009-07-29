@@ -30,12 +30,12 @@
   * \param parent the inherited QWidget object
   */
 MediaSpy::MediaSpy(QWidget *parent) :
-        QMainWindow(parent),
-        ui_(new Ui::MediaSpy),
-        updateThread_(new UpdateThread(this)),
-        filter_(new MediaFilter()),
-        filterLimit_(filter_->getFilterLimit() - 1),
-        nFilter_(0)
+          QMainWindow(parent)
+        , ui_(new Ui::MediaSpy)
+        , updateThread_(new UpdateThread(this))
+        , filter_(new MediaFilter())
+        , filterLimit_(filter_->getFilterLimit() - 1)
+        , nFilter_(0)
 {
     // view settings
     ui_->setupUi(this);
@@ -74,27 +74,36 @@ MediaSpy::~MediaSpy() {
 /////////////
 // methods //
 /////////////
- void MediaSpy::writeSettings() {
-     QSettings settings;
+/** \fn void MediaSpy::writeSettings()
+  * \brief writes the settings used by MediaSpy
+  */
+void MediaSpy::writeSettings() {
+    QSettings settings;
 
-     settings.beginGroup("MediaSpy");
-     settings.setValue("size", size());
-     settings.setValue("pos", pos());
-     settings.endGroup();
- }
-
-
- void MediaSpy::readSettings() {
-     QSettings settings;
-
-     settings.beginGroup("MediaSpy");
-     resize(settings.value("size", QSize(800, 600)).toSize());
-     move(settings.value("pos", QPoint(0, 0)).toPoint());
-     settings.endGroup();
- }
+    settings.beginGroup("MediaSpy");
+    settings.setValue("size", size());
+    settings.setValue("pos", pos());
+    settings.endGroup();
+}
 
 
- void MediaSpy::makeConnections() {
+/** \fn void MediaSpy::readSettings()
+  * \brief reads the settings used by MediaSpy
+  */
+void MediaSpy::readSettings() {
+    QSettings settings;
+
+    settings.beginGroup("MediaSpy");
+    resize(settings.value("size", QSize(800, 600)).toSize());
+    move(settings.value("pos", QPoint(0, 0)).toPoint());
+    settings.endGroup();
+}
+
+
+/** \fn void MediaSpy::makeConnections()
+  * \brief makes the connections used by MediaSpy
+  */
+void MediaSpy::makeConnections() {
     connect(MediaCollection::getInstance(), SIGNAL(startUpdate(const int)), this, SLOT(setProgressbarMaximum(const int)));
     connect(MediaCollection::getInstance(), SIGNAL(stepUpdate(const int)), this, SLOT(setProgressbarCurrent(const int)));
     connect(MediaCollection::getInstance(), SIGNAL(finishedUpdate()), this, SLOT(setProgressbarOff()));
@@ -104,6 +113,7 @@ MediaSpy::~MediaSpy() {
     connect(Collection::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
     connect(MediaCollection::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
     connect(InfoManager::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
+    connect(InfoManager::getInstance(), SIGNAL(searchResult(bool, QString)), this, SLOT(isMediaFound(bool, QString)));
 
     connect(ui_->mediaListView->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)),
             this, SLOT(selectedMovie(QModelIndex, QModelIndex)));
@@ -200,7 +210,7 @@ void MediaSpy::init() {
     sqlTableModel_->removeColumns(1, 5);
     sqlTableModel_->setHeaderData(0, Qt::Horizontal, tr("Title"));
 
-    // sorting the list by alphabetical order without case sensitivity
+    // sorting the list in alphabetical order without case sensitivity
     mediaListProxyModel_ = new QSortFilterProxyModel(this);
     mediaListProxyModel_->setSourceModel(sqlTableModel_);
     mediaListProxyModel_->sort(0, Qt::AscendingOrder);
@@ -221,6 +231,11 @@ void MediaSpy::init() {
 }
 
 
+/** \fn void MediaSpy::closeEvent(QCloseEvent *event)
+  * \brief This event handler is called with the given
+  * event when Qt receives a window close request
+  * for a top-level widget from the window system.
+  */
 void MediaSpy::closeEvent(QCloseEvent *event) {
     Q_UNUSED(event);
     writeSettings();
@@ -228,7 +243,7 @@ void MediaSpy::closeEvent(QCloseEvent *event) {
 
 
 /** \fn void MediaSpy::updateCollections(QStringList& dirList)
-  * \brief Updates the Collections.
+  * \brief Updates the Collections in a dedicated thread.
   */
 void MediaSpy::updateCollections(QStringList& dirList) {
     Collection::getInstance()->update(dirList);
@@ -256,6 +271,9 @@ void MediaSpy::on_actionSelectdirectories_triggered() {
 }
 
 
+/** \fn void MediaSpy::selectedMovie(QModelIndex current, QModelIndex previous)
+ *  \brief Defines what is done when a movie is selected in the list.
+ */
 void MediaSpy::selectedMovie(QModelIndex current, QModelIndex previous) {
     Q_UNUSED(previous);
 
@@ -263,7 +281,16 @@ void MediaSpy::selectedMovie(QModelIndex current, QModelIndex previous) {
     ui_->movieTitleLabel->setText(QString(tr("Title: %1").arg(s)));
 
     QString mediaName = DatabaseManager::getInstance()->getMediaFullName(s);
-    ui_->mediaInfoView->setHtml(InfoView::getInstance()->getImdbInfo(mediaName), QUrl(getCoverDirectory()));
+    if(DatabaseManager::getInstance()->hasImdbInfo(mediaName))
+        ui_->mediaInfoView->setHtml(InfoView::getInstance()->getImdbInfo(mediaName), QUrl(getCoverDirectory()));
+    else {
+        QString voidInfoView = InfoView::getInstance()->noImdbInfo();
+        ui_->mediaInfoView->setHtml(voidInfoView);
+    }
+}
+
+
+void MediaSpy::isMediaFound(bool ok, QString fileName) {
 }
 
 
@@ -315,6 +342,9 @@ void MediaSpy::displayMessage(QString message) {
 }
 
 
+/** \fn void MediaSpy::finishedThread()
+ *  \brief Defines what is done when the update thread is done.
+ */
 void MediaSpy::finishedThread() {
     sqlTableModel_->select();
     // this may freeze window with long table!
@@ -380,7 +410,6 @@ void MediaSpy::on_filterToolButton_clicked() {
         newFilterLineEdit[nFilter_].setFocus(Qt::MouseFocusReason);
         nFilter_++;
     }
-
     if(nFilter_==filterLimit_)
         ui_->filterToolButton->setEnabled(false);
 }

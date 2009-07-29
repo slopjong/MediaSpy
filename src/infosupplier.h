@@ -40,7 +40,7 @@ protected:
 
 
 signals:
-    void searchFinished(bool);
+    void searchFinished(bool, QString);
 
 };
 

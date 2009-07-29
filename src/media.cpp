@@ -66,17 +66,9 @@ Media::~Media() {}
 // methods //
 /////////////
 void Media::getInfoFromMediaName(QString& mediaName) {
-
-    qWarning() << mediaName;
-
-
     QSqlQuery q;
     QString whereName = "fileName";
     DatabaseManager::getInstance()->queryMediaWhere(q, whereName, mediaName);
-
-
-    qWarning() << q.next();
-
 
     int fieldId             = q.record().indexOf("id");
     int fieldType           = q.record().indexOf("type");
@@ -88,7 +80,6 @@ void Media::getInfoFromMediaName(QString& mediaName) {
 
     while (q.next()) {
         qulonglong id = q.value(fieldId).toULongLong();
-
         this->setId(id);
         this->setType(q.value(fieldType).toInt());
         this->setFileName(mediaName);

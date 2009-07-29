@@ -85,7 +85,7 @@ private:
     // Constructors
     // Accessor Methods
     // Operations
-    void string2fileName(QString&);
+    void string2baseName(QString&);
 
 
 protected:

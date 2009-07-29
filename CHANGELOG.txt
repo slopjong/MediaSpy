@@ -2,7 +2,11 @@ CHANGELOG.txt
 =============
 
 0.5.6
--
+- further imdb api with InfoImdb class
+- operational imdb search
+- only redirected movie page from search is operational
+- beginning of a user-oriented imdb replys visualisation
+
 
 0.5.5
 - use of MEDIASPY_HOME environment variable to handle translations location
@@ -10,13 +14,12 @@ CHANGELOG.txt
     1. added InfoManager class (which is a singleton)
     2. added imdbInfo field in Media database table and in Media class
     3. created a db query to fetch empty imdb info
-
-FIX
-- static QComboxBox content was non translated (dumbass!)
+FIX: static QComboxBox content was non translated (dumbass!)
 
 
 0.5.4
 - media list is now completely filled when program starts (may freeze)
+
 
 0.5.3
 - window size and position memorize through settings
@@ -25,21 +28,27 @@ FIX
 - resources folder for all MediaSpy.qrc files
 - first approach of info panel styling
 
+
 0.5.2
 - filter widget (just visual, not functional)
+
 
 0.5.1
 - first version of internationalization
 
+
 0.5
 - first version of multithreading collection update
+
 
 0.4
 - directories can be added or removed
 - directories are fetched for media files which are displayed in a list
 
+
 0.3
 - first display of added directories
+
 
 0.1
 - first version, only collection adding and removing is implemented.

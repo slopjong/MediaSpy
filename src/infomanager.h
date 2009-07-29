@@ -49,8 +49,14 @@ public:
     void searchImdb(QString);
 
 
+public slots:
+    void searchReply(bool, QString);
+
+
 signals:
     void messageToStatus(QString);
+    void searchResult(bool, QString);
+
 };
 
 #endif // INFOMANAGER_H

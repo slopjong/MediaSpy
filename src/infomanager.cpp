@@ -65,7 +65,6 @@ void InfoManager::kill() {
 
 
 void InfoManager::updateMediaCollectionInfo() {
-
     //    if(connected()) {
 
     // which media ? TODO: arrange this in order to search only for empty info
@@ -74,6 +73,7 @@ void InfoManager::updateMediaCollectionInfo() {
     QString mediaId;
 
     infoImdb_ = new InfoImdb(mediaIdWithNoInfoList.count());
+    connect(infoImdb_, SIGNAL(searchFinished(bool, QString)), this, SLOT(searchReply(bool, QString)));
 
     foreach(mediaId, mediaIdWithNoInfoList) {
         infoImdb_->searchImdb(mediaId);
@@ -81,4 +81,8 @@ void InfoManager::updateMediaCollectionInfo() {
     //}
 }
 
+
+void InfoManager::searchReply(bool ok, QString reply) {
+    emit searchResult(ok, reply);
+}
 

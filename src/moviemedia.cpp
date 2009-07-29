@@ -148,13 +148,13 @@ void MovieMedia::printInfo() {
 void MovieMedia::url2image() {
     Q_ASSERT(!title_.isEmpty());
 
-    QString fileName = title_;
-    string2fileName(fileName);
-    image_ = fileName;
+    QString baseName = title_;
+    string2baseName(baseName);
+    image_ = baseName;
 }
 
 
-void MovieMedia::string2fileName(QString& string) {
+void MovieMedia::string2baseName(QString& string) {
     string.replace(QRegExp("[ \"\\*?<>|:,&]"), "");
     string.append(".jpg");
 }

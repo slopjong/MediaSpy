@@ -44,6 +44,7 @@ public:
     QString header();
     QString footer();
     QString getImdbInfo(QString&);
+    QString noImdbInfo();
 
 };
 

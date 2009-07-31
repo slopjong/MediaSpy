@@ -1,6 +1,10 @@
 CHANGELOG.txt
 =============
 
+0.5.7
+- imdb requests almost functional
+- bugs (even crashes) during info retrieval are possible
+
 0.5.6
 - further imdb api with InfoImdb class
 - operational imdb search

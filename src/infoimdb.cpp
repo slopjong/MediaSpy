@@ -23,7 +23,9 @@
 
 
 static const QString searchPrefix = "http://www.imdb.com/find?s=all&q=";
-static const QString titlePrefix = "http://www.imdb.com/title/";
+static const QString titlePrefix  = "http://www.imdb.com/title/";
+static const QString mediaPrefix  = "http://ia.media-imdb.com/images/";
+
 
 
 /////////////////////////////
@@ -72,7 +74,7 @@ void InfoImdb::searchImdb(QString& mediaName) {
     movieMedia_[iMedia_].getInfoFromMediaName(mediaName);
     QString url = QString(searchPrefix + movieMedia_[iMedia_].getBaseName());
     makeRequest(url, iMedia_);
-    iMedia_++;
+    ++iMedia_;
 }
 
 
@@ -96,12 +98,18 @@ void InfoImdb::getMoviePage(unsigned int imdbId, int movieMediaIndex) {
 void InfoImdb::makeRequest(QString& url, int movieMediaIndex) {
     QNetworkReply* reply = networkManager_->get(QNetworkRequest(QUrl(url)));
     replyMap_.insert(movieMediaIndex, reply);
+
+qWarning() << "makeRequest: " << url;
+
 }
 
 
 void InfoImdb::copyImage(QString& url, const QString localFileName) {
     QNetworkReply* reply = networkManager_->get(QNetworkRequest(QUrl(url)));
     imageMap_.insert(localFileName, reply);
+
+qWarning() << "copyImage: " << url;
+
 }
 
 
@@ -114,12 +122,10 @@ void InfoImdb::finishReply(QNetworkReply* networkReply) {
     if(!replyOk(networkReply))
         return;
 
-    // get the movieMedia index from the map
-    QList<int> movieMediaKeys = replyMap_.keys(networkReply);
-    int movieMediaIndex = movieMediaKeys.last();
-
-
     if(networkReply->url().toString().contains(searchPrefix)) { // this was a searchImdb() request
+        // get the movieMedia index from one of the map
+        QList<int> movieMediaKeys = replyMap_.keys(networkReply);
+        int movieMediaIndex = movieMediaKeys.last();
 
         // Reply is finished! We'll ask for the reply about the Redirection attribute
         // http://doc.trolltech.com/qnetworkrequest.html#Attribute-enum
@@ -140,19 +146,30 @@ void InfoImdb::finishReply(QNetworkReply* networkReply) {
             // process the search page
             bool ok = processSearchPage(networkReply);
             emit searchFinished(ok, movieMedia_[movieMediaIndex].getFileName());
+
+            qWarning() << "finishReply:searchImdb() " << networkReply->url();
+
         }
     }
     else if(networkReply->url().toString().contains(titlePrefix)) { // this was a getMoviePage() request
+        // get the movieMedia index from one of the map
+        QList<int> movieMediaKeys = replyMap_.keys(networkReply);
+        int movieMediaIndex = movieMediaKeys.last();
+
         // process the movie page
         bool ok = processMoviePage(networkReply);
         emit searchFinished(ok, movieMedia_[movieMediaIndex].getFileName());
+
+        qWarning() << "finishReply:getMoviePage() " << networkReply->url();
     }
-    else if(networkReply->url().toString().contains("http://ia.media-imdb.com/images/")) { // this was a copyImage() request
+    else if(networkReply->url().toString().contains(mediaPrefix)) { // this was a copyImage() request
         QString imageFileName = imageMap_.key(networkReply);
         QFile file(imageFileName);
         file.open(QIODevice::WriteOnly);
         file.write(networkReply->readAll());
         file.close();
+
+        qWarning() << "finishReply:copyImage() " << networkReply->url();
     }
     else // this was a strange request! Please, do nothing stupid with it!
         return;
@@ -167,6 +184,10 @@ void InfoImdb::finishReply(QNetworkReply* networkReply) {
   * \param networkReply the network reply containing the page
   */
 bool InfoImdb::processSearchPage(QNetworkReply* networkReply) {
+    // get the movieMedia index from the map
+    QList<int> movieMediaKeys = replyMap_.keys(networkReply);
+    int movieMediaIndex = movieMediaKeys.last();
+
     // from QIODevice to QString
     QTextStream* textStream = new QTextStream(networkReply);
     bool isMatch = true;
@@ -176,6 +197,20 @@ bool InfoImdb::processSearchPage(QNetworkReply* networkReply) {
         line = textStream->readLine();
         if(line.contains("<b>No Matches.</b>"))
             isMatch = false;
+        if(line.contains("<p style=\"margin:0 0 0.5em 0;\"><b>Media from")) {
+            // regexp
+            QString linkString;
+            QRegExp linkRegExp("(.*)<a href=\"/title/tt(.*)/\" onclick=(.*)");
+            if (linkRegExp.indexIn(line) != -1)
+                linkString = linkRegExp.cap(2);
+
+            int mediaImdbId = linkString.toInt();
+
+qWarning() << "processSearchPage() " << linkString;
+
+
+            getMoviePage(mediaImdbId, movieMediaIndex);
+        }
     } while (!line.isNull());
 
     delete textStream;
@@ -311,7 +346,7 @@ bool InfoImdb::processMoviePage(QNetworkReply* networkReply) {
 
     // processing cast
     QString castString;
-    for(int i = 0; i < castList.count(); i++)
+    for(int i = 0; i < castList.count(); ++i)
         castString.append(castList.value( i ).value( 1 )).append(", ");
     castString.chop(2);
 

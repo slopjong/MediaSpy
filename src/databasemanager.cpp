@@ -327,7 +327,7 @@ bool DatabaseManager::hasImdbInfo(const QString& fileName) {
     if (!q.exec())
         return false;
 
-    bool hasInfo;
+    bool hasInfo = false;
     while (q.next())
          hasInfo = q.value(0).toBool();
 

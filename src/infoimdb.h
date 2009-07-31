@@ -52,7 +52,6 @@ class InfoImdb : public InfoSupplier {
     QMap<QString, QNetworkReply*> imageMap_;
 
 
-
 public:
     // Constructors
     InfoImdb();
@@ -66,9 +65,6 @@ public:
 
 private slots:
     void finishReply(QNetworkReply*);
-
-signals:
-    void searchFinished(bool, QString);
 
 };
 

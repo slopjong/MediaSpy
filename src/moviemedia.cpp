@@ -155,7 +155,8 @@ void MovieMedia::url2image() {
 
 
 void MovieMedia::string2baseName(QString& string) {
-    string.replace(QRegExp("[ \"\\*?<>|:,&]"), "");
+    string.replace(QRegExp("[ \"\\*?<>|:,]"), "");
+    string.replace(QRegExp("&(.*);"), "");
     string.append(".jpg");
 }
 

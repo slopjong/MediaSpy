@@ -1,9 +1,17 @@
 CHANGELOG.txt
 =============
 
+0.6
+- first fully operationnal imdb research!
+- most errors are handled
+- imdb info are displayed
+- users get a color info about research status
+
+
 0.5.7
 - imdb requests almost functional
 - bugs (even crashes) during info retrieval are possible
+
 
 0.5.6
 - further imdb api with InfoImdb class

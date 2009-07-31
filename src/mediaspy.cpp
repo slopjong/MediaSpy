@@ -204,7 +204,7 @@ void MediaSpy::init() {
     ////////////////////
     // tableView init //
     ////////////////////
-    sqlTableModel_ = new QSqlTableModel(this);
+    sqlTableModel_ = new MyQSqlTableModel();
     sqlTableModel_->setTable("Media");
     sqlTableModel_->removeColumns(0, 2);
     sqlTableModel_->removeColumns(1, 5);
@@ -291,6 +291,7 @@ void MediaSpy::selectedMovie(QModelIndex current, QModelIndex previous) {
 
 
 void MediaSpy::isMediaFound(bool ok, QString fileName) {
+    sqlTableModel_->setKeyTocheck(ok, fileName);
 }
 
 
@@ -351,6 +352,7 @@ void MediaSpy::finishedThread() {
     while(sqlTableModel_->canFetchMore())
         sqlTableModel_->fetchMore();
 
+    sqlTableModel_->setList();
     InfoManager::getInstance()->updateMediaCollectionInfo();
 }
 
@@ -408,7 +410,7 @@ void MediaSpy::on_filterToolButton_clicked() {
     if(nFilter_<filterLimit_) {
         newFilterWidget[nFilter_].setVisible(true);
         newFilterLineEdit[nFilter_].setFocus(Qt::MouseFocusReason);
-        nFilter_++;
+        ++nFilter_;
     }
     if(nFilter_==filterLimit_)
         ui_->filterToolButton->setEnabled(false);
@@ -416,7 +418,7 @@ void MediaSpy::on_filterToolButton_clicked() {
 
 
 void MediaSpy::minusFilter_clicked() {
-    nFilter_--;
+    --nFilter_;
     if(nFilter_ >= 0) {
         newFilterWidget[nFilter_].setVisible(false);
         ui_->filterToolButton->setEnabled(true);

@@ -35,6 +35,7 @@
 #include "mediafilter.h"
 #include "infoview.h"
 #include "infomanager.h"
+#include "myqsqltablemodel.h"
 
 
 /** \var appDirectory
@@ -87,7 +88,7 @@ private:
     const int filterLimit_;
     int nFilter_;
     QString errorMessage_;
-    QSqlTableModel* sqlTableModel_;
+    MyQSqlTableModel* sqlTableModel_;
     QSortFilterProxyModel* mediaListProxyModel_;
     QLabel* newFilterLabel;
     QComboBox* newFilterComboBox;

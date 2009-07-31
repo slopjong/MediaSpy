@@ -33,7 +33,7 @@ InfoManager* InfoManager::singleton_ = 00;
 /** \fn InfoManager::InfoManager()
   * \brief class constructor
   */
-InfoManager::InfoManager() {}
+InfoManager::InfoManager() : infoImdb_(0) {}
 
 /** \fn InfoManager::~InfoManager()
   * \brief class destructor
@@ -65,6 +65,14 @@ void InfoManager::kill() {
 
 
 void InfoManager::updateMediaCollectionInfo() {
+    indexImdbSearch_ = 0;
+
+    // if an ongoing update is still on
+    if(infoImdb_ != 0) {
+        delete infoImdb_;
+        infoImdb_ = 0;
+    }
+
     //    if(connected()) {
 
     // which media ? TODO: arrange this in order to search only for empty info
@@ -72,11 +80,16 @@ void InfoManager::updateMediaCollectionInfo() {
     QStringList mediaIdWithNoInfoList = DatabaseManager::getInstance()->queryMediaWithNoImdbInfo();
     QString mediaId;
 
-    infoImdb_ = new InfoImdb(mediaIdWithNoInfoList.count());
-    connect(infoImdb_, SIGNAL(searchFinished(bool, QString)), this, SLOT(searchReply(bool, QString)));
+    nImdbSearch_ = mediaIdWithNoInfoList.count();
+    if(nImdbSearch_>0) {
+        emit messageToStatus(tr("Updating imdb info..."));
+        infoImdb_ = new InfoImdb(nImdbSearch_);
+        connect(infoImdb_, SIGNAL(searchFinished(bool, QString)), this, SLOT(searchReply(bool, QString)));
 
-    foreach(mediaId, mediaIdWithNoInfoList) {
-        infoImdb_->searchImdb(mediaId);
+        emit(startSearch(nImdbSearch_));
+        foreach(mediaId, mediaIdWithNoInfoList) {
+            infoImdb_->searchImdb(mediaId);
+        }
     }
     //}
 }
@@ -84,5 +97,8 @@ void InfoManager::updateMediaCollectionInfo() {
 
 void InfoManager::searchReply(bool ok, QString reply) {
     emit searchResult(ok, reply);
+    emit searchProgress(++indexImdbSearch_);
+    if(nImdbSearch_ == indexImdbSearch_)
+        emit searchEnd();
 }
 

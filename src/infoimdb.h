@@ -66,6 +66,10 @@ public:
 private slots:
     void finishReply(QNetworkReply*);
 
+
+signals:
+    void replyProgress(const int);
+
 };
 
 #endif // INFOIMDB_H

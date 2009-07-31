@@ -71,8 +71,14 @@ InfoImdb::~InfoImdb() {
   * \param mediaName the name of the media to be searched
   */
 void InfoImdb::searchImdb(QString& mediaName) {
+    Q_ASSERT(!mediaName.isEmpty());
+
     movieMedia_[iMedia_].getInfoFromMediaName(mediaName);
-    QString url = QString(searchPrefix + movieMedia_[iMedia_].getBaseName());
+    QString imdbRequestName = movieMedia_[iMedia_].getBaseName();
+    imdbRequestName.replace('&', "");
+    imdbRequestName.replace(' ', "+");
+
+    QString url = QString(searchPrefix + imdbRequestName);
     makeRequest(url, iMedia_);
     ++iMedia_;
 }
@@ -84,6 +90,12 @@ void InfoImdb::searchImdb(QString& mediaName) {
   * \param movieMediaIndex the index of the MovieMedia object in the map
   */
 void InfoImdb::getMoviePage(unsigned int imdbId, int movieMediaIndex) {
+
+    if(imdbId == 0) {
+        emit searchFinished(false, movieMedia_[movieMediaIndex].getFileName());
+        return;
+    }
+
     // id is padded to 7 char to avoid infinite redirection loop
     QString url = QString(titlePrefix + "tt" + QString("%1/").arg(imdbId, 7, 10, QLatin1Char('0')));
     makeRequest(url, movieMediaIndex);
@@ -98,18 +110,14 @@ void InfoImdb::getMoviePage(unsigned int imdbId, int movieMediaIndex) {
 void InfoImdb::makeRequest(QString& url, int movieMediaIndex) {
     QNetworkReply* reply = networkManager_->get(QNetworkRequest(QUrl(url)));
     replyMap_.insert(movieMediaIndex, reply);
-
-qWarning() << "makeRequest: " << url;
-
+    qWarning("[%p] makeRequest: %s", reply, url.toAscii().constData());
 }
 
 
 void InfoImdb::copyImage(QString& url, const QString localFileName) {
     QNetworkReply* reply = networkManager_->get(QNetworkRequest(QUrl(url)));
     imageMap_.insert(localFileName, reply);
-
-qWarning() << "copyImage: " << url;
-
+    qWarning("[%p] copyImage: %s", reply, url.toAscii().constData());
 }
 
 
@@ -146,9 +154,6 @@ void InfoImdb::finishReply(QNetworkReply* networkReply) {
             // process the search page
             bool ok = processSearchPage(networkReply);
             emit searchFinished(ok, movieMedia_[movieMediaIndex].getFileName());
-
-            qWarning() << "finishReply:searchImdb() " << networkReply->url();
-
         }
     }
     else if(networkReply->url().toString().contains(titlePrefix)) { // this was a getMoviePage() request
@@ -159,17 +164,16 @@ void InfoImdb::finishReply(QNetworkReply* networkReply) {
         // process the movie page
         bool ok = processMoviePage(networkReply);
         emit searchFinished(ok, movieMedia_[movieMediaIndex].getFileName());
-
-        qWarning() << "finishReply:getMoviePage() " << networkReply->url();
     }
     else if(networkReply->url().toString().contains(mediaPrefix)) { // this was a copyImage() request
         QString imageFileName = imageMap_.key(networkReply);
-        QFile file(imageFileName);
-        file.open(QIODevice::WriteOnly);
-        file.write(networkReply->readAll());
-        file.close();
 
-        qWarning() << "finishReply:copyImage() " << networkReply->url();
+        if(!imageFileName.isEmpty()) {
+            QFile file(imageFileName);
+            file.open(QIODevice::WriteOnly);
+            file.write(networkReply->readAll());
+            file.close();
+        }
     }
     else // this was a strange request! Please, do nothing stupid with it!
         return;
@@ -190,13 +194,11 @@ bool InfoImdb::processSearchPage(QNetworkReply* networkReply) {
 
     // from QIODevice to QString
     QTextStream* textStream = new QTextStream(networkReply);
-    bool isMatch = true;
     QString line;
 
     do { // looking for special lines
         line = textStream->readLine();
-        if(line.contains("<b>No Matches.</b>"))
-            isMatch = false;
+
         if(line.contains("<p style=\"margin:0 0 0.5em 0;\"><b>Media from")) {
             // regexp
             QString linkString;
@@ -205,16 +207,29 @@ bool InfoImdb::processSearchPage(QNetworkReply* networkReply) {
                 linkString = linkRegExp.cap(2);
 
             int mediaImdbId = linkString.toInt();
-
-qWarning() << "processSearchPage() " << linkString;
-
-
             getMoviePage(mediaImdbId, movieMediaIndex);
+            return true;
+        }
+        else if(line.contains("<b>No Matches.</b>")) {
+            qWarning("[%p] No Matches", networkReply);
+            return false;
+        }
+        else if(line.contains("(Approx Matches)</b>")) {
+            qWarning("[%p] Approx Matches", networkReply);
+            return false;
+        }
+        else if(line.contains("Enter a word or phrase to search on.")) {
+            qWarning("[%p] Enter a word or phrase to search on", networkReply);
+            return false;
+        }
+        else if(line.contains("<h2>Popular Results</h2>")) {
+            qWarning("[%p] Popular Results", networkReply);
+            return false;
         }
     } while (!line.isNull());
 
     delete textStream;
-    return isMatch;
+    return false;
 }
 
 
@@ -341,22 +356,28 @@ bool InfoImdb::processMoviePage(QNetworkReply* networkReply) {
     movieMedia_[movieMediaIndex].setTitle(titleString);
     movieMedia_[movieMediaIndex].setDirector(directorString);
     movieMedia_[movieMediaIndex].setCountry(countryString);
-    movieMedia_[movieMediaIndex].setImageUrl(imageUrlString);
     movieMedia_[movieMediaIndex].setPlot(plotString);
+
+    // processing image
+    if(!imageUrlString.isEmpty()) {
+        movieMedia_[movieMediaIndex].setImageUrl(imageUrlString);
+        copyImage(imageUrlString, MediaSpy::getCoverDirectory() + movieMedia_[movieMediaIndex].getImage());
+    }
+    else {
+        movieMedia_[movieMediaIndex].setImageUrl(MediaSpy::getDefaultCoverName());
+    }
 
     // processing cast
     QString castString;
     for(int i = 0; i < castList.count(); ++i)
         castString.append(castList.value( i ).value( 1 )).append(", ");
     castString.chop(2);
-
     movieMedia_[movieMediaIndex].setCast(castString);
 
-    // copying cover file
-    copyImage(imageUrlString, MediaSpy::getCoverDirectory() + movieMedia_[movieMediaIndex].getImage());
     // putting the MovieMedia information in the database
     DatabaseManager::getInstance()->insertMovieMedia(movieMedia_[movieMediaIndex]);
 
+    delete textStream;
     return true;
 }
 

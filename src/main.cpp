@@ -22,6 +22,7 @@
 
 int main(int argc, char *argv[]) {
     QApplication MediaSpyApp(argc, argv);
+    MediaSpyApp.connect(&MediaSpyApp, SIGNAL(lastWindowClosed()), &MediaSpyApp, SLOT(quit()));
 
     // MediaSpyHome handling
     QString MediaSpyHome = QString(getenv("MEDIASPY_HOME"));
@@ -48,7 +49,6 @@ int main(int argc, char *argv[]) {
 
     MediaSpy w;
     w.show();
-    MediaSpyApp.connect(&MediaSpyApp, SIGNAL(lastWindowClosed()), &MediaSpyApp, SLOT(quit()));
 
     return MediaSpyApp.exec();
 }

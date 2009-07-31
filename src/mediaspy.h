@@ -41,9 +41,14 @@
 /** \var appDirectory
   * \brief name of the local directory used by the program
   */
-static const QString appDirectory   = QDir::homePath() + "/.MediaSpy/";
-static const QString cssDirectory   = QDir::homePath() + "/.MediaSpy/stylesheets/";
-static const QString coverDirectory = QDir::homePath() + "/.MediaSpy/covers/";
+static const QString appDirectory     = QDir::homePath() + "/.MediaSpy/";
+static const QString cssDirectory     = QDir::homePath() + "/.MediaSpy/stylesheets/";
+static const QString coverDirectory   = QDir::homePath() + "/.MediaSpy/covers/";
+
+/** \var defaultImageName
+  * \brief name of the default cover
+  */
+static const QString defaultCoverName = ".default.jpg";
 
 /** \var dbFileName
   * \brief name of the database file
@@ -75,6 +80,7 @@ public:
     static const QString getDbFileName();
     static const QString getCssDirectory();
     static const QString getCoverDirectory();
+    static const QString getDefaultCoverName();
 
     // Operations
     void tableViewUpdated();

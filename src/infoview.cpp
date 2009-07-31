@@ -19,6 +19,7 @@
 
 
 #include "infoview.h"
+#include "mediaspy.h"
 
 
 /** \var InfoView* InfoView::singleton_
@@ -91,6 +92,9 @@ QString InfoView::getImdbInfo(QString& mediaName) {
     MovieMedia* m = new MovieMedia(mediaName);
     m->getImdbInfoFromDb();
 
+    if(m->getImage().isEmpty() || m->getImage() == ".jpg")
+        m->setImage(MediaSpy::getDefaultCoverName());
+
     QString view = QString("<h1>%1 (%2)</h1>").arg(m->getTitle()).arg(m->getYear());
     view        += QString("<img src=\"%1\" />").arg(m->getImage());
     view        += QString("<p class=\"plot\">%1</p>").arg(m->getPlot());
@@ -100,8 +104,8 @@ QString InfoView::getImdbInfo(QString& mediaName) {
     view        += QString("<p><span class=\"key\">%1</span> %2</p>").arg(tr("Director:")).arg(m->getDirector());
     view        += QString("<p><span class=\"key\">%1</span> %2</p>").arg(tr("Country:")).arg(m->getCountry());
     view        += QString("<p><span class=\"key\">%1</span> %2/10</p>").arg(tr("Rating:")).arg(m->getRating());
-    view        += QString("<p><span class=\"key\">%1</span> %2</p>").arg(tr("Image:")).arg(m->getImage());
 
+    delete m;
     return header() + view + footer();
 }
 

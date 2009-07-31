@@ -37,6 +37,8 @@ MediaSpy::MediaSpy(QWidget *parent) :
         , filterLimit_(filter_->getFilterLimit() - 1)
         , nFilter_(0)
 {
+    Q_CHECK_PTR(ui_);
+
     // view settings
     ui_->setupUi(this);
     ui_->progressBar->setMinimum(0);
@@ -57,6 +59,16 @@ MediaSpy::MediaSpy(QWidget *parent) :
   * \brief class destructor
   */
 MediaSpy::~MediaSpy() {
+    Q_CHECK_PTR(ui_);
+    Q_CHECK_PTR(updateThread_);
+    Q_CHECK_PTR(filter_);
+    Q_CHECK_PTR(newFilterLabel);
+    Q_CHECK_PTR(newFilterComboBox);
+    Q_CHECK_PTR(newFilterLineEdit);
+    Q_CHECK_PTR(newFilterToolButton);
+    Q_CHECK_PTR(newFilterLayout);
+    Q_CHECK_PTR(newFilterWidget);
+
     delete ui_;
     delete updateThread_;
     delete filter_;
@@ -66,6 +78,12 @@ MediaSpy::~MediaSpy() {
     delete[] newFilterToolButton;
     delete[] newFilterLayout;
     delete[] newFilterWidget;
+    delete sqlTableModel_;
+    delete mediaListProxyModel_;
+    InfoView::getInstance()->kill();
+    InfoManager::getInstance()->kill();
+    MediaCollection::getInstance()->kill();
+    Collection::getInstance()->kill();
     DatabaseManager::getInstance()->kill();
 }
 
@@ -112,8 +130,12 @@ void MediaSpy::makeConnections() {
     connect(updateThread_, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
     connect(Collection::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
     connect(MediaCollection::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
+
     connect(InfoManager::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
     connect(InfoManager::getInstance(), SIGNAL(searchResult(bool, QString)), this, SLOT(isMediaFound(bool, QString)));
+    connect(InfoManager::getInstance(), SIGNAL(startSearch(const int)), this, SLOT(setProgressbarMaximum(const int)));
+    connect(InfoManager::getInstance(), SIGNAL(searchProgress(const int)), this, SLOT(setProgressbarCurrent(const int)));
+    connect(InfoManager::getInstance(), SIGNAL(searchEnd()), this, SLOT(setProgressbarOff()));
 
     connect(ui_->mediaListView->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)),
             this, SLOT(selectedMovie(QModelIndex, QModelIndex)));
@@ -147,6 +169,13 @@ void MediaSpy::init() {
             errorMessage_ = tr("Cannot create local cover directory!");
             return;
         }
+        QFile resourceCover(":/icons/defaultCover.png");
+        QFile localCover(getCoverDirectory() + getDefaultCoverName());
+        resourceCover.open(QIODevice::ReadOnly);
+        localCover.open(QIODevice::WriteOnly);
+        localCover.write(resourceCover.readAll());
+        localCover.close();
+        resourceCover.close();
     }
 
     ///////////////////
@@ -393,6 +422,13 @@ const QString MediaSpy::getDbFileName() {
     return dbFileName;
 }
 
+/** \fn const QString MediaSpy::getDefaultCoverName()
+ *  \brief Returns the name of the default cover.
+ *  \return the name of the default cover
+ */
+const QString MediaSpy::getDefaultCoverName() {
+    return defaultCoverName;
+}
 
 
 /////////////////////

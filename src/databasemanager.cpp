@@ -68,6 +68,7 @@ void DatabaseManager::kill() {
     if (00 != singleton_) {
         delete singleton_;
         singleton_ = 00;
+        QSqlDatabase::removeDatabase("QSQLITE");
     }
 }
 

@@ -39,7 +39,8 @@ class InfoManager : public QObject {
     // Fields
     static InfoManager *singleton_;
     InfoImdb* infoImdb_;
-
+    int nImdbSearch_;
+    int indexImdbSearch_;
 
 public:
     // Operations
@@ -56,6 +57,9 @@ public slots:
 signals:
     void messageToStatus(QString);
     void searchResult(bool, QString);
+    void startSearch(const int);
+    void searchProgress(const int);
+    void searchEnd();
 
 };
 

@@ -353,18 +353,23 @@ bool InfoImdb::processMoviePage(QNetworkReply* networkReply) {
     movieMedia_[movieMediaIndex].setYear(yearString.toInt());
     movieMedia_[movieMediaIndex].setRuntime(runtimeString.toInt());
     movieMedia_[movieMediaIndex].setRating(ratingString.toDouble());
-    movieMedia_[movieMediaIndex].setTitle(titleString);
     movieMedia_[movieMediaIndex].setDirector(directorString);
     movieMedia_[movieMediaIndex].setCountry(countryString);
     movieMedia_[movieMediaIndex].setPlot(plotString);
 
+    // processing title
+    if(!titleString.isEmpty())
+        movieMedia_[movieMediaIndex].setTitle(titleString);
+    else
+        movieMedia_[movieMediaIndex].setTitle(movieMedia_[movieMediaIndex].getBaseName());
+
     // processing image
-    if(!imageUrlString.isEmpty()) {
-        movieMedia_[movieMediaIndex].setImageUrl(imageUrlString);
-        copyImage(imageUrlString, MediaSpy::getCoverDirectory() + movieMedia_[movieMediaIndex].getImage());
+    if(imageUrlString.isEmpty() || imageUrlString == ".jpg") {
+        movieMedia_[movieMediaIndex].setImageUrl(MediaSpy::getDefaultCoverName());
     }
     else {
-        movieMedia_[movieMediaIndex].setImageUrl(MediaSpy::getDefaultCoverName());
+        movieMedia_[movieMediaIndex].setImageUrl(imageUrlString);
+        copyImage(imageUrlString, MediaSpy::getCoverDirectory() + movieMedia_[movieMediaIndex].getImage());
     }
 
     // processing cast

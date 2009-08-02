@@ -20,8 +20,6 @@
 
 #include "collection.h"
 
-#include <QFileInfo>
-
 
 /** \var Collection* Collection::singleton_
   * \brief pointer to the unique instance of Collection

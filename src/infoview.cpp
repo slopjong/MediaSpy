@@ -92,11 +92,20 @@ QString InfoView::getImdbInfo(QString& mediaName) {
     MovieMedia* m = new MovieMedia(mediaName);
     m->getImdbInfoFromDb();
 
-    if(m->getImage().isEmpty() || m->getImage() == ".jpg")
-        m->setImage(MediaSpy::getDefaultCoverName());
+    QString view;
 
-    QString view = QString("<h1>%1 (%2)</h1>").arg(m->getTitle()).arg(m->getYear());
-    view        += QString("<img src=\"%1\" />").arg(m->getImage());
+    QString imageFileName = MediaSpy::getCoverDirectory() + m->getImage();
+    QFileInfo file(imageFileName);
+    if(file.exists())
+        view        += QString("<img src=\"%1\" />").arg(m->getImage());
+    else
+        view        += QString("<img src=\"%1\" />").arg(".default.jpg");
+
+    if(m->getYear() < 1800)
+        view        += QString("<h1>%1</h1>").arg(m->getTitle());
+    else
+        view        += QString("<h1>%1 (%2)</h1>").arg(m->getTitle()).arg(m->getYear());
+
     view        += QString("<p class=\"plot\">%1</p>").arg(m->getPlot());
     view        += QString("<hr /><p><span class=\"key\">%1</span> %2</p>").arg(tr("Genre:")).arg(m->getGenre());
     view        += QString("<p><span class=\"key\">%1</span> %2</p>").arg(tr("Runtime:")).arg(m->getRuntime());

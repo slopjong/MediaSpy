@@ -1,6 +1,10 @@
 CHANGELOG.txt
 =============
 
+0.6.2
+- the title line restricts the media list to what its text
+- clear button in the filter edit line
+
 0.6.1
 - imdb updating is done in its own thread, it is now stoppable
 - collection rescan is possible, thanks to kushal

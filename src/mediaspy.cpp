@@ -492,3 +492,7 @@ void MediaSpy::on_actionRescan_collection_triggered()
 
     updateCollections(upCollectionList);
 }
+
+void MediaSpy::on_filterLineEdit_textChanged(QString newString) {
+    mediaListProxyModel_->setFilterRegExp(QRegExp(newString, Qt::CaseInsensitive, QRegExp::FixedString));
+}

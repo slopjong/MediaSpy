@@ -114,6 +114,7 @@ private:
 
 
 private slots:
+    void on_filterLineEdit_textChanged(QString );
     void on_actionRescan_collection_triggered();
     void on_progressButton_clicked();
     void isMediaFound(bool, QString);

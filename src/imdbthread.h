@@ -25,6 +25,10 @@
 
 #include "infoimdb.h"
 
+
+/** \class ImdbThread
+  * \brief The thread used to search info on imdb website.
+  */
 class ImdbThread : public QThread {
     Q_OBJECT
 

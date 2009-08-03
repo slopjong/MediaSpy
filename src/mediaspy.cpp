@@ -213,7 +213,7 @@ void MediaSpy::init() {
     /////////////////////////
     newFilterLabel      = new QLabel[filterLimit_];
     newFilterComboBox   = new QComboBox[filterLimit_];
-    newFilterLineEdit   = new QLineEdit[filterLimit_];
+    newFilterLineEdit   = new myQLineEdit[filterLimit_];
     newFilterToolButton = new QToolButton[filterLimit_];
     newFilterLayout     = new QHBoxLayout[filterLimit_];
     newFilterWidget     = new QWidget[filterLimit_];
@@ -329,6 +329,9 @@ void MediaSpy::selectedMovie(QModelIndex current, QModelIndex previous) {
 }
 
 
+/** \fn void MediaSpy::isMediaFound(bool ok, QString fileName)
+ *  \brief Sets the key to be checked if info has been found on the media.
+ */
 void MediaSpy::isMediaFound(bool ok, QString fileName) {
     sqlTableModel_->setKeyTocheck(ok, fileName);
 }
@@ -456,6 +459,9 @@ void MediaSpy::on_actionAbout_Qt_triggered() {
 }
 
 
+/** \fn void MediaSpy::on_filterToolButton_clicked()
+ *  \brief Adds a filter to the interface.
+ */
 void MediaSpy::on_filterToolButton_clicked() {
     if(nFilter_<filterLimit_) {
         newFilterWidget[nFilter_].setVisible(true);
@@ -467,6 +473,9 @@ void MediaSpy::on_filterToolButton_clicked() {
 }
 
 
+/** \fn void MediaSpy::minusFilter_clicked()
+ *  \brief Removes a filter to the interface.
+ */
 void MediaSpy::minusFilter_clicked() {
     --nFilter_;
     if(nFilter_ >= 0) {
@@ -476,13 +485,16 @@ void MediaSpy::minusFilter_clicked() {
 }
 
 
+/** \fn void MediaSpy::on_progressButton_clicked()
+ *  \brief Stops the info research thread.
+ */
 void MediaSpy::on_progressButton_clicked() {
     InfoManager::getInstance()->getImdbThread()->quit();
 }
 
 
 /** \fn void MediaSpy::on_actionRescan_triggered()
-  *  \Rescans the Collection.
+  *  \brief Rescans the Collection.
   */
 void MediaSpy::on_actionRescan_collection_triggered()
 {
@@ -493,6 +505,11 @@ void MediaSpy::on_actionRescan_collection_triggered()
     updateCollections(upCollectionList);
 }
 
+
+/** \fn void MediaSpy::on_filterLineEdit_textChanged(QString newString)
+  *  \brief Puts the text into the filter.
+  */
 void MediaSpy::on_filterLineEdit_textChanged(QString newString) {
     mediaListProxyModel_->setFilterRegExp(QRegExp(newString, Qt::CaseInsensitive, QRegExp::FixedString));
 }
+

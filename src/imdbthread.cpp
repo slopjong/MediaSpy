@@ -21,12 +21,21 @@
 #include "imdbthread.h"
 
 
+/** \fn ImdbThread::ImdbThread(QObject* parent)
+  * \brief Constructor
+  */
 ImdbThread::ImdbThread(QObject* parent): QThread(parent) {}
 
 
+/** \fn ImdbThread::~ImdbThread()
+  * \brief Destructor
+  */
 ImdbThread::~ImdbThread() {}
 
 
+/** \fn void ImdbThread::run()
+  * \brief Reimplemented run() of the QThread class. Launches the imdb searches.
+  */
 void ImdbThread::run() {
     QString mediaId;
     indexImdbSearch_ = 0;
@@ -44,6 +53,9 @@ void ImdbThread::run() {
 }
 
 
+/** \fn void ImdbThread::searchReply(bool ok, QString reply)
+  * \brief Emits signal for the MediaSpy class and closes the thread.
+  */
 void ImdbThread::searchReply(bool ok, QString reply) {
     emit searchResult(ok, reply);
     emit searchProgress(++indexImdbSearch_);
@@ -54,6 +66,9 @@ void ImdbThread::searchReply(bool ok, QString reply) {
 }
 
 
+/** \fn void ImdbThread::setInfoList(const QStringList& list)
+  * \brief Sets the list of media in \var mediaIdWithNoInfoList_ and initiates \var nImdbSearch_.
+  */
 void ImdbThread::setInfoList(const QStringList& list) {
     mediaIdWithNoInfoList_ = list;
     nImdbSearch_ = mediaIdWithNoInfoList_.count();

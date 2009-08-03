@@ -36,6 +36,7 @@
 #include "infoview.h"
 #include "infomanager.h"
 #include "myqsqltablemodel.h"
+#include "myqlineedit.h"
 
 
 /** \var appDirectory
@@ -98,7 +99,7 @@ private:
     QSortFilterProxyModel* mediaListProxyModel_;
     QLabel* newFilterLabel;
     QComboBox* newFilterComboBox;
-    QLineEdit* newFilterLineEdit;
+    myQLineEdit* newFilterLineEdit;
     QToolButton* newFilterToolButton;
     QHBoxLayout* newFilterLayout;
     QWidget* newFilterWidget;

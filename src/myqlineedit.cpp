@@ -21,23 +21,30 @@
 #include <QToolButton>
 #include <QStyle>
 
+/** \fn myQLineEdit::myQLineEdit(QWidget *parent)
+  * \brief Constructor.
+  */
 myQLineEdit::myQLineEdit(QWidget *parent) : QLineEdit(parent) {
     clearButton = new QToolButton(this);
     QPixmap pixmap(":/icons/clear.png");
     clearButton->setIcon(QIcon(pixmap));
     clearButton->setIconSize(pixmap.size());
     clearButton->setCursor(Qt::ArrowCursor);
-    clearButton->setStyleSheet("QToolButton { border: none; padding: 0px; }");
+    clearButton->setStyleSheet("QToolButton { border: none; padding: 1px; }");
     clearButton->hide();
     connect(clearButton, SIGNAL(clicked()), this, SLOT(clear()));
     connect(this, SIGNAL(textChanged(const QString&)), this, SLOT(updateCloseButton(const QString&)));
     int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
-    setStyleSheet(QString("QLineEdit { padding-right: %1px; } ").arg(clearButton->sizeHint().width() + frameWidth + 1));
+    setStyleSheet(QString("QLineEdit { padding-right: %1px; } ").
+                  arg(clearButton->sizeHint().width() + frameWidth + 1));
     QSize msz = minimumSizeHint();
     setMinimumSize(qMax(msz.width(), clearButton->sizeHint().height() + frameWidth * 2 + 2),
                    qMax(msz.height(), clearButton->sizeHint().height() + frameWidth * 2 + 2));
 }
 
+/** \fn void myQLineEdit::resizeEvent(QResizeEvent *)
+  *  \brief Receives widget resize events which are passed in the event parameter.
+  */
 void myQLineEdit::resizeEvent(QResizeEvent *) {
     QSize sz = clearButton->sizeHint();
     int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
@@ -45,6 +52,9 @@ void myQLineEdit::resizeEvent(QResizeEvent *) {
                       (rect().bottom() + 1 - sz.height())/2);
 }
 
+/** \fn void myQLineEdit::updateCloseButton(const QString& text)
+  *  \brief Removes the button when text is empty.
+  */
 void myQLineEdit::updateCloseButton(const QString& text) {
     clearButton->setVisible(!text.isEmpty());
 }

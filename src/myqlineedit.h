@@ -24,33 +24,28 @@
 
 class QToolButton;
 
-class myQLineEdit : public QLineEdit
-{
+/** \class myQLineEdit
+  * \brief This line edit presents a clear button at the end of the line.
+  * The button is only visible when text is in the line edit.
+  */
+class myQLineEdit : public QLineEdit {
     Q_OBJECT
 
 public:
-    myQLineEdit(QWidget *parent = 0);
+    explicit myQLineEdit(QWidget *parent = 0);
+
 
 protected:
     void resizeEvent(QResizeEvent *);
 
+
 private slots:
     void updateCloseButton(const QString &text);
 
+
 private:
     QToolButton *clearButton;
+
 };
-
-
-
-
-
-
-
-
-
-
-
-
 
 #endif // MYQLINEEDIT_H

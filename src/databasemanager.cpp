@@ -304,6 +304,9 @@ void DatabaseManager::removeMedias(const QStringList& mediaFileNames) {
 }
 
 
+/** \fn QStringList DatabaseManager::queryMediaWithNoImdbInfo()
+  * \brief Returns the list of media without imdb info.
+  */
 QStringList DatabaseManager::queryMediaWithNoImdbInfo() {
     QSqlQuery q;
     if (!q.exec(QString("SELECT fileName FROM Media WHERE imdbInfo = 'false'")))
@@ -336,6 +339,9 @@ bool DatabaseManager::hasImdbInfo(const QString& fileName) {
 }
 
 
+/** \fn void DatabaseManager::insertMovieMedia(MovieMedia movieMedia)
+  * \brief Inserts a movie in the database.
+  */
 void DatabaseManager::insertMovieMedia(MovieMedia movieMedia) {
     QSqlDatabase::database().transaction();
     QSqlQuery q;
@@ -388,6 +394,9 @@ void DatabaseManager::insertMovieMedia(MovieMedia movieMedia) {
 }
 
 
+/** \fn QString DatabaseManager::getMediaFullName(QString& baseName)
+  * \brief Returns the full name of the \var baseName file.
+  */
 QString DatabaseManager::getMediaFullName(QString& baseName) {
     QSqlQuery q;
     q.prepare("SELECT fileName FROM Media WHERE baseName = ?");

@@ -14,7 +14,7 @@
    <string>MediaSpy</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="../src/resources/MediaSpy.qrc">
     <normaloff>:/icons/icon.png</normaloff>:/icons/icon.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -45,7 +45,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="filterLineEdit"/>
+             <widget class="myQLineEdit" name="filterLineEdit"/>
             </item>
             <item>
              <widget class="QToolButton" name="filterToolButton">
@@ -53,7 +53,7 @@
                <string>...</string>
               </property>
               <property name="icon">
-               <iconset>
+               <iconset resource="../src/resources/MediaSpy.qrc">
                 <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
               </property>
              </widget>
@@ -90,7 +90,7 @@
              <string>...</string>
             </property>
             <property name="icon">
-             <iconset>
+             <iconset resource="../src/resources/MediaSpy.qrc">
               <normaloff>:/icons/close.png</normaloff>:/icons/close.png</iconset>
             </property>
            </widget>
@@ -151,7 +151,7 @@
      <x>0</x>
      <y>0</y>
      <width>410</width>
-     <height>24</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -226,8 +226,15 @@
    <extends>QWidget</extends>
    <header>QtWebKit/QWebView</header>
   </customwidget>
+  <customwidget>
+   <class>myQLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">myqlineedit.h</header>
+  </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../src/resources/MediaSpy.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>actionQuit</sender>

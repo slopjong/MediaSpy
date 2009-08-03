@@ -6,5 +6,6 @@
         <file>templates/default.css</file>
         <file>icons/defaultCover.png</file>
         <file>icons/close.png</file>
+        <file>icons/clear.png</file>
     </qresource>
 </RCC>

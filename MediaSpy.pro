@@ -26,7 +26,8 @@ SOURCES += src/main.cpp \
     src/moviemedia.cpp \
     src/infosupplier.cpp \
     src/myqsqltablemodel.cpp \
-    src/imdbthread.cpp
+    src/imdbthread.cpp \
+    src/myqlineedit.cpp
 HEADERS += src/mediaspy.h \
     src/collection.h \
     src/databasemanager.h \
@@ -41,7 +42,8 @@ HEADERS += src/mediaspy.h \
     src/moviemedia.h \
     src/infosupplier.h \
     src/myqsqltablemodel.h \
-    src/imdbthread.h
+    src/imdbthread.h \
+    src/myqlineedit.h
 FORMS += ui/mediaspy.ui \
     ui/collectiondialog.ui
 RESOURCES += src/resources/MediaSpy.qrc

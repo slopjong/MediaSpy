@@ -122,21 +122,31 @@ void MediaSpy::readSettings() {
   * \brief makes the connections used by MediaSpy
   */
 void MediaSpy::makeConnections() {
+    // for MediaCollection
     connect(MediaCollection::getInstance(), SIGNAL(startUpdate(const int)), this, SLOT(setProgressbarMaximum(const int)));
     connect(MediaCollection::getInstance(), SIGNAL(stepUpdate(const int)), this, SLOT(setProgressbarCurrent(const int)));
     connect(MediaCollection::getInstance(), SIGNAL(finishedUpdate()), this, SLOT(setProgressbarOff()));
-
-    connect(updateThread_, SIGNAL(finished()), this, SLOT(finishedThread()) );
-    connect(updateThread_, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
-    connect(Collection::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
     connect(MediaCollection::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
 
-    connect(InfoManager::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
-    connect(InfoManager::getInstance(), SIGNAL(searchResult(bool, QString)), this, SLOT(isMediaFound(bool, QString)));
-    connect(InfoManager::getInstance(), SIGNAL(startSearch(const int)), this, SLOT(setProgressbarMaximum(const int)));
-    connect(InfoManager::getInstance(), SIGNAL(searchProgress(const int)), this, SLOT(setProgressbarCurrent(const int)));
-    connect(InfoManager::getInstance(), SIGNAL(searchEnd()), this, SLOT(setProgressbarOff()));
+    // for Collection
+    connect(Collection::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
 
+    // for updateThread_
+    connect(updateThread_, SIGNAL(finished()), this, SLOT(finishedUpdateThread()) );
+    connect(updateThread_, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
+
+    // for InfoManager
+    connect(InfoManager::getInstance()->getImdbThread(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
+    connect(InfoManager::getInstance()->getImdbThread(), SIGNAL(searchResult(bool, QString)),
+            this, SLOT(isMediaFound(bool, QString)));
+    connect(InfoManager::getInstance()->getImdbThread(), SIGNAL(startSearch(const int)),
+            this, SLOT(setProgressbarMaximum(const int)));
+    connect(InfoManager::getInstance()->getImdbThread(), SIGNAL(searchProgress(const int)),
+            this, SLOT(setProgressbarCurrent(const int)));
+    connect(InfoManager::getInstance()->getImdbThread(), SIGNAL(finished()),
+            this, SLOT(setProgressbarOff()));
+
+    // for ui
     connect(ui_->mediaListView->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)),
             this, SLOT(selectedMovie(QModelIndex, QModelIndex)));
 }
@@ -329,8 +339,10 @@ void MediaSpy::isMediaFound(bool ok, QString fileName) {
  *  \param the maximum value of the progress bar.
  */
 void MediaSpy::setProgressbarMaximum(const int maximum) const {
+    ui_->progressBar->setValue(0);
     ui_->progressBar->setMaximum(maximum);
     ui_->progressBar->setVisible(true);
+    ui_->progressButton->setVisible(true);
 }
 
 
@@ -348,6 +360,7 @@ void MediaSpy::setProgressbarCurrent(const int value) const {
  */
 void MediaSpy::setProgressbarOff() const {
     ui_->progressBar->setVisible(false);
+    ui_->progressButton->setVisible(false);
     QString message = QString(tr("%n movie(s) in the collection", "", MediaCollection::getInstance()->getNMedia()));
     ui_->statusBar->showMessage(message);
 }
@@ -372,11 +385,12 @@ void MediaSpy::displayMessage(QString message) {
 }
 
 
-/** \fn void MediaSpy::finishedThread()
+/** \fn void MediaSpy::finishedUpdateThread()
  *  \brief Defines what is done when the update thread is done.
  */
-void MediaSpy::finishedThread() {
+void MediaSpy::finishedUpdateThread() {
     sqlTableModel_->select();
+
     // this may freeze window with long table!
     while(sqlTableModel_->canFetchMore())
         sqlTableModel_->fetchMore();
@@ -459,4 +473,22 @@ void MediaSpy::minusFilter_clicked() {
         newFilterWidget[nFilter_].setVisible(false);
         ui_->filterToolButton->setEnabled(true);
     }
+}
+
+
+void MediaSpy::on_progressButton_clicked() {
+    InfoManager::getInstance()->getImdbThread()->quit();
+}
+
+
+/** \fn void MediaSpy::on_actionRescan_triggered()
+  *  \Rescans the Collection.
+  */
+void MediaSpy::on_actionRescan_collection_triggered()
+{
+    QStringList upCollectionList;
+    for(int i = 0; i < Collection::getInstance()->getNDir(); ++i)
+        upCollectionList << Collection::getInstance()->getDirAt(i);
+
+    updateCollections(upCollectionList);
 }

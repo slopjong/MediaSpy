@@ -27,6 +27,7 @@
 #include "databasemanager.h"
 #include "moviemedia.h"
 #include "infoimdb.h"
+#include "imdbthread.h"
 
 
 class InfoManager : public QObject {
@@ -38,28 +39,31 @@ class InfoManager : public QObject {
 
     // Fields
     static InfoManager *singleton_;
-    InfoImdb* infoImdb_;
-    int nImdbSearch_;
-    int indexImdbSearch_;
+//    InfoImdb* infoImdb_;
+//    int nImdbSearch_;
+//    int indexImdbSearch_;
+    ImdbThread* imdbThread_;
 
 public:
     // Operations
     static InfoManager *getInstance();
     static void kill();
     void updateMediaCollectionInfo();
-    void searchImdb(QString);
+    ImdbThread* getImdbThread() const;
+//    void searchImdb(QString);
 
 
 public slots:
-    void searchReply(bool, QString);
+//    void searchReply(bool, QString);
+void endImdbThread() const;
 
 
 signals:
     void messageToStatus(QString);
-    void searchResult(bool, QString);
-    void startSearch(const int);
-    void searchProgress(const int);
-    void searchEnd();
+//    void searchResult(bool, QString);
+//    void startSearch(const int);
+//    void searchProgress(const int);
+//    void searchEnd();
 
 };
 

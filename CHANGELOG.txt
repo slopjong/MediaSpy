@@ -1,6 +1,10 @@
 CHANGELOG.txt
 =============
 
+0.6.1
+- imdb updating is done in its own thread, it is now stoppable
+- collection rescan is possible, thanks to kushal
+
 0.6
 - first fully operationnal imdb research!
 - most errors are handled

@@ -22,10 +22,11 @@
 
 #include <QtDebug>
 
+
 /////////////////////////////
 // constructors/destructor //
 /////////////////////////////
-MyQSqlTableModel::MyQSqlTableModel() : keyToCheck_(0), etatList_() {}
+MyQSqlTableModel::MyQSqlTableModel() : etatList_() {}
 
 MyQSqlTableModel::~MyQSqlTableModel() {}
 
@@ -50,12 +51,12 @@ QVariant MyQSqlTableModel::data( const QModelIndex& index, int role) const {
 
 void MyQSqlTableModel::setKeyTocheck( bool ok, const QString& fileName ) {
     QFileInfo fileInfo = QFileInfo(fileName);
-    keyToCheck_ = fileInfo.completeBaseName();
+    QString keyToCheck = fileInfo.completeBaseName();
 
     for(int row = 0; row < this->rowCount(); ++row) {
         QModelIndex i = this->index(row, 0);
         const QString indexString = i.data().toString();
-        if(keyToCheck_ == indexString) {
+        if(keyToCheck == indexString) {
             if(ok)
                 etatList_[row] = 2;
             else

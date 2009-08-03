@@ -18,27 +18,43 @@
  */
 
 
-#ifndef MYQSQLTABLEMODEL_H
-#define MYQSQLTABLEMODEL_H
+#ifndef IMDBTHREAD_H
+#define IMDBTHREAD_H
 
-#include <QObject>
-#include <QBrush>
-#include <QFileInfo>
-#include <QSqlTableModel>
+#include <QThread>
 
+#include "infoimdb.h"
 
-class MyQSqlTableModel : public QSqlTableModel {
+class ImdbThread : public QThread {
     Q_OBJECT
 
-    QList<int> etatList_;
+    InfoImdb* infoImdb_;
+    int nImdbSearch_;
+    int indexImdbSearch_;
+    QStringList mediaIdWithNoInfoList_;
+
 
 public:
-    MyQSqlTableModel();
-    virtual ~MyQSqlTableModel();
-    QVariant data ( const QModelIndex&, int role = Qt::DisplayRole) const;
-    void setKeyTocheck( bool, const QString& );
-    void setList();
+    explicit ImdbThread(QObject* parent = 00);
+    virtual ~ImdbThread();
+    void setInfoList(const QStringList&);
+
+
+protected:
+    virtual void run();
+
+
+public slots:
+    void searchReply(bool, QString);
+
+
+signals:
+    void messageToStatus(QString);
+    void startSearch(const int);
+    void searchResult(bool, QString);
+    void searchProgress(const int);
+    void searchEnd();
 
 };
 
-#endif // MYQSQLTABLEMODEL_H
+#endif // IMDBTHREAD_H

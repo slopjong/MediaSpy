@@ -25,7 +25,8 @@ SOURCES += src/main.cpp \
     src/infoimdb.cpp \
     src/moviemedia.cpp \
     src/infosupplier.cpp \
-    src/myqsqltablemodel.cpp
+    src/myqsqltablemodel.cpp \
+    src/imdbthread.cpp
 HEADERS += src/mediaspy.h \
     src/collection.h \
     src/databasemanager.h \
@@ -39,7 +40,8 @@ HEADERS += src/mediaspy.h \
     src/infoimdb.h \
     src/moviemedia.h \
     src/infosupplier.h \
-    src/myqsqltablemodel.h
+    src/myqsqltablemodel.h \
+    src/imdbthread.h
 FORMS += ui/mediaspy.ui \
     ui/collectiondialog.ui
 RESOURCES += src/resources/MediaSpy.qrc
@@ -51,7 +53,7 @@ OTHER_FILES += README.txt \
     CHANGELOG.txt
 
 # define some useful values
-PACKAGE_VERSION = 0.6
+PACKAGE_VERSION = 0.6.1-testing
 QMAKE_TARGET_PRODUCT = "MediaSpy"
 QMAKE_TARGET_COPYRIGHT = "Copyright &copy; 2009 Stéphane Péchard"
 win32:QMAKE_TARGET_COPYRIGHT = "Copyright (C) 2009 Stéphane Péchard"

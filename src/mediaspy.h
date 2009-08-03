@@ -114,6 +114,8 @@ private:
 
 
 private slots:
+    void on_actionRescan_collection_triggered();
+    void on_progressButton_clicked();
     void isMediaFound(bool, QString);
     void minusFilter_clicked();
     void on_filterToolButton_clicked();
@@ -124,7 +126,7 @@ private slots:
     void setProgressbarCurrent(const int) const;
     void setProgressbarOff() const;
     void displayMessage(QString);
-    void finishedThread();
+    void finishedUpdateThread();
     void selectedMovie(QModelIndex, QModelIndex);
 };
 

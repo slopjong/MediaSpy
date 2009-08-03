@@ -14,18 +14,18 @@
    <string>MediaSpy</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../src/resources/MediaSpy.qrc">
+   <iconset>
     <normaloff>:/icons/icon.png</normaloff>:/icons/icon.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
      <widget class="QSplitter" name="splitter">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
       <widget class="QWidget" name="layoutWidget">
-       <layout class="QVBoxLayout" name="listLayout">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
@@ -53,7 +53,7 @@
                <string>...</string>
               </property>
               <property name="icon">
-               <iconset resource="../src/resources/MediaSpy.qrc">
+               <iconset>
                 <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
               </property>
              </widget>
@@ -76,11 +76,26 @@
          </widget>
         </item>
         <item>
-         <widget class="QProgressBar" name="progressBar">
-          <property name="value">
-           <number>24</number>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="progressLayout">
+          <item>
+           <widget class="QProgressBar" name="progressBar">
+            <property name="value">
+             <number>24</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="progressButton">
+            <property name="text">
+             <string>...</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>:/icons/close.png</normaloff>:/icons/close.png</iconset>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>
@@ -157,6 +172,7 @@
      <string>Options</string>
     </property>
     <addaction name="actionSelectdirectories"/>
+    <addaction name="actionRescan_collection"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuOptions"/>
@@ -197,6 +213,11 @@
     <string>Ctrl+D</string>
    </property>
   </action>
+  <action name="actionRescan_collection">
+   <property name="text">
+    <string>Rescan collection</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -206,9 +227,7 @@
    <header>QtWebKit/QWebView</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../src/resources/MediaSpy.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>actionQuit</sender>

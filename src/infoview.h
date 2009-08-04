@@ -17,20 +17,22 @@
  * along with MediaSpy.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #ifndef INFOVIEW_H
 #define INFOVIEW_H
 
-#include "moviemedia.h"
-
 #include <QString>
 #include <QtWebKit>
+
+#include "moviemedia.h"
+
 
 class InfoView : public QObject {
     Q_OBJECT
 
     // Constructors
     InfoView();
-    ~InfoView();
+    virtual ~InfoView();
 
     // Fields
     static InfoView *singleton_;

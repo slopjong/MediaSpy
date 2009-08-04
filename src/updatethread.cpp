@@ -18,21 +18,29 @@
  */
 
 
-#include <QStringList>
-
 #include "updatethread.h"
-#include "collection.h"
-#include "mediacollection.h"
 
 
+/////////////////////////////
+// constructors/destructor //
+/////////////////////////////
+/** \fn UpdateThread::UpdateThread(QObject* parent)
+  * \brief Constructor.
+  */
 UpdateThread::UpdateThread(QObject* parent): QThread(parent) {}
 
-
+/** \fn UpdateThread::~UpdateThread()
+  * \brief Destructor.
+  */
 UpdateThread::~UpdateThread() {
     wait();
 }
 
 
+
+/////////////
+// methods //
+/////////////
 void UpdateThread::run() {
     emit messageToStatus(QString(tr("Updating...")));
     QStringList mediaList = Collection::getInstance()->buildFileList();

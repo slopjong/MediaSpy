@@ -35,7 +35,7 @@ class InfoManager : public QObject {
 
     // Constructors
     InfoManager();
-    ~InfoManager();
+    virtual ~InfoManager();
 
     // Fields
     static InfoManager *singleton_;

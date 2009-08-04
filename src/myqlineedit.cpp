@@ -17,10 +17,15 @@
  * along with MediaSpy.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "myqlineedit.h"
 #include <QToolButton>
 #include <QStyle>
 
+
+/////////////////////////////
+// constructors/destructor //
+/////////////////////////////
 /** \fn myQLineEdit::myQLineEdit(QWidget *parent)
   * \brief Constructor.
   */
@@ -42,6 +47,17 @@ myQLineEdit::myQLineEdit(QWidget *parent) : QLineEdit(parent) {
                    qMax(msz.height(), clearButton->sizeHint().height() + frameWidth * 2 + 2));
 }
 
+
+/** \fn myQLineEdit::~myQLineEdit()
+  * \brief Destructor.
+  */
+myQLineEdit::~myQLineEdit() {}
+
+
+
+/////////////
+// methods //
+/////////////
 /** \fn void myQLineEdit::resizeEvent(QResizeEvent *)
   *  \brief Receives widget resize events which are passed in the event parameter.
   */
@@ -52,6 +68,11 @@ void myQLineEdit::resizeEvent(QResizeEvent *) {
                       (rect().bottom() + 1 - sz.height())/2);
 }
 
+
+
+///////////
+// slots //
+///////////
 /** \fn void myQLineEdit::updateCloseButton(const QString& text)
   *  \brief Removes the button when text is empty.
   */

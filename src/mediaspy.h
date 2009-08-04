@@ -17,6 +17,7 @@
  * along with MediaSpy.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #ifndef MEDIASPY_H
 #define MEDIASPY_H
 
@@ -74,7 +75,7 @@ class MediaSpy : public QMainWindow {
 public:
     // Constructors
     explicit MediaSpy(QWidget *parent = 0);
-    ~MediaSpy();
+    virtual ~MediaSpy();
 
     // Accessor Methods
     static const QString getAppDirectory();

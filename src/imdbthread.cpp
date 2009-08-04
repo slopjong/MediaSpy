@@ -30,7 +30,9 @@ ImdbThread::ImdbThread(QObject* parent): QThread(parent) {}
 /** \fn ImdbThread::~ImdbThread()
   * \brief Destructor
   */
-ImdbThread::~ImdbThread() {}
+ImdbThread::~ImdbThread() {
+    quit();
+}
 
 
 /** \fn void ImdbThread::run()

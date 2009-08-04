@@ -17,19 +17,21 @@
  * along with MediaSpy.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #ifndef MEDIAFILTER_H
 #define MEDIAFILTER_H
 
+#include <QStringListModel>
+
 #include "databasemanager.h"
 
-#include <QStringListModel>
 
 class MediaFilter : public QObject {
     Q_OBJECT
 
 public:
     MediaFilter();
-    ~MediaFilter();
+    virtual ~MediaFilter();
     QStringListModel* getModel() const;
     int getFilterLimit() const ;
 

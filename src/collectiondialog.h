@@ -17,6 +17,7 @@
  * along with MediaSpy.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #ifndef COLLECTIONDIALOG_H
 #define COLLECTIONDIALOG_H
 
@@ -40,7 +41,7 @@ class CollectionDialog : public QDialog, public Ui_CollectionDialog {
 public:
     // Constructors
     explicit CollectionDialog(QWidget *parent = 0);
-    ~CollectionDialog();
+    virtual ~CollectionDialog();
 
     // Operations
     QStringList getUpdate();

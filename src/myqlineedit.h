@@ -17,12 +17,14 @@
  * along with MediaSpy.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #ifndef MYQLINEEDIT_H
 #define MYQLINEEDIT_H
 
 #include <QLineEdit>
 
 class QToolButton;
+
 
 /** \class myQLineEdit
   * \brief This line edit presents a clear button at the end of the line.
@@ -33,6 +35,7 @@ class myQLineEdit : public QLineEdit {
 
 public:
     explicit myQLineEdit(QWidget *parent = 0);
+    virtual ~myQLineEdit();
 
 
 protected:

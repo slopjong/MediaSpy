@@ -19,7 +19,6 @@
 
 
 #include "myqsqltablemodel.h"
-
 #include <QtDebug>
 
 

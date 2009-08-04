@@ -26,13 +26,14 @@
 #include "media.h"
 #include "moviemedia.h"
 
+
 /** \class DatabaseManager
   *
   */
 class DatabaseManager {
     // Constructors
     DatabaseManager();
-    ~DatabaseManager();
+    virtual ~DatabaseManager();
 
     // Fields
     static DatabaseManager *singleton_;

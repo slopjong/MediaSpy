@@ -43,6 +43,7 @@ MediaSpy::MediaSpy(QWidget *parent) :
     ui_->setupUi(this);
     ui_->progressBar->setMinimum(0);
     ui_->splitter->setSizes(QList<int>() << ui_->centralWidget->size().width()/2 << ui_->centralWidget->size().width()/2);
+    ui_->filterLineEdit->setFocus(Qt::MouseFocusReason);
 
     // program really begins here!
     readSettings();
@@ -489,6 +490,7 @@ void MediaSpy::minusFilter_clicked() {
  *  \brief Stops the info research thread.
  */
 void MediaSpy::on_progressButton_clicked() {
+    updateThread_->quit();
     InfoManager::getInstance()->getImdbThread()->quit();
 }
 

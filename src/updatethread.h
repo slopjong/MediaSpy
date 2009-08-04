@@ -22,6 +22,11 @@
 #define UPDATETHREAD_H
 
 #include <QThread>
+#include <QStringList>
+
+#include "collection.h"
+#include "mediacollection.h"
+
 
 class UpdateThread : public QThread {
     Q_OBJECT

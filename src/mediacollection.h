@@ -17,6 +17,7 @@
  * along with MediaSpy.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #ifndef MEDIACOLLECTION_H
 #define MEDIACOLLECTION_H
 
@@ -32,7 +33,7 @@ class MediaCollection : public QObject {
 
     // Constructors
     MediaCollection();
-    ~MediaCollection();
+    virtual ~MediaCollection();
 
     // Fields
     static MediaCollection *singleton_;

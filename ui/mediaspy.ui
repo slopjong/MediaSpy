@@ -93,6 +93,9 @@
              <iconset resource="../src/resources/MediaSpy.qrc">
               <normaloff>:/icons/close.png</normaloff>:/icons/close.png</iconset>
             </property>
+            <property name="shortcut">
+             <string>Esc</string>
+            </property>
            </widget>
           </item>
          </layout>
@@ -151,7 +154,7 @@
      <x>0</x>
      <y>0</y>
      <width>410</width>
-     <height>23</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -216,6 +219,9 @@
   <action name="actionRescan_collection">
    <property name="text">
     <string>Rescan collection</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
    </property>
   </action>
  </widget>

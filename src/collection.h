@@ -17,6 +17,7 @@
  * along with MediaSpy.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #ifndef COLLECTION_H
 #define COLLECTION_H
 
@@ -34,7 +35,7 @@ class Collection : public QObject {
     Q_OBJECT
 
     Collection();
-    ~Collection();
+    virtual ~Collection();
 
     // Fields
     static Collection *singleton_;

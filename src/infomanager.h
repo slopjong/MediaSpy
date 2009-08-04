@@ -23,6 +23,7 @@
 
 #include <QtGui>
 #include <QNetworkRequest>
+#include <QTcpSocket>
 
 #include "databasemanager.h"
 #include "moviemedia.h"
@@ -43,6 +44,7 @@ class InfoManager : public QObject {
 //    int nImdbSearch_;
 //    int indexImdbSearch_;
     ImdbThread* imdbThread_;
+    bool isConnected();
 
 public:
     // Operations

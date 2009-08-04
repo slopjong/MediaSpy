@@ -67,11 +67,15 @@ void InfoManager::kill() {
 
 
 void InfoManager::updateMediaCollectionInfo() {
-    QStringList mediaList = DatabaseManager::getInstance()->queryMediaWithNoImdbInfo();
-    imdbThread_->setInfoList(mediaList);
+    if(isConnected()) {
+        QStringList mediaList = DatabaseManager::getInstance()->queryMediaWithNoImdbInfo();
+        imdbThread_->setInfoList(mediaList);
 
-    if(mediaList.count() > 0)
-        imdbThread_->start();
+        if(mediaList.count() > 0)
+            imdbThread_->start();
+    }
+    else
+        fprintf(stdout, "[ERROR] Not connected");
 }
 
 
@@ -83,3 +87,24 @@ ImdbThread* InfoManager::getImdbThread() const {
 void InfoManager::endImdbThread() const {
     imdbThread_->exit();
 }
+
+
+/** \fn InfoManager::isConnected()
+  * \brief Returns true if an Internet connection has been detected.
+  */
+bool InfoManager::isConnected() {
+
+    QTcpSocket socket;
+    socket.connectToHost("google.com", 80);
+
+    const int Timeout = 5 * 1000;
+    if (!socket.waitForConnected(Timeout)) {
+        QMessageBox msgBox; // TODO think about something less intrusive
+        msgBox.setText(tr("You seem not to be connected! I can't update your database :-("));
+        msgBox.exec();
+        return false;
+    }
+
+    return true;
+}
+

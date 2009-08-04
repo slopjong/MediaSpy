@@ -18,46 +18,36 @@
  */
 
 
-#ifndef MEDIACOLLECTION_H
-#define MEDIACOLLECTION_H
+#ifndef INFOVIEW_H
+#define INFOVIEW_H
 
-#include <QStandardItemModel>
+#include <QString>
+#include <QtWebKit>
 
-#include "databasemanager.h"
-#include "media.h"
+#include "../media/moviemedia.h"
 
 
-class MediaCollection : public QObject {
-
+class InfoView : public QObject {
     Q_OBJECT
 
     // Constructors
-    MediaCollection();
-    virtual ~MediaCollection();
+    InfoView();
+    virtual ~InfoView();
 
     // Fields
-    static MediaCollection *singleton_;
-    QMap<int, Media> mediaMap_;
-    unsigned int nMedia_;
-
+    static InfoView *singleton_;
+    QWebSettings* webSettings_;
 
 public:
     // Operations
-    static MediaCollection *getInstance();
+    static InfoView *getInstance();
     static void kill();
-    void init();
-    void updateMediaCollection(QStringList&) ;
-
-    // Accessor Methods
-    unsigned int getNMedia() const;
-
-
-signals:
-    void startUpdate(const int);
-    void stepUpdate(const int);
-    void finishedUpdate();
-    void messageToStatus(QString);
+    QString init(QWebSettings*);
+    QString header();
+    QString footer();
+    QString getImdbInfo(QString&);
+    QString noImdbInfo();
 
 };
 
-#endif // MEDIACOLLECTION_H
+#endif // INFOVIEW_H

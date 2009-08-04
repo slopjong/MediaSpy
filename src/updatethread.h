@@ -25,7 +25,7 @@
 #include <QStringList>
 
 #include "collection.h"
-#include "mediacollection.h"
+#include "media/mediacollection.h"
 
 
 class UpdateThread : public QThread {

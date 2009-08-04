@@ -23,8 +23,8 @@
 
 #include <QtSql>
 
-#include "media.h"
-#include "moviemedia.h"
+#include "media/media.h"
+#include "media/moviemedia.h"
 
 
 /** \class DatabaseManager

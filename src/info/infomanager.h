@@ -25,8 +25,8 @@
 #include <QNetworkRequest>
 #include <QTcpSocket>
 
-#include "databasemanager.h"
-#include "moviemedia.h"
+#include "../databasemanager.h"
+#include "../media/moviemedia.h"
 #include "infoimdb.h"
 #include "imdbthread.h"
 

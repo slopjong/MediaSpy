@@ -14,36 +14,36 @@ OBJECTS_DIR = obj
 SOURCES += src/main.cpp \
     src/mediaspy.cpp \
     src/collection.cpp \
-    src/databasemanager.cpp \
     src/collectiondialog.cpp \
-    src/mediacollection.cpp \
-    src/media.cpp \
-    src/updatethread.cpp \
+    src/databasemanager.cpp \
     src/mediafilter.cpp \
-    src/infoview.cpp \
-    src/infomanager.cpp \
-    src/infoimdb.cpp \
-    src/moviemedia.cpp \
-    src/infosupplier.cpp \
-    src/myqsqltablemodel.cpp \
-    src/imdbthread.cpp \
-    src/myqlineedit.cpp
+    src/updatethread.cpp \
+    src/info/imdbthread.cpp \
+    src/info/infoview.cpp \
+    src/info/infomanager.cpp \
+    src/info/infoimdb.cpp \
+    src/info/infosupplier.cpp \
+    src/media/mediacollection.cpp \
+    src/media/media.cpp \
+    src/media/moviemedia.cpp \
+    src/qtElements/myqlineedit.cpp \
+    src/qtElements/myqsqltablemodel.cpp
 HEADERS += src/mediaspy.h \
     src/collection.h \
-    src/databasemanager.h \
     src/collectiondialog.h \
-    src/mediacollection.h \
-    src/media.h \
-    src/updatethread.h \
+    src/databasemanager.h \
     src/mediafilter.h \
-    src/infoview.h \
-    src/infomanager.h \
-    src/infoimdb.h \
-    src/moviemedia.h \
-    src/infosupplier.h \
-    src/myqsqltablemodel.h \
-    src/imdbthread.h \
-    src/myqlineedit.h
+    src/updatethread.h \
+    src/info/imdbthread.h \
+    src/info/infoview.h \
+    src/info/infomanager.h \
+    src/info/infoimdb.h \
+    src/info/infosupplier.h \
+    src/media/mediacollection.h \
+    src/media/media.h \
+    src/media/moviemedia.h \
+    src/qtElements/myqlineedit.h \
+    src/qtElements/myqsqltablemodel.h
 FORMS += ui/mediaspy.ui \
     ui/collectiondialog.ui
 RESOURCES += src/resources/MediaSpy.qrc

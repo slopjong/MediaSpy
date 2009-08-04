@@ -31,13 +31,13 @@
 
 #include "collectiondialog.h"
 #include "collection.h"
-#include "mediacollection.h"
-#include "updatethread.h"
 #include "mediafilter.h"
-#include "infoview.h"
-#include "infomanager.h"
-#include "myqsqltablemodel.h"
-#include "myqlineedit.h"
+#include "updatethread.h"
+#include "info/infoview.h"
+#include "info/infomanager.h"
+#include "media/mediacollection.h"
+#include "qtElements/myqlineedit.h"
+#include "qtElements/myqsqltablemodel.h"
 
 
 /** \var appDirectory

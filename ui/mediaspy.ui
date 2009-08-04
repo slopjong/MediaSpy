@@ -235,7 +235,7 @@
   <customwidget>
    <class>myQLineEdit</class>
    <extends>QLineEdit</extends>
-   <header location="global">myqlineedit.h</header>
+   <header location="global">qtElements/myqlineedit.h</header>
   </customwidget>
  </customwidgets>
  <resources>

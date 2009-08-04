@@ -25,9 +25,9 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 
-#include "databasemanager.h"
+#include "../databasemanager.h"
 #include "infosupplier.h"
-#include "moviemedia.h"
+#include "../media/moviemedia.h"
 
 
 class InfoImdb : public InfoSupplier {

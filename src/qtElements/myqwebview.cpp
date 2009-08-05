@@ -18,37 +18,18 @@
  */
 
 
-#ifndef MYQLINEEDIT_H
-#define MYQLINEEDIT_H
-
-#include <QLineEdit>
-
-class QToolButton;
+#include "myqwebview.h"
 
 
-/** \class myQLineEdit
-  * \brief This line edit presents a clear button at the end of the line.
-  * The button is only visible when text is in the line edit.
+/////////////////////////////
+// constructors/destructor //
+/////////////////////////////
+/** \fn myQLineEdit::myQLineEdit(QWidget *parent)
+  * \brief Constructor.
   */
-class myQLineEdit : public QLineEdit {
-    Q_OBJECT;
+myQWebView::myQWebView(QWidget *parent) : QWebView(parent) {
+    setContextMenuPolicy(Qt::NoContextMenu);
+}
 
-public:
-    explicit myQLineEdit(QWidget *parent = 0);
-    virtual ~myQLineEdit();
+myQWebView::~myQWebView() {}
 
-
-protected:
-    void resizeEvent(QResizeEvent *);
-
-
-private slots:
-    void updateCloseButton(const QString &text);
-
-
-private:
-    QToolButton *clearButton;
-
-};
-
-#endif // MYQLINEEDIT_H

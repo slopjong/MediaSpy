@@ -27,7 +27,8 @@ SOURCES += src/main.cpp \
     src/media/media.cpp \
     src/media/moviemedia.cpp \
     src/qtElements/myqlineedit.cpp \
-    src/qtElements/myqsqltablemodel.cpp
+    src/qtElements/myqsqltablemodel.cpp \
+    src/qtElements/myqwebview.cpp
 HEADERS += src/mediaspy.h \
     src/collection.h \
     src/collectiondialog.h \
@@ -43,7 +44,8 @@ HEADERS += src/mediaspy.h \
     src/media/media.h \
     src/media/moviemedia.h \
     src/qtElements/myqlineedit.h \
-    src/qtElements/myqsqltablemodel.h
+    src/qtElements/myqsqltablemodel.h \
+    src/qtElements/myqwebview.h
 FORMS += ui/mediaspy.ui \
     ui/collectiondialog.ui
 RESOURCES += src/resources/MediaSpy.qrc

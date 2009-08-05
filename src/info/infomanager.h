@@ -25,10 +25,11 @@
 #include <QNetworkRequest>
 #include <QTcpSocket>
 
-#include "../databasemanager.h"
-#include "../media/moviemedia.h"
 #include "infoimdb.h"
 #include "imdbthread.h"
+#include "../databasemanager.h"
+#include "../media/moviemedia.h"
+#include "../qtElements/networkchecker.h"
 
 
 class InfoManager : public QObject {
@@ -44,7 +45,9 @@ class InfoManager : public QObject {
 //    int nImdbSearch_;
 //    int indexImdbSearch_;
     ImdbThread* imdbThread_;
-    bool isConnected();
+    NetworkChecker* checker_;
+    bool isConnected_;
+
 
 public:
     // Operations
@@ -58,7 +61,7 @@ public:
 public slots:
 //    void searchReply(bool, QString);
 void endImdbThread() const;
-
+void checkConnection(bool);
 
 signals:
     void messageToStatus(QString);

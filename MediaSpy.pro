@@ -6,11 +6,10 @@ QT += sql \
     network
 TARGET = mediaspy
 TEMPLATE = app
-UI_HEADERS_DIR = ui
-UI_SOURCES_DIR = ui
-MOC_DIR = src
-RCC_DIR = src
-OBJECTS_DIR = obj
+UI_DIR = build/ui
+MOC_DIR = build/moc
+RCC_DIR = build/rcc
+OBJECTS_DIR = build
 SOURCES += src/main.cpp \
     src/mediaspy.cpp \
     src/collection.cpp \
@@ -27,7 +26,8 @@ SOURCES += src/main.cpp \
     src/media/media.cpp \
     src/media/moviemedia.cpp \
     src/qtElements/myqlineedit.cpp \
-    src/qtElements/myqsqltablemodel.cpp
+    src/qtElements/myqsqltablemodel.cpp \
+    src/qtElements/networkchecker.cpp
 HEADERS += src/mediaspy.h \
     src/collection.h \
     src/collectiondialog.h \
@@ -43,9 +43,10 @@ HEADERS += src/mediaspy.h \
     src/media/media.h \
     src/media/moviemedia.h \
     src/qtElements/myqlineedit.h \
-    src/qtElements/myqsqltablemodel.h
-FORMS += ui/mediaspy.ui \
-    ui/collectiondialog.ui
+    src/qtElements/myqsqltablemodel.h \
+    src/qtElements/networkchecker.h
+FORMS += src/ui/mediaspy.ui \
+    src/ui/collectiondialog.ui
 RESOURCES += src/resources/MediaSpy.qrc
 TRANSLATIONS += translations/mediaspy_fr.ts \
     translations/mediaspy_ta.ts

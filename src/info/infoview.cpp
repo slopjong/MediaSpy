@@ -19,7 +19,7 @@
 
 
 #include "infoview.h"
-#include "mediaspy.h"
+#include "../mediaspy.h"
 
 
 /** \var InfoView* InfoView::singleton_

@@ -19,7 +19,7 @@
 
 
 #include "moviemedia.h"
-#include "databasemanager.h"
+#include "../databasemanager.h"
 
 
 /////////////////////////////

@@ -154,7 +154,7 @@
      <x>0</x>
      <y>0</y>
      <width>410</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -235,7 +235,7 @@
   <customwidget>
    <class>myQLineEdit</class>
    <extends>QLineEdit</extends>
-   <header location="global">qtElements/myqlineedit.h</header>
+   <header>../../src/qtElements/myqlineedit.h</header>
   </customwidget>
  </customwidgets>
  <resources>

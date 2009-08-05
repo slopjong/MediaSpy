@@ -33,13 +33,17 @@ InfoManager* InfoManager::singleton_ = 00;
 /** \fn InfoManager::InfoManager()
   * \brief class constructor
   */
-InfoManager::InfoManager() : imdbThread_(new ImdbThread(this)) {}
+InfoManager::InfoManager() : imdbThread_(new ImdbThread(this)), checker_(new NetworkChecker()) {
+    connect(checker_, SIGNAL(connexionAvailable(bool)), this, SLOT(checkConnection(bool)));
+    checker_->runConnectionTest();
+}
 
 /** \fn InfoManager::~InfoManager()
   * \brief class destructor
   */
 InfoManager::~InfoManager() {
     delete imdbThread_;
+    delete checker_;
 }
 
 
@@ -67,7 +71,7 @@ void InfoManager::kill() {
 
 
 void InfoManager::updateMediaCollectionInfo() {
-    if(isConnected()) {
+    if(isConnected_) {
         QStringList mediaList = DatabaseManager::getInstance()->queryMediaWithNoImdbInfo();
         imdbThread_->setInfoList(mediaList);
 
@@ -75,12 +79,12 @@ void InfoManager::updateMediaCollectionInfo() {
             imdbThread_->start();
     }
     else
-        fprintf(stdout, "[ERROR] Not connected");
+        fprintf(stdout, "[ERROR] Not connected\n");
 }
 
 
-ImdbThread* InfoManager::getImdbThread() const {
-    return imdbThread_;
+void InfoManager::checkConnection(bool available) {
+    isConnected_ = available;
 }
 
 
@@ -89,22 +93,7 @@ void InfoManager::endImdbThread() const {
 }
 
 
-/** \fn InfoManager::isConnected()
-  * \brief Returns true if an Internet connection has been detected.
-  */
-bool InfoManager::isConnected() {
-
-    QTcpSocket socket;
-    socket.connectToHost("google.com", 80);
-
-    const int Timeout = 5 * 1000;
-    if (!socket.waitForConnected(Timeout)) {
-        QMessageBox msgBox; // TODO think about something less intrusive
-        msgBox.setText(tr("You seem not to be connected! I can't update your database :-("));
-        msgBox.exec();
-        return false;
-    }
-
-    return true;
+ImdbThread* InfoManager::getImdbThread() const {
+    return imdbThread_;
 }
 

@@ -19,7 +19,7 @@
 
 
 #include "mediaspy.h"
-#include "ui_mediaspy.h"
+#include "../build/ui/ui_mediaspy.h"
 
 
 /////////////////////////////

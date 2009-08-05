@@ -19,7 +19,7 @@
 
 
 #include "infoimdb.h"
-#include "mediaspy.h"
+#include "../mediaspy.h"
 
 
 static const QString searchPrefix = "http://www.imdb.com/find?s=all&q=";

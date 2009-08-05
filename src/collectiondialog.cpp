@@ -19,7 +19,7 @@
 
 
 #include "collectiondialog.h"
-#include "ui_collectiondialog.h"
+#include "../build/ui/ui_collectiondialog.h"
 
 
 /////////////////////////////

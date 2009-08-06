@@ -71,15 +71,15 @@ void InfoManager::kill() {
 
 
 void InfoManager::updateMediaCollectionInfo() {
-    if(isConnected_) {
+//    if(isConnected_) {
         QStringList mediaList = DatabaseManager::getInstance()->queryMediaWithNoImdbInfo();
         imdbThread_->setInfoList(mediaList);
 
         if(mediaList.count() > 0)
             imdbThread_->start();
-    }
-    else
-        fprintf(stdout, "[ERROR] Not connected\n");
+//    }
+//    else
+//        fprintf(stdout, "[ERROR] Not connected\n");
 }
 
 

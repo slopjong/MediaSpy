@@ -18,27 +18,21 @@
  */
 
 
-#ifndef NETWORKCHECKER_H
-#define NETWORKCHECKER_H
+#ifndef MYQWEBVIEW_H
+#define MYQWEBVIEW_H
 
-#include <QTcpSocket>
+#include <QWebView>
 
 
-class NetworkChecker : public QTcpSocket {
+/** \class myQWebView
+  * \brief This view shows media information to the user.
+  */
+class myQWebView : public QWebView {
     Q_OBJECT;
 
 public:
-    NetworkChecker();
-    virtual ~NetworkChecker();
-    void runConnectionTest();
-
-private slots:
-    void connexionOk();
-    void connexionNotOk(QAbstractSocket::SocketError);
-
-signals:
-    void connexionAvailable( bool );
-
+    myQWebView(QWidget *parent = 0);
+    virtual ~myQWebView();
 };
 
-#endif // NETWORKCHECKER_H
+#endif // MYQWEBVIEW_H

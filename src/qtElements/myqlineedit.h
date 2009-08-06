@@ -31,7 +31,7 @@ class QToolButton;
   * The button is only visible when text is in the line edit.
   */
 class myQLineEdit : public QLineEdit {
-    Q_OBJECT
+    Q_OBJECT;
 
 public:
     explicit myQLineEdit(QWidget *parent = 0);

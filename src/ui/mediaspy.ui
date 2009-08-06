@@ -14,7 +14,7 @@
    <string>MediaSpy</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../src/resources/MediaSpy.qrc">
+   <iconset resource="../resources/MediaSpy.qrc">
     <normaloff>:/icons/icon.png</normaloff>:/icons/icon.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -53,7 +53,7 @@
                <string>...</string>
               </property>
               <property name="icon">
-               <iconset resource="../src/resources/MediaSpy.qrc">
+               <iconset resource="../resources/MediaSpy.qrc">
                 <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
               </property>
              </widget>
@@ -90,7 +90,7 @@
              <string>...</string>
             </property>
             <property name="icon">
-             <iconset resource="../src/resources/MediaSpy.qrc">
+             <iconset resource="../resources/MediaSpy.qrc">
               <normaloff>:/icons/close.png</normaloff>:/icons/close.png</iconset>
             </property>
             <property name="shortcut">
@@ -115,7 +115,7 @@
           <number>2</number>
          </property>
          <item>
-          <widget class="QWebView" name="mediaInfoView">
+          <widget class="myQWebView" name="mediaInfoView">
            <property name="url">
             <url>
              <string>about:blank</string>
@@ -237,9 +237,14 @@
    <extends>QLineEdit</extends>
    <header>../../src/qtElements/myqlineedit.h</header>
   </customwidget>
+  <customwidget>
+   <class>myQWebView</class>
+   <extends>QWebView</extends>
+   <header>../../src/qtElements/myqwebview.h</header>
+  </customwidget>
  </customwidgets>
  <resources>
-  <include location="../src/resources/MediaSpy.qrc"/>
+  <include location="../resources/MediaSpy.qrc"/>
  </resources>
  <connections>
   <connection>

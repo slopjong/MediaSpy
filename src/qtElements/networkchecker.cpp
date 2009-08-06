@@ -21,13 +21,21 @@
 #include "networkchecker.h"
 
 
+/////////////////////////////
+// constructors/destructor //
+/////////////////////////////
 NetworkChecker::NetworkChecker() {
     connect(this, SIGNAL(connected()), this, SLOT(connexionOk()));
-    connect(this, SIGNAL(error(int)), this, SLOT(connexionNotOk(int)));
+    connect(this, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(connexionNotOk(QAbstractSocket::SocketError)));
 }
 
 NetworkChecker::~NetworkChecker() {}
 
+
+
+/////////////
+// methods //
+/////////////
 void NetworkChecker::runConnectionTest() {
     connectToHost("google.com", 80);
 }
@@ -37,7 +45,7 @@ void NetworkChecker::connexionOk() {
     emit(connexionAvailable(true));
 }
 
-void NetworkChecker::connexionNotOk(int e) {
+void NetworkChecker::connexionNotOk(QAbstractSocket::SocketError e) {
     fprintf(stdout, "error = %d\n", e);
     emit(connexionAvailable(false));
 }

@@ -1,11 +1,3 @@
-==================
-== KNOWN ISSUES ==
-==================
-- some visual glitches appear on the media list
-  (it does not appear completely at first)
-
-
-
 =============
 == ROADMAP ==
 =============
@@ -15,17 +7,17 @@ v1.0:
 
 * initial non-blank info view
 * extracting film titles from file names (tough one if files are not properly named)
-* get films information (duration, plot, cover) from imdb
-* display films list and information of the selected one
 * basic settings handling
 * clean and simple gui
 * basic filtering
-* browsing and searching film database (+ adding/deleting obviously)
 * color code for movie state (OK, no info from imdb, unreadable, etc.) ?
 
 DONE :
+* get films information (duration, plot, cover) from imdb
+* display films list and information of the selected one
 * scanning user-chosen directories to find media files (films in a first time)
 * create a list of these names in a database
+* browsing and searching film database (+ adding/deleting obviously)
 
 
 ========
@@ -40,3 +32,11 @@ v2.0 and upper:
 * automatic new files inclusion (directory survey)
 * music album and video series handling
 * dvd handling
+
+
+==================
+== KNOWN ISSUES ==
+==================
+
+
+

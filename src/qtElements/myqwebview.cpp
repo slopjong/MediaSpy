@@ -18,27 +18,18 @@
  */
 
 
-#ifndef NETWORKCHECKER_H
-#define NETWORKCHECKER_H
-
-#include <QTcpSocket>
+#include "myqwebview.h"
 
 
-class NetworkChecker : public QTcpSocket {
-    Q_OBJECT;
+/////////////////////////////
+// constructors/destructor //
+/////////////////////////////
+/** \fn myQLineEdit::myQLineEdit(QWidget *parent)
+  * \brief Constructor.
+  */
+myQWebView::myQWebView(QWidget *parent) : QWebView(parent) {
+    setContextMenuPolicy(Qt::NoContextMenu);
+}
 
-public:
-    NetworkChecker();
-    virtual ~NetworkChecker();
-    void runConnectionTest();
+myQWebView::~myQWebView() {}
 
-private slots:
-    void connexionOk();
-    void connexionNotOk(QAbstractSocket::SocketError);
-
-signals:
-    void connexionAvailable( bool );
-
-};
-
-#endif // NETWORKCHECKER_H

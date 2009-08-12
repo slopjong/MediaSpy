@@ -94,7 +94,7 @@
               <normaloff>:/icons/close.png</normaloff>:/icons/close.png</iconset>
             </property>
             <property name="shortcut">
-             <string>Esc</string>
+             <string notr="true">Esc</string>
             </property>
            </widget>
           </item>
@@ -205,7 +205,7 @@
     <string>Quit</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Q</string>
+    <string notr="true">Ctrl+Q</string>
    </property>
   </action>
   <action name="actionSelectdirectories">
@@ -213,7 +213,7 @@
     <string>Select directories</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+D</string>
+    <string notr="true">Ctrl+D</string>
    </property>
   </action>
   <action name="actionRescan_collection">
@@ -221,7 +221,7 @@
     <string>Rescan collection</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+R</string>
+    <string notr="true">Ctrl+R</string>
    </property>
   </action>
  </widget>

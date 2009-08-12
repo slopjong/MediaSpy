@@ -74,42 +74,6 @@ void MediaCollection::kill() {
 }
 
 
-/** \fn void MediaCollection::init()
-  * \brief creates Media objects from stored data
-  */
-void MediaCollection::init() {
-
-/*    QSqlQuery q;
-    DatabaseManager::getInstance()->queryMedias(q);
-
-    int fieldId             = q.record().indexOf("id");
-    int fieldType           = q.record().indexOf("type");
-    int fieldBaseName       = q.record().indexOf("baseName");
-    int fieldFileName       = q.record().indexOf("fileName");
-    int fieldLoaned         = q.record().indexOf("loaned");
-    int fieldSeen           = q.record().indexOf("seen");
-    int fieldRecommended    = q.record().indexOf("recommended");
-    int fieldNotes          = q.record().indexOf("notes");
-
-    while (q.next()) {
-        qulonglong id = q.value(fieldId).toULongLong() - 1;
-
-        Media tempMedia;
-        tempMedia.setId(id);
-        tempMedia.setType(q.value(fieldType).toInt());
-        tempMedia.setBaseName(q.value(fieldBaseName).toString());
-        tempMedia.setFileName(q.value(fieldFileName).toString());
-        tempMedia.setLoaned(q.value(fieldLoaned).toBool());
-        tempMedia.setSeen(q.value(fieldSeen).toBool());
-        tempMedia.setRecommended(q.value(fieldRecommended).toBool());
-        tempMedia.setNotes(q.value(fieldNotes).toString());
-
-        mediaMap_.insert(id, tempMedia);
-    }
-    nMedia_ = mediaMap_.count();*/
-}
-
-
 /** \fn void MediaCollection::updateMediaCollection(QStringList& mediaList)
   * \brief updates the database MediaCollection table with the current list of media
   */

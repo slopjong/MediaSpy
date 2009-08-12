@@ -252,7 +252,6 @@ void MediaSpy::init() {
     sqlTableModel_->setTable("Media");
     sqlTableModel_->removeColumns(0, 2);
     sqlTableModel_->removeColumns(1, 5);
-    sqlTableModel_->setHeaderData(0, Qt::Horizontal, tr("Title"));
 
     // sorting the list in alphabetical order without case sensitivity
     mediaListProxyModel_ = new QSortFilterProxyModel(this);
@@ -271,7 +270,6 @@ void MediaSpy::init() {
     // collections init //
     //////////////////////
     Collection::getInstance()->init();
-    MediaCollection::getInstance()->init();
 }
 
 

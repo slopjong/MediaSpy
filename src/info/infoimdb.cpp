@@ -109,14 +109,14 @@ void InfoImdb::getMoviePage(unsigned int imdbId, int movieMediaIndex) {
 void InfoImdb::makeRequest(QString& url, int movieMediaIndex) {
     QNetworkReply* reply = networkManager_->get(QNetworkRequest(QUrl(url)));
     replyMap_.insert(movieMediaIndex, reply);
-    qWarning("[%p] makeRequest: %s", reply, url.toAscii().constData());
+//    qWarning("[%p] makeRequest: %s", reply, url.toAscii().constData());
 }
 
 
 void InfoImdb::copyImage(QString& url, const QString localFileName) {
     QNetworkReply* reply = networkManager_->get(QNetworkRequest(QUrl(url)));
     imageMap_.insert(localFileName, reply);
-    qWarning("[%p] copyImage: %s", reply, url.toAscii().constData());
+//    qWarning("[%p] copyImage: %s", reply, url.toAscii().constData());
 }
 
 
@@ -216,7 +216,7 @@ bool InfoImdb::processSearchPage(QNetworkReply* networkReply) {
             return true;
         }
         else if(line.contains("<b>No Matches.</b>")) {
-            qWarning("[%p] No Matches", networkReply);
+//            qWarning("[%p] No Matches", networkReply);
             emit searchFinished(false, movieMedia_[movieMediaIndex].getFileName()); // signals for page
             emit searchFinished(false, movieMedia_[movieMediaIndex].getFileName()); // and image request
             return false;
@@ -224,23 +224,23 @@ bool InfoImdb::processSearchPage(QNetworkReply* networkReply) {
         else if(line.contains("(Approx Matches)</b>")) {
             emit searchFinished(false, movieMedia_[movieMediaIndex].getFileName()); // signals for page
             emit searchFinished(false, movieMedia_[movieMediaIndex].getFileName()); // and image request
-            qWarning("[%p] Approx Matches", networkReply);
+//            qWarning("[%p] Approx Matches", networkReply);
             return false;
         }
         else if(line.contains("Enter a word or phrase to search on.")) {
             emit searchFinished(false, movieMedia_[movieMediaIndex].getFileName()); // signals for page
             emit searchFinished(false, movieMedia_[movieMediaIndex].getFileName()); // and image request
-            qWarning("[%p] Enter a word or phrase to search on", networkReply);
+//            qWarning("[%p] Enter a word or phrase to search on", networkReply);
             return false;
         }
         else if(line.contains("<h2>Popular Results</h2>")) {
             emit searchFinished(false, movieMedia_[movieMediaIndex].getFileName()); // signals for page
             emit searchFinished(false, movieMedia_[movieMediaIndex].getFileName()); // and image request
-            qWarning("[%p] Popular Results", networkReply);
+//            qWarning("[%p] Popular Results", networkReply);
             return false;
         }
         else if(line.contains("<b>Names (Exact Matches)</b>")) {
-            qWarning("[%p] Exact Matches...", networkReply);
+//            qWarning("[%p] Exact Matches...", networkReply);
             emit searchFinished(false, movieMedia_[movieMediaIndex].getFileName()); // signals for page
             emit searchFinished(false, movieMedia_[movieMediaIndex].getFileName()); // and image request
             return false;

@@ -98,6 +98,8 @@ private:
     QString errorMessage_;
     MyQSqlTableModel* sqlTableModel_;
     QSortFilterProxyModel* mediaListProxyModel_;
+    QLabel* statusLabel_;
+
     QLabel* newFilterLabel;
     QComboBox* newFilterComboBox;
     myQLineEdit* newFilterLineEdit;
@@ -113,6 +115,7 @@ private:
     void readSettings();
     void closeEvent(QCloseEvent*);
     void makeConnections();
+    void displayPermanentMessage(const QString);
 
 
 private slots:
@@ -127,8 +130,8 @@ private slots:
     void on_actionSelectdirectories_triggered();
     void setProgressbarMaximum(const int) const;
     void setProgressbarCurrent(const int) const;
-    void setProgressbarOff() const;
-    void displayMessage(QString);
+    void setProgressbarOff();
+    void displayMessage(const QString);
     void finishedUpdateThread();
     void selectedMovie(QModelIndex, QModelIndex);
 };

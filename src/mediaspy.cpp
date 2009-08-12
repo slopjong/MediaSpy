@@ -36,6 +36,7 @@ MediaSpy::MediaSpy(QWidget *parent) :
         , filter_(new MediaFilter())
         , filterLimit_(filter_->getFilterLimit() - 1)
         , nFilter_(0)
+        , statusLabel_(new QLabel(this))
 {
     Q_CHECK_PTR(ui_);
 
@@ -44,6 +45,8 @@ MediaSpy::MediaSpy(QWidget *parent) :
     ui_->progressBar->setMinimum(0);
     ui_->splitter->setSizes(QList<int>() << ui_->centralWidget->size().width()/2 << ui_->centralWidget->size().width()/2);
     ui_->filterLineEdit->setFocus(Qt::MouseFocusReason);
+    ui_->statusBar->addPermanentWidget(statusLabel_);
+    statusLabel_->setFrameStyle(QFrame::Panel | QFrame::Sunken);
 
     // program really begins here!
     readSettings();
@@ -71,6 +74,7 @@ MediaSpy::~MediaSpy() {
     Q_CHECK_PTR(newFilterWidget);
 
     delete ui_;
+    delete statusLabel_;
     delete updateThread_;
     delete filter_;
     delete[] newFilterLabel;
@@ -362,11 +366,11 @@ void MediaSpy::setProgressbarCurrent(const int value) const {
 /** \fn void MediaSpy::setProgressbarOff() const
  *  \brief Ends the progress bar and shows a status message with the number of Media in the collection.
  */
-void MediaSpy::setProgressbarOff() const {
+void MediaSpy::setProgressbarOff() {
     ui_->progressBar->setVisible(false);
     ui_->progressButton->setVisible(false);
-    QString message = QString(tr("%n movie(s) in the collection", "", MediaCollection::getInstance()->getNMedia()));
-    ui_->statusBar->showMessage(message);
+    QString message = QString(tr("%n movie(s)", "", MediaCollection::getInstance()->getNMedia()));
+    displayPermanentMessage(message);
 }
 
 
@@ -384,8 +388,16 @@ void MediaSpy::on_actionAbout_MediaSpy_triggered() {
 /** \fn void MediaSpy::displayMessage(QString message)
  *  \brief Displays a message in the status bar.
  */
-void MediaSpy::displayMessage(QString message) {
+void MediaSpy::displayMessage(const QString message) {
     ui_->statusBar->showMessage(message);
+}
+
+
+/** \fn void MediaSpy::displayPermanentMessage(QString message)
+ *  \brief Displays a message in the permanent status bar.
+ */
+void MediaSpy::displayPermanentMessage(const QString message) {
+    statusLabel_->setText(message);
 }
 
 

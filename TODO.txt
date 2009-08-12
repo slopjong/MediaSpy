@@ -10,7 +10,6 @@ v1.0:
 * basic settings handling
 * clean and simple gui
 * basic filtering
-* color code for movie state (OK, no info from imdb, unreadable, etc.) ?
 
 DONE :
 * get films information (duration, plot, cover) from imdb
@@ -18,6 +17,10 @@ DONE :
 * scanning user-chosen directories to find media files (films in a first time)
 * create a list of these names in a database
 * browsing and searching film database (+ adding/deleting obviously)
+* get films information (duration, plot, cover) from imdb
+* display films list and information of the selected one
+* browsing and searching film database (+ adding/deleting obviously)
+* color code for movie state (OK, no info from imdb, unreadable, etc.) ?
 
 
 ========
@@ -37,6 +40,3 @@ v2.0 and upper:
 ==================
 == KNOWN ISSUES ==
 ==================
-
-
-

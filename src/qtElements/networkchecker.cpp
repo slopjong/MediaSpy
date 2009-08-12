@@ -41,11 +41,15 @@ void NetworkChecker::runConnectionTest() {
 }
 
 
+
+///////////
+// slots //
+///////////
 void NetworkChecker::connexionOk() {
-    emit(connexionAvailable(true));
+    emit connexionAvailable(true);
 }
 
 void NetworkChecker::connexionNotOk(QAbstractSocket::SocketError e) {
     fprintf(stdout, "error = %d\n", e);
-    emit(connexionAvailable(false));
+    emit connexionAvailable(false);
 }

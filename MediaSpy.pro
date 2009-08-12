@@ -15,7 +15,6 @@ SOURCES += src/main.cpp \
     src/collection.cpp \
     src/collectiondialog.cpp \
     src/databasemanager.cpp \
-    src/mediafilter.cpp \
     src/updatethread.cpp \
     src/info/imdbthread.cpp \
     src/info/infoview.cpp \
@@ -33,7 +32,6 @@ HEADERS += src/mediaspy.h \
     src/collection.h \
     src/collectiondialog.h \
     src/databasemanager.h \
-    src/mediafilter.h \
     src/updatethread.h \
     src/info/imdbthread.h \
     src/info/infoview.h \

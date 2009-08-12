@@ -31,7 +31,6 @@
 
 #include "collectiondialog.h"
 #include "collection.h"
-#include "mediafilter.h"
 #include "updatethread.h"
 #include "info/infoview.h"
 #include "info/infomanager.h"

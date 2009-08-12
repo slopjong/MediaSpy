@@ -504,6 +504,7 @@ void MediaSpy::minusFilter_clicked() {
 void MediaSpy::on_progressButton_clicked() {
     updateThread_->quit();
     InfoManager::getInstance()->getImdbThread()->quit();
+    displayMessage();
 }
 
 

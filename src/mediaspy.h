@@ -115,7 +115,7 @@ private:
     void readSettings();
     void closeEvent(QCloseEvent*);
     void makeConnections();
-    void displayPermanentMessage(const QString);
+    void displayPermanentMessage(const QString = 0);
 
 
 private slots:
@@ -131,7 +131,7 @@ private slots:
     void setProgressbarMaximum(const int) const;
     void setProgressbarCurrent(const int) const;
     void setProgressbarOff();
-    void displayMessage(const QString);
+    void displayMessage(const QString = 0);
     void finishedUpdateThread();
     void selectedMovie(QModelIndex, QModelIndex);
 };

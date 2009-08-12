@@ -58,7 +58,7 @@ OTHER_FILES += README.txt \
     CHANGELOG.txt
 
 # define some useful values
-PACKAGE_VERSION = 0.6.2
+PACKAGE_VERSION = 0.6.3-testing
 QMAKE_TARGET_PRODUCT = "MediaSpy"
 QMAKE_TARGET_COPYRIGHT = "Copyright &copy; 2009 Stéphane Péchard"
 win32:QMAKE_TARGET_COPYRIGHT = "Copyright (C) 2009 Stéphane Péchard"

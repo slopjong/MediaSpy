@@ -1,6 +1,10 @@
 CHANGELOG.txt
 =============
 
+0.6.3
+- specific label for number of movies
+
+
 0.6.2
 - the title line restricts the media list to what its text
 - clear button in the filter edit line

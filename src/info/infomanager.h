@@ -41,9 +41,6 @@ class InfoManager : public QObject {
 
     // Fields
     static InfoManager *singleton_;
-//    InfoImdb* infoImdb_;
-//    int nImdbSearch_;
-//    int indexImdbSearch_;
     ImdbThread* imdbThread_;
     NetworkChecker* checker_;
     bool isConnected_;
@@ -55,20 +52,15 @@ public:
     static void kill();
     void updateMediaCollectionInfo();
     ImdbThread* getImdbThread() const;
-//    void searchImdb(QString);
 
 
 public slots:
-//    void searchReply(bool, QString);
-void endImdbThread() const;
-void checkConnection(bool);
+    void endImdbThread() const;
+    void checkConnection(bool);
+
 
 signals:
     void messageToStatus(QString);
-//    void searchResult(bool, QString);
-//    void startSearch(const int);
-//    void searchProgress(const int);
-//    void searchEnd();
 
 };
 

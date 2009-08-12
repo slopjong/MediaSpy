@@ -32,9 +32,11 @@ public:
     virtual ~NetworkChecker();
     void runConnectionTest();
 
+
 private slots:
     void connexionOk();
-    void connexionNotOk(int);
+    void connexionNotOk( QAbstractSocket::SocketError );
+
 
 signals:
     void connexionAvailable( bool );

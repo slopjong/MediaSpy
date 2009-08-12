@@ -71,7 +71,7 @@ void InfoManager::kill() {
 
 
 void InfoManager::updateMediaCollectionInfo() {
-    if(isConnected_) {
+    if(isConnected_){
         QStringList mediaList = DatabaseManager::getInstance()->queryMediaWithNoImdbInfo();
         imdbThread_->setInfoList(mediaList);
 

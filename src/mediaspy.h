@@ -92,21 +92,10 @@ private:
     // Fields
     Ui::MediaSpy* ui_;
     UpdateThread* updateThread_;
-    MediaFilter* filter_;
-    const int filterLimit_;
-    int nFilter_;
     QString errorMessage_;
     MyQSqlTableModel* sqlTableModel_;
     QSortFilterProxyModel* mediaListProxyModel_;
     QLabel* statusLabel_;
-
-    QLabel* newFilterLabel;
-    QComboBox* newFilterComboBox;
-    myQLineEdit* newFilterLineEdit;
-    QToolButton* newFilterToolButton;
-    QHBoxLayout* newFilterLayout;
-    QWidget* newFilterWidget;
-
 
     // Operations
     void init();
@@ -123,8 +112,6 @@ private slots:
     void on_actionRescan_collection_triggered();
     void on_progressButton_clicked();
     void isMediaFound(bool, QString);
-    void minusFilter_clicked();
-    void on_filterToolButton_clicked();
     void on_actionAbout_MediaSpy_triggered();
     void on_actionAbout_Qt_triggered();
     void on_actionSelectdirectories_triggered();

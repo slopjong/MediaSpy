@@ -33,9 +33,6 @@ MediaSpy::MediaSpy(QWidget *parent) :
           QMainWindow(parent)
         , ui_(new Ui::MediaSpy)
         , updateThread_(new UpdateThread(this))
-        , filter_(new MediaFilter())
-        , filterLimit_(filter_->getFilterLimit() - 1)
-        , nFilter_(0)
         , statusLabel_(new QLabel(this))
 {
     Q_CHECK_PTR(ui_);
@@ -47,6 +44,9 @@ MediaSpy::MediaSpy(QWidget *parent) :
     ui_->filterLineEdit->setFocus(Qt::MouseFocusReason);
     ui_->statusBar->addPermanentWidget(statusLabel_);
     statusLabel_->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    ui_->filterSeenComboBox->addItem(tr("All"));
+    ui_->filterSeenComboBox->addItem(tr("Seen"));
+    ui_->filterSeenComboBox->addItem(tr("Unseen"));
 
     // program really begins here!
     readSettings();
@@ -65,24 +65,10 @@ MediaSpy::MediaSpy(QWidget *parent) :
 MediaSpy::~MediaSpy() {
     Q_CHECK_PTR(ui_);
     Q_CHECK_PTR(updateThread_);
-    Q_CHECK_PTR(filter_);
-    Q_CHECK_PTR(newFilterLabel);
-    Q_CHECK_PTR(newFilterComboBox);
-    Q_CHECK_PTR(newFilterLineEdit);
-    Q_CHECK_PTR(newFilterToolButton);
-    Q_CHECK_PTR(newFilterLayout);
-    Q_CHECK_PTR(newFilterWidget);
 
     delete ui_;
     delete statusLabel_;
     delete updateThread_;
-    delete filter_;
-    delete[] newFilterLabel;
-    delete[] newFilterComboBox;
-    delete[] newFilterLineEdit;
-    delete[] newFilterToolButton;
-    delete[] newFilterLayout;
-    delete[] newFilterWidget;
     delete sqlTableModel_;
     delete mediaListProxyModel_;
     InfoView::getInstance()->kill();
@@ -213,38 +199,6 @@ void MediaSpy::init() {
     QString voidInfoView = InfoView::getInstance()->init(ui_->mediaInfoView->settings());
     ui_->mediaInfoView->setHtml(voidInfoView);
 
-    /////////////////////////
-    // filter objects init //
-    /////////////////////////
-    newFilterLabel      = new QLabel[filterLimit_];
-    newFilterComboBox   = new QComboBox[filterLimit_];
-    newFilterLineEdit   = new myQLineEdit[filterLimit_];
-    newFilterToolButton = new QToolButton[filterLimit_];
-    newFilterLayout     = new QHBoxLayout[filterLimit_];
-    newFilterWidget     = new QWidget[filterLimit_];
-
-    for(int iFilter = 0; iFilter < filterLimit_; ++iFilter) {
-        newFilterLabel[iFilter].setText(tr("Filter"));
-        newFilterLabel[iFilter].setAlignment(Qt::AlignVCenter | Qt::AlignRight);
-
-        newFilterComboBox[iFilter].setModel(filter_->getModel());
-        newFilterComboBox[iFilter].setSizeAdjustPolicy(QComboBox::AdjustToContentsOnFirstShow);
-
-        newFilterToolButton[iFilter].setIcon(QIcon(":/icons/minus.png"));
-        connect(&newFilterToolButton[iFilter], SIGNAL(clicked()), this, SLOT(minusFilter_clicked()));
-
-        newFilterLayout[iFilter].addWidget(&newFilterLabel[iFilter]);
-        newFilterLayout[iFilter].addWidget(&newFilterComboBox[iFilter]);
-        newFilterLayout[iFilter].addWidget(&newFilterLineEdit[iFilter]);
-        newFilterLayout[iFilter].addWidget(&newFilterToolButton[iFilter]);
-
-        newFilterWidget[iFilter].setLayout(&newFilterLayout[iFilter]);
-        newFilterWidget[iFilter].setVisible(false);
-        newFilterLayout[iFilter].setMargin(0);
-
-        ui_->verticalLayout->addWidget(&newFilterWidget[iFilter]);
-    }
-
     ////////////////////
     // tableView init //
     ////////////////////
@@ -264,7 +218,7 @@ void MediaSpy::init() {
     //////////////////////
     // mediafilter init //
     //////////////////////
-    ui_->filterComboBox->setModel(filter_->getModel());
+//    ui_->filterComboBox->setModel(filter_->getModel());
 
     //////////////////////
     // collections init //
@@ -396,6 +350,7 @@ void MediaSpy::displayMessage(const QString message) {
  */
 void MediaSpy::displayPermanentMessage(const QString message) {
     statusLabel_->setText(message);
+    displayMessage();
 }
 
 
@@ -467,32 +422,6 @@ const QString MediaSpy::getDefaultCoverName() {
  */
 void MediaSpy::on_actionAbout_Qt_triggered() {
     qApp->aboutQt();
-}
-
-
-/** \fn void MediaSpy::on_filterToolButton_clicked()
- *  \brief Adds a filter to the interface.
- */
-void MediaSpy::on_filterToolButton_clicked() {
-    if(nFilter_<filterLimit_) {
-        newFilterWidget[nFilter_].setVisible(true);
-        newFilterLineEdit[nFilter_].setFocus(Qt::MouseFocusReason);
-        ++nFilter_;
-    }
-    if(nFilter_==filterLimit_)
-        ui_->filterToolButton->setEnabled(false);
-}
-
-
-/** \fn void MediaSpy::minusFilter_clicked()
- *  \brief Removes a filter to the interface.
- */
-void MediaSpy::minusFilter_clicked() {
-    --nFilter_;
-    if(nFilter_ >= 0) {
-        newFilterWidget[nFilter_].setVisible(false);
-        ui_->filterToolButton->setEnabled(true);
-    }
 }
 
 

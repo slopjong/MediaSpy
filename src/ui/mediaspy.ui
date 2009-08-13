@@ -14,7 +14,7 @@
    <string>MediaSpy</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="../resources/MediaSpy.qrc">
     <normaloff>:/icons/icon.png</normaloff>:/icons/icon.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -24,7 +24,7 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <layout class="QHBoxLayout" name="filterLayout">
@@ -82,10 +82,10 @@
           <item>
            <widget class="QToolButton" name="progressButton">
             <property name="text">
-             <string>...</string>
+             <string notr="true"/>
             </property>
             <property name="icon">
-             <iconset>
+             <iconset resource="../resources/MediaSpy.qrc">
               <normaloff>:/icons/close.png</normaloff>:/icons/close.png</iconset>
             </property>
             <property name="shortcut">
@@ -238,7 +238,9 @@
    <header>../../src/qtElements/myqwebview.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../resources/MediaSpy.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>actionQuit</sender>

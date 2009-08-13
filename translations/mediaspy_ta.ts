@@ -205,7 +205,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="85"/>
         <location filename="../src/ui/mediaspy.ui" line="125"/>
         <source>...</source>
         <translation>...</translation>

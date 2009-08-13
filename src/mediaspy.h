@@ -78,6 +78,8 @@ class MediaSpy : public QMainWindow {
     myQSortFilterProxyModel* mediaListProxyModel_;
     QLabel* statusLabel_;
     QString errorMessage_;
+    QAction* editMediaAct_;
+
 
     // Operations
     void init();
@@ -120,6 +122,7 @@ private slots:
     void displayMessage(const QString = 0);
     void finishedUpdateThread();
     void selectedMovie(QModelIndex, QModelIndex);
+    void showListContextMenu(const QPoint&);
 
 };
 

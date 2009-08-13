@@ -35,6 +35,7 @@ MediaSpy::MediaSpy(QWidget *parent) :
         , updateThread_(new UpdateThread(this))
         , mediaListProxyModel_(new myQSortFilterProxyModel(this))
         , statusLabel_(new QLabel(this))
+        , editMediaAct_(new QAction(tr("&Edit"), this))
 {
     Q_CHECK_PTR(ui_);
     Q_CHECK_PTR(statusLabel_);
@@ -142,6 +143,9 @@ void MediaSpy::makeConnections() {
     // for ui
     connect(ui_->mediaListView->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)),
             this, SLOT(selectedMovie(QModelIndex, QModelIndex)));
+    connect(ui_->mediaListView, SIGNAL(customContextMenuRequested(const QPoint&)),
+            this, SLOT(showListContextMenu(const QPoint&)));
+
 }
 
 
@@ -215,6 +219,9 @@ void MediaSpy::init() {
     mediaListProxyModel_->setSortCaseSensitivity(Qt::CaseInsensitive);
 
     ui_->mediaListView->setModel(mediaListProxyModel_);
+
+    // set context menu policy
+    ui_->mediaListView->setContextMenuPolicy(Qt::CustomContextMenu);
 
     //////////////////////
     // collections init //
@@ -457,3 +464,14 @@ void MediaSpy::on_filterLineEdit_textChanged(QString newString) {
 void MediaSpy::on_filterSeenComboBox_currentIndexChanged(int index) {
     mediaListProxyModel_->setIndexChanged(index);
 }
+
+
+void MediaSpy::showListContextMenu(const QPoint& pnt) {
+    QList<QAction*> actions;
+    if (ui_->mediaListView->indexAt(pnt).isValid()) {
+        actions.append(this->editMediaAct_);
+    }
+    if (actions.count() > 0)
+        QMenu::exec(actions, ui_->mediaListView->mapToGlobal(pnt));
+}
+

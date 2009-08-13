@@ -26,7 +26,6 @@
 #include <QSqlDatabase>
 #include <QMessageBox>
 #include <QSqlTableModel>
-#include <QSortFilterProxyModel>
 #include <QToolButton>
 
 #include "collectiondialog.h"
@@ -37,6 +36,7 @@
 #include "media/mediacollection.h"
 #include "qtElements/myqlineedit.h"
 #include "qtElements/myqsqltablemodel.h"
+#include "qtElements/mysortfilterproxymodel.h"
 
 
 /** \var appDirectory
@@ -71,6 +71,24 @@ namespace Ui {
 class MediaSpy : public QMainWindow {
     Q_OBJECT
 
+    // Fields
+    Ui::MediaSpy* ui_;
+    UpdateThread* updateThread_;
+    MyQSqlTableModel* sqlTableModel_;
+    mySortFilterProxyModel* mediaListProxyModel_;
+    QLabel* statusLabel_;
+    QString errorMessage_;
+
+    // Operations
+    void init();
+    void updateCollections(QStringList&);
+    void writeSettings();
+    void readSettings();
+    void closeEvent(QCloseEvent*);
+    void makeConnections();
+    void displayPermanentMessage(const QString = 0);
+
+
 public:
     // Constructors
     explicit MediaSpy(QWidget *parent = 0);
@@ -87,26 +105,8 @@ public:
     void tableViewUpdated();
 
 
-private:
-    // Fields
-    Ui::MediaSpy* ui_;
-    UpdateThread* updateThread_;
-    QString errorMessage_;
-    MyQSqlTableModel* sqlTableModel_;
-    QSortFilterProxyModel* mediaListProxyModel_;
-    QLabel* statusLabel_;
-
-    // Operations
-    void init();
-    void updateCollections(QStringList&);
-    void writeSettings();
-    void readSettings();
-    void closeEvent(QCloseEvent*);
-    void makeConnections();
-    void displayPermanentMessage(const QString = 0);
-
-
 private slots:
+    void on_filterSeenComboBox_currentIndexChanged(int index);
     void on_filterLineEdit_textChanged(QString );
     void on_actionRescan_collection_triggered();
     void on_progressButton_clicked();
@@ -120,6 +120,7 @@ private slots:
     void displayMessage(const QString = 0);
     void finishedUpdateThread();
     void selectedMovie(QModelIndex, QModelIndex);
+
 };
 
 #endif // MEDIASPY_H

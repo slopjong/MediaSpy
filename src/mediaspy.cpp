@@ -33,9 +33,14 @@ MediaSpy::MediaSpy(QWidget *parent) :
           QMainWindow(parent)
         , ui_(new Ui::MediaSpy)
         , updateThread_(new UpdateThread(this))
+        , mediaListProxyModel_(new mySortFilterProxyModel(this))
         , statusLabel_(new QLabel(this))
 {
     Q_CHECK_PTR(ui_);
+    Q_CHECK_PTR(statusLabel_);
+    Q_CHECK_PTR(updateThread_);
+    Q_CHECK_PTR(sqlTableModel_);
+    Q_CHECK_PTR(mediaListProxyModel_);
 
     // view settings
     ui_->setupUi(this);
@@ -44,9 +49,9 @@ MediaSpy::MediaSpy(QWidget *parent) :
     ui_->filterLineEdit->setFocus(Qt::MouseFocusReason);
     ui_->statusBar->addPermanentWidget(statusLabel_);
     statusLabel_->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-    ui_->filterSeenComboBox->addItem(tr("All"));
-    ui_->filterSeenComboBox->addItem(tr("Seen"));
-    ui_->filterSeenComboBox->addItem(tr("Unseen"));
+    static const QStringList filterList = QStringList() << tr("All") << tr("Watched") << tr("Unwatched"); // order is important!
+    ui_->filterSeenComboBox->addItems(filterList);
+    ui_->filterSeenComboBox->setItemData(0, Qt::TextAlignmentRole, Qt::AlignCenter);
 
     // program really begins here!
     readSettings();
@@ -63,9 +68,6 @@ MediaSpy::MediaSpy(QWidget *parent) :
   * \brief class destructor
   */
 MediaSpy::~MediaSpy() {
-    Q_CHECK_PTR(ui_);
-    Q_CHECK_PTR(updateThread_);
-
     delete ui_;
     delete statusLabel_;
     delete updateThread_;
@@ -202,23 +204,17 @@ void MediaSpy::init() {
     ////////////////////
     // tableView init //
     ////////////////////
-    sqlTableModel_ = new MyQSqlTableModel();
+    sqlTableModel_ = new MyQSqlTableModel(this);
     sqlTableModel_->setTable("Media");
     sqlTableModel_->removeColumns(0, 2);
     sqlTableModel_->removeColumns(1, 5);
 
     // sorting the list in alphabetical order without case sensitivity
-    mediaListProxyModel_ = new QSortFilterProxyModel(this);
     mediaListProxyModel_->setSourceModel(sqlTableModel_);
     mediaListProxyModel_->sort(0, Qt::AscendingOrder);
     mediaListProxyModel_->setSortCaseSensitivity(Qt::CaseInsensitive);
 
     ui_->mediaListView->setModel(mediaListProxyModel_);
-
-    //////////////////////
-    // mediafilter init //
-    //////////////////////
-//    ui_->filterComboBox->setModel(filter_->getModel());
 
     //////////////////////
     // collections init //
@@ -438,8 +434,7 @@ void MediaSpy::on_progressButton_clicked() {
 /** \fn void MediaSpy::on_actionRescan_triggered()
   *  \brief Rescans the Collection.
   */
-void MediaSpy::on_actionRescan_collection_triggered()
-{
+void MediaSpy::on_actionRescan_collection_triggered() {
     QStringList upCollectionList;
     for(int i = 0; i < Collection::getInstance()->getNDir(); ++i)
         upCollectionList << Collection::getInstance()->getDirAt(i);
@@ -455,3 +450,10 @@ void MediaSpy::on_filterLineEdit_textChanged(QString newString) {
     mediaListProxyModel_->setFilterRegExp(QRegExp(newString, Qt::CaseInsensitive, QRegExp::FixedString));
 }
 
+
+/** \fn void MediaSpy::on_filterSeenComboBox_currentIndexChanged(int index)
+  *  \brief Changes the index of the model depending of the choice made by in combo box.
+  */
+void MediaSpy::on_filterSeenComboBox_currentIndexChanged(int index) {
+    mediaListProxyModel_->setIndexChanged(index);
+}

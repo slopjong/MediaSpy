@@ -18,27 +18,32 @@
  */
 
 
-#ifndef MYQSQLTABLEMODEL_H
-#define MYQSQLTABLEMODEL_H
-
-#include <QObject>
-#include <QBrush>
-#include <QFileInfo>
-#include <QSqlTableModel>
+#ifndef MYSORTFILTERPROXYMODEL_H
+#define MYSORTFILTERPROXYMODEL_H
 
 
-class MyQSqlTableModel : public QSqlTableModel {
+#include <QSortFilterProxyModel>
+
+#include "../databasemanager.h"
+
+
+class mySortFilterProxyModel : public QSortFilterProxyModel {
     Q_OBJECT;
 
-    QList<int> etatList_;
+    // Fields
+    int myIndexChanged_;
 
 public:
-    explicit MyQSqlTableModel(QObject *parent = 0);
-    virtual ~MyQSqlTableModel();
-    QVariant data ( const QModelIndex&, int role = Qt::DisplayRole) const;
-    void setKeyTocheck( bool, const QString& );
-    void setList();
+    // Constructors
+    explicit mySortFilterProxyModel(QObject *parent = 0);
+    virtual ~mySortFilterProxyModel();
+
+    // Operations
+    bool filterAcceptsRow(int, const QModelIndex&) const;
+
+    // Accessor Methods
+    void setIndexChanged(int);
 
 };
 
-#endif // MYQSQLTABLEMODEL_H
+#endif // MYSORTFILTERPROXYMODEL_H

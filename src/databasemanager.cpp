@@ -258,6 +258,21 @@ bool DatabaseManager::hasMedia(const QString& fileName) {
 }
 
 
+/** \fn DatabaseManager::isMediaSeen(const QString& fileName)
+  * \brief Returns whether the media \var fileName is marked as seen.
+  */
+bool DatabaseManager::isMediaSeen(const QString& fileName) {
+    QSqlQuery q;
+    q.prepare("SELECT id FROM Media WHERE baseName = ? AND seen = 'true'");
+    q.bindValue(0, fileName);
+
+    if (!q.exec())
+        return true;
+
+    return q.next();
+}
+
+
 /** \fn DatabaseManager::insertMedias(const QList<Media>& mediaList)
   * \brief Inserts the medias from the list \var mediaList into the Media table.
   */

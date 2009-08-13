@@ -19,13 +19,17 @@
 
 
 #include "myqsqltablemodel.h"
+
 #include <QtDebug>
 
 
 /////////////////////////////
 // constructors/destructor //
 /////////////////////////////
-MyQSqlTableModel::MyQSqlTableModel() : etatList_() {}
+MyQSqlTableModel::MyQSqlTableModel(QObject *parent)
+        : QSqlTableModel(parent)
+        , etatList_()
+{}
 
 MyQSqlTableModel::~MyQSqlTableModel() {}
 

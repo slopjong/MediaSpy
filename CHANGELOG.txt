@@ -4,6 +4,7 @@ CHANGELOG.txt
 0.6.3
 - specific label for number of movies
 - title and watched/unwatched filters OK
+- first draft of context menu for the listview
 
 
 0.6.2

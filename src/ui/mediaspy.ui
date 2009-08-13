@@ -58,7 +58,7 @@
          </layout>
         </item>
         <item>
-         <widget class="QListView" name="mediaListView">
+         <widget class="myQListView" name="mediaListView">
           <property name="styleSheet">
            <string notr="true"/>
           </property>
@@ -236,6 +236,11 @@
    <class>myQWebView</class>
    <extends>QWebView</extends>
    <header>../../src/qtElements/myqwebview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>myQListView</class>
+   <extends>QListView</extends>
+   <header>../../src/qtElements/myqlistview.h</header>
   </customwidget>
  </customwidgets>
  <resources>

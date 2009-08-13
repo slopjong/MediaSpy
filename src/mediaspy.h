@@ -37,6 +37,7 @@
 #include "qtElements/myqlineedit.h"
 #include "qtElements/myqsqltablemodel.h"
 #include "qtElements/myqsortfilterproxymodel.h"
+#include "qtElements/myqlistview.h"
 
 
 /** \var appDirectory
@@ -78,7 +79,6 @@ class MediaSpy : public QMainWindow {
     myQSortFilterProxyModel* mediaListProxyModel_;
     QLabel* statusLabel_;
     QString errorMessage_;
-    QAction* editMediaAct_;
 
 
     // Operations
@@ -122,7 +122,6 @@ private slots:
     void displayMessage(const QString = 0);
     void finishedUpdateThread();
     void selectedMovie(QModelIndex, QModelIndex);
-    void showListContextMenu(const QPoint&);
 
 };
 

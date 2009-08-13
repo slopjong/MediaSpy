@@ -18,31 +18,31 @@
  */
 
 
-#ifndef MYSORTFILTERPROXYMODEL_H
-#define MYSORTFILTERPROXYMODEL_H
+#ifndef MYQLISTVIEW_H
+#define MYQLISTVIEW_H
 
-#include <QSortFilterProxyModel>
+#include <QListView>
+#include <QAction>
+#include <QMenu>
 
-#include "../databasemanager.h"
 
-
-class myQSortFilterProxyModel : public QSortFilterProxyModel {
+class myQListView : public QListView {
     Q_OBJECT;
 
     // Fields
-    int myIndexChanged_;
+    QAction* editMediaAct_;
+
 
 public:
     // Constructors
-    explicit myQSortFilterProxyModel(QObject *parent = 0);
-    virtual ~myQSortFilterProxyModel();
+    explicit myQListView(QWidget *parent = 0);
+    virtual ~myQListView();
 
-    // Operations
-    bool filterAcceptsRow(int, const QModelIndex&) const;
 
-    // Accessor Methods
-    void setIndexChanged(int);
+private slots:
+    void showListContextMenu(const QPoint&);
+    void editMedia();
 
 };
 
-#endif // MYSORTFILTERPROXYMODEL_H
+#endif // MYQLISTVIEW_H

@@ -27,7 +27,7 @@
 #include "../databasemanager.h"
 
 
-class mySortFilterProxyModel : public QSortFilterProxyModel {
+class myQSortFilterProxyModel : public QSortFilterProxyModel {
     Q_OBJECT;
 
     // Fields
@@ -35,8 +35,8 @@ class mySortFilterProxyModel : public QSortFilterProxyModel {
 
 public:
     // Constructors
-    explicit mySortFilterProxyModel(QObject *parent = 0);
-    virtual ~mySortFilterProxyModel();
+    explicit myQSortFilterProxyModel(QObject *parent = 0);
+    virtual ~myQSortFilterProxyModel();
 
     // Operations
     bool filterAcceptsRow(int, const QModelIndex&) const;

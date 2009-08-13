@@ -28,7 +28,7 @@ SOURCES += src/main.cpp \
     src/qtElements/myqsqltablemodel.cpp \
     src/qtElements/networkchecker.cpp \
     src/qtElements/myqwebview.cpp \
-    src/qtElements/mysortfilterproxymodel.cpp
+    src/qtElements/myqsortfilterproxymodel.cpp
 HEADERS += src/mediaspy.h \
     src/collection.h \
     src/collectiondialog.h \
@@ -46,7 +46,7 @@ HEADERS += src/mediaspy.h \
     src/qtElements/myqsqltablemodel.h \
     src/qtElements/networkchecker.h \
     src/qtElements/myqwebview.h \
-    src/qtElements/mysortfilterproxymodel.h
+    src/qtElements/myqsortfilterproxymodel.h
 FORMS += src/ui/mediaspy.ui \
     src/ui/collectiondialog.ui
 RESOURCES += src/resources/MediaSpy.qrc

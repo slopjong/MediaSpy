@@ -26,18 +26,18 @@
 /////////////////////////////
 // constructors/destructor //
 /////////////////////////////
-MyQSqlTableModel::MyQSqlTableModel(QObject *parent)
+myQSqlTableModel::myQSqlTableModel(QObject *parent)
         : QSqlTableModel(parent)
         , etatList_()
 {}
 
-MyQSqlTableModel::~MyQSqlTableModel() {}
+myQSqlTableModel::~myQSqlTableModel() {}
 
 
 /////////////
 // methods //
 /////////////
-QVariant MyQSqlTableModel::data( const QModelIndex& index, int role) const {
+QVariant myQSqlTableModel::data( const QModelIndex& index, int role) const {
     if ( index.isValid() && role == Qt::BackgroundRole) {
         const int indexRow = index.row();
 
@@ -52,7 +52,7 @@ QVariant MyQSqlTableModel::data( const QModelIndex& index, int role) const {
 }
 
 
-void MyQSqlTableModel::setKeyTocheck( bool ok, const QString& fileName ) {
+void myQSqlTableModel::setKeyTocheck( bool ok, const QString& fileName ) {
     QFileInfo fileInfo = QFileInfo(fileName);
     QString keyToCheck = fileInfo.completeBaseName();
 
@@ -69,7 +69,7 @@ void MyQSqlTableModel::setKeyTocheck( bool ok, const QString& fileName ) {
 }
 
 
-void MyQSqlTableModel::setList() {
+void myQSqlTableModel::setList() {
     for(int row = 0; row < this->rowCount(); ++row)
         etatList_.insert(row, 0);
 }

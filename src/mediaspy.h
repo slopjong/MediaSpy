@@ -36,7 +36,7 @@
 #include "media/mediacollection.h"
 #include "qtElements/myqlineedit.h"
 #include "qtElements/myqsqltablemodel.h"
-#include "qtElements/mysortfilterproxymodel.h"
+#include "qtElements/myqsortfilterproxymodel.h"
 
 
 /** \var appDirectory
@@ -74,8 +74,8 @@ class MediaSpy : public QMainWindow {
     // Fields
     Ui::MediaSpy* ui_;
     UpdateThread* updateThread_;
-    MyQSqlTableModel* sqlTableModel_;
-    mySortFilterProxyModel* mediaListProxyModel_;
+    myQSqlTableModel* sqlTableModel_;
+    myQSortFilterProxyModel* mediaListProxyModel_;
     QLabel* statusLabel_;
     QString errorMessage_;
 

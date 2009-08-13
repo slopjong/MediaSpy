@@ -18,25 +18,25 @@
  */
 
 
-#include "mysortfilterproxymodel.h"
+#include "myqsortfilterproxymodel.h"
 
 
 /////////////////////////////
 // constructors/destructor //
 /////////////////////////////
-mySortFilterProxyModel::mySortFilterProxyModel(QObject *parent)
+myQSortFilterProxyModel::myQSortFilterProxyModel(QObject *parent)
         : QSortFilterProxyModel(parent)
         , myIndexChanged_(0)
 {}
 
-mySortFilterProxyModel::~mySortFilterProxyModel() {}
+myQSortFilterProxyModel::~myQSortFilterProxyModel() {}
 
 
 
 /////////////
 // methods //
 /////////////
-bool mySortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const {
+bool myQSortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const {
     QModelIndex index0 = sourceModel()->index(sourceRow, 0, sourceParent);
     QString itemValue = sourceModel()->data(index0).toString();
 
@@ -58,7 +58,7 @@ bool mySortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &
 //////////////////////
 // accessor methods //
 //////////////////////
-void mySortFilterProxyModel::setIndexChanged(int index) {
+void myQSortFilterProxyModel::setIndexChanged(int index) {
     Q_ASSERT(index==0 || index==1 || index==2);
 
     myIndexChanged_ = index;

@@ -27,14 +27,14 @@
 #include <QSqlTableModel>
 
 
-class MyQSqlTableModel : public QSqlTableModel {
+class myQSqlTableModel : public QSqlTableModel {
     Q_OBJECT;
 
     QList<int> etatList_;
 
 public:
-    explicit MyQSqlTableModel(QObject *parent = 0);
-    virtual ~MyQSqlTableModel();
+    explicit myQSqlTableModel(QObject *parent = 0);
+    virtual ~myQSqlTableModel();
     QVariant data ( const QModelIndex&, int role = Qt::DisplayRole) const;
     void setKeyTocheck( bool, const QString& );
     void setList();

@@ -33,7 +33,7 @@ MediaSpy::MediaSpy(QWidget *parent) :
           QMainWindow(parent)
         , ui_(new Ui::MediaSpy)
         , updateThread_(new UpdateThread(this))
-        , mediaListProxyModel_(new mySortFilterProxyModel(this))
+        , mediaListProxyModel_(new myQSortFilterProxyModel(this))
         , statusLabel_(new QLabel(this))
 {
     Q_CHECK_PTR(ui_);
@@ -204,7 +204,7 @@ void MediaSpy::init() {
     ////////////////////
     // tableView init //
     ////////////////////
-    sqlTableModel_ = new MyQSqlTableModel(this);
+    sqlTableModel_ = new myQSqlTableModel(this);
     sqlTableModel_->setTable("Media");
     sqlTableModel_->removeColumns(0, 2);
     sqlTableModel_->removeColumns(1, 5);

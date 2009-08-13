@@ -70,7 +70,7 @@ void InfoView::kill() {
 QString InfoView::init(QWebSettings* webSettings) {
     webSettings_ = webSettings;
     webSettings_->setUserStyleSheetUrl(QUrl::fromEncoded("qrc:/templates/default.css"));
-    QString initView = QString("<html><body><h1>%1</h1></body></html>").arg(tr("Welcome!"));
+    QString initView = QString("<html><body><h1>%1</h1></body></html>").arg(tr("Welcome in Mediaspy!"));
     return initView;
 }
 

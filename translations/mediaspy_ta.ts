@@ -53,9 +53,13 @@
 <context>
     <name>InfoView</name>
     <message>
-        <location filename="../src/info/infoview.cpp" line="73"/>
         <source>Welcome!</source>
-        <translation>நல்வரவு!</translation>
+        <translation type="obsolete">நல்வரவு!</translation>
+    </message>
+    <message>
+        <location filename="../src/info/infoview.cpp" line="73"/>
+        <source>Welcome in Mediaspy!</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/info/infoview.cpp" line="110"/>
@@ -172,12 +176,11 @@
         <translation>தலைப்பு</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="273"/>
         <source>Title: %1</source>
-        <translation>தலைப்பு: %1</translation>
+        <translation type="obsolete">தலைப்பு: %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mediaspy.cpp" line="320"/>
+        <location filename="../src/mediaspy.cpp" line="319"/>
         <source>%n movie(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -185,12 +188,12 @@
         </translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="330"/>
+        <location filename="../src/mediaspy.cpp" line="329"/>
         <source>About </source>
         <translation>பற்றி</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="332"/>
+        <location filename="../src/mediaspy.cpp" line="331"/>
         <source>&lt;p&gt;MediaSpy is a movie collection cataloging software. Still in heavy development!</source>
         <translation>&lt;p&gt;MediaSpy ஒரு திரைப்பட சேகரிப்பு பட்டியல் தயாரிப்பு மென்பொருள்.தற்போது  பலத்த தயாரிப்பு நிலையில் உள்ளது!</translation>
     </message>
@@ -205,52 +208,54 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="125"/>
         <source>...</source>
-        <translation>...</translation>
+        <translation type="obsolete">...</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="106"/>
         <source>Info</source>
-        <translation>தகவல்</translation>
+        <translation type="obsolete">தகவல்</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="116"/>
+        <location filename="../src/ui/mediaspy.ui" line="120"/>
         <source>about:blank</source>
         <translation>about:blank</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="137"/>
         <source>Title:</source>
-        <translation>தலைப்பு:</translation>
+        <translation type="obsolete">தலைப்பு:</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="157"/>
+        <location filename="../src/ui/mediaspy.ui" line="110"/>
+        <source>Imdb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/mediaspy.ui" line="143"/>
         <source>File</source>
         <translation>கோப்பு</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="163"/>
+        <location filename="../src/ui/mediaspy.ui" line="149"/>
         <source>Help</source>
         <translation>உதவி</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="170"/>
+        <location filename="../src/ui/mediaspy.ui" line="156"/>
         <source>Options</source>
         <translation>தேர்வுகள்</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="190"/>
+        <location filename="../src/ui/mediaspy.ui" line="176"/>
         <source>About MediaSpy</source>
         <translation>MediaSpyயை பற்றி</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="195"/>
+        <location filename="../src/ui/mediaspy.ui" line="181"/>
         <source>About Qt</source>
         <translation>Qtயை பற்றி</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="200"/>
+        <location filename="../src/ui/mediaspy.ui" line="186"/>
         <source>Quit</source>
         <translation>மூடு</translation>
     </message>
@@ -259,7 +264,7 @@
         <translation type="obsolete">Ctrl+Q</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="208"/>
+        <location filename="../src/ui/mediaspy.ui" line="194"/>
         <source>Select directories</source>
         <translation>அடைவுகளை தெரிவு செய்</translation>
     </message>
@@ -268,7 +273,7 @@
         <translation type="obsolete">Ctrl+D</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="216"/>
+        <location filename="../src/ui/mediaspy.ui" line="202"/>
         <source>Rescan collection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -283,6 +288,14 @@
         <location filename="../src/updatethread.cpp" line="45"/>
         <source>Updating...</source>
         <translation>புதுபிச்கப்படுகிறது...</translation>
+    </message>
+</context>
+<context>
+    <name>myQListView</name>
+    <message>
+        <location filename="../src/qtElements/myqlistview.cpp" line="29"/>
+        <source>&amp;Watched</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

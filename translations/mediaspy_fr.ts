@@ -53,9 +53,13 @@
 <context>
     <name>InfoView</name>
     <message>
-        <location filename="../src/info/infoview.cpp" line="73"/>
         <source>Welcome!</source>
-        <translation>Bienvenue !!</translation>
+        <translation type="obsolete">Bienvenue !!</translation>
+    </message>
+    <message>
+        <location filename="../src/info/infoview.cpp" line="73"/>
+        <source>Welcome in Mediaspy!</source>
+        <translation>Bienvenue dans MediaSpy !</translation>
     </message>
     <message>
         <location filename="../src/info/infoview.cpp" line="110"/>
@@ -149,12 +153,11 @@
         <translation>Titre</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="273"/>
         <source>Title: %1</source>
-        <translation>Titre : %1</translation>
+        <translation type="obsolete">Titre : %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mediaspy.cpp" line="320"/>
+        <location filename="../src/mediaspy.cpp" line="319"/>
         <source>%n movie(s)</source>
         <translation>
             <numerusform>%n film</numerusform>
@@ -162,12 +165,12 @@
         </translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="330"/>
+        <location filename="../src/mediaspy.cpp" line="329"/>
         <source>About </source>
         <translation>À propos</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="332"/>
+        <location filename="../src/mediaspy.cpp" line="331"/>
         <source>&lt;p&gt;MediaSpy is a movie collection cataloging software. Still in heavy development!</source>
         <translation>&lt;p&gt;MediaSpy est un logiciel de gestion de catalogue de film, en perpétuel développement !</translation>
     </message>
@@ -182,62 +185,64 @@
         <translation>Tags</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="125"/>
         <source>...</source>
-        <translation>...</translation>
+        <translation type="obsolete">...</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="106"/>
         <source>Info</source>
-        <translation>Info</translation>
+        <translation type="obsolete">Info</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="116"/>
+        <location filename="../src/ui/mediaspy.ui" line="120"/>
         <source>about:blank</source>
         <translation>about:blank</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="137"/>
         <source>Title:</source>
-        <translation>Titre :</translation>
+        <translation type="obsolete">Titre :</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="157"/>
+        <location filename="../src/ui/mediaspy.ui" line="110"/>
+        <source>Imdb</source>
+        <translation>Imdb</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/mediaspy.ui" line="143"/>
         <source>File</source>
         <translation>Fichier</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="163"/>
+        <location filename="../src/ui/mediaspy.ui" line="149"/>
         <source>Help</source>
         <translation>Aide</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="170"/>
+        <location filename="../src/ui/mediaspy.ui" line="156"/>
         <source>Options</source>
         <translation>Options</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="190"/>
+        <location filename="../src/ui/mediaspy.ui" line="176"/>
         <source>About MediaSpy</source>
         <translation>À propos de MediaSpy</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="195"/>
+        <location filename="../src/ui/mediaspy.ui" line="181"/>
         <source>About Qt</source>
         <translation>À propos de Qt</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="200"/>
+        <location filename="../src/ui/mediaspy.ui" line="186"/>
         <source>Quit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="208"/>
+        <location filename="../src/ui/mediaspy.ui" line="194"/>
         <source>Select directories</source>
         <translation>Choisissez des répertoires</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="216"/>
+        <location filename="../src/ui/mediaspy.ui" line="202"/>
         <source>Rescan collection</source>
         <translation>Reconstruire la collection</translation>
     </message>
@@ -248,6 +253,14 @@
         <location filename="../src/updatethread.cpp" line="45"/>
         <source>Updating...</source>
         <translation>Mise à jour...</translation>
+    </message>
+</context>
+<context>
+    <name>myQListView</name>
+    <message>
+        <location filename="../src/qtElements/myqlistview.cpp" line="29"/>
+        <source>&amp;Watched</source>
+        <translation>&amp;Vu</translation>
     </message>
 </context>
 </TS>

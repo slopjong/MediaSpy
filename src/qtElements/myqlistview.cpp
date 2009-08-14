@@ -26,7 +26,7 @@
 /////////////////////////////
 myQListView::myQListView(QWidget *parent)
         : QListView(parent)
-        , editMediaAct_(new QAction(tr("&Edit"), this))
+        , editMediaAct_(new QAction(tr("&Watched"), this))
 {
     // set context menu policy
     this->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -36,6 +36,9 @@ myQListView::myQListView(QWidget *parent)
             this, SLOT(showListContextMenu(const QPoint&)));
     connect(this->editMediaAct_, SIGNAL(triggered()),
             this, SLOT(editMedia()));
+
+    // taking care of actions
+    editMediaAct_->setCheckable(true);
 }
 
 myQListView::~myQListView() {}
@@ -58,12 +61,15 @@ void myQListView::showListContextMenu(const QPoint& pnt) {
     if (this->indexAt(pnt).isValid()) {
         actions.append(this->editMediaAct_);
     }
-    if (actions.count() > 0)
-        QMenu::exec(actions, this->mapToGlobal(pnt));
+//    if (actions.count() > 0)
+//        QMenu::exec(actions, this->mapToGlobal(pnt));
 }
 
 
-void myQListView::editMedia() {
-    fprintf(stdout, "éditons\n");
+void myQListView::editMedia() { // misses the right position of the click!!
+    if(editMediaAct_->isChecked())
+        fprintf(stdout, "isChecked\n");
+    else
+        fprintf(stdout, "!isChecked\n");
 }
 

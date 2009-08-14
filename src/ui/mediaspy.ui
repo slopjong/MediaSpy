@@ -102,8 +102,12 @@
         <number>0</number>
        </property>
        <widget class="QWidget" name="tabWidgetPage1">
+        <attribute name="icon">
+         <iconset resource="../resources/MediaSpy.qrc">
+          <normaloff>:/icons/imdb.png</normaloff>:/icons/imdb.png</iconset>
+        </attribute>
         <attribute name="title">
-         <string>Info</string>
+         <string>Imdb</string>
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <property name="margin">
@@ -119,24 +123,6 @@
           </widget>
          </item>
         </layout>
-       </widget>
-       <widget class="QWidget" name="tab">
-        <attribute name="title">
-         <string>...</string>
-        </attribute>
-        <widget class="QLabel" name="movieTitleLabel">
-         <property name="geometry">
-          <rect>
-           <x>20</x>
-           <y>10</y>
-           <width>321</width>
-           <height>91</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Title:</string>
-         </property>
-        </widget>
        </widget>
       </widget>
      </widget>

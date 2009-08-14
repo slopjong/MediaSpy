@@ -7,5 +7,6 @@
         <file>icons/defaultCover.png</file>
         <file>icons/close.png</file>
         <file>icons/clear.png</file>
+        <file>icons/imdb.png</file>
     </qresource>
 </RCC>

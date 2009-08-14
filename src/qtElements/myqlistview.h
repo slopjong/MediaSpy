@@ -21,27 +21,29 @@
 #ifndef MYQLISTVIEW_H
 #define MYQLISTVIEW_H
 
+#include <QContextMenuEvent>
 #include <QListView>
 #include <QAction>
 #include <QMenu>
 
+#include "../databasemanager.h"
 
 class myQListView : public QListView {
     Q_OBJECT;
 
     // Fields
-    QAction* editMediaAct_;
+    QModelIndex contextMenuIndex_;
+    QAction* seenMediaAct_;
 
+    void contextMenuEvent(QContextMenuEvent*);
 
 public:
     // Constructors
     explicit myQListView(QWidget *parent = 0);
     virtual ~myQListView();
 
-
 private slots:
-    void showListContextMenu(const QPoint&);
-    void editMedia();
+    void seenMedia(bool);
 
 };
 

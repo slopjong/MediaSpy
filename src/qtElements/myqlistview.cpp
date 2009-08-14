@@ -19,6 +19,7 @@
 
 
 #include "myqlistview.h"
+#include <QDebug>
 
 
 /////////////////////////////
@@ -26,19 +27,12 @@
 /////////////////////////////
 myQListView::myQListView(QWidget *parent)
         : QListView(parent)
-        , editMediaAct_(new QAction(tr("&Watched"), this))
+        , seenMediaAct_(new QAction(tr("Seen"), this))
 {
-    // set context menu policy
-    this->setContextMenuPolicy(Qt::CustomContextMenu);
+    seenMediaAct_->setCheckable(true);
 
     // connections
-    connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
-            this, SLOT(showListContextMenu(const QPoint&)));
-    connect(this->editMediaAct_, SIGNAL(triggered()),
-            this, SLOT(editMedia()));
-
-    // taking care of actions
-    editMediaAct_->setCheckable(true);
+    connect(this->seenMediaAct_, SIGNAL(triggered(bool)), this, SLOT(seenMedia(bool)));
 }
 
 myQListView::~myQListView() {}
@@ -48,28 +42,27 @@ myQListView::~myQListView() {}
 /////////////
 // methods //
 /////////////
+void myQListView::contextMenuEvent(QContextMenuEvent* event) {
+    QMenu *menu = new QMenu(this);
+    contextMenuIndex_ = indexAt(event->pos());
+    if (contextMenuIndex_.isValid()) {
+        QString indexContent = QString(contextMenuIndex_.data().toString());
+        seenMediaAct_->setChecked(DatabaseManager::getInstance()->isMediaSeen(indexContent));
+        menu->addAction(seenMediaAct_);
+    }
 
-
+    menu->exec(QCursor::pos());
+}
 
 
 
 ///////////
 // slots //
 ///////////
-void myQListView::showListContextMenu(const QPoint& pnt) {
-    QList<QAction*> actions;
-    if (this->indexAt(pnt).isValid()) {
-        actions.append(this->editMediaAct_);
-    }
-//    if (actions.count() > 0)
-//        QMenu::exec(actions, this->mapToGlobal(pnt));
-}
-
-
-void myQListView::editMedia() { // misses the right position of the click!!
-    if(editMediaAct_->isChecked())
-        fprintf(stdout, "isChecked\n");
+void myQListView::seenMedia(bool checked) {
+    QString indexContent = QString(contextMenuIndex_.data().toString());
+    if(checked)
+        DatabaseManager::getInstance()->setMediaSeen(indexContent);
     else
-        fprintf(stdout, "!isChecked\n");
+        DatabaseManager::getInstance()->setMediaSeen(indexContent, false);
 }
-

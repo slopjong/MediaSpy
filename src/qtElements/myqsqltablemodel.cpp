@@ -38,7 +38,10 @@ myQSqlTableModel::~myQSqlTableModel() {}
 // methods //
 /////////////
 QVariant myQSqlTableModel::data( const QModelIndex& index, int role) const {
-    if ( index.isValid() && role == Qt::BackgroundRole) {
+    if (!index.isValid())
+        return QVariant();
+
+    if (role == Qt::BackgroundRole) {
         const int indexRow = index.row();
 
         if(etatList_[indexRow] == 1)
@@ -48,6 +51,7 @@ QVariant myQSqlTableModel::data( const QModelIndex& index, int role) const {
         else
             return QBrush( Qt::transparent );
     }
+
     return QSqlTableModel::data( index, role );
 }
 

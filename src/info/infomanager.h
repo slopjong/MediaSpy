@@ -31,6 +31,7 @@
 #include "imdbthread.h"
 #include "../databasemanager.h"
 #include "../media/moviemedia.h"
+#include "../media/mediacollection.h"
 #include "../qtElements/networkchecker.h"
 #include "../../build/ui/ui_mediaspy.h"
 
@@ -50,11 +51,12 @@ class InfoManager : public QObject {
     NetworkChecker* checker_;
     bool isConnected_;
     QWebSettings* imdbSettings_;
-    QWebSettings* statSettings_;
+    QWebSettings* statsSettings_;
 
     // Operations
-    QString header();
-    QString footer();
+    inline QString htmlHeader();
+    inline QString htmlFooter();
+    QString getStats();
 
 
 public:
@@ -66,6 +68,7 @@ public:
     QString noImdbInfo();
     QString getImdbInfo(QString&);
     ImdbThread* getImdbThread() const;
+    void updateStats();
 
 
 public slots:

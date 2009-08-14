@@ -286,6 +286,19 @@ void DatabaseManager::setMediaSeen(const QString& baseName, bool checked) {
 }
 
 
+/** \fn DatabaseManager::getNMediaSeen()
+  * \brief Sets
+  */
+int DatabaseManager::getNMediaSeen() {
+    QSqlQuery q;
+    if (!q.exec("SELECT COUNT(*) FROM Media WHERE seen = 'true'"))
+        throw(q.lastError()); // TODO handle this!
+
+    q.next();
+    return q.value(0).toInt();
+}
+
+
 /** \fn DatabaseManager::insertMedias(const QList<Media>& mediaList)
   * \brief Inserts the medias from the list \var mediaList into the Media table.
   */

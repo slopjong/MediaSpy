@@ -77,10 +77,10 @@ void InfoManager::kill() {
 
 void InfoManager::init() {
     // init the stats page
-    statSettings_ = ui_->statsWebView->settings();
-    statSettings_->setUserStyleSheetUrl(QUrl::fromEncoded("qrc:/templates/default.css"));
-    QString statView = QString("<html><body><h1>%1</h1></body></html>").arg(tr("Your collection"));
-    ui_->statsWebView->setHtml(statView);
+    statsSettings_ = ui_->statsWebView->settings();
+    statsSettings_->setUserStyleSheetUrl(QUrl::fromEncoded("qrc:/templates/default.css"));
+    QString statsView = QString("<html><body><h1>%1</h1></body></html>").arg(tr("Your collection"));
+    ui_->statsWebView->setHtml(statsView);
 
     // init the imdb page
     imdbSettings_ = ui_->imdbWebView->settings();
@@ -100,20 +100,28 @@ void InfoManager::updateMediaCollectionInfo() {
 //    }
 //    else
 //        fprintf(stdout, "[ERROR] Not connected\n");
+    updateStats();
 }
 
 
+QString InfoManager::getStats() {
+    QString view;
+    int nMediaSeen  = DatabaseManager::getInstance()->getNMediaSeen();
+    int nMedia      = MediaCollection::getInstance()->getNMedia();
 
+    // seen/unseen
+    view += tr("You've seen %1 media(s) on a total of %2").arg(nMediaSeen).arg(nMedia);
+    view += "<div style=\"float:right; width:300px; height:20px; background-color:#e8b2b2;\">";
+    view += "<div style=\"width:97%; height:20px; background-color:#c43e3e; border-right:1px white solid;\"></div>";
+    view += "<div style=\"margin-top:-20px; color:white; padding-left:4px;\"><b>Memory Use</b></div>";
+    view += "<div style=\"text-align:right; margin-top:-20px; color:white; padding-right:4px;\">97%</div>";
+    view += "</div>";
 
-QString InfoManager::header() {
-    QString headerOut = "<html><body>";
-    return headerOut;
+    return htmlHeader() + QString("<h1>%1</h1>").arg(tr("Your collection")) + view + htmlFooter();
 }
 
-
-QString InfoManager::footer() {
-    QString footerOut = "</body></html>";
-    return footerOut;
+void InfoManager::updateStats() {
+    ui_->statsWebView->setHtml(getStats());
 }
 
 
@@ -158,13 +166,28 @@ QString InfoManager::getImdbInfo(QString& mediaName) {
         view        += QString("<p><span class=\"key\">%1</span> %2/10</p>").arg(tr("Rating:")).arg(m->getRating());
 
     delete m;
-    return header() + view + footer();
+    return htmlHeader() + view + htmlFooter();
 }
 
 
 QString InfoManager::noImdbInfo() {
     QString view = QString("<h1>%1 :-(</h1>").arg(tr("No imdb info available!"));
-    return header() + view + footer();
+    return htmlHeader() + view + htmlFooter();
+}
+
+
+
+
+
+QString InfoManager::htmlHeader() {
+    QString headerOut = "<html><body>";
+    return headerOut;
+}
+
+
+QString InfoManager::htmlFooter() {
+    QString footerOut = "</body></html>";
+    return footerOut;
 }
 
 

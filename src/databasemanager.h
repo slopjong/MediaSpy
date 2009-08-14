@@ -56,6 +56,7 @@ public:
     bool hasMedia(const QString&);
     bool isMediaSeen(const QString&);
     void setMediaSeen(const QString&, bool checked = true);
+    int getNMediaSeen();
 
     QStringList queryMediaNames();
     QSqlQuery queryMedias(QSqlQuery&);

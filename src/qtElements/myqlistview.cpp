@@ -65,4 +65,7 @@ void myQListView::seenMedia(bool checked) {
         DatabaseManager::getInstance()->setMediaSeen(indexContent);
     else
         DatabaseManager::getInstance()->setMediaSeen(indexContent, false);
+
+    emit updateMedia();
 }
+

@@ -142,6 +142,9 @@ void MediaSpy::makeConnections() {
     // for ui
     connect(ui_->mediaListView->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)),
             this, SLOT(selectedMovie(QModelIndex, QModelIndex)));
+    connect(ui_->mediaListView, SIGNAL(updateMedia()),
+            mediaListProxyModel_, SLOT(invalidateProxyModel()));
+
 }
 
 

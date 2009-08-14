@@ -43,6 +43,10 @@ public:
     // Accessor Methods
     void setIndexChanged(int);
 
+
+public slots:
+    void invalidateProxyModel();
+
 };
 
 #endif // MYSORTFILTERPROXYMODEL_H

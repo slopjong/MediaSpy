@@ -65,3 +65,12 @@ void myQSortFilterProxyModel::setIndexChanged(int index) {
     invalidateFilter();
 }
 
+
+
+///////////
+// slots //
+///////////
+void myQSortFilterProxyModel::invalidateProxyModel() {
+    invalidateFilter();
+}
+

@@ -1,6 +1,10 @@
 CHANGELOG.txt
 =============
 
+0.6.4
+- context menu to update database about seen movies OK
+
+
 0.6.3
 - specific label for number of movies
 - title and watched/unwatched filters OK

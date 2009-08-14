@@ -37,13 +37,19 @@ class myQListView : public QListView {
 
     void contextMenuEvent(QContextMenuEvent*);
 
+
 public:
     // Constructors
     explicit myQListView(QWidget *parent = 0);
     virtual ~myQListView();
 
+
 private slots:
     void seenMedia(bool);
+
+
+signals:
+    void updateMedia();
 
 };
 

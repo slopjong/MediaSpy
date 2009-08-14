@@ -147,22 +147,22 @@
         <translation>பிழை</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="158"/>
+        <location filename="../src/mediaspy.cpp" line="161"/>
         <source>Cannot create local directory!</source>
         <translation>உள்ளூர் அடைவை உருவாக்க முடியவில்லை</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="165"/>
+        <location filename="../src/mediaspy.cpp" line="168"/>
         <source>Cannot create local style directory!</source>
         <translation>உள்ளூர் பாணி அடைவை உருவாக்க முடியவில்லை </translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="172"/>
+        <location filename="../src/mediaspy.cpp" line="175"/>
         <source>Cannot create local cover directory!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="188"/>
+        <location filename="../src/mediaspy.cpp" line="191"/>
         <source>This program needs the SQLITE driver.</source>
         <translation>இந்த  மென்பொருள் இயங்க  SQLITE இயக்கி தேவை</translation>
     </message>
@@ -180,7 +180,7 @@
         <translation type="obsolete">தலைப்பு: %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mediaspy.cpp" line="319"/>
+        <location filename="../src/mediaspy.cpp" line="321"/>
         <source>%n movie(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -188,12 +188,12 @@
         </translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="329"/>
+        <location filename="../src/mediaspy.cpp" line="331"/>
         <source>About </source>
         <translation>பற்றி</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="331"/>
+        <location filename="../src/mediaspy.cpp" line="333"/>
         <source>&lt;p&gt;MediaSpy is a movie collection cataloging software. Still in heavy development!</source>
         <translation>&lt;p&gt;MediaSpy ஒரு திரைப்பட சேகரிப்பு பட்டியல் தயாரிப்பு மென்பொருள்.தற்போது  பலத்த தயாரிப்பு நிலையில் உள்ளது!</translation>
     </message>
@@ -293,9 +293,9 @@
 <context>
     <name>myQListView</name>
     <message>
-        <location filename="../src/qtElements/myqlistview.cpp" line="29"/>
-        <source>&amp;Watched</source>
-        <translation type="unfinished"></translation>
+        <location filename="../src/qtElements/myqlistview.cpp" line="30"/>
+        <source>Seen</source>
+        <translation type="unfinished">பார்க்கப்பட்டது</translation>
     </message>
 </context>
 </TS>

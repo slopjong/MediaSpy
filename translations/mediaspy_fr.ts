@@ -128,22 +128,22 @@
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="158"/>
+        <location filename="../src/mediaspy.cpp" line="161"/>
         <source>Cannot create local directory!</source>
         <translation>Création du répertoire local impossible !</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="165"/>
+        <location filename="../src/mediaspy.cpp" line="168"/>
         <source>Cannot create local style directory!</source>
         <translation>Création du répertoire de style local impossible !</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="172"/>
+        <location filename="../src/mediaspy.cpp" line="175"/>
         <source>Cannot create local cover directory!</source>
         <translation>Création du répertoire de couvertures locales impossible !</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="188"/>
+        <location filename="../src/mediaspy.cpp" line="191"/>
         <source>This program needs the SQLITE driver.</source>
         <translation>Ce programme nécessite le driver SQLITE.</translation>
     </message>
@@ -157,7 +157,7 @@
         <translation type="obsolete">Titre : %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mediaspy.cpp" line="319"/>
+        <location filename="../src/mediaspy.cpp" line="321"/>
         <source>%n movie(s)</source>
         <translation>
             <numerusform>%n film</numerusform>
@@ -165,12 +165,12 @@
         </translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="329"/>
+        <location filename="../src/mediaspy.cpp" line="331"/>
         <source>About </source>
         <translation>À propos</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="331"/>
+        <location filename="../src/mediaspy.cpp" line="333"/>
         <source>&lt;p&gt;MediaSpy is a movie collection cataloging software. Still in heavy development!</source>
         <translation>&lt;p&gt;MediaSpy est un logiciel de gestion de catalogue de film, en perpétuel développement !</translation>
     </message>
@@ -258,9 +258,13 @@
 <context>
     <name>myQListView</name>
     <message>
-        <location filename="../src/qtElements/myqlistview.cpp" line="29"/>
         <source>&amp;Watched</source>
-        <translation>&amp;Vu</translation>
+        <translation type="obsolete">&amp;Vu</translation>
+    </message>
+    <message>
+        <location filename="../src/qtElements/myqlistview.cpp" line="30"/>
+        <source>Seen</source>
+        <translation>Vu</translation>
     </message>
 </context>
 </TS>

@@ -18,7 +18,7 @@
     <normaloff>:/icons/icon.png</normaloff>:/icons/icon.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
      <widget class="QSplitter" name="splitter">
       <property name="orientation">
@@ -101,20 +101,43 @@
        <property name="currentIndex">
         <number>0</number>
        </property>
-       <widget class="QWidget" name="tabWidgetPage1">
+       <widget class="QWidget" name="imdbViewTab">
         <attribute name="icon">
          <iconset resource="../resources/MediaSpy.qrc">
           <normaloff>:/icons/imdb.png</normaloff>:/icons/imdb.png</iconset>
         </attribute>
         <attribute name="title">
-         <string>Imdb</string>
+         <string>imdb</string>
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <property name="margin">
           <number>2</number>
          </property>
          <item>
-          <widget class="myQWebView" name="mediaInfoView">
+          <widget class="myQWebView" name="imdbWebView">
+           <property name="url">
+            <url>
+             <string>about:blank</string>
+            </url>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="statsViewTab">
+        <attribute name="icon">
+         <iconset resource="../resources/MediaSpy.qrc">
+          <normaloff>:/icons/stats.png</normaloff>:/icons/stats.png</iconset>
+        </attribute>
+        <attribute name="title">
+         <string>stats</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="statsWebLayout">
+         <property name="margin">
+          <number>2</number>
+         </property>
+         <item>
+          <widget class="myQWebView" name="statsWebView">
            <property name="url">
             <url>
              <string>about:blank</string>

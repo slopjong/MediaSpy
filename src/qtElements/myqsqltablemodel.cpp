@@ -63,12 +63,8 @@ void myQSqlTableModel::setKeyTocheck( bool ok, const QString& fileName ) {
     for(int row = 0; row < this->rowCount(); ++row) {
         QModelIndex i = this->index(row, 0);
         const QString indexString = i.data().toString();
-        if(keyToCheck == indexString) {
-            if(ok)
-                etatList_[row] = 2;
-            else
-                etatList_[row] = 1;
-        }
+        if(keyToCheck == indexString)
+            etatList_[row] = (ok) ? 2 : 1;
     }
 }
 

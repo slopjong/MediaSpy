@@ -73,7 +73,7 @@ MediaSpy::~MediaSpy() {
     delete updateThread_;
     delete sqlTableModel_;
     delete mediaListProxyModel_;
-    InfoView::getInstance()->kill();
+//    InfoView::getInstance()->kill();
     InfoManager::getInstance()->kill();
     MediaCollection::getInstance()->kill();
     Collection::getInstance()->kill();
@@ -198,11 +198,10 @@ void MediaSpy::init() {
         return;
     }
 
-    ///////////////////
-    // infoview init //
-    ///////////////////
-    QString voidInfoView = InfoView::getInstance()->init(ui_->mediaInfoView->settings());
-    ui_->mediaInfoView->setHtml(voidInfoView);
+    //////////////////////
+    // infomanager init //
+    //////////////////////
+    InfoManager::getInstance(ui_)->init();
 
     ////////////////////
     // tableView init //
@@ -275,10 +274,10 @@ void MediaSpy::selectedMovie(QModelIndex current, QModelIndex previous) {
     QString s = QString(current.data().toString());
     QString mediaName = DatabaseManager::getInstance()->getMediaFullName(s);
     if(DatabaseManager::getInstance()->hasImdbInfo(mediaName))
-        ui_->mediaInfoView->setHtml(InfoView::getInstance()->getImdbInfo(mediaName), QUrl(getCoverDirectory()));
+        ui_->imdbWebView->setHtml(InfoManager::getInstance()->getImdbInfo(mediaName), QUrl(getCoverDirectory()));
     else {
-        QString voidInfoView = InfoView::getInstance()->noImdbInfo();
-        ui_->mediaInfoView->setHtml(voidInfoView);
+        QString noImdbView = InfoManager::getInstance()->noImdbInfo();
+        ui_->imdbWebView->setHtml(noImdbView);
     }
 }
 

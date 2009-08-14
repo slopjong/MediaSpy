@@ -24,33 +24,47 @@
 #include <QtGui>
 #include <QNetworkRequest>
 #include <QTcpSocket>
+#include <QWebSettings>
 
+//#include "infoview.h"
 #include "infoimdb.h"
 #include "imdbthread.h"
 #include "../databasemanager.h"
 #include "../media/moviemedia.h"
 #include "../qtElements/networkchecker.h"
+#include "../../build/ui/ui_mediaspy.h"
 
+//using namespace Ui;
 
 class InfoManager : public QObject {
     Q_OBJECT
 
     // Constructors
-    InfoManager();
+    InfoManager(Ui_MediaSpy* uiParent = 0);
     virtual ~InfoManager();
 
     // Fields
+    Ui_MediaSpy* ui_;
     static InfoManager *singleton_;
     ImdbThread* imdbThread_;
     NetworkChecker* checker_;
     bool isConnected_;
+    QWebSettings* imdbSettings_;
+    QWebSettings* statSettings_;
+
+    // Operations
+    QString header();
+    QString footer();
 
 
 public:
     // Operations
-    static InfoManager *getInstance();
+    static InfoManager *getInstance(Ui_MediaSpy* uiParent = 0);
     static void kill();
+    void init();
     void updateMediaCollectionInfo();
+    QString noImdbInfo();
+    QString getImdbInfo(QString&);
     ImdbThread* getImdbThread() const;
 
 

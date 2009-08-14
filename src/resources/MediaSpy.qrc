@@ -8,5 +8,6 @@
         <file>icons/close.png</file>
         <file>icons/clear.png</file>
         <file>icons/imdb.png</file>
+        <file>icons/stats.png</file>
     </qresource>
 </RCC>

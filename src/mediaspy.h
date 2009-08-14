@@ -31,7 +31,7 @@
 #include "collectiondialog.h"
 #include "collection.h"
 #include "updatethread.h"
-#include "info/infoview.h"
+//#include "info/infoview.h"
 #include "info/infomanager.h"
 #include "media/mediacollection.h"
 #include "qtElements/myqlineedit.h"

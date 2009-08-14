@@ -17,7 +17,6 @@ SOURCES += src/main.cpp \
     src/databasemanager.cpp \
     src/updatethread.cpp \
     src/info/imdbthread.cpp \
-    src/info/infoview.cpp \
     src/info/infomanager.cpp \
     src/info/infoimdb.cpp \
     src/info/infosupplier.cpp \
@@ -36,7 +35,6 @@ HEADERS += src/mediaspy.h \
     src/databasemanager.h \
     src/updatethread.h \
     src/info/imdbthread.h \
-    src/info/infoview.h \
     src/info/infomanager.h \
     src/info/infoimdb.h \
     src/info/infosupplier.h \

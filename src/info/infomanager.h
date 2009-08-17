@@ -63,11 +63,11 @@ public:
     QString noImdbInfo();
     QString getImdbInfo(QString&);
     ImdbThread* getImdbThread() const;
-    void updateStats();
 
 
 public slots:
     void endImdbThread() const;
+    void updateStats();
 
 
 signals:

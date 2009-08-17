@@ -144,6 +144,8 @@ void MediaSpy::makeConnections() {
             this, SLOT(selectedMovie(QModelIndex, QModelIndex)));
     connect(ui_->mediaListView, SIGNAL(updateMedia()),
             mediaListProxyModel_, SLOT(invalidateProxyModel()));
+    connect(ui_->mediaListView, SIGNAL(updateMedia()),
+            InfoManager::getInstance(), SLOT(updateStats()));
 
 }
 

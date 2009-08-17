@@ -49,6 +49,72 @@
         <source>Updating imdb info...</source>
         <translation>Mise à jour des infos imdb...</translation>
     </message>
+    <message>
+        <location filename="../src/info/imdbthread.cpp" line="82"/>
+        <source>[ERROR] Network: are you connected?</source>
+        <translation>[ERREUR] Réseau : êtes-vous connecté ?</translation>
+    </message>
+</context>
+<context>
+    <name>InfoManager</name>
+    <message>
+        <location filename="../src/info/infomanager.cpp" line="79"/>
+        <location filename="../src/info/infomanager.cpp" line="123"/>
+        <source>Your collection</source>
+        <translation>Votre collection</translation>
+    </message>
+    <message>
+        <location filename="../src/info/infomanager.cpp" line="85"/>
+        <source>Welcome in Mediaspy!</source>
+        <translation>Bienvenue dans MediaSpy !</translation>
+    </message>
+    <message>
+        <source>You&apos;ve seen %n media(s) on a total of %2</source>
+        <translation type="obsolete">Vous avez vu %n film sur %2</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/info/infomanager.cpp" line="110"/>
+        <source>You&apos;ve seen %n media(s) on a total of %1</source>
+        <translation>
+            <numerusform>Vous avez vu %n film sur %1</numerusform>
+            <numerusform>Vous avez vu %n films sur %1</numerusform>
+        </translation>
+    </message>
+    <message>
+        <location filename="../src/info/infomanager.cpp" line="154"/>
+        <source>Genre:</source>
+        <translation>Genre :</translation>
+    </message>
+    <message>
+        <location filename="../src/info/infomanager.cpp" line="157"/>
+        <source>Runtime:</source>
+        <translation>Durée :</translation>
+    </message>
+    <message>
+        <location filename="../src/info/infomanager.cpp" line="160"/>
+        <source>With:</source>
+        <translation>Avec :</translation>
+    </message>
+    <message>
+        <location filename="../src/info/infomanager.cpp" line="163"/>
+        <source>Director:</source>
+        <translation>Directeur :</translation>
+    </message>
+    <message>
+        <location filename="../src/info/infomanager.cpp" line="166"/>
+        <source>Country:</source>
+        <translation>Pays :</translation>
+    </message>
+    <message>
+        <location filename="../src/info/infomanager.cpp" line="169"/>
+        <source>Rating:</source>
+        <translation>Note :</translation>
+    </message>
+    <message>
+        <location filename="../src/info/infomanager.cpp" line="177"/>
+        <source>No imdb info available!</source>
+        <translation>Pas de données imdb disponible !</translation>
+    </message>
 </context>
 <context>
     <name>InfoView</name>
@@ -57,44 +123,36 @@
         <translation type="obsolete">Bienvenue !!</translation>
     </message>
     <message>
-        <location filename="../src/info/infoview.cpp" line="73"/>
         <source>Welcome in Mediaspy!</source>
-        <translation>Bienvenue dans MediaSpy !</translation>
+        <translation type="obsolete">Bienvenue dans MediaSpy !</translation>
     </message>
     <message>
-        <location filename="../src/info/infoview.cpp" line="110"/>
         <source>Genre:</source>
-        <translation>Genre :</translation>
+        <translation type="obsolete">Genre :</translation>
     </message>
     <message>
-        <location filename="../src/info/infoview.cpp" line="111"/>
         <source>Runtime:</source>
-        <translation>Durée :</translation>
+        <translation type="obsolete">Durée :</translation>
     </message>
     <message>
-        <location filename="../src/info/infoview.cpp" line="112"/>
         <source>With:</source>
-        <translation>Avec :</translation>
+        <translation type="obsolete">Avec :</translation>
     </message>
     <message>
-        <location filename="../src/info/infoview.cpp" line="113"/>
         <source>Director:</source>
-        <translation>Directeur :</translation>
+        <translation type="obsolete">Directeur :</translation>
     </message>
     <message>
-        <location filename="../src/info/infoview.cpp" line="114"/>
         <source>Country:</source>
-        <translation>Pays :</translation>
+        <translation type="obsolete">Pays :</translation>
     </message>
     <message>
-        <location filename="../src/info/infoview.cpp" line="115"/>
         <source>Rating:</source>
-        <translation>Note :</translation>
+        <translation type="obsolete">Note :</translation>
     </message>
     <message>
-        <location filename="../src/info/infoview.cpp" line="123"/>
         <source>No imdb info available!</source>
-        <translation>Pas de données imdb disponible !</translation>
+        <translation type="obsolete">Pas de données imdb disponible !</translation>
     </message>
 </context>
 <context>
@@ -128,22 +186,22 @@
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="161"/>
+        <location filename="../src/mediaspy.cpp" line="163"/>
         <source>Cannot create local directory!</source>
         <translation>Création du répertoire local impossible !</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="168"/>
+        <location filename="../src/mediaspy.cpp" line="170"/>
         <source>Cannot create local style directory!</source>
         <translation>Création du répertoire de style local impossible !</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="175"/>
+        <location filename="../src/mediaspy.cpp" line="177"/>
         <source>Cannot create local cover directory!</source>
         <translation>Création du répertoire de couvertures locales impossible !</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="191"/>
+        <location filename="../src/mediaspy.cpp" line="193"/>
         <source>This program needs the SQLITE driver.</source>
         <translation>Ce programme nécessite le driver SQLITE.</translation>
     </message>
@@ -157,7 +215,7 @@
         <translation type="obsolete">Titre : %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mediaspy.cpp" line="321"/>
+        <location filename="../src/mediaspy.cpp" line="322"/>
         <source>%n movie(s)</source>
         <translation>
             <numerusform>%n film</numerusform>
@@ -165,12 +223,12 @@
         </translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="331"/>
+        <location filename="../src/mediaspy.cpp" line="332"/>
         <source>About </source>
         <translation>À propos</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="333"/>
+        <location filename="../src/mediaspy.cpp" line="334"/>
         <source>&lt;p&gt;MediaSpy is a movie collection cataloging software. Still in heavy development!</source>
         <translation>&lt;p&gt;MediaSpy est un logiciel de gestion de catalogue de film, en perpétuel développement !</translation>
     </message>
@@ -194,6 +252,7 @@
     </message>
     <message>
         <location filename="../src/ui/mediaspy.ui" line="120"/>
+        <location filename="../src/ui/mediaspy.ui" line="143"/>
         <source>about:blank</source>
         <translation>about:blank</translation>
     </message>
@@ -202,47 +261,56 @@
         <translation type="obsolete">Titre :</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="110"/>
         <source>Imdb</source>
-        <translation>Imdb</translation>
+        <translation type="obsolete">Imdb</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="143"/>
+        <location filename="../src/ui/mediaspy.ui" line="110"/>
+        <source>imdb</source>
+        <translation>imdb</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/mediaspy.ui" line="133"/>
+        <source>stats</source>
+        <translation>stats</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/mediaspy.ui" line="166"/>
         <source>File</source>
         <translation>Fichier</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="149"/>
+        <location filename="../src/ui/mediaspy.ui" line="172"/>
         <source>Help</source>
         <translation>Aide</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="156"/>
+        <location filename="../src/ui/mediaspy.ui" line="179"/>
         <source>Options</source>
         <translation>Options</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="176"/>
+        <location filename="../src/ui/mediaspy.ui" line="199"/>
         <source>About MediaSpy</source>
         <translation>À propos de MediaSpy</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="181"/>
+        <location filename="../src/ui/mediaspy.ui" line="204"/>
         <source>About Qt</source>
         <translation>À propos de Qt</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="186"/>
+        <location filename="../src/ui/mediaspy.ui" line="209"/>
         <source>Quit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="194"/>
+        <location filename="../src/ui/mediaspy.ui" line="217"/>
         <source>Select directories</source>
         <translation>Choisissez des répertoires</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="202"/>
+        <location filename="../src/ui/mediaspy.ui" line="225"/>
         <source>Rescan collection</source>
         <translation>Reconstruire la collection</translation>
     </message>

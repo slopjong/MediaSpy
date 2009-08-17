@@ -100,15 +100,17 @@ void InfoManager::updateMediaCollectionInfo() {
 
 QString InfoManager::getStats() {
     QString view;
+    int pourcent    = 0;
     int nMediaSeen  = DatabaseManager::getInstance()->getNMediaSeen();
     int nMedia      = MediaCollection::getInstance()->getNMedia();
+    if(nMedia>0)
+        pourcent    = (100*nMediaSeen)/nMedia;
 
     // seen/unseen
-    view += tr("You've seen %1 media(s) on a total of %2").arg(nMediaSeen).arg(nMedia);
-    view += "<div style=\"float:right; width:300px; height:20px; background-color:#e8b2b2;\">";
-    view += "<div style=\"width:97%; height:20px; background-color:#c43e3e; border-right:1px white solid;\"></div>";
-    view += "<div style=\"margin-top:-20px; color:white; padding-left:4px;\"><b>Memory Use</b></div>";
-    view += "<div style=\"text-align:right; margin-top:-20px; color:white; padding-right:4px;\">97%</div>";
+    view += tr("You've seen %n media(s) on a total of %1", "", nMediaSeen).arg(nMedia);
+    view += "<div style=\"width:100%; height:18px; background-color:#e8b2b2;\">";
+    view += QString("<div style=\"width:%1%; height:18px; background-color:#adaa4c; border-right:1px white solid;\"></div>").arg(pourcent);
+    view += QString("<div style=\"margin-top:-17px; color:black; text-align:center;\">%1%</div>").arg(pourcent);
     view += "</div>";
 
     return htmlHeader() + QString("<h1>%1</h1>").arg(tr("Your collection")) + view + htmlFooter();

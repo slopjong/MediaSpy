@@ -3,6 +3,8 @@ CHANGELOG.txt
 
 0.6.4
 - context menu to update database about seen movies OK
+- queries stop when the network is not available
+- first version of statistics page, with only global stat
 
 
 0.6.3

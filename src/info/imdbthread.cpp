@@ -47,6 +47,7 @@ void ImdbThread::run() {
 
     infoImdb_ = new InfoImdb(nImdbSearch_);
     connect(infoImdb_, SIGNAL(searchFinished(bool, QString)), this, SLOT(searchReply(bool, QString)));
+    connect(infoImdb_, SIGNAL(replyError()), this, SLOT(threadError()));
 
     foreach(mediaId, mediaIdWithNoInfoList_)
         infoImdb_->searchImdb(mediaId);
@@ -74,5 +75,11 @@ void ImdbThread::searchReply(bool ok, QString reply) {
 void ImdbThread::setInfoList(const QStringList& list) {
     mediaIdWithNoInfoList_ = list;
     nImdbSearch_ = mediaIdWithNoInfoList_.count();
+}
+
+
+void ImdbThread::threadError() {
+    emit messageToStatus(tr("[ERROR] Network: are you connected?"));
+    emit networkError();
 }
 

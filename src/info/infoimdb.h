@@ -69,6 +69,7 @@ private slots:
 
 signals:
     void replyProgress(const int);
+    void replyError();
 
 };
 

@@ -50,6 +50,7 @@ protected:
 
 public slots:
     void searchReply(bool, QString);
+    void threadError();
 
 
 signals:
@@ -58,6 +59,7 @@ signals:
     void searchResult(bool, QString);
     void searchProgress(const int);
     void searchEnd();
+    void networkError();
 
 };
 

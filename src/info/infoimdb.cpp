@@ -124,8 +124,10 @@ void InfoImdb::copyImage(QString& url, const QString localFileName) {
   */
 void InfoImdb::finishReply(QNetworkReply* networkReply) {
 
-    if(!replyOk(networkReply))
+    if(!replyOk(networkReply)) {
+        emit replyError();
         return;
+    }
 
     if(networkReply->url().toString().contains(searchPrefix)) { // this was a searchImdb() request
         // get the movieMedia index from one of the map

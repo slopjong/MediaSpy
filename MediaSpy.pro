@@ -25,7 +25,6 @@ SOURCES += src/main.cpp \
     src/media/moviemedia.cpp \
     src/qtElements/myqlineedit.cpp \
     src/qtElements/myqsqltablemodel.cpp \
-    src/qtElements/networkchecker.cpp \
     src/qtElements/myqwebview.cpp \
     src/qtElements/myqsortfilterproxymodel.cpp \
     src/qtElements/myqlistview.cpp
@@ -43,7 +42,6 @@ HEADERS += src/mediaspy.h \
     src/media/moviemedia.h \
     src/qtElements/myqlineedit.h \
     src/qtElements/myqsqltablemodel.h \
-    src/qtElements/networkchecker.h \
     src/qtElements/myqwebview.h \
     src/qtElements/myqsortfilterproxymodel.h \
     src/qtElements/myqlistview.h

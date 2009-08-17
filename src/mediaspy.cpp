@@ -346,7 +346,6 @@ void MediaSpy::displayMessage(const QString message) {
  */
 void MediaSpy::displayPermanentMessage(const QString message) {
     statusLabel_->setText(message);
-    displayMessage();
 }
 
 

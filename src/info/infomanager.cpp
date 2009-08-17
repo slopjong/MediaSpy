@@ -37,10 +37,8 @@ InfoManager* InfoManager::singleton_ = 00;
 InfoManager::InfoManager(Ui_MediaSpy* uiParent)
         : ui_(uiParent)
         , imdbThread_(new ImdbThread(this))
-        , checker_(new NetworkChecker())
 {
-    connect(checker_, SIGNAL(connexionAvailable(bool)), this, SLOT(checkConnection(bool)));
-    checker_->runConnectionTest();
+    connect(imdbThread_, SIGNAL(networkError()), this, SLOT(endImdbThread()));
 }
 
 /** \fn InfoManager::~InfoManager()
@@ -48,7 +46,6 @@ InfoManager::InfoManager(Ui_MediaSpy* uiParent)
   */
 InfoManager::~InfoManager() {
     delete imdbThread_;
-    delete checker_;
 }
 
 
@@ -91,15 +88,12 @@ void InfoManager::init() {
 
 
 void InfoManager::updateMediaCollectionInfo() {
-//    if(isConnected_){
-        QStringList mediaList = DatabaseManager::getInstance()->queryMediaWithNoImdbInfo();
-        imdbThread_->setInfoList(mediaList);
+    QStringList mediaList = DatabaseManager::getInstance()->queryMediaWithNoImdbInfo();
+    imdbThread_->setInfoList(mediaList);
 
-        if(mediaList.count() > 0)
-            imdbThread_->start();
-//    }
-//    else
-//        fprintf(stdout, "[ERROR] Not connected\n");
+    if(mediaList.count() > 0)
+        imdbThread_->start();
+
     updateStats();
 }
 
@@ -195,11 +189,6 @@ QString InfoManager::htmlFooter() {
 ///////////
 // slots //
 ///////////
-void InfoManager::checkConnection(bool available) {
-    isConnected_ = available;
-}
-
-
 void InfoManager::endImdbThread() const {
     imdbThread_->exit();
 }

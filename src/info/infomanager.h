@@ -26,16 +26,13 @@
 #include <QTcpSocket>
 #include <QWebSettings>
 
-//#include "infoview.h"
 #include "infoimdb.h"
 #include "imdbthread.h"
 #include "../databasemanager.h"
 #include "../media/moviemedia.h"
 #include "../media/mediacollection.h"
-#include "../qtElements/networkchecker.h"
 #include "../../build/ui/ui_mediaspy.h"
 
-//using namespace Ui;
 
 class InfoManager : public QObject {
     Q_OBJECT
@@ -48,8 +45,6 @@ class InfoManager : public QObject {
     Ui_MediaSpy* ui_;
     static InfoManager *singleton_;
     ImdbThread* imdbThread_;
-    NetworkChecker* checker_;
-    bool isConnected_;
     QWebSettings* imdbSettings_;
     QWebSettings* statsSettings_;
 
@@ -73,7 +68,6 @@ public:
 
 public slots:
     void endImdbThread() const;
-    void checkConnection(bool);
 
 
 signals:

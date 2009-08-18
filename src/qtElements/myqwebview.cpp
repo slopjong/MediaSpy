@@ -28,7 +28,7 @@
   * \brief Constructor.
   */
 myQWebView::myQWebView(QWidget *parent) : QWebView(parent) {
-    setContextMenuPolicy(Qt::NoContextMenu);
+//    setContextMenuPolicy(Qt::NoContextMenu);
 }
 
 myQWebView::~myQWebView() {}

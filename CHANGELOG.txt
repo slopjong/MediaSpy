@@ -1,6 +1,11 @@
 CHANGELOG.txt
 =============
 
+0.6.5
+- clean the empty program state
+- translation updates
+
+
 0.6.4
 - context menu to update database about seen movies OK
 - queries stop when the network is not available

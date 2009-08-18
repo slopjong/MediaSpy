@@ -68,6 +68,9 @@
           <property name="alternatingRowColors">
            <bool>true</bool>
           </property>
+          <property name="selectionMode">
+           <enum>QAbstractItemView::ExtendedSelection</enum>
+          </property>
          </widget>
         </item>
         <item>
@@ -99,7 +102,7 @@
       </widget>
       <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="imdbViewTab">
         <attribute name="icon">
@@ -115,6 +118,9 @@
          </property>
          <item>
           <widget class="myQWebView" name="imdbWebView">
+           <property name="contextMenuPolicy">
+            <enum>Qt::NoContextMenu</enum>
+           </property>
            <property name="url">
             <url>
              <string>about:blank</string>
@@ -138,6 +144,9 @@
          </property>
          <item>
           <widget class="myQWebView" name="statsWebView">
+           <property name="contextMenuPolicy">
+            <enum>Qt::NoContextMenu</enum>
+           </property>
            <property name="url">
             <url>
              <string>about:blank</string>

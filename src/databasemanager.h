@@ -55,7 +55,7 @@ public:
     void removeMedias(const QStringList&);
     bool hasMedia(const QString&);
     bool isMediaSeen(const QString&);
-    void setMediaSeen(const QString&, bool checked = true);
+    void setMediaSeen(const QStringList&, bool checked = true);
     int getNMediaSeen();
 
     QStringList queryMediaNames();

@@ -23,8 +23,9 @@
 
 #include <QContextMenuEvent>
 #include <QListView>
-#include <QAction>
+#include <QWidgetAction>
 #include <QMenu>
+#include <QCheckBox>
 
 #include "../databasemanager.h"
 
@@ -33,7 +34,9 @@ class myQListView : public QListView {
 
     // Fields
     QModelIndex contextMenuIndex_;
-    QAction* seenMediaAct_;
+    QCheckBox* checkBox_;
+    QWidgetAction* seenMediaAct_;
+    QMenu* menu_;
 
     void contextMenuEvent(QContextMenuEvent*);
 

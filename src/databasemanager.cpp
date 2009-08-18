@@ -280,13 +280,19 @@ bool DatabaseManager::isMediaSeen(const QString& baseName) {
 /** \fn DatabaseManager::setMediaSeen(const QString& baseName, bool checked)
   * \brief Sets
   */
-void DatabaseManager::setMediaSeen(const QString& baseName, bool checked) {
+void DatabaseManager::setMediaSeen(const QStringList& baseNameList, bool checked) {
+    QSqlDatabase::database().transaction();
     QSqlQuery q;
     q.prepare("UPDATE Media SET seen = ? WHERE baseName = ?");
-    q.bindValue(0, checked);
-    q.bindValue(1, baseName);
-    if (!q.exec())
-        throw(q.lastError()); // TODO handle this!
+
+    QString baseName;
+    foreach(baseName, baseNameList) {
+        q.bindValue(0, checked);
+        q.bindValue(1, baseName);
+        if (!q.exec())
+            throw(q.lastError()); // TODO handle this!
+    }
+    QSqlDatabase::database().commit();
 }
 
 

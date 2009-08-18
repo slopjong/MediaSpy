@@ -145,7 +145,7 @@ QString InfoManager::getImdbInfo(QString& mediaName) {
         view        += QString("<p class=\"plot\">%1</p>").arg(m->getPlot());
 
     if(!m->getGenre().isEmpty())
-        view        += QString("<hr /><p><span class=\"key\">%1</span> %2</p>").arg(tr("Genre:")).arg(m->getGenre());
+        view        += QString("<p><span class=\"key\">%1</span> %2</p>").arg(tr("Genre:")).arg(m->getGenre());
 
     if(m->getRuntime()>0)
         view        += QString("<p><span class=\"key\">%1</span> %2</p>").arg(tr("Runtime:")).arg(m->getRuntime());
@@ -161,6 +161,8 @@ QString InfoManager::getImdbInfo(QString& mediaName) {
 
     if(m->getRating()>0)
         view        += QString("<p><span class=\"key\">%1</span> %2/10</p>").arg(tr("Rating:")).arg(m->getRating());
+
+    view += "<hr />";
 
     delete m;
     return htmlHeader() + view + htmlFooter();

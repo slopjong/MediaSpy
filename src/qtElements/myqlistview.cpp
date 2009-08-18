@@ -27,12 +27,16 @@
 /////////////////////////////
 myQListView::myQListView(QWidget *parent)
         : QListView(parent)
-        , seenMediaAct_(new QAction(tr("Seen"), this))
+        , checkBox_(new QCheckBox(this))
+        , seenMediaAct_(new QWidgetAction(this))
+        , menu_(new QMenu(this))
+
 {
-    seenMediaAct_->setCheckable(true);
+    seenMediaAct_->setDefaultWidget(checkBox_);
+    checkBox_->setText(tr("Seen"));
 
     // connections
-    connect(this->seenMediaAct_, SIGNAL(triggered(bool)), this, SLOT(seenMedia(bool)));
+    connect(this->checkBox_, SIGNAL( clicked(bool)), this, SLOT(seenMedia(bool)));
 }
 
 myQListView::~myQListView() {}
@@ -43,13 +47,29 @@ myQListView::~myQListView() {}
 // methods //
 /////////////
 void myQListView::contextMenuEvent(QContextMenuEvent* event) {
-    QMenu *menu = new QMenu(this);
+    QItemSelectionModel* selectionModel = this->selectionModel();
+    QModelIndexList indexList = selectionModel->selectedIndexes();
+    Qt::CheckState state = Qt::Unchecked;
+    bool storedBool;
+    bool changeBool = false;
+    for (int i = 0; i < indexList.size(); ++i)
+        if (indexList.at(i).isValid()) {
+            QString indexContent = QString(indexList.at(i).data().toString());
+            bool b = DatabaseManager::getInstance()->isMediaSeen(indexContent);
+            if(i==0 || changeBool==true)
+                storedBool = b;
+            else
+                changeBool = (b==storedBool) ? false : true;
+        }
+    state = (changeBool==true) ? Qt::PartiallyChecked : ((storedBool) ? Qt::Checked : Qt::Unchecked);
+    checkBox_->setCheckState(state);
+
     contextMenuIndex_ = indexAt(event->pos());
     if (contextMenuIndex_.isValid()) {
         QString indexContent = QString(contextMenuIndex_.data().toString());
         seenMediaAct_->setChecked(DatabaseManager::getInstance()->isMediaSeen(indexContent));
-        menu->addAction(seenMediaAct_);
-        menu->exec(QCursor::pos());
+        menu_->addAction(seenMediaAct_);
+        menu_->exec(QCursor::pos());
     }
 }
 
@@ -59,12 +79,18 @@ void myQListView::contextMenuEvent(QContextMenuEvent* event) {
 // slots //
 ///////////
 void myQListView::seenMedia(bool checked) {
-    QString indexContent = QString(contextMenuIndex_.data().toString());
+    QItemSelectionModel* selectionModel = this->selectionModel();
+    QModelIndexList indexList = selectionModel->selectedIndexes();
+    QStringList nameList;
+    for (int i = 0; i < indexList.size(); ++i)
+        if (indexList.at(i).isValid())
+            nameList << QString(indexList.at(i).data().toString());
     if(checked)
-        DatabaseManager::getInstance()->setMediaSeen(indexContent);
+        DatabaseManager::getInstance()->setMediaSeen(nameList);
     else
-        DatabaseManager::getInstance()->setMediaSeen(indexContent, false);
+        DatabaseManager::getInstance()->setMediaSeen(nameList, false);
 
     emit updateMedia();
+    menu_->setVisible(false);
 }
 

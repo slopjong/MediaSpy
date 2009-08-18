@@ -42,9 +42,11 @@ UpdateThread::~UpdateThread() {
 // methods //
 /////////////
 void UpdateThread::run() {
-    emit messageToStatus(QString(tr("Updating...")));
     QStringList mediaList = Collection::getInstance()->buildFileList();
-    MediaCollection::getInstance()->updateMediaCollection(mediaList);
+    if(mediaList.count()>0) {
+        emit messageToStatus(QString(tr("Updating...")));
+        MediaCollection::getInstance()->updateMediaCollection(mediaList);
+    }
 }
 
 

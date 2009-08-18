@@ -45,6 +45,8 @@ MediaSpy::MediaSpy(QWidget *parent) :
     // view settings
     ui_->setupUi(this);
     ui_->progressBar->setMinimum(0);
+    ui_->progressBar->setVisible(false);
+    ui_->progressButton->setVisible(false);
     ui_->splitter->setSizes(QList<int>() << ui_->centralWidget->size().width()/2 << ui_->centralWidget->size().width()/2);
     ui_->filterLineEdit->setFocus(Qt::MouseFocusReason);
     ui_->statusBar->addPermanentWidget(statusLabel_);
@@ -73,7 +75,6 @@ MediaSpy::~MediaSpy() {
     delete updateThread_;
     delete sqlTableModel_;
     delete mediaListProxyModel_;
-//    InfoView::getInstance()->kill();
     InfoManager::getInstance()->kill();
     MediaCollection::getInstance()->kill();
     Collection::getInstance()->kill();
@@ -140,8 +141,8 @@ void MediaSpy::makeConnections() {
             this, SLOT(setProgressbarOff()));
 
     // for ui
-    connect(ui_->mediaListView->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)),
-            this, SLOT(selectedMovie(QModelIndex, QModelIndex)));
+//    connect(ui_->mediaListView->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)),
+//            this, SLOT(selectedMovie(QModelIndex, QModelIndex)));
     connect(ui_->mediaListView, SIGNAL(updateMedia()),
             mediaListProxyModel_, SLOT(invalidateProxyModel()));
     connect(ui_->mediaListView, SIGNAL(updateMedia()),

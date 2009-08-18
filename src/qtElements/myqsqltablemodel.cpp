@@ -45,9 +45,9 @@ QVariant myQSqlTableModel::data( const QModelIndex& index, int role) const {
         const int indexRow = index.row();
 
         if(etatList_[indexRow] == 1)
-            return QBrush( QColor(255, 200, 200) );
+            return QBrush( QColor(255, 200, 200) ); // red
         else if(etatList_[indexRow] == 2)
-            return QBrush( QColor(200, 255, 200) );
+            return QBrush( QColor(200, 255, 200) ); // green
         else
             return QBrush( Qt::transparent );
     }

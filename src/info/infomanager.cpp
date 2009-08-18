@@ -73,17 +73,17 @@ void InfoManager::kill() {
 
 
 void InfoManager::init() {
-    // init the stats page
-    statsSettings_ = ui_->statsWebView->settings();
-    statsSettings_->setUserStyleSheetUrl(QUrl::fromEncoded("qrc:/templates/default.css"));
-    QString statsView = QString("<html><body><h1>%1</h1></body></html>").arg(tr("Your collection"));
-    ui_->statsWebView->setHtml(statsView);
-
     // init the imdb page
     imdbSettings_ = ui_->imdbWebView->settings();
     imdbSettings_->setUserStyleSheetUrl(QUrl::fromEncoded("qrc:/templates/default.css"));
     QString imdbView = QString("<html><body><h1>%1</h1></body></html>").arg(tr("Welcome in Mediaspy!"));
     ui_->imdbWebView->setHtml(imdbView);
+
+    // init the stats page
+    statsSettings_ = ui_->statsWebView->settings();
+    statsSettings_->setUserStyleSheetUrl(QUrl::fromEncoded("qrc:/templates/default.css"));
+    QString statsView = QString("<html><body><h1>%1</h1></body></html>").arg(tr("Your collection"));
+    ui_->statsWebView->setHtml(statsView);
 }
 
 
@@ -108,13 +108,14 @@ QString InfoManager::getStats() {
 
     // seen/unseen
     view += tr("You've seen %n media(s) on a total of %1", "", nMediaSeen).arg(nMedia);
-    view += "<div style=\"width:100%; height:18px; background-color:#e8b2b2;\">";
+    view += "<div style=\"width:100%; height:18px; background-color:#ffc8c8;\">";//255, 200, 200
     view += QString("<div style=\"width:%1%; height:18px; background-color:#adaa4c; border-right:1px white solid;\"></div>").arg(pourcent);
     view += QString("<div style=\"margin-top:-17px; color:black; text-align:center;\">%1%</div>").arg(pourcent);
     view += "</div>";
 
     return htmlHeader() + QString("<h1>%1</h1>").arg(tr("Your collection")) + view + htmlFooter();
 }
+
 
 void InfoManager::updateStats() {
     ui_->statsWebView->setHtml(getStats());

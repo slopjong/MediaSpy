@@ -24,8 +24,8 @@
 /** \var static const QStringList dataTables_
   * \brief list of the tables in the database
   */
-static const QStringList dataTables_ =
-        QStringList() << "Collection" << "Media" << "ImdbInfo" << "MovieGenre" << "MusicGenre" << "Tag";
+//static const QStringList dataTables_ =
+//        QStringList() << "Collection" << "Media" << "ImdbInfo" << "MovieGenre" << "MusicGenre" << "Tag" << "Media_Tag";
 
 /** \var DatabaseManager* DatabaseManager::singleton_
   * \brief pointer to the unique instance of DatabaseManager
@@ -88,8 +88,9 @@ QSqlError DatabaseManager::init(const QString &dbFilePath) {
     // we check if tables are already in the db, if not,they are created
     // no table update is possible here!
     if (tables.contains("Collection") && tables.contains("Media") && tables.contains("ImdbInfo")
-            && tables.contains("MovieGenre") && tables.contains("MusicGenre") && tables.contains("Tag"))
-        return QSqlError();
+            && tables.contains("MovieGenre") && tables.contains("MusicGenre") && tables.contains("Tag")
+            && tables.contains("Media_Tag"))
+        return QSqlError(); // TODO handle this!
 
     // in case of proposing different sql backend (mysql, postgresql, etc.), we will have to put this
     // in a backend-independant class
@@ -115,11 +116,14 @@ QSqlError DatabaseManager::init(const QString &dbFilePath) {
     if (!q.exec(QString("create table MusicGenre(id INTEGER PRIMARY KEY AUTOINCREMENT, genre VARCHAR(255))")))
         return q.lastError();
 
-    if (!q.exec(QString("create table Tag(id INTEGER PRIMARY KEY AUTOINCREMENT, mediaId INTEGER, name VARCHAR(255))")))
+    if (!q.exec(QString("create table Tag(id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(255))")))
         return q.lastError();
 
-    if (!q.exec(QString("create table Loans(id INTEGER PRIMARY KEY AUTOINCREMENT, mediaId INTEGER, person VARCHAR(255))")))
+    if (!q.exec(QString("create table Media_Tag(id INTEGER PRIMARY KEY AUTOINCREMENT, mediaId INTEGER, tagId INTEGER)")))
         return q.lastError();
+
+//    if (!q.exec(QString("create table Loans(id INTEGER PRIMARY KEY AUTOINCREMENT, mediaId INTEGER, person VARCHAR(255))")))
+//        return q.lastError();
 
     return QSqlError();
 }

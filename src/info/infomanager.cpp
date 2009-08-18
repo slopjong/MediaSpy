@@ -107,7 +107,7 @@ QString InfoManager::getStats() {
         pourcent    = (100*nMediaSeen)/nMedia;
 
     // seen/unseen
-    view += tr("You've seen %n media(s) on a total of %1", "", nMediaSeen).arg(nMedia);
+    view += tr("You've seen %n media(s) on a total of %1.", "", nMediaSeen).arg(nMedia);
     view += "<div style=\"width:100%; height:18px; background-color:#ffc8c8;\">";//255, 200, 200
     view += QString("<div style=\"width:%1%; height:18px; background-color:#adaa4c; border-right:1px white solid;\"></div>").arg(pourcent);
     view += QString("<div style=\"margin-top:-17px; color:black; text-align:center;\">%1%</div>").arg(pourcent);

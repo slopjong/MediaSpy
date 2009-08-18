@@ -141,8 +141,8 @@ void MediaSpy::makeConnections() {
             this, SLOT(setProgressbarOff()));
 
     // for ui
-//    connect(ui_->mediaListView->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)),
-//            this, SLOT(selectedMovie(QModelIndex, QModelIndex)));
+    connect(ui_->mediaListView->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)),
+            this, SLOT(selectedMovie(QModelIndex, QModelIndex)));
     connect(ui_->mediaListView, SIGNAL(updateMedia()),
             mediaListProxyModel_, SLOT(invalidateProxyModel()));
     connect(ui_->mediaListView, SIGNAL(updateMedia()),
@@ -322,6 +322,7 @@ void MediaSpy::setProgressbarOff() {
     ui_->progressButton->setVisible(false);
     QString message = QString(tr("%n movie(s)", "", MediaCollection::getInstance()->getNMedia()));
     displayPermanentMessage(message);
+    displayMessage();
 }
 
 

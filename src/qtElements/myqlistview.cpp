@@ -49,9 +49,8 @@ void myQListView::contextMenuEvent(QContextMenuEvent* event) {
         QString indexContent = QString(contextMenuIndex_.data().toString());
         seenMediaAct_->setChecked(DatabaseManager::getInstance()->isMediaSeen(indexContent));
         menu->addAction(seenMediaAct_);
+        menu->exec(QCursor::pos());
     }
-
-    menu->exec(QCursor::pos());
 }
 
 

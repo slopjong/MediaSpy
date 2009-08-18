@@ -74,3 +74,14 @@ void myQSqlTableModel::setList() {
         etatList_.insert(row, 0);
 }
 
+
+/*bool myQSqlTableModel::submit() {
+    bool ret=QSqlTableModel::submit();
+    if (ret==false)
+        emit submitRejected (lastError().number (), lastError().text ());
+    return ret;
+}*/
+
+
+
+

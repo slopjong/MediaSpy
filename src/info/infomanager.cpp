@@ -73,11 +73,11 @@ void InfoManager::kill() {
 
 
 void InfoManager::init() {
-    // init the imdb page
-    imdbSettings_ = ui_->imdbWebView->settings();
-    imdbSettings_->setUserStyleSheetUrl(QUrl::fromEncoded("qrc:/templates/default.css"));
-    QString imdbView = QString("<html><body><h1>%1</h1></body></html>").arg(tr("Welcome in Mediaspy!"));
-    ui_->imdbWebView->setHtml(imdbView);
+    // init the info page
+    infoSettings_ = ui_->infoWebView->settings();
+    infoSettings_->setUserStyleSheetUrl(QUrl::fromEncoded("qrc:/templates/default.css"));
+    QString infoView = QString("<html><body><h1>%1</h1></body></html>").arg(tr("Welcome in Mediaspy!"));
+    ui_->infoWebView->setHtml(infoView);
 
     // init the stats page
     statsSettings_ = ui_->statsWebView->settings();
@@ -123,10 +123,32 @@ void InfoManager::updateStats() {
 
 
 // add link to imdb pages (film, actors, director, etc.)
-QString InfoManager::getImdbInfo(QString& mediaName) {
-    MovieMedia* m = new MovieMedia(mediaName);
-    m->getImdbInfoFromDb();
+QString InfoManager::getInfo(QString& mediaName) {
+    MovieMedia* media = new MovieMedia(mediaName);
+    media->getImdbInfoFromDb();
 
+    QString infoPage;
+    infoPage += htmlHeader();
+
+    infoPage += getImdbInfo(media);
+    infoPage += getLocalInfo(media);
+
+    infoPage += htmlFooter();
+    return infoPage;
+}
+
+
+QString InfoManager::getLocalInfo(MovieMedia* media) {
+    QStringList tagList = media->getTagList();
+    QString localInfo = 0;
+    if(tagList.count()>0)
+        localInfo += "<b>" + tr("Your tags: ") + "</b>" + tagList.join(", ");
+    return localInfo;
+}
+
+
+QString InfoManager::getImdbInfo(MovieMedia* media) {
+    MovieMedia* m = media;
     QString view;
 
     QString imageFileName = MediaSpy::getCoverDirectory() + m->getImage();
@@ -165,11 +187,11 @@ QString InfoManager::getImdbInfo(QString& mediaName) {
     view += "<hr />";
 
     delete m;
-    return htmlHeader() + view + htmlFooter();
+    return view;
 }
 
 
-QString InfoManager::noImdbInfo() {
+QString InfoManager::noInfo() {
     QString view = QString("<h1>%1 :-(</h1>").arg(tr("No imdb info available!"));
     return htmlHeader() + view + htmlFooter();
 }

@@ -45,7 +45,7 @@ class InfoManager : public QObject {
     Ui_MediaSpy* ui_;
     static InfoManager *singleton_;
     ImdbThread* imdbThread_;
-    QWebSettings* imdbSettings_;
+    QWebSettings* infoSettings_;
     QWebSettings* statsSettings_;
 
     // Operations
@@ -60,8 +60,12 @@ public:
     static void kill();
     void init();
     void updateMediaCollectionInfo();
-    QString noImdbInfo();
-    QString getImdbInfo(QString&);
+    QString noInfo();
+    QString getInfo(QString&);
+    QString getLocalInfo(MovieMedia* media);
+    QString getImdbInfo(MovieMedia* media);
+
+
     ImdbThread* getImdbThread() const;
 
 

@@ -64,6 +64,7 @@ public:
     QSqlQuery queryImdbInfoWhere(QSqlQuery&, QString&, QString&);
     QStringList queryMediaWithNoImdbInfo();
     QString getMediaFullName(QString&);
+    QStringList getMediaTagList(int);
 
     void insertMovieMedia(MovieMedia);
     bool hasImdbInfo(const QString&);

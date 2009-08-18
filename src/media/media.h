@@ -22,6 +22,7 @@
 #define MEDIA_H
 
 #include <QString>
+#include <QStringList>
 #include <QFileInfo>
 #include <QSqlQuery>
 
@@ -41,6 +42,7 @@ class Media {
     bool        seen_;
     bool        recommended_;
     QString     notes_;
+    QStringList tagList_;
 
 
 public:
@@ -64,6 +66,8 @@ public:
     void setFileName(const QString&);
     QString getNotes() const;
     void setNotes(const QString&);
+    QStringList getTagList() const;
+    void setTagList(const QStringList&);
 
     bool hasImdbInfo() const;
     void setImdbInfo(const bool);

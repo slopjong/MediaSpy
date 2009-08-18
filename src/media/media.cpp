@@ -89,6 +89,8 @@ void Media::getInfoFromMediaName(QString& mediaName) {
         this->setRecommended(q.value(fieldRecommended).toBool());
         this->setNotes(q.value(fieldNotes).toString());
     }
+
+    tagList_ = DatabaseManager::getInstance()->getMediaTagList(this->getId());
 }
 
 
@@ -205,4 +207,14 @@ QString Media::getNotes() const { return notes_; }
  */
 void Media::setNotes(const QString& note) { notes_ = note; }
 
+/** \fn void Media::getTagList() const
+ *  \brief Sets the tag list of the media file.
+ *  \param the new tag list of the media file
+ */
+QStringList Media::getTagList() const {return tagList_;}
 
+/** \fn void Media::setTagList(const QStringList&)
+ *  \brief Sets the tag list of the media file.
+ *  \param the new tag list of the media file
+ */
+void Media::setTagList(const QStringList& tagList) {tagList_ = tagList;}

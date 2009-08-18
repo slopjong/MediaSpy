@@ -4,6 +4,8 @@ CHANGELOG.txt
 0.6.5
 - clean the empty program state
 - translation updates
+- media selection is now multiple
+- tags are displayed in the info area
 
 
 0.6.4

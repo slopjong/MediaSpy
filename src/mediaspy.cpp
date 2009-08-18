@@ -277,10 +277,10 @@ void MediaSpy::selectedMovie(QModelIndex current, QModelIndex previous) {
     QString s = QString(current.data().toString());
     QString mediaName = DatabaseManager::getInstance()->getMediaFullName(s);
     if(DatabaseManager::getInstance()->hasImdbInfo(mediaName))
-        ui_->imdbWebView->setHtml(InfoManager::getInstance()->getImdbInfo(mediaName), QUrl(getCoverDirectory()));
+        ui_->infoWebView->setHtml(InfoManager::getInstance()->getInfo(mediaName), QUrl(getCoverDirectory()));
     else {
-        QString noImdbView = InfoManager::getInstance()->noImdbInfo();
-        ui_->imdbWebView->setHtml(noImdbView);
+        QString noImdbView = InfoManager::getInstance()->noInfo();
+        ui_->infoWebView->setHtml(noImdbView);
     }
 }
 

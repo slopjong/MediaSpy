@@ -125,6 +125,9 @@ QSqlError DatabaseManager::init(const QString &dbFilePath) {
 //    if (!q.exec(QString("create table Loans(id INTEGER PRIMARY KEY AUTOINCREMENT, mediaId INTEGER, person VARCHAR(255))")))
 //        return q.lastError();
 
+//    if (!q.exec(QString("create table Visualisation(id INTEGER PRIMARY KEY AUTOINCREMENT, mediaId INTEGER, date TIMESTAMP)")))
+//        return q.lastError();
+
     return QSqlError();
 }
 
@@ -462,6 +465,22 @@ QString DatabaseManager::getMediaFullName(QString& baseName) {
 
     return fullName;
 }
+
+QStringList DatabaseManager::getMediaTagList(int id) {
+    QSqlQuery q;
+    q.prepare("SELECT name FROM Tag JOIN Media_Tag ON Media_Tag.tagId = Tag.id WHERE Media_Tag.mediaId = ?");
+    q.bindValue(0, id);
+    if (!q.exec())
+        throw(q.lastError()); // TODO handle this!
+
+    QStringList list;
+    while (q.next())
+        list << q.value(0).toString();
+
+    return list;
+}
+
+
 
 
 /*QStringList DatabaseManager::queryImdbInfoJoinMediaId() {

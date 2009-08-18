@@ -68,16 +68,12 @@
         <source>Welcome in Mediaspy!</source>
         <translation>Bienvenue dans MediaSpy !</translation>
     </message>
-    <message>
-        <source>You&apos;ve seen %n media(s) on a total of %2.</source>
-        <translation type="obsolete">Vous avez vu %n film sur %2.</translation>
-    </message>
     <message numerus="yes">
         <location filename="../src/info/infomanager.cpp" line="110"/>
-        <source>You&apos;ve seen %n media(s) on a total of %1</source>
+        <source>You&apos;ve seen %n media(s) on a total of %1.</source>
         <translation>
-            <numerusform>Vous avez vu %n film sur %1</numerusform>
-            <numerusform>Vous avez vu %n films sur %1</numerusform>
+            <numerusform>Vous avez vu %n film sur %1.</numerusform>
+            <numerusform>Vous avez vu %n films sur %1.</numerusform>
         </translation>
     </message>
     <message>

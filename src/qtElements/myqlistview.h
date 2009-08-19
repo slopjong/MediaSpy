@@ -26,6 +26,7 @@
 #include <QWidgetAction>
 #include <QMenu>
 #include <QCheckBox>
+#include <QLineEdit>
 
 #include "../databasemanager.h"
 
@@ -34,11 +35,17 @@ class myQListView : public QListView {
 
     // Fields
     QModelIndex contextMenuIndex_;
-    QCheckBox* checkBox_;
-    QWidgetAction* seenMediaAct_;
     QMenu* menu_;
+    QMenu* addTagMenu_;
+    QCheckBox* checkBox_;
+    QLineEdit* editLine_;
+    QWidgetAction* seenMediaAct_;
+    QWidgetAction* tagLineAct_;
+    QAction* editTagAct_;
 
     void contextMenuEvent(QContextMenuEvent*);
+    void createMenu(QMenu*);
+    void applyTag(QString&);
 
 
 public:
@@ -49,10 +56,13 @@ public:
 
 private slots:
     void seenMedia(bool);
+    void newTag();
+    void tagSlot();
 
 
 signals:
     void updateMedia();
+    void tagApplied(QString&);
 
 };
 

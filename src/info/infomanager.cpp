@@ -117,10 +117,6 @@ QString InfoManager::getStats() {
 }
 
 
-void InfoManager::updateStats() {
-    ui_->statsWebView->setHtml(getStats());
-}
-
 
 // add link to imdb pages (film, actors, director, etc.)
 QString InfoManager::getInfo(QString& mediaName) {
@@ -134,6 +130,8 @@ QString InfoManager::getInfo(QString& mediaName) {
     infoPage += getLocalInfo(media);
 
     infoPage += htmlFooter();
+
+    delete media;
     return infoPage;
 }
 
@@ -148,45 +146,43 @@ QString InfoManager::getLocalInfo(MovieMedia* media) {
 
 
 QString InfoManager::getImdbInfo(MovieMedia* media) {
-    MovieMedia* m = media;
     QString view;
 
-    QString imageFileName = MediaSpy::getCoverDirectory() + m->getImage();
+    QString imageFileName = MediaSpy::getCoverDirectory() + media->getImage();
     QFileInfo file(imageFileName);
     if(file.exists())
-        view        += QString("<img src=\"%1\" />").arg(m->getImage());
+        view        += QString("<img src=\"%1\" />").arg(media->getImage());
     else
         view        += QString("<img src=\"%1\" />").arg(".default.jpg");
 
-    if(m->getYear() < 1800)
-        view        += QString("<h1>%1</h1>").arg(m->getTitle());
+    if(media->getYear() < 1800)
+        view        += QString("<h1>%1</h1>").arg(media->getTitle());
     else
-        view        += QString("<h1>%1 (%2)</h1>").arg(m->getTitle()).arg(m->getYear());
+        view        += QString("<h1>%1 (%2)</h1>").arg(media->getTitle()).arg(media->getYear());
 
-    if(!m->getPlot().isEmpty())
-        view        += QString("<p class=\"plot\">%1</p>").arg(m->getPlot());
+    if(!media->getPlot().isEmpty())
+        view        += QString("<p class=\"plot\">%1</p>").arg(media->getPlot());
 
-    if(!m->getGenre().isEmpty())
-        view        += QString("<p><span class=\"key\">%1</span> %2</p>").arg(tr("Genre:")).arg(m->getGenre());
+    if(!media->getGenre().isEmpty())
+        view        += QString("<p><span class=\"key\">%1</span> %2</p>").arg(tr("Genre:")).arg(media->getGenre());
 
-    if(m->getRuntime()>0)
-        view        += QString("<p><span class=\"key\">%1</span> %2</p>").arg(tr("Runtime:")).arg(m->getRuntime());
+    if(media->getRuntime()>0)
+        view        += QString("<p><span class=\"key\">%1</span> %2</p>").arg(tr("Runtime:")).arg(media->getRuntime());
 
-    if(!m->getCast().isEmpty())
-        view        += QString("<p><span class=\"key\">%1</span> %2</p>").arg(tr("With:")).arg(m->getCast());
+    if(!media->getCast().isEmpty())
+        view        += QString("<p><span class=\"key\">%1</span> %2</p>").arg(tr("With:")).arg(media->getCast());
 
-    if(!m->getDirector().isEmpty())
-        view        += QString("<p><span class=\"key\">%1</span> %2</p>").arg(tr("Director:")).arg(m->getDirector());
+    if(!media->getDirector().isEmpty())
+        view        += QString("<p><span class=\"key\">%1</span> %2</p>").arg(tr("Director:")).arg(media->getDirector());
 
-    if(!m->getCountry().isEmpty())
-        view        += QString("<p><span class=\"key\">%1</span> %2</p>").arg(tr("Country:")).arg(m->getCountry());
+    if(!media->getCountry().isEmpty())
+        view        += QString("<p><span class=\"key\">%1</span> %2</p>").arg(tr("Country:")).arg(media->getCountry());
 
-    if(m->getRating()>0)
-        view        += QString("<p><span class=\"key\">%1</span> %2/10</p>").arg(tr("Rating:")).arg(m->getRating());
+    if(media->getRating()>0)
+        view        += QString("<p><span class=\"key\">%1</span> %2/10</p>").arg(tr("Rating:")).arg(media->getRating());
 
     view += "<hr />";
 
-    delete m;
     return view;
 }
 
@@ -218,6 +214,14 @@ QString InfoManager::htmlFooter() {
 ///////////
 void InfoManager::endImdbThread() const {
     imdbThread_->exit();
+}
+
+void InfoManager::updateStats() {
+    ui_->statsWebView->setHtml(getStats());
+}
+
+void InfoManager::updateInfo(QString& mediaName) {
+    //ui_->infoWebView->setHtml(getInfo(mediaName));
 }
 
 

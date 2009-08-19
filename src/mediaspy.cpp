@@ -36,12 +36,6 @@ MediaSpy::MediaSpy(QWidget *parent) :
         , mediaListProxyModel_(new myQSortFilterProxyModel(this))
         , statusLabel_(new QLabel(this))
 {
-    Q_CHECK_PTR(ui_);
-    Q_CHECK_PTR(statusLabel_);
-    Q_CHECK_PTR(updateThread_);
-    Q_CHECK_PTR(sqlTableModel_);
-    Q_CHECK_PTR(mediaListProxyModel_);
-
     // view settings
     ui_->setupUi(this);
     ui_->progressBar->setMinimum(0);
@@ -71,10 +65,10 @@ MediaSpy::MediaSpy(QWidget *parent) :
   */
 MediaSpy::~MediaSpy() {
     delete ui_;
-    delete statusLabel_;
     delete updateThread_;
     delete sqlTableModel_;
     delete mediaListProxyModel_;
+    delete statusLabel_;
     InfoManager::getInstance()->kill();
     MediaCollection::getInstance()->kill();
     Collection::getInstance()->kill();
@@ -139,6 +133,8 @@ void MediaSpy::makeConnections() {
             this, SLOT(setProgressbarCurrent(const int)));
     connect(InfoManager::getInstance()->getImdbThread(), SIGNAL(finished()),
             this, SLOT(setProgressbarOff()));
+    connect(ui_->mediaListView, SIGNAL(tagApplied(QString&)),
+            InfoManager::getInstance(), SLOT(updateInfo(QString&)));
 
     // for ui
     connect(ui_->mediaListView->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)),

@@ -466,9 +466,10 @@ QString DatabaseManager::getMediaFullName(QString& baseName) {
     return fullName;
 }
 
+
 QStringList DatabaseManager::getMediaTagList(int id) {
     QSqlQuery q;
-    q.prepare("SELECT name FROM Tag JOIN Media_Tag ON Media_Tag.tagId = Tag.id WHERE Media_Tag.mediaId = ?");
+    q.prepare("SELECT DISTINCT name FROM Tag JOIN Media_Tag ON Media_Tag.tagId = Tag.id WHERE Media_Tag.mediaId = ?");
     q.bindValue(0, id);
     if (!q.exec())
         throw(q.lastError()); // TODO handle this!
@@ -481,11 +482,9 @@ QStringList DatabaseManager::getMediaTagList(int id) {
 }
 
 
-
-
-/*QStringList DatabaseManager::queryImdbInfoJoinMediaId() {
+QStringList DatabaseManager::getMediaTagList() {
     QSqlQuery q;
-    if (!q.exec(QString("SELECT * FROM imdbInfo JOIN Media ON imdbInfo.mediaId = Media.id")))
+    if (!q.exec("SELECT name FROM Tag ORDER BY name"))
         throw(q.lastError()); // TODO handle this!
 
     QStringList list;
@@ -493,5 +492,30 @@ QStringList DatabaseManager::getMediaTagList(int id) {
         list << q.value(0).toString();
 
     return list;
-}*/
+}
+
+
+void DatabaseManager::insertTag(QString& tagName) {
+    QSqlQuery q;
+    qWarning() << tagName;
+    q.prepare("INSERT INTO Tag (name) SELECT DISTINCT ? FROM Tag WHERE NOT EXISTS (SELECT name FROM Tag WHERE name = ?)");
+    q.bindValue(0, tagName);
+    q.bindValue(1, tagName);
+    if (!q.exec())
+        throw(q.lastError()); // TODO handle this!
+}
+
+
+void DatabaseManager::addTagToMedia(QString& tagName, QString mediaBaseName) {
+    QSqlQuery q;
+    q.prepare("INSERT INTO Media_Tag (tagId, mediaId) " \
+              "SELECT Tag.id, Media.id FROM Tag, Media WHERE Tag.name = ? AND Media.baseName = ?" \
+              "AND NOT EXISTS (SELECT * FROM Media_Tag WHERE Tag.name = ? AND Media.baseName = ?)");
+    q.bindValue(0, tagName);
+    q.bindValue(1, mediaBaseName);
+    q.bindValue(2, tagName);
+    q.bindValue(3, mediaBaseName);
+    if (!q.exec())
+        throw(q.lastError()); // TODO handle this!
+}
 

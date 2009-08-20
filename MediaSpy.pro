@@ -15,6 +15,7 @@ SOURCES += src/main.cpp \
     src/collection.cpp \
     src/collectiondialog.cpp \
     src/databasemanager.cpp \
+    src/editmediadialog.cpp \
     src/updatethread.cpp \
     src/info/imdbthread.cpp \
     src/info/infomanager.cpp \
@@ -32,6 +33,7 @@ HEADERS += src/mediaspy.h \
     src/collection.h \
     src/collectiondialog.h \
     src/databasemanager.h \
+    src/editmediadialog.h \
     src/updatethread.h \
     src/info/imdbthread.h \
     src/info/infomanager.h \
@@ -46,7 +48,8 @@ HEADERS += src/mediaspy.h \
     src/qtElements/myqsortfilterproxymodel.h \
     src/qtElements/myqlistview.h
 FORMS += src/ui/mediaspy.ui \
-    src/ui/collectiondialog.ui
+    src/ui/collectiondialog.ui \
+    src/ui/editmediadialog.ui
 RESOURCES += src/resources/MediaSpy.qrc
 TRANSLATIONS += translations/mediaspy_fr.ts \
     translations/mediaspy_ta.ts

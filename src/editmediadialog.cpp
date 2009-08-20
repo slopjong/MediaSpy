@@ -28,14 +28,43 @@
   * \brief class constructor
   * \param parent the inherited QWidget object
   */
-EditMediaDialog::EditMediaDialog(QWidget *parent)
+EditMediaDialog::EditMediaDialog(QModelIndexList indexList, QWidget *parent)
         : QDialog(parent)
+        , ui_(new Ui::EditMediaDialog)
+        , indexList_(QModelIndexList(indexList))
 {
-    setupUi(this);
+    ui_->setupUi(this);
+    nMedia_ = indexList_.count();
+    init();
+
+    // connections
 }
 
 /** \fn EditMediaDialog::~EditMediaDialog()
   * \brief class destructor
   */
-EditMediaDialog::~EditMediaDialog() {}
+EditMediaDialog::~EditMediaDialog() {
+    delete ui_;
+}
 
+
+//////////////
+// methods //
+//////////////
+void EditMediaDialog::init() {
+    if(nMedia_>1)
+        this->setWindowTitle(tr("Informations on %1 medias - MediaSpy").arg(nMedia_));
+    else
+        this->setWindowTitle(QString("%1 - MediaSpy").arg(indexList_.at(0).data().toString()));
+}
+
+
+///////////
+// slots //
+///////////
+
+
+
+///////////////
+// accessors //
+///////////////

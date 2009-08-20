@@ -46,6 +46,7 @@ CollectionDialog::CollectionDialog(QWidget *parent) :
 CollectionDialog::~CollectionDialog() {}
 
 
+
 //////////////
 // methods //
 //////////////

@@ -22,15 +22,33 @@
 #define EDITMEDIADIALOG_H
 
 #include <QtGui/QDialog>
+//#include <QModelIndexList>
 
 #include "../build/ui/ui_editmediadialog.h"
 
-class EditMediaDialog : public QDialog, public Ui_EditMediaDialog {
+namespace Ui {
+    class EditMediaDialog;
+}
+
+class EditMediaDialog : public QDialog {
     Q_OBJECT
+
+    // Fields
+    Ui::EditMediaDialog *ui_;
+    int nMedia_;
+    QModelIndexList indexList_;
+
+    // operators
+    void init();
+
 public:
-    EditMediaDialog(QWidget *parent = 0);
-    ~EditMediaDialog();
+    EditMediaDialog(QModelIndexList, QWidget *parent = 0);
+    virtual ~EditMediaDialog();
+
+    // accessors
 
 };
 
 #endif // EDITMEDIADIALOG_H
+
+

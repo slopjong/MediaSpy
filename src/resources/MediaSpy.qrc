@@ -9,5 +9,6 @@
         <file>icons/clear.png</file>
         <file>icons/imdb.png</file>
         <file>icons/stats.png</file>
+        <file>icons/edit.png</file>
     </qresource>
 </RCC>

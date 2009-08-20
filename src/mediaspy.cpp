@@ -56,8 +56,10 @@ MediaSpy::MediaSpy(QWidget *parent) :
     updateThread_->start();
 
     // (light) error management
-    if(!(errorMessage_.isEmpty()))
+    if(!(errorMessage_.isEmpty())) {
+        qWarning() << errorMessage_;
         QMessageBox::critical(this, tr("Error"), errorMessage_);
+    }
 }
 
 /** \fn MediaSpy::~MediaSpy()

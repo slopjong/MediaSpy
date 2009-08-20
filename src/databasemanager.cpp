@@ -98,16 +98,15 @@ QSqlError DatabaseManager::init(const QString &dbFilePath) {
     if (!q.exec(QString("create table Collection(id INTEGER PRIMARY KEY AUTOINCREMENT, directory VARCHAR(255))")))
         return q.lastError();
 
-    if (!q.exec(QString("create table Media(id INTEGER PRIMARY KEY AUTOINCREMENT, \
-            type INTEGER, baseName VARCHAR(255), fileName VARCHAR(255), \
-            imdbInfo BOOLEAN, \
-            loaned BOOLEAN, seen BOOLEAN, recommended BOOLEAN, notes TEXT)")))
+    if (!q.exec(QString("create table Media(id INTEGER PRIMARY KEY AUTOINCREMENT," \
+            "type INTEGER, baseName VARCHAR(255), fileName VARCHAR(255), imdbInfo BOOLEAN," \
+            "loaned BOOLEAN, seen BOOLEAN, recommended BOOLEAN, notes TEXT)")))
         return q.lastError();
 
-    if (!q.exec(QString("create table ImdbInfo(id INTEGER PRIMARY KEY AUTOINCREMENT, \
-            mediaId INTEGER, ImdbId INTEGER, genre VARCHAR(255), year INTEGER, runtime INTEGER, rating DOUBLE, \
-            title VARCHAR(255), director VARCHAR(255), country VARCHAR(255), image VARCHAR(255), \
-            cast TEXT, plot TEXT)")))
+    if (!q.exec(QString("create table ImdbInfo(id INTEGER PRIMARY KEY AUTOINCREMENT," \
+            "mediaId INTEGER, ImdbId INTEGER, genre VARCHAR(255), year INTEGER, runtime INTEGER, rating DOUBLE," \
+            "title VARCHAR(255), director VARCHAR(255), country VARCHAR(255), image VARCHAR(255)," \
+            "cast TEXT, plot TEXT)")))
         return q.lastError();
 
     if (!q.exec(QString("create table MovieGenre(id INTEGER PRIMARY KEY AUTOINCREMENT, genre VARCHAR(255))")))
@@ -116,11 +115,16 @@ QSqlError DatabaseManager::init(const QString &dbFilePath) {
     if (!q.exec(QString("create table MusicGenre(id INTEGER PRIMARY KEY AUTOINCREMENT, genre VARCHAR(255))")))
         return q.lastError();
 
-    if (!q.exec(QString("create table Tag(id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(255))")))
+    if (!q.exec(QString("create table Tag(id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(255), UNIQUE (name))")))
         return q.lastError();
 
-    if (!q.exec(QString("create table Media_Tag(id INTEGER PRIMARY KEY AUTOINCREMENT, mediaId INTEGER, tagId INTEGER)")))
+    if (!q.exec(QString("create table Media_Tag(id INTEGER PRIMARY KEY AUTOINCREMENT, mediaId INTEGER, tagId INTEGER," \
+                        "CONSTRAINT uc_MediaTagId UNIQUE (mediaId, tagId))")))
         return q.lastError();
+
+
+
+
 
 //    if (!q.exec(QString("create table Loans(id INTEGER PRIMARY KEY AUTOINCREMENT, mediaId INTEGER, person VARCHAR(255))")))
 //        return q.lastError();
@@ -498,24 +502,26 @@ QStringList DatabaseManager::getMediaTagList() {
 void DatabaseManager::insertTag(QString& tagName) {
     QSqlQuery q;
     qWarning() << tagName;
-    q.prepare("INSERT INTO Tag (name) SELECT DISTINCT ? FROM Tag WHERE NOT EXISTS (SELECT name FROM Tag WHERE name = ?)");
+    q.prepare("INSERT INTO Tag (name) VALUES(?)");
     q.bindValue(0, tagName);
-    q.bindValue(1, tagName);
-    if (!q.exec())
+    if (!q.exec()) {
+        if(q.lastError().type()==1 && q.lastError().text()=="constraint failed Unable to fetch row")
+            return;
         throw(q.lastError()); // TODO handle this!
+    }
 }
 
 
 void DatabaseManager::addTagToMedia(QString& tagName, QString mediaBaseName) {
     QSqlQuery q;
     q.prepare("INSERT INTO Media_Tag (tagId, mediaId) " \
-              "SELECT Tag.id, Media.id FROM Tag, Media WHERE Tag.name = ? AND Media.baseName = ?" \
-              "AND NOT EXISTS (SELECT * FROM Media_Tag WHERE Tag.name = ? AND Media.baseName = ?)");
+              "SELECT Tag.id, Media.id FROM Tag, Media WHERE Tag.name = ? AND Media.baseName = ?");
     q.bindValue(0, tagName);
     q.bindValue(1, mediaBaseName);
-    q.bindValue(2, tagName);
-    q.bindValue(3, mediaBaseName);
-    if (!q.exec())
+    if (!q.exec()) {
+        if(q.lastError().type()==1 && q.lastError().text()=="constraint failed Unable to fetch row")
+            return;
         throw(q.lastError()); // TODO handle this!
+    }
 }
 

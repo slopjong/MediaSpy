@@ -38,6 +38,7 @@ myQListView::myQListView(QWidget *parent)
     seenMediaAct_->setDefaultWidget(checkBox_);
     tagLineAct_->setDefaultWidget(editLine_);
     checkBox_->setText(tr("Seen"));
+    editLine_->installEventFilter(this);
 
     // connections
     connect(this->checkBox_, SIGNAL(clicked(bool)), this, SLOT(seenMedia(bool)));
@@ -119,6 +120,13 @@ void myQListView::applyTag(QString& tagName) {
             DatabaseManager::getInstance()->addTagToMedia(tagName, indexList.at(i).data().toString());
 }
 
+
+bool myQListView::eventFilter(QObject *obj, QEvent *event) {
+    if (obj == editLine_)
+        if (event->type() == QEvent::FocusIn)
+            editLine_->clear();
+    return QListView::eventFilter(obj, event);
+}
 
 
 

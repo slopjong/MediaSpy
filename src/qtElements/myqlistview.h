@@ -27,6 +27,7 @@
 #include <QMenu>
 #include <QCheckBox>
 #include <QLineEdit>
+#include <QMainWindow>
 
 #include "../databasemanager.h"
 
@@ -46,6 +47,7 @@ class myQListView : public QListView {
     void contextMenuEvent(QContextMenuEvent*);
     void createMenu(QMenu*);
     void applyTag(QString&);
+    bool eventFilter(QObject*, QEvent*);
 
 
 public:

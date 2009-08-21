@@ -30,7 +30,6 @@
 #include <QMainWindow>
 
 #include "../databasemanager.h"
-#include "../editmediadialog.h"
 
 class myQListView : public QListView {
     Q_OBJECT;
@@ -38,15 +37,11 @@ class myQListView : public QListView {
     // Fields
     QModelIndex contextMenuIndex_;
     QMenu* menu_;
-//    QMenu* addTagMenu_;
     QCheckBox* checkBox_;
-//    QLineEdit* editLine_;
     QWidgetAction* seenMediaAct_;
-//    QWidgetAction* tagLineAct_;
-    QAction* editTagAct_;
 
     void contextMenuEvent(QContextMenuEvent*);
-    void applyTag(QString&);
+//    void applyTag(QString&);
 
 
 public:
@@ -54,12 +49,14 @@ public:
     explicit myQListView(QWidget *parent = 0);
     virtual ~myQListView();
 
+   // Fields
+   QAction* editTagAct_;
+
 
 private slots:
     void seenMedia(bool);
-    void newTag();
-    void tagSlot();
-    void editDialog();
+//    void newTag();
+//    void tagSlot();
 
 
 signals:

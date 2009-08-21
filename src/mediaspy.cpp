@@ -138,13 +138,16 @@ void MediaSpy::makeConnections() {
     connect(ui_->mediaListView, SIGNAL(tagApplied(QString&)),
             InfoManager::getInstance(), SLOT(updateInfo(QString&)));
 
-    // for ui
+    // for mediaListView
     connect(ui_->mediaListView->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)),
             this, SLOT(selectedMovie(QModelIndex, QModelIndex)));
     connect(ui_->mediaListView, SIGNAL(updateMedia()),
             mediaListProxyModel_, SLOT(invalidateProxyModel()));
     connect(ui_->mediaListView, SIGNAL(updateMedia()),
             InfoManager::getInstance(), SLOT(updateStats()));
+
+    // for myqlistview
+    connect(ui_->mediaListView->editTagAct_, SIGNAL(triggered()), this, SLOT(editDialog()));
 
 }
 
@@ -363,6 +366,20 @@ void MediaSpy::finishedUpdateThread() {
 
     sqlTableModel_->setList();
     InfoManager::getInstance()->updateMediaCollectionInfo();
+}
+
+
+/** \fn void MediaSpy::editDialog()
+ *  \brief Opens a EditMediaDialog dialog
+ */
+void MediaSpy::editDialog() {
+    QItemSelectionModel* selectionModel = ui_->mediaListView->selectionModel();
+    QModelIndexList indexList = selectionModel->selectedRows();
+
+    EditMediaDialog dialog(indexList, this);
+
+    if (dialog.exec() != QDialog::Accepted)
+        return;
 }
 
 

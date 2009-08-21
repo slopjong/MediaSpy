@@ -43,6 +43,8 @@ EditMediaDialog::EditMediaDialog(QModelIndexList indexList, QWidget *parent)
     init();
 
     // connections
+//    connect(ui_->nextButton, SIGNAL(clicked()), this, SLOT(next()));
+//    connect(ui_->previousButton, SIGNAL(clicked()), this, SLOT(previous()));
 }
 
 /** \fn EditMediaDialog::~EditMediaDialog()
@@ -63,6 +65,12 @@ void EditMediaDialog::init() {
         this->setWindowTitle(tr("Informations on %1 medias - MediaSpy").arg(nMedia_));
     else
         this->setWindowTitle(QString("%1 - MediaSpy").arg(indexList_.at(0).data().toString()));
+
+
+    QDataWidgetMapper *mapper = new QDataWidgetMapper(this);
+//    mapper->setModel(Ui::);
+
+
 }
 
 

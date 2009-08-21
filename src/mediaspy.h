@@ -30,8 +30,8 @@
 
 #include "collectiondialog.h"
 #include "collection.h"
+#include "editmediadialog.h"
 #include "updatethread.h"
-//#include "info/infoview.h"
 #include "info/infomanager.h"
 #include "media/mediacollection.h"
 #include "qtElements/myqlineedit.h"
@@ -122,6 +122,7 @@ private slots:
     void displayMessage(const QString = 0);
     void finishedUpdateThread();
     void selectedMovie(QModelIndex, QModelIndex);
+    void editDialog();
 
 };
 

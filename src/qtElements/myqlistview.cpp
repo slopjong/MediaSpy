@@ -37,7 +37,6 @@ myQListView::myQListView(QWidget *parent)
 
     // connections
     connect(this->checkBox_, SIGNAL(clicked(bool)), this, SLOT(seenMedia(bool)));
-    connect(this->editTagAct_, SIGNAL(triggered()), this, SLOT(editDialog()));
 }
 
 myQListView::~myQListView() {
@@ -57,7 +56,7 @@ void myQListView::contextMenuEvent(QContextMenuEvent* event) {
     QItemSelectionModel* selectionModel = this->selectionModel();
     QModelIndexList indexList = selectionModel->selectedRows();
     Qt::CheckState state = Qt::Unchecked;
-    bool storedBool;
+    bool storedBool = false;
     bool changeBool = false;
     for (int i = 0; i < indexList.size(); ++i)
         if (indexList.at(i).isValid()) {
@@ -66,7 +65,7 @@ void myQListView::contextMenuEvent(QContextMenuEvent* event) {
             if(i==0 || changeBool==true)
                 storedBool = b;
             else
-                changeBool = (b==storedBool) ? false : true;
+                changeBool = (b!=storedBool);
         }
     state = (changeBool==true) ? Qt::PartiallyChecked : ((storedBool) ? Qt::Checked : Qt::Unchecked);
     checkBox_->setCheckState(state);
@@ -85,13 +84,13 @@ void myQListView::contextMenuEvent(QContextMenuEvent* event) {
 }
 
 
-void myQListView::applyTag(QString& tagName) {
+/*void myQListView::applyTag(QString& tagName) {
     QItemSelectionModel* selectionModel = this->selectionModel();
     QModelIndexList indexList = selectionModel->selectedRows();
     for (int i = 0; i < indexList.size(); ++i)
         if (indexList.at(i).isValid())
             DatabaseManager::getInstance()->addTagToMedia(tagName, indexList.at(i).data().toString());
-}
+}*/
 
 
 
@@ -115,13 +114,13 @@ void myQListView::seenMedia(bool checked) {
 }
 
 
-void myQListView::newTag() {
-/*    QString newTagName = editLine_->text();
+/*void myQListView::newTag() {
+    QString newTagName = editLine_->text();
     if(!newTagName.isEmpty()) {
         DatabaseManager::getInstance()->insertTag(newTagName); // add tag to the database
         applyTag(newTagName); // apply this tag to the selection
         menu_->setVisible(false);
-    }*/
+    }
 }
 
 
@@ -136,18 +135,5 @@ void myQListView::tagSlot() {
     QString mediaName = DatabaseManager::getInstance()->getMediaFullName(s);
 
     emit tagApplied(mediaName);
-}
-
-
-
-void myQListView::editDialog() {
-    QItemSelectionModel* selectionModel = this->selectionModel();
-    QModelIndexList indexList = selectionModel->selectedRows();
-
-    EditMediaDialog dialog(indexList, this);
-
-    if (dialog.exec() != QDialog::Accepted)
-        return;
-
-}
+}*/
 

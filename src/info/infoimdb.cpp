@@ -328,12 +328,12 @@ bool InfoImdb::processMoviePage(QNetworkReply* networkReply) {
             }
         if(countryNextLine)
             if(countryRegExpNL.indexIn(line) != -1) {
-                countryString = countryRegExpNL.cap(1);
+                countryString = toPlainText(countryRegExpNL.cap(1));
                 countryNextLine = false;
             }
         if(plotNextLine)
             if(plotRegExpNL.indexIn(line) != -1) {
-                plotString = plotRegExpNL.cap(1);
+                plotString = toPlainText(plotRegExpNL.cap(1));
                 plotNextLine = false;
             }
 
@@ -391,7 +391,8 @@ bool InfoImdb::processMoviePage(QNetworkReply* networkReply) {
     // processing cast
     QString castString;
     for(int i = 0; i < castList.count(); ++i)
-        castString.append(castList.value( i ).value( 1 )).append(", ");
+        if(!castList.value(i).value(1).isEmpty())
+            castString.append(castList.value(i).value(1)).append(", ");
     castString.chop(2);
     movieMedia_[movieMediaIndex].setCast(castString);
 

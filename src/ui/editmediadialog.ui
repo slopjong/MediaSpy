@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>541</width>
-    <height>342</height>
+    <width>539</width>
+    <height>340</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
       <attribute name="title">
        <string>Information</string>
       </attribute>
-      <widget class="QCheckBox" name="checkBox">
+      <widget class="QCheckBox" name="seenCheckBox">
        <property name="geometry">
         <rect>
          <x>36</x>
@@ -36,7 +36,7 @@
         <string>Seen</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="lineEdit">
+      <widget class="QLineEdit" name="tagLineEdit">
        <property name="geometry">
         <rect>
          <x>36</x>
@@ -46,7 +46,7 @@
         </rect>
        </property>
       </widget>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="tagLabel">
        <property name="geometry">
         <rect>
          <x>4</x>

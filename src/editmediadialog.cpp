@@ -19,6 +19,7 @@
 
 
 #include "editmediadialog.h"
+#include <QDebug>
 
 
 /////////////////////////////
@@ -32,9 +33,13 @@ EditMediaDialog::EditMediaDialog(QModelIndexList indexList, QWidget *parent)
         : QDialog(parent)
         , ui_(new Ui::EditMediaDialog)
         , indexList_(QModelIndexList(indexList))
+        , nMedia_(indexList_.count())
 {
     ui_->setupUi(this);
-    nMedia_ = indexList_.count();
+    ui_->previousButton->setEnabled(false);
+    ui_->nextButton->setEnabled(false);
+    ui_->parMediaCheckBox->setChecked(false);
+
     init();
 
     // connections
@@ -52,6 +57,8 @@ EditMediaDialog::~EditMediaDialog() {
 // methods //
 //////////////
 void EditMediaDialog::init() {
+    Q_ASSERT(nMedia_>0);
+
     if(nMedia_>1)
         this->setWindowTitle(tr("Informations on %1 medias - MediaSpy").arg(nMedia_));
     else

@@ -28,33 +28,22 @@
 myQListView::myQListView(QWidget *parent)
         : QListView(parent)
         , menu_(new QMenu(this))
-//        , addTagMenu_(new QMenu(tr("Edit tag"), this))
         , checkBox_(new QCheckBox(this))
-//        , editLine_(new QLineEdit(this))
         , seenMediaAct_(new QWidgetAction(this))
-//        , tagLineAct_(new QWidgetAction(this))
         , editTagAct_(new QAction(this))
-//        , editPixmap_(QPixmap(":/icons/edit.png"))
 {
     seenMediaAct_->setDefaultWidget(checkBox_);
-//    tagLineAct_->setDefaultWidget(editLine_);
     checkBox_->setText(tr("Seen"));
-//    editLine_->installEventFilter(this);
 
     // connections
     connect(this->checkBox_, SIGNAL(clicked(bool)), this, SLOT(seenMedia(bool)));
     connect(this->editTagAct_, SIGNAL(triggered()), this, SLOT(editDialog()));
-//    connect(this->editLine_, SIGNAL(editingFinished()), this, SLOT(newTag()));
-//    connect(this->editLine_, SIGNAL(cursorPositionChanged (int, int)), this->editLine_, SLOT(clear()));
 }
 
 myQListView::~myQListView() {
     delete menu_;
-//    delete addTagMenu_;
     delete checkBox_;
-//    delete editLine_;
     delete seenMediaAct_;
-//    delete tagLineAct_;
     delete editTagAct_;
 }
 
@@ -66,7 +55,7 @@ myQListView::~myQListView() {
 void myQListView::contextMenuEvent(QContextMenuEvent* event) {
     menu_->clear();
     QItemSelectionModel* selectionModel = this->selectionModel();
-    QModelIndexList indexList = selectionModel->selectedIndexes();
+    QModelIndexList indexList = selectionModel->selectedRows();
     Qt::CheckState state = Qt::Unchecked;
     bool storedBool;
     bool changeBool = false;
@@ -98,19 +87,11 @@ void myQListView::contextMenuEvent(QContextMenuEvent* event) {
 
 void myQListView::applyTag(QString& tagName) {
     QItemSelectionModel* selectionModel = this->selectionModel();
-    QModelIndexList indexList = selectionModel->selectedIndexes();
+    QModelIndexList indexList = selectionModel->selectedRows();
     for (int i = 0; i < indexList.size(); ++i)
         if (indexList.at(i).isValid())
             DatabaseManager::getInstance()->addTagToMedia(tagName, indexList.at(i).data().toString());
 }
-
-
-/*bool myQListView::eventFilter(QObject *obj, QEvent *event) {
-    if (obj == editLine_)
-        if (event->type() == QEvent::FocusIn)
-            editLine_->clear();
-    return QListView::eventFilter(obj, event);
-}*/
 
 
 
@@ -119,7 +100,7 @@ void myQListView::applyTag(QString& tagName) {
 ///////////
 void myQListView::seenMedia(bool checked) {
     QItemSelectionModel* selectionModel = this->selectionModel();
-    QModelIndexList indexList = selectionModel->selectedIndexes();
+    QModelIndexList indexList = selectionModel->selectedRows();
     QStringList nameList;
     for (int i = 0; i < indexList.size(); ++i)
         if (indexList.at(i).isValid())
@@ -150,7 +131,7 @@ void myQListView::tagSlot() {
     applyTag(tagName);
 
     QItemSelectionModel* selectionModel = this->selectionModel();
-    QModelIndexList indexList = selectionModel->selectedIndexes();
+    QModelIndexList indexList = selectionModel->selectedRows();
     QString s = QString(indexList.at(indexList.count() - 1).data().toString());
     QString mediaName = DatabaseManager::getInstance()->getMediaFullName(s);
 
@@ -161,7 +142,7 @@ void myQListView::tagSlot() {
 
 void myQListView::editDialog() {
     QItemSelectionModel* selectionModel = this->selectionModel();
-    QModelIndexList indexList = selectionModel->selectedIndexes();
+    QModelIndexList indexList = selectionModel->selectedRows();
 
     EditMediaDialog dialog(indexList, this);
 

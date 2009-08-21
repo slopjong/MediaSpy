@@ -210,7 +210,7 @@ void MediaSpy::init() {
     sqlTableModel_ = new myQSqlTableModel(this);
     sqlTableModel_->setTable("Media");
     sqlTableModel_->removeColumns(0, 2);
-    sqlTableModel_->removeColumns(1, 5);
+    sqlTableModel_->removeColumns(1, 6);
 
     // sorting the list in alphabetical order without case sensitivity
     mediaListProxyModel_->setSourceModel(sqlTableModel_);

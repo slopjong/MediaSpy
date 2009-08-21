@@ -35,8 +35,8 @@ class EditMediaDialog : public QDialog {
 
     // Fields
     Ui::EditMediaDialog *ui_;
-    int nMedia_;
     QModelIndexList indexList_;
+    int nMedia_;
 
     // operators
     void init();
@@ -46,6 +46,11 @@ public:
     virtual ~EditMediaDialog();
 
     // accessors
+
+
+private slots:
+//    void next();
+//    void previous();
 
 };
 

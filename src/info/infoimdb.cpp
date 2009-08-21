@@ -312,7 +312,8 @@ bool InfoImdb::processMoviePage(QNetworkReply* networkReply) {
 
 
     do { // looking for special lines to get data
-        line = textStream->readLine();
+        textStream->setCodec("ISO 8859-1");
+        line = QString(textStream->readLine());
 
         // next lines regexp
         if(runtimeNextLine)
@@ -322,7 +323,7 @@ bool InfoImdb::processMoviePage(QNetworkReply* networkReply) {
             }
         if(directorNextLine)
             if(directorRegExpNL.indexIn(line) != -1) {
-                directorString = directorRegExpNL.cap(3);
+                directorString = toPlainText(directorRegExpNL.cap(3));
                 directorNextLine = false;
             }
         if(countryNextLine)
@@ -340,7 +341,7 @@ bool InfoImdb::processMoviePage(QNetworkReply* networkReply) {
         if (imdbIdRegExp.indexIn(line) != -1)
             imdbIdString = imdbIdRegExp.cap(1);
         else if (titleYearRegExp.indexIn(line) != -1) {
-            titleString = titleYearRegExp.cap(1);
+            titleString = toPlainText(titleYearRegExp.cap(1));
             yearString = titleYearRegExp.cap(2);
         }
         else if(genreRegExp.indexIn(line) != -1)

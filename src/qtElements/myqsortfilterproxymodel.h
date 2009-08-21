@@ -39,6 +39,7 @@ public:
 
     // Operations
     bool filterAcceptsRow(int, const QModelIndex&) const;
+    bool filterAcceptsColumn(int, const QModelIndex&) const;
 
     // Accessor Methods
     void setIndexChanged(int);

@@ -98,6 +98,7 @@ QSqlError DatabaseManager::init(const QString &dbFilePath) {
     if (!q.exec(QString("create table Collection(id INTEGER PRIMARY KEY AUTOINCREMENT, directory VARCHAR(255))")))
         return q.lastError();
 
+    // !! be careful if changing the order of these fields !!
     if (!q.exec(QString("create table Media(id INTEGER PRIMARY KEY AUTOINCREMENT," \
             "type INTEGER, baseName VARCHAR(255), fileName VARCHAR(255), imdbInfo BOOLEAN," \
             "loaned BOOLEAN, seen BOOLEAN, recommended BOOLEAN, notes TEXT)")))

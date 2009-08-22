@@ -18,8 +18,9 @@
  */
 
 
-#include "editmediadialog.h"
 #include <QDebug>
+
+#include "editmediadialog.h"
 
 
 /////////////////////////////
@@ -29,11 +30,12 @@
   * \brief class constructor
   * \param parent the inherited QWidget object
   */
-EditMediaDialog::EditMediaDialog(QModelIndexList indexList, QWidget *parent)
-        : QDialog(parent)
+EditMediaDialog::EditMediaDialog(QModelIndexList indexList, QDataWidgetMapper* mapper)
+        : QDialog()
         , ui_(new Ui::EditMediaDialog)
+        , mapper_(mapper)
         , indexList_(QModelIndexList(indexList))
-        , nMedia_(indexList_.count())
+//        , nMedia_(indexList_.count())
 {
     ui_->setupUi(this);
     ui_->previousButton->setEnabled(false);
@@ -59,18 +61,17 @@ EditMediaDialog::~EditMediaDialog() {
 // methods //
 //////////////
 void EditMediaDialog::init() {
-    Q_ASSERT(nMedia_>0);
+    mapper_->addMapping(ui_->mediaNameLineEdit, 3); // title field
+    mapper_->addMapping(ui_->seenCheckBox, 6); // seen field
+//    mapper_->addMapping(ui_->tagLineEdit, 2); // tag field !! TODO jointure !
+    mapper_->toFirst();
 
-    if(nMedia_>1)
-        this->setWindowTitle(tr("Informations on %1 medias - MediaSpy").arg(nMedia_));
-    else
-        this->setWindowTitle(QString("%1 - MediaSpy").arg(indexList_.at(0).data().toString()));
-
-
-    QDataWidgetMapper *mapper = new QDataWidgetMapper(this);
-//    mapper->setModel(Ui::);
-
-
+//    Q_ASSERT(nMedia_>0);
+//
+//    if(nMedia_>1)
+//        this->setWindowTitle(tr("Informations on %1 medias - MediaSpy").arg(nMedia_));
+//    else
+//        this->setWindowTitle(QString("%1 - MediaSpy").arg(indexList_.at(0).data().toString()));
 }
 
 

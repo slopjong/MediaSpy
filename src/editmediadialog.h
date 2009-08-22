@@ -25,8 +25,6 @@
 #include <QDataWidgetMapper>
 
 #include "../build/ui/ui_editmediadialog.h"
-//#include "mediaspy.h"
-
 
 namespace Ui {
     class EditMediaDialog;
@@ -36,17 +34,16 @@ class EditMediaDialog : public QDialog {
     Q_OBJECT
 
     // Fields
-//    MediaSpy* parentMediaSpy_;
     Ui::EditMediaDialog *ui_;
+    QDataWidgetMapper* mapper_;
     QModelIndexList indexList_;
-    int nMedia_;
+//    int nMedia_;
 
     // operators
     void init();
 
-
 public:
-    EditMediaDialog(QModelIndexList, QWidget *parent = 0);
+    EditMediaDialog(QModelIndexList, QDataWidgetMapper*);
     virtual ~EditMediaDialog();
 
     // accessors

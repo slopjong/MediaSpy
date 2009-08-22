@@ -212,8 +212,6 @@ void MediaSpy::init() {
     ////////////////////
     sqlTableModel_ = new myQSqlTableModel(this);
     sqlTableModel_->setTable("Media");
-    sqlTableModel_->removeColumns(0, 2);
-    sqlTableModel_->removeColumns(1, 6);
 
     // sorting the list in alphabetical order without case sensitivity
     mediaListProxyModel_->setSourceModel(sqlTableModel_);
@@ -374,9 +372,15 @@ void MediaSpy::finishedUpdateThread() {
  */
 void MediaSpy::editDialog() {
     QItemSelectionModel* selectionModel = ui_->mediaListView->selectionModel();
-    QModelIndexList indexList = selectionModel->selectedRows();
+    QModelIndexList indexList = selectionModel->selectedIndexes();
+    qWarning() << indexList.count();
 
-    EditMediaDialog dialog(indexList, this);
+    sqlTableModel_->select(); // update data
+    QDataWidgetMapper* mapper = new QDataWidgetMapper(this);
+    mapper->setModel(sqlTableModel_);
+    mapper->setCurrentIndex(0);
+
+    EditMediaDialog dialog(indexList, mapper);
 
     if (dialog.exec() != QDialog::Accepted)
         return;

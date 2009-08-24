@@ -39,8 +39,6 @@ class EditMediaDialog : public QDialog {
     QModelIndexList indexList_;
     int nMedia_;
     int selectionPos_;
-    int modelPos_;
-    QList<int> modelIndexList_;
 
     // operators
     void init();

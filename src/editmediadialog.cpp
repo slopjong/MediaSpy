@@ -37,7 +37,6 @@ EditMediaDialog::EditMediaDialog(QModelIndexList indexList, QDataWidgetMapper* m
         , indexList_(QModelIndexList(indexList))
         , nMedia_(indexList_.count())
         , selectionPos_(indexList_.at(0).row())
-        , modelPos_(0)
 {
     Q_ASSERT(nMedia_>0);
 
@@ -60,12 +59,6 @@ void EditMediaDialog::init() {
     ui_->setupUi(this);
     ui_->previousButton->setEnabled(false);
     ui_->nextButton->setEnabled(false);
-
-    // store the index of the model corresponding to the selection
-    for(int i = 0; i < indexList_.count(); ++i)
-        modelIndexList_ << indexList_.at(i).row();
-
-    modelPos_ = modelIndexList_.indexOf(selectionPos_);
 
     // mapper
     mapper_->addMapping(ui_->mediaNameLabel, 3, "text"); // title field
@@ -105,8 +98,7 @@ void EditMediaDialog::on_parMediaCheckBox_clicked(bool checked) {
     if(checked) { // per media
         ui_->nextButton->setEnabled(true);
         ui_->mediaNameTitleLabel->setEnabled(true);
-        modelPos_ = modelIndexList_.indexOf(selectionPos_);
-        mapper_->setCurrentIndex(indexList_.at(modelPos_).row()); // crash!
+        mapper_->setCurrentIndex(selectionPos_); // crash!
     }
     else { // all medias
         ui_->previousButton->setEnabled(false);
@@ -120,9 +112,8 @@ void EditMediaDialog::on_parMediaCheckBox_clicked(bool checked) {
 void EditMediaDialog::toNext() {
     ui_->previousButton->setEnabled(true);
     selectionPos_++;
-    modelPos_ = modelIndexList_.indexOf(selectionPos_);
-    mapper_->setCurrentIndex(indexList_.at(modelPos_).row());
-    if(modelPos_ == nMedia_-1)
+    mapper_->setCurrentIndex(selectionPos_);
+    if(selectionPos_ == indexList_.at(0).row() + indexList_.count() - 1)
         ui_->nextButton->setEnabled(false);
 }
 
@@ -130,9 +121,8 @@ void EditMediaDialog::toNext() {
 void EditMediaDialog::toPrevious() {
     ui_->nextButton->setEnabled(true);
     selectionPos_--;
-    modelPos_ = modelIndexList_.indexOf(selectionPos_);
-    mapper_->setCurrentIndex(indexList_.at(modelPos_).row());
-    if(modelPos_ == 0)
+    mapper_->setCurrentIndex(selectionPos_);
+    if(selectionPos_ == indexList_.at(0).row())
         ui_->previousButton->setEnabled(false);
 }
 

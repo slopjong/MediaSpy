@@ -37,21 +37,25 @@ class EditMediaDialog : public QDialog {
     Ui::EditMediaDialog *ui_;
     QDataWidgetMapper* mapper_;
     QModelIndexList indexList_;
-//    int nMedia_;
+    int nMedia_;
+    int selectionPos_;
+    int modelPos_;
+    QList<int> modelIndexList_;
 
     // operators
     void init();
+    void makeConnections();
+
 
 public:
     EditMediaDialog(QModelIndexList, QDataWidgetMapper*);
     virtual ~EditMediaDialog();
 
-    // accessors
-
 
 private slots:
-//    void next();
-//    void previous();
+    void on_parMediaCheckBox_clicked(bool checked);
+    void toNext();
+    void toPrevious();
 
 };
 

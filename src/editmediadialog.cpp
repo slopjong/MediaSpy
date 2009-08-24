@@ -35,18 +35,14 @@ EditMediaDialog::EditMediaDialog(QModelIndexList indexList, QDataWidgetMapper* m
         , ui_(new Ui::EditMediaDialog)
         , mapper_(mapper)
         , indexList_(QModelIndexList(indexList))
-//        , nMedia_(indexList_.count())
+        , nMedia_(indexList_.count())
+        , selectionPos_(indexList_.at(0).row())
+        , modelPos_(0)
 {
-    ui_->setupUi(this);
-    ui_->previousButton->setEnabled(false);
-    ui_->nextButton->setEnabled(false);
-    ui_->parMediaCheckBox->setChecked(false);
+    Q_ASSERT(nMedia_>0);
 
     init();
-
-    // connections
-//    connect(ui_->nextButton, SIGNAL(clicked()), this, SLOT(next()));
-//    connect(ui_->previousButton, SIGNAL(clicked()), this, SLOT(previous()));
+    makeConnections();
 }
 
 /** \fn EditMediaDialog::~EditMediaDialog()
@@ -61,26 +57,82 @@ EditMediaDialog::~EditMediaDialog() {
 // methods //
 //////////////
 void EditMediaDialog::init() {
-    mapper_->addMapping(ui_->mediaNameLineEdit, 3); // title field
+    ui_->setupUi(this);
+    ui_->previousButton->setEnabled(false);
+    ui_->nextButton->setEnabled(false);
+
+    // store the index of the model corresponding to the selection
+    for(int i = 0; i < indexList_.count(); ++i)
+        modelIndexList_ << indexList_.at(i).row();
+
+    modelPos_ = modelIndexList_.indexOf(selectionPos_);
+
+    // mapper
+    mapper_->addMapping(ui_->mediaNameLabel, 3, "text"); // title field
     mapper_->addMapping(ui_->seenCheckBox, 6); // seen field
 //    mapper_->addMapping(ui_->tagLineEdit, 2); // tag field !! TODO jointure !
-    mapper_->toFirst();
+    mapper_->setCurrentIndex(selectionPos_);
 
-//    Q_ASSERT(nMedia_>0);
-//
-//    if(nMedia_>1)
-//        this->setWindowTitle(tr("Informations on %1 medias - MediaSpy").arg(nMedia_));
-//    else
-//        this->setWindowTitle(QString("%1 - MediaSpy").arg(indexList_.at(0).data().toString()));
+    // initial setup depending on the number of medias
+    if(nMedia_>1) {
+        setWindowTitle(tr("Details on %1 medias").arg(nMedia_) + QString(" - MediaSpy"));
+        ui_->mediaNameLabel->setText(QString());
+        ui_->mediaNameTitleLabel->setEnabled(false);
+    }
+    else {
+        setWindowTitle(tr("Details on %1").arg(indexList_.at(0).data(Qt::DisplayRole).toString()) + QString(" - MediaSpy"));
+        ui_->parMediaCheckBox->setEnabled(false);
+    }
 }
+
+
+/** \fn void MediaSpy::makeConnections()
+  * \brief makes the connections used by EditMediaDialog
+  */
+void EditMediaDialog::makeConnections() {
+    connect(ui_->nextButton, SIGNAL(clicked()), mapper_, SLOT(toNext()));
+    connect(ui_->nextButton, SIGNAL(clicked()), this, SLOT(toNext()));
+    connect(ui_->previousButton, SIGNAL(clicked()), mapper_, SLOT(toPrevious()));
+    connect(ui_->previousButton, SIGNAL(clicked()), this, SLOT(toPrevious()));
+}
+
 
 
 ///////////
 // slots //
 ///////////
+void EditMediaDialog::on_parMediaCheckBox_clicked(bool checked) {
+    if(checked) { // per media
+        ui_->nextButton->setEnabled(true);
+        ui_->mediaNameTitleLabel->setEnabled(true);
+        modelPos_ = modelIndexList_.indexOf(selectionPos_);
+        mapper_->setCurrentIndex(indexList_.at(modelPos_).row()); // crash!
+    }
+    else { // all medias
+        ui_->previousButton->setEnabled(false);
+        ui_->nextButton->setEnabled(false);
+        ui_->mediaNameLabel->setText(QString());
+        ui_->mediaNameTitleLabel->setEnabled(false);
+    }
+}
 
 
+void EditMediaDialog::toNext() {
+    ui_->previousButton->setEnabled(true);
+    selectionPos_++;
+    modelPos_ = modelIndexList_.indexOf(selectionPos_);
+    mapper_->setCurrentIndex(indexList_.at(modelPos_).row());
+    if(modelPos_ == nMedia_-1)
+        ui_->nextButton->setEnabled(false);
+}
 
-///////////////
-// accessors //
-///////////////
+
+void EditMediaDialog::toPrevious() {
+    ui_->nextButton->setEnabled(true);
+    selectionPos_--;
+    modelPos_ = modelIndexList_.indexOf(selectionPos_);
+    mapper_->setCurrentIndex(indexList_.at(modelPos_).row());
+    if(modelPos_ == 0)
+        ui_->previousButton->setEnabled(false);
+}
+

@@ -37,6 +37,7 @@ EditMediaDialog::EditMediaDialog(QModelIndexList indexList, QDataWidgetMapper* m
         , indexList_(QModelIndexList(indexList))
         , nMedia_(indexList_.count())
         , selectionPos_(indexList_.at(0).row())
+        , originPos_(selectionPos_)
 {
     Q_ASSERT(nMedia_>0);
 
@@ -55,6 +56,9 @@ EditMediaDialog::~EditMediaDialog() {
 //////////////
 // methods //
 //////////////
+/** \fn void EditMediaDialog::init()
+  * \brief Initiates required parts of the object.
+  */
 void EditMediaDialog::init() {
     ui_->setupUi(this);
     ui_->previousButton->setEnabled(false);
@@ -65,6 +69,9 @@ void EditMediaDialog::init() {
     mapper_->addMapping(ui_->seenCheckBox, 6); // seen field
 //    mapper_->addMapping(ui_->tagLineEdit, 2); // tag field !! TODO jointure !
     mapper_->setCurrentIndex(selectionPos_);
+
+    // filling what mapper cannot get
+    setSeenCheckBoxState();
 
     // initial setup depending on the number of medias
     if(nMedia_>1) {
@@ -79,7 +86,7 @@ void EditMediaDialog::init() {
 }
 
 
-/** \fn void MediaSpy::makeConnections()
+/** \fn void EditMediaDialog::makeConnections()
   * \brief makes the connections used by EditMediaDialog
   */
 void EditMediaDialog::makeConnections() {
@@ -90,6 +97,32 @@ void EditMediaDialog::makeConnections() {
 }
 
 
+void EditMediaDialog::setSeenCheckBoxState() {
+    Qt::CheckState state = Qt::Unchecked;
+    bool storedBool = false;
+    bool changeBool = false;
+    for (int i = 0; i < indexList_.size(); ++i)
+        if (indexList_.at(i).isValid()) {
+            QString indexContent = QString(indexList_.at(i).data().toString());
+            bool b = DatabaseManager::getInstance()->isMediaSeen(indexContent);
+            if(i==0 || changeBool==true)
+                storedBool = b;
+            else
+                changeBool = (b!=storedBool);
+        }
+    state = (changeBool==true) ? Qt::PartiallyChecked : ((storedBool) ? Qt::Checked : Qt::Unchecked);
+    ui_->seenCheckBox->setCheckState(state);
+}
+
+
+void EditMediaDialog::setTagLineEdit() {
+    QString mediaName = indexList_.at(selectionPos_ - originPos_).data().toString();
+    int mediaId = DatabaseManager::getInstance()->getMediaId(mediaName);
+    QStringList tagList = DatabaseManager::getInstance()->getMediaTagList(mediaId);
+
+    ui_->tagLineEdit->setText(tagList.join(", "));
+}
+
 
 ///////////
 // slots //
@@ -98,30 +131,36 @@ void EditMediaDialog::on_parMediaCheckBox_clicked(bool checked) {
     if(checked) { // per media
         ui_->nextButton->setEnabled(true);
         ui_->mediaNameTitleLabel->setEnabled(true);
-        mapper_->setCurrentIndex(selectionPos_); // crash!
+        mapper_->setCurrentIndex(selectionPos_);
     }
     else { // all medias
         ui_->previousButton->setEnabled(false);
         ui_->nextButton->setEnabled(false);
-        ui_->mediaNameLabel->setText(QString());
         ui_->mediaNameTitleLabel->setEnabled(false);
+        ui_->mediaNameLabel->setText(QString());
+        ui_->tagLineEdit->setText(QString());
+        setSeenCheckBoxState();
     }
 }
 
 
 void EditMediaDialog::toNext() {
-    ui_->previousButton->setEnabled(true);
     selectionPos_++;
-    mapper_->setCurrentIndex(selectionPos_);
+    setTagLineEdit();
+    mapper_->setCurrentIndex(selectionPos_);    
+
+    ui_->previousButton->setEnabled(true);
     if(selectionPos_ == indexList_.at(0).row() + indexList_.count() - 1)
         ui_->nextButton->setEnabled(false);
 }
 
 
 void EditMediaDialog::toPrevious() {
-    ui_->nextButton->setEnabled(true);
     selectionPos_--;
+    setTagLineEdit();
     mapper_->setCurrentIndex(selectionPos_);
+
+    ui_->nextButton->setEnabled(true);
     if(selectionPos_ == indexList_.at(0).row())
         ui_->previousButton->setEnabled(false);
 }

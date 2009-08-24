@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>533</width>
-    <height>334</height>
+    <width>531</width>
+    <height>332</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -62,6 +62,9 @@
         <widget class="QCheckBox" name="seenCheckBox">
          <property name="text">
           <string>Seen</string>
+         </property>
+         <property name="tristate">
+          <bool>true</bool>
          </property>
         </widget>
        </item>

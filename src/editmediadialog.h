@@ -25,6 +25,7 @@
 #include <QDataWidgetMapper>
 
 #include "../build/ui/ui_editmediadialog.h"
+#include "databasemanager.h"
 
 namespace Ui {
     class EditMediaDialog;
@@ -39,10 +40,13 @@ class EditMediaDialog : public QDialog {
     QModelIndexList indexList_;
     int nMedia_;
     int selectionPos_;
+    int originPos_;
 
     // operators
     void init();
     void makeConnections();
+    void setSeenCheckBoxState();
+    void setTagLineEdit();
 
 
 public:

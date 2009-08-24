@@ -472,6 +472,25 @@ QString DatabaseManager::getMediaFullName(QString& baseName) {
 }
 
 
+/** \fn int DatabaseManager::getMediaId(QString& baseName)
+  * \brief Returns the id of the \var baseName file.
+  */
+int DatabaseManager::getMediaId(QString& baseName) {
+    QSqlQuery q;
+    q.prepare("SELECT id FROM Media WHERE baseName = ?");
+    q.bindValue(0, baseName);
+
+    if (!q.exec())
+        throw(q.lastError()); // TODO handle this!
+
+    int id = 0;
+    while (q.next())
+         id = q.value(0).toInt();
+
+    return id;
+}
+
+
 QStringList DatabaseManager::getMediaTagList(int id) {
     QSqlQuery q;
     q.prepare("SELECT DISTINCT name FROM Tag JOIN Media_Tag ON Media_Tag.tagId = Tag.id WHERE Media_Tag.mediaId = ?");

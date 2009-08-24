@@ -12,7 +12,7 @@
 <context>
     <name>CollectionDialog</name>
     <message>
-        <location filename="../src/collectiondialog.cpp" line="66"/>
+        <location filename="../src/collectiondialog.cpp" line="67"/>
         <source>Choose a directory</source>
         <translation>Choisissez un répertoire</translation>
     </message>
@@ -45,44 +45,59 @@
 <context>
     <name>EditMediaDialog</name>
     <message>
-        <location filename="../src/ui/editmediadialog.ui" line="14"/>
-        <source>Dialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/ui/editmediadialog.ui" line="24"/>
         <source>Information</source>
-        <translation type="unfinished"></translation>
+        <translation>Détails</translation>
     </message>
     <message>
-        <location filename="../src/ui/editmediadialog.ui" line="36"/>
+        <location filename="../src/ui/editmediadialog.ui" line="64"/>
         <source>Seen</source>
-        <translation type="unfinished">Vu</translation>
+        <translation>Vu</translation>
     </message>
     <message>
-        <location filename="../src/ui/editmediadialog.ui" line="59"/>
-        <source>Tags</source>
-        <translation type="unfinished">Tags</translation>
+        <location filename="../src/ui/editmediadialog.ui" line="14"/>
+        <source>Informations</source>
+        <translation>Détails</translation>
     </message>
     <message>
-        <location filename="../src/ui/editmediadialog.ui" line="65"/>
+        <location filename="../src/ui/editmediadialog.ui" line="32"/>
+        <source>Full path:</source>
+        <translation>Chemin :</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/editmediadialog.ui" line="73"/>
+        <source>Tags:</source>
+        <translation>Tags :</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/editmediadialog.ui" line="99"/>
         <source>Imdb</source>
-        <translation type="unfinished">Imdb</translation>
+        <translation>Imdb</translation>
     </message>
     <message>
-        <location filename="../src/ui/editmediadialog.ui" line="75"/>
+        <location filename="../src/ui/editmediadialog.ui" line="109"/>
         <source>previous</source>
-        <translation type="unfinished"></translation>
+        <translation>précédent</translation>
     </message>
     <message>
-        <location filename="../src/ui/editmediadialog.ui" line="82"/>
+        <location filename="../src/ui/editmediadialog.ui" line="116"/>
         <source>next</source>
-        <translation type="unfinished"></translation>
+        <translation>suivant</translation>
     </message>
     <message>
-        <location filename="../src/ui/editmediadialog.ui" line="89"/>
+        <location filename="../src/ui/editmediadialog.ui" line="123"/>
         <source>Per media</source>
-        <translation type="unfinished"></translation>
+        <translation>Par média</translation>
+    </message>
+    <message>
+        <location filename="../src/editmediadialog.cpp" line="78"/>
+        <source>Details on %1 medias</source>
+        <translation>Détails sur %1 médias</translation>
+    </message>
+    <message>
+        <location filename="../src/editmediadialog.cpp" line="83"/>
+        <source>Details on %1</source>
+        <translation>Détails sur %1</translation>
     </message>
 </context>
 <context>
@@ -161,45 +176,6 @@
     </message>
 </context>
 <context>
-    <name>InfoView</name>
-    <message>
-        <source>Welcome!</source>
-        <translation type="obsolete">Bienvenue !!</translation>
-    </message>
-    <message>
-        <source>Welcome in Mediaspy!</source>
-        <translation type="obsolete">Bienvenue dans MediaSpy !</translation>
-    </message>
-    <message>
-        <source>Genre:</source>
-        <translation type="obsolete">Genre :</translation>
-    </message>
-    <message>
-        <source>Runtime:</source>
-        <translation type="obsolete">Durée :</translation>
-    </message>
-    <message>
-        <source>With:</source>
-        <translation type="obsolete">Avec :</translation>
-    </message>
-    <message>
-        <source>Director:</source>
-        <translation type="obsolete">Directeur :</translation>
-    </message>
-    <message>
-        <source>Country:</source>
-        <translation type="obsolete">Pays :</translation>
-    </message>
-    <message>
-        <source>Rating:</source>
-        <translation type="obsolete">Note :</translation>
-    </message>
-    <message>
-        <source>No imdb info available!</source>
-        <translation type="obsolete">Pas de données imdb disponible !</translation>
-    </message>
-</context>
-<context>
     <name>MediaCollection</name>
     <message>
         <location filename="../src/media/mediacollection.cpp" line="82"/>
@@ -230,22 +206,22 @@
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="162"/>
+        <location filename="../src/mediaspy.cpp" line="164"/>
         <source>Cannot create local directory!</source>
         <translation>Création du répertoire local impossible !</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="169"/>
+        <location filename="../src/mediaspy.cpp" line="171"/>
         <source>Cannot create local style directory!</source>
         <translation>Création du répertoire de style local impossible !</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="176"/>
+        <location filename="../src/mediaspy.cpp" line="178"/>
         <source>Cannot create local cover directory!</source>
         <translation>Création du répertoire de couvertures locales impossible !</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="192"/>
+        <location filename="../src/mediaspy.cpp" line="194"/>
         <source>This program needs the SQLITE driver.</source>
         <translation>Ce programme nécessite le driver SQLITE.</translation>
     </message>
@@ -253,10 +229,6 @@
         <location filename="../src/ui/mediaspy.ui" line="34"/>
         <source>Title</source>
         <translation>Titre</translation>
-    </message>
-    <message>
-        <source>Title: %1</source>
-        <translation type="obsolete">Titre : %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/mediaspy.cpp" line="321"/>
@@ -287,30 +259,10 @@
         <translation>Tags</translation>
     </message>
     <message>
-        <source>...</source>
-        <translation type="obsolete">...</translation>
-    </message>
-    <message>
-        <source>Info</source>
-        <translation type="obsolete">Info</translation>
-    </message>
-    <message>
         <location filename="../src/ui/mediaspy.ui" line="122"/>
         <location filename="../src/ui/mediaspy.ui" line="148"/>
         <source>about:blank</source>
         <translation>about:blank</translation>
-    </message>
-    <message>
-        <source>Title:</source>
-        <translation type="obsolete">Titre :</translation>
-    </message>
-    <message>
-        <source>Imdb</source>
-        <translation type="obsolete">Imdb</translation>
-    </message>
-    <message>
-        <source>imdb</source>
-        <translation type="obsolete">imdb</translation>
     </message>
     <message>
         <location filename="../src/ui/mediaspy.ui" line="109"/>
@@ -374,25 +326,14 @@
 <context>
     <name>myQListView</name>
     <message>
-        <source>&amp;Watched</source>
-        <translation type="obsolete">&amp;Vu</translation>
-    </message>
-    <message>
-        <location filename="../src/qtElements/myqlistview.cpp" line="41"/>
+        <location filename="../src/qtElements/myqlistview.cpp" line="36"/>
         <source>Seen</source>
         <translation>Vu</translation>
     </message>
     <message>
-        <location filename="../src/qtElements/myqlistview.cpp" line="89"/>
+        <location filename="../src/qtElements/myqlistview.cpp" line="77"/>
         <source>Edit information</source>
         <translation>Éditer les informations</translation>
-    </message>
-    <message numerus="yes">
-        <source>Edit media(s)</source>
-        <translation type="obsolete">
-            <numerusform>Éditer le média</numerusform>
-            <numerusform>Éditer les médias</numerusform>
-        </translation>
     </message>
 </context>
 </TS>

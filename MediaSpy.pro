@@ -68,4 +68,19 @@ win32:QMAKE_TARGET_COPYRIGHT = "Copyright (C) 2009 Stéphane Péchard"
 DEFINES *= "PACKAGE_NAME=\"\\\"$${QMAKE_TARGET_PRODUCT}\\\"\"" \
     "PACKAGE_VERSION=\"\\\"$${PACKAGE_VERSION}\\\"\"" \
     "PACKAGE_COPYRIGHTS=\"\\\"$${QMAKE_TARGET_COPYRIGHT}\\\"\"" \
-    "MEDIASPY_HOME=\"$(MEDIASPY_HOME)\""
+    "MEDIASPY_HOME=\"\\\"$(MEDIASPY_HOME)\\\"\""
+
+# install
+QMAKE_PROJECT_DEPTH=1
+
+bin.path = $$(MEDIASPY_HOME)
+bin.files = $${TARGET}
+bin.CONFIG += no_check_exist
+
+translations.path = $$(MEDIASPY_HOME)/translations
+translations.files = translations/mediaspy_*.qm
+translations.CONFIG += no_check_exist
+
+INSTALLS += bin translations
+
+

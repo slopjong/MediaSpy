@@ -1,0 +1,5 @@
+Makefile
+mediaspy
+MediaSpy.pro.user
+build/
+translations/mediaspy_*.qm

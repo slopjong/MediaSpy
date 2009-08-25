@@ -83,4 +83,7 @@ translations.CONFIG += no_check_exist
 
 INSTALLS += bin translations
 
+# git archive
+archive.commands = git archive --format=tar --prefix=mediaspy-$${PACKAGE_VERSION}/ HEAD | bzip2 > mediaspy-$${PACKAGE_VERSION}.tar.bz2
+QMAKE_EXTRA_UNIX_TARGETS += archive
 

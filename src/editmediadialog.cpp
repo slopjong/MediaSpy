@@ -67,7 +67,6 @@ void EditMediaDialog::init() {
     // mapper
     mapper_->addMapping(ui_->mediaNameLabel, 3, "text"); // title field
     mapper_->addMapping(ui_->seenCheckBox, 6); // seen field
-//    mapper_->addMapping(ui_->tagLineEdit, 2); // tag field !! TODO jointure !
     mapper_->setCurrentIndex(selectionPos_);
 
     // filling what mapper cannot get
@@ -82,6 +81,7 @@ void EditMediaDialog::init() {
     else {
         setWindowTitle(tr("Details on %1").arg(indexList_.at(0).data(Qt::DisplayRole).toString()) + QString(" - MediaSpy"));
         ui_->parMediaCheckBox->setEnabled(false);
+        setTagLineEdit();
     }
 }
 

@@ -26,6 +26,9 @@
 #include "media/media.h"
 #include "media/moviemedia.h"
 
+namespace tableCollection { enum e { id, Collection }; }
+namespace tableMedia { enum e { id, type, baseName, fileName, imdbInfo, loaned, seen, recommended, notes }; }
+
 
 /** \class DatabaseManager
   *

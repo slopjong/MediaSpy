@@ -179,7 +179,7 @@ QSqlError DatabaseManager::insertDirToCollection(const QString& dir) {
 
 
 /** \fn DatabaseManager::removeDirToCollection(const QString& dir)
-  * \brief Inserts the directory \var dir into the Collection table.
+  * \brief Removes the directory \var dir from the Collection table and all its content from the Media table.
   */
 QSqlError DatabaseManager::removeDirToCollection(const QString& dir) {
     QSqlQuery q;
@@ -189,34 +189,13 @@ QSqlError DatabaseManager::removeDirToCollection(const QString& dir) {
     if (!q.exec())
         throw(q.lastError()); // TODO handle this!
 
-    return QSqlError();
-}
-
-
-/** \fn DatabaseManager::cleanCollection()
-  * \brief Cleans the whole Collection table.
-  */
-QSqlError DatabaseManager::cleanCollection() {
-    QSqlQuery q;
-    if (!q.exec(QString("DELETE FROM `Collection`")))
-        throw(q.lastError()); // TODO handle this!
-
-    return QSqlError();
-}
-
-
-/** \fn DatabaseManager::hasDir(const QString& dir)
-  * \brief Returns whether the directory \var dir is in the Collection table or not.
-  */
-bool DatabaseManager::hasDir(const QString& dir) {
-    QSqlQuery q;
-    q.prepare("SELECT id FROM Collection WHERE directory = ?");
-    q.bindValue(0, dir);
+    q.prepare("DELETE FROM Media WHERE fileName LIKE ?");
+    q.bindValue(0, dir + '%');
 
     if (!q.exec())
         throw(q.lastError()); // TODO handle this!
 
-    return q.next();
+    return QSqlError();
 }
 
 

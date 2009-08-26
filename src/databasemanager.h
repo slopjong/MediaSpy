@@ -51,8 +51,6 @@ public:
 
     QSqlError insertDirToCollection(const QString&);
     QSqlError removeDirToCollection(const QString&);
-    QSqlError cleanCollection();
-    bool hasDir(const QString&);
     QStringList getCollectionDir();
 
     void insertMedias(const QList<Media>&);

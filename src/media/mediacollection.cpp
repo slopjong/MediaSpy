@@ -103,7 +103,7 @@ void MediaCollection::updateMediaCollection(QStringList& mediaList) {
     foreach(mediaFileName, tempMediaList) {
             // let's create it!
             Media tempMedia;
-            tempMedia.setType(MEDIA_TYPE_MOVIE);
+            tempMedia.setType(MEDIA_TYPE_MOVIE); // for now!
             tempMedia.setFileName(mediaFileName);
             tempMedia.setImdbInfo(false);
             tempMedia.setLoaned(false);
@@ -125,6 +125,7 @@ void MediaCollection::updateMediaCollection(QStringList& mediaList) {
 }
 
 
+
 ///////////////////////
 // accessors methods //
 ///////////////////////
@@ -135,6 +136,4 @@ void MediaCollection::updateMediaCollection(QStringList& mediaList) {
 unsigned int MediaCollection::getNMedia() const {
     return nMedia_;
 }
-
-
 

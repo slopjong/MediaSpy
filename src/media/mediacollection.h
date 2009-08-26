@@ -45,7 +45,7 @@ public:
     // Operations
     static MediaCollection *getInstance();
     static void kill();
-    void updateMediaCollection(QStringList&) ;
+    void updateMediaCollection(QStringList&);
 
     // Accessor Methods
     unsigned int getNMedia() const;

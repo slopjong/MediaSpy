@@ -183,14 +183,25 @@ QSqlError DatabaseManager::insertDirToCollection(const QString& dir) {
   */
 QSqlError DatabaseManager::removeDirToCollection(const QString& dir) {
     QSqlQuery q;
-    q.prepare("DELETE FROM Collection WHERE directory = ?");
-    q.bindValue(0, dir);
+    // delete the info from imdb
+    q.prepare("DELETE FROM ImdbInfo WHERE mediaId in (SELECT id FROM Media WHERE Media.fileName LIKE ?)");
+    q.bindValue(0, dir + '%');
+
+    if (!q.exec()) {
+        qWarning() << q.lastError();
+        throw(q.lastError()); // TODO handle this!
+    }
+
+    // delete the info media
+    q.prepare("DELETE FROM Media WHERE fileName LIKE ?");
+    q.bindValue(0, dir + '%');
 
     if (!q.exec())
         throw(q.lastError()); // TODO handle this!
 
-    q.prepare("DELETE FROM Media WHERE fileName LIKE ?");
-    q.bindValue(0, dir + '%');
+    // delete the directory
+    q.prepare("DELETE FROM Collection WHERE directory = ?");
+    q.bindValue(0, dir);
 
     if (!q.exec())
         throw(q.lastError()); // TODO handle this!

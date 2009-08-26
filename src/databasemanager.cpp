@@ -103,14 +103,14 @@ QSqlError DatabaseManager::init(const QString &dbFilePath) {
 
     // !! be careful if changing the order of these fields !!
     if (!q.exec(QString("create table Media(id INTEGER PRIMARY KEY AUTOINCREMENT," \
-            "type INTEGER, baseName VARCHAR(255), fileName VARCHAR(255), imdbInfo BOOLEAN," \
-            "loaned BOOLEAN, seen BOOLEAN, recommended BOOLEAN, notes TEXT, UNIQUE (baseName, fileName))")))
+            "type INTEGER, baseName VARCHAR(255) UNIQUE, fileName VARCHAR(255) UNIQUE, imdbInfo BOOLEAN," \
+            "loaned BOOLEAN, seen BOOLEAN, recommended BOOLEAN, notes TEXT)")))
         return q.lastError();
 
     if (!q.exec(QString("create table ImdbInfo(id INTEGER PRIMARY KEY AUTOINCREMENT," \
-            "mediaId INTEGER, ImdbId INTEGER, genre VARCHAR(255), year INTEGER, runtime INTEGER, rating DOUBLE," \
-            "title VARCHAR(255), director VARCHAR(255), country VARCHAR(255), image VARCHAR(255)," \
-            "cast TEXT, plot TEXT, UNIQUE (mediaId))")))
+            "mediaId INTEGER UNIQUE, ImdbId INTEGER, genre VARCHAR(255), year INTEGER, runtime INTEGER," \
+            "rating DOUBLE, title VARCHAR(255), director VARCHAR(255), country VARCHAR(255), image VARCHAR(255)," \
+            "cast TEXT, plot TEXT)")))
         return q.lastError();
 
     if (!q.exec(QString("create table MovieGenre(id INTEGER PRIMARY KEY AUTOINCREMENT, genre VARCHAR(255))")))
@@ -119,7 +119,7 @@ QSqlError DatabaseManager::init(const QString &dbFilePath) {
     if (!q.exec(QString("create table MusicGenre(id INTEGER PRIMARY KEY AUTOINCREMENT, genre VARCHAR(255))")))
         return q.lastError();
 
-    if (!q.exec(QString("create table Tag(id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(255), UNIQUE (name))")))
+    if (!q.exec(QString("create table Tag(id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(255) UNIQUE)")))
         return q.lastError();
 
     if (!q.exec(QString("create table Media_Tag(id INTEGER PRIMARY KEY AUTOINCREMENT, mediaId INTEGER, tagId INTEGER," \
@@ -187,10 +187,8 @@ QSqlError DatabaseManager::removeDirToCollection(const QString& dir) {
     q.prepare("DELETE FROM ImdbInfo WHERE mediaId in (SELECT id FROM Media WHERE Media.fileName LIKE ?)");
     q.bindValue(0, dir + '%');
 
-    if (!q.exec()) {
-        qWarning() << q.lastError();
+    if (!q.exec())
         throw(q.lastError()); // TODO handle this!
-    }
 
     // delete the info media
     q.prepare("DELETE FROM Media WHERE fileName LIKE ?");
@@ -354,8 +352,11 @@ void DatabaseManager::insertMedias(const QList<Media>& mediaList) {
         q.bindValue(6, media.isRecommended());
         q.bindValue(7, media.getNotes());
 
-        if (!q.exec())
+        if (!q.exec()) {
+            if(q.lastError().type()==1 && q.lastError().text()=="constraint failed Unable to fetch row")
+                continue;
             throw(q.lastError()); // TODO handle this!
+        }
     }
     QSqlDatabase::database().commit();
 }
@@ -542,7 +543,6 @@ QStringList DatabaseManager::getMediaTagList() {
 
 void DatabaseManager::insertTag(QString& tagName) {
     QSqlQuery q;
-    qWarning() << tagName;
     q.prepare("INSERT INTO Tag (name) VALUES(?)");
     q.bindValue(0, tagName);
     if (!q.exec()) {

@@ -85,6 +85,7 @@ QSqlError DatabaseManager::init(const QString &dbFilePath) {
 
     QStringList tables = db_.tables();
 
+
     // we check if tables are already in the db, if not,they are created
     // no table update is possible here!
     if (tables.contains("Collection") && tables.contains("Media") && tables.contains("ImdbInfo")
@@ -92,22 +93,24 @@ QSqlError DatabaseManager::init(const QString &dbFilePath) {
             && tables.contains("Media_Tag"))
         return QSqlError(); // TODO handle this!
 
+
     // in case of proposing different sql backend (mysql, postgresql, etc.), we will have to put this
     // in a backend-independant class
     QSqlQuery q;
-    if (!q.exec(QString("create table Collection(id INTEGER PRIMARY KEY AUTOINCREMENT, directory VARCHAR(255))")))
+    if (!q.exec(QString("create table Collection(id INTEGER PRIMARY KEY AUTOINCREMENT, directory VARCHAR(255), UNIQUE (directory))")))
         return q.lastError();
+
 
     // !! be careful if changing the order of these fields !!
     if (!q.exec(QString("create table Media(id INTEGER PRIMARY KEY AUTOINCREMENT," \
             "type INTEGER, baseName VARCHAR(255), fileName VARCHAR(255), imdbInfo BOOLEAN," \
-            "loaned BOOLEAN, seen BOOLEAN, recommended BOOLEAN, notes TEXT)")))
+            "loaned BOOLEAN, seen BOOLEAN, recommended BOOLEAN, notes TEXT, UNIQUE (baseName, fileName))")))
         return q.lastError();
 
     if (!q.exec(QString("create table ImdbInfo(id INTEGER PRIMARY KEY AUTOINCREMENT," \
             "mediaId INTEGER, ImdbId INTEGER, genre VARCHAR(255), year INTEGER, runtime INTEGER, rating DOUBLE," \
             "title VARCHAR(255), director VARCHAR(255), country VARCHAR(255), image VARCHAR(255)," \
-            "cast TEXT, plot TEXT)")))
+            "cast TEXT, plot TEXT, UNIQUE (mediaId))")))
         return q.lastError();
 
     if (!q.exec(QString("create table MovieGenre(id INTEGER PRIMARY KEY AUTOINCREMENT, genre VARCHAR(255))")))
@@ -137,6 +140,10 @@ QSqlError DatabaseManager::init(const QString &dbFilePath) {
 }
 
 
+
+//////////////////////////////
+// Collection table methods //
+//////////////////////////////
 /** \fn DatabaseManager::getCollectionDir()
   * \brief get collection from the database
   */
@@ -146,9 +153,8 @@ QStringList DatabaseManager::getCollectionDir() {
         QSqlError qError = q.lastError(); // TODO handle this!
 
     QStringList stringList;
-    while (q.next()) {
+    while (q.next())
         stringList << q.value(0).toString();
-    }
 
    return stringList;
 }
@@ -159,8 +165,25 @@ QStringList DatabaseManager::getCollectionDir() {
   */
 QSqlError DatabaseManager::insertDirToCollection(const QString& dir) {
     QSqlQuery q;
-    q.prepare("INSERT INTO Collection (directory) "
-              "VALUES (?)");
+    q.prepare("INSERT INTO Collection (directory) VALUES (?)");
+    q.bindValue(0, dir);
+
+    if (!q.exec()) {
+        if(q.lastError().type()==1 && q.lastError().text()=="constraint failed Unable to fetch row")
+            return QSqlError();
+        throw(q.lastError()); // TODO handle this!
+    }
+
+    return QSqlError();
+}
+
+
+/** \fn DatabaseManager::removeDirToCollection(const QString& dir)
+  * \brief Inserts the directory \var dir into the Collection table.
+  */
+QSqlError DatabaseManager::removeDirToCollection(const QString& dir) {
+    QSqlQuery q;
+    q.prepare("DELETE FROM Collection WHERE directory = ?");
     q.bindValue(0, dir);
 
     if (!q.exec())
@@ -197,6 +220,10 @@ bool DatabaseManager::hasDir(const QString& dir) {
 }
 
 
+
+/////////////////////////
+// Media table methods //
+/////////////////////////
 /** \fn DatabaseManager::queryMedias()
   * \brief get a query with all medias from the database
   * \return the database query

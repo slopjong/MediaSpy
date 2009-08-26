@@ -26,6 +26,7 @@
 #include <QFileDialog>
 
 #include "../build/ui/ui_collectiondialog.h"
+#include "databasemanager.h"
 
 
 /** \class CollectionDialog
@@ -35,21 +36,13 @@ class CollectionDialog : public QDialog, public Ui_CollectionDialog {
     Q_OBJECT
 
     // Fields
-    QStringList addedDirList_;
-    QStringList removedDirList_;
+    QSqlTableModel* model_;
+
 
 public:
     // Constructors
-    explicit CollectionDialog(QWidget *parent = 0);
+    explicit CollectionDialog(QSqlTableModel*, QWidget *parent = 0);
     virtual ~CollectionDialog();
-
-    // Operations
-    QStringList getUpdate();
-
-
-signals:
-    void dirAdded(QString&);
-    void dirRemoved(QString&);
 
 
 private slots:

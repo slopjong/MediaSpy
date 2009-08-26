@@ -254,14 +254,24 @@ void MediaSpy::updateCollections(QStringList& dirList) {
  *  \brief Opens the CollectionDialog dialog and gets the user's choice into the Collection.
  */
 void MediaSpy::on_actionSelectdirectories_triggered() {
-    CollectionDialog dialog(this);
-    for(int i = 0; i < Collection::getInstance()->getNDir(); ++i)
-        dialog.listWidget->addItem(Collection::getInstance()->getDirAt(i));
+    // the model
+    QSqlTableModel* model = new QSqlTableModel(this);
+    model->setTable("Collection");
+    model->removeColumns(tableCollection::id, 1);
+    model->select();
 
-    if (dialog.exec() != QDialog::Accepted)
+    // the view
+    CollectionDialog dialog(model, this);
+    dialog.listView->setModel(model);
+
+    QSqlDatabase::database().transaction();
+    if (dialog.exec() != QDialog::Accepted) {
+        QSqlDatabase::database().rollback();
         return;
+    }
+    QSqlDatabase::database().commit();
 
-    QStringList upCollectionList = dialog.getUpdate();
+    QStringList upCollectionList = DatabaseManager::getInstance()->getCollectionDir(); //dialog.getUpdate();
     updateCollections(upCollectionList);
 }
 

@@ -29,15 +29,13 @@
   * \brief class constructor
   * \param parent the inherited QWidget object
   */
-CollectionDialog::CollectionDialog(QWidget *parent) :
-    QDialog(parent)
+CollectionDialog::CollectionDialog(QSqlTableModel* model, QWidget *parent)
+        : QDialog(parent)
+        , model_(model)
 {
     setupUi(this);
-
-    connect(this->listWidget, SIGNAL(clicked(const QModelIndex&)),
-            this, SLOT(enableRemoveDirButton()));
-
-    this->listWidget->setAlternatingRowColors(true);
+    listView->setAlternatingRowColors(true);
+    connect(listView, SIGNAL(clicked(const QModelIndex&)), this, SLOT(enableRemoveDirButton()));
 }
 
 /** \fn CollectionDialog::~CollectionDialog()
@@ -47,20 +45,12 @@ CollectionDialog::~CollectionDialog() {}
 
 
 
-//////////////
-// methods //
-//////////////
-/** \fn CollectionDialog::enableRemoveDirButton()
-  * \brief Enables the 'remove directory' button when a directory is selected.
-  */
-void CollectionDialog::enableRemoveDirButton() {
-    delDirButton->setEnabled(true);
-}
-
-
+///////////
+// slots //
+///////////
 /** \fn CollectionDialog::on_addDirButton_clicked()
   * \brief Defines the action when the Add button is clicked.
-  * Opens a directory selection dialog. Once the directory is selected, the dirAdded signal is emitted.
+  * Opens a directory selection dialog. Once the directory is selected, it is added to the widget.
   */
 void CollectionDialog::on_addDirButton_clicked() {
 
@@ -72,8 +62,8 @@ void CollectionDialog::on_addDirButton_clicked() {
     if (newDir.isEmpty())
         this->buttonBox->setFocus();
     else {
-        addedDirList_ << newDir;
-        this->listWidget->addItem(newDir);
+        DatabaseManager::getInstance()->insertDirToCollection(newDir);
+        model_->select();
     }
 }
 
@@ -83,25 +73,17 @@ void CollectionDialog::on_addDirButton_clicked() {
   * Removes the selected directory from the widget.
   */
 void CollectionDialog::on_delDirButton_clicked() {
-    QList<QListWidgetItem*> selectedItemList = this->listWidget->selectedItems();
-    QListWidgetItem* item = selectedItemList.at(0);
-    int r = this->listWidget->row(item);
-    this->listWidget->takeItem(r);
+    QItemSelectionModel* selectionModel = listView->selectionModel();
+    QModelIndexList indexList = selectionModel->selectedRows();
+    QString oldDir = QString(indexList.at(0).data().toString());
+    DatabaseManager::getInstance()->removeDirToCollection(oldDir);
+    model_->select();
 }
 
 
-/** \fn CollectionDialog::getUpdate()
-  * \brief Puts the listWidget items in a QStringList.
+/** \fn CollectionDialog::enableRemoveDirButton()
+  * \brief Enables the 'remove directory' button when a directory is selected.
   */
-QStringList CollectionDialog::getUpdate() {
-    QStringList addedDirList;
-
-    for(int i = 0; i < this->listWidget->count(); ++i) {
-        QListWidgetItem* item = this->listWidget->item(i);
-        addedDirList << item->text();
-    }
-    return addedDirList;
+void CollectionDialog::enableRemoveDirButton() {
+    delDirButton->setEnabled(true);
 }
-
-
-

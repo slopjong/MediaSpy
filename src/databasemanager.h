@@ -26,7 +26,7 @@
 #include "media/media.h"
 #include "media/moviemedia.h"
 
-namespace tableCollection { enum e { id, Collection }; }
+namespace tableCollection { enum e { id, directory }; }
 namespace tableMedia { enum e { id, type, baseName, fileName, imdbInfo, loaned, seen, recommended, notes }; }
 
 
@@ -50,6 +50,7 @@ public:
     QSqlError init(const QString&);
 
     QSqlError insertDirToCollection(const QString&);
+    QSqlError removeDirToCollection(const QString&);
     QSqlError cleanCollection();
     bool hasDir(const QString&);
     QStringList getCollectionDir();
@@ -76,7 +77,6 @@ public:
 
     void insertMovieMedia(MovieMedia);
     bool hasImdbInfo(const QString&);
-
 
 };
 

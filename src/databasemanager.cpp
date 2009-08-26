@@ -508,6 +508,10 @@ int DatabaseManager::getMediaId(QString& baseName) {
 }
 
 
+
+///////////////////////
+// Tag table methods //
+///////////////////////
 QStringList DatabaseManager::getMediaTagList(int id) {
     QSqlQuery q;
     q.prepare("SELECT DISTINCT name FROM Tag JOIN Media_Tag ON Media_Tag.tagId = Tag.id WHERE Media_Tag.mediaId = ?");

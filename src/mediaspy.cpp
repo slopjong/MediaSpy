@@ -295,8 +295,6 @@ void MediaSpy::editDialog() {
     QItemSelectionModel* selectionModel = ui_->mediaListView->selectionModel();
     QModelIndexList indexList = selectionModel->selectedRows();
 
-//    sqlTableModel_->select(); // update data
-
     QSortFilterProxyModel* proxyModel = new QSortFilterProxyModel(this);
     proxyModel->setSourceModel(sqlTableModel_);
     proxyModel->sort(2, Qt::AscendingOrder);

@@ -24,7 +24,7 @@
 /** \var Collection* Collection::singleton_
   * \brief pointer to the unique instance of Collection
   */
-Collection* Collection::singleton_ = 00;
+Collection* Collection::singleton_ = 0;
 
 
 /////////////////////////////
@@ -49,7 +49,7 @@ Collection::~Collection() {}
   * \brief returns the unique instance of Collection, creates it the first time
   */
 Collection* Collection::getInstance() {
-    if (00 == singleton_)
+    if (0 == singleton_)
         singleton_ =  new Collection;
     return singleton_;
 }
@@ -59,48 +59,20 @@ Collection* Collection::getInstance() {
   * \brief Deletes the unique instance of Collection.
   */
 void Collection::kill() {
-    if (00 != singleton_) {
+    if (0 != singleton_) {
         delete singleton_;
-        singleton_ = 00;
+        singleton_ = 0;
     }
 }
 
 
-/** \fn Collection::init()
-  * \brief Initiates the Collection.
-  */
-void Collection::init() {
-    QStringList stringList = DatabaseManager::getInstance()->getCollectionDir(); // read directories in db
-    initDirList(stringList); // put them in the Collection
-    // TODO: put a QFileSystemWatcher on them
-}
-
-
-/** \fn Collection::update(const QStringList& dirList)
-  * \brief Updates the database with the QStringList dirList. Then the list object is updated as well.
-  * It clears their content first.
+/** \fn Collection::update()
+  * \brief Updates the local collection with the db directory list.
   * \param QStringList& dirList
   */
-void Collection::update(const QStringList& dirs) {
-    DatabaseManager::getInstance()->cleanCollection();
-    for (int i = 0; i < dirs.size(); ++i)
-        if(!DatabaseManager::getInstance()->hasDir(dirs.at(i))) {
-            QSqlError qError = DatabaseManager::getInstance()->insertDirToCollection(dirs.at(i));
-            if(qError.type())
-                throw(qError);
-        }
-    initDirList(dirs);
-}
-
-
-/** \fn void Collection::initDirList(const QStringList& dirs)
-  * \brief Initiates the list of directories. It clears its content first.
-  * \param QStringList& dirList
-  */
-void Collection::initDirList(const QStringList& dirs) {
-    this->dirList_.clear();
-    this->dirList_.append(dirs);
-    nDir_ = dirs.size();
+void Collection::update() {
+    dirList_ = DatabaseManager::getInstance()->getCollectionDir(); // get directories from db
+    nDir_ = dirList_.size();
 }
 
 
@@ -149,31 +121,3 @@ QStringList Collection::ScanRecDir(const QString& dir) {
     return fileList;
 }
 
-
-
-///////////////////////
-// accessors methods //
-///////////////////////
-/** \fn QString Collection::getDirAt(const int i) const
-  * \brief Returns the name of the directory at i-th rank in the model.
-  * \return the directory name
-  */
-QString Collection::getDirAt(const int i)  const {
-    return this->dirList_.at(i);
-}
-
-/** \fn void Collection::setNDir(const int nDir)
-  * \brief Sets the number of directories in the Collection.
-  * \param the number of directories in the Collection
-  */
-void Collection::setNDir(const int nDir) {
-    nDir_ = nDir;
-}
-
-/** \fn int Collection::getNDir() const
-  * \brief Returns the number of directories in the Collection.
-  * \return the numbeer of directories in the Collection
-  */
-int Collection::getNDir() const {
-    return nDir_;
-}

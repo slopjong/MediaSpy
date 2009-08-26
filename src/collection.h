@@ -42,23 +42,13 @@ class Collection : public QObject {
     QStringList dirList_;
     int nDir_;
 
-
 public:
     // Operations
     static Collection *getInstance();
     static void kill();
-    void update(const QStringList&);
+    void update();
     QStringList buildFileList();
     QStringList ScanRecDir(const QString&);
-    void init();
-
-    // Accessor Methods
-    void initDirList(const QStringList&);
-    QStringList getDirList() const;
-    void setNDir(const int);
-    int getNDir() const;
-    QString getDirAt(const int) const;
-
 
 signals:
     void messageToStatus(QString);

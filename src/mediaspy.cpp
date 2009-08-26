@@ -120,6 +120,7 @@ void MediaSpy::makeConnections() {
 
     // for Collection
     connect(Collection::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
+    connect(ui_->actionRescan_collection, SIGNAL(triggered()), this, SLOT(updateCollections()));
 
     // for updateThread_
     connect(updateThread_, SIGNAL(finished()), this, SLOT(finishedUpdateThread()) );
@@ -222,7 +223,7 @@ void MediaSpy::init() {
     //////////////////////
     // collections init //
     //////////////////////
-    Collection::getInstance()->init();
+    Collection::getInstance()->update();
 }
 
 
@@ -240,8 +241,8 @@ void MediaSpy::closeEvent(QCloseEvent *event) {
 /** \fn void MediaSpy::updateCollections(QStringList& dirList)
   * \brief Updates the Collections in a dedicated thread.
   */
-void MediaSpy::updateCollections(QStringList& dirList) {
-    Collection::getInstance()->update(dirList);
+void MediaSpy::updateCollections() {
+    Collection::getInstance()->update();
     updateThread_->start();
 }
 
@@ -250,6 +251,18 @@ void MediaSpy::updateCollections(QStringList& dirList) {
 ///////////
 // slots //
 ///////////
+/** \fn void MediaSpy::on_actionAbout_MediaSpy_triggered()
+ *  \brief Shows the MediaSpy About window.
+ */
+void MediaSpy::on_actionAbout_MediaSpy_triggered() {
+    QString myCopyright = QString::fromUtf8(PACKAGE_COPYRIGHTS);
+    QMessageBox::about(this, tr("About ") + PACKAGE_NAME,
+    QString("<h3>") + PACKAGE_NAME + " " + PACKAGE_VERSION + QString("</h3><p>") + myCopyright +
+    tr("<p>MediaSpy is a movie collection cataloging software. Still in heavy development!") +
+    QString("<p><a href=\"http://spechard.wordpress.com/\">http://spechard.wordpress.com/</a>"));
+}
+
+
 /** \fn void MediaSpy::on_actionSelectdirectories_triggered()
  *  \brief Opens the CollectionDialog dialog and gets the user's choice into the Collection.
  */
@@ -271,8 +284,46 @@ void MediaSpy::on_actionSelectdirectories_triggered() {
     }
     QSqlDatabase::database().commit();
 
-    QStringList upCollectionList = DatabaseManager::getInstance()->getCollectionDir(); //dialog.getUpdate();
-    updateCollections(upCollectionList);
+    updateCollections();
+}
+
+
+/** \fn void MediaSpy::editDialog()
+ *  \brief Opens a EditMediaDialog dialog
+ */
+void MediaSpy::editDialog() {
+    QItemSelectionModel* selectionModel = ui_->mediaListView->selectionModel();
+    QModelIndexList indexList = selectionModel->selectedRows();
+
+//    sqlTableModel_->select(); // update data
+
+    QSortFilterProxyModel* proxyModel = new QSortFilterProxyModel(this);
+    proxyModel->setSourceModel(sqlTableModel_);
+    proxyModel->sort(2, Qt::AscendingOrder);
+    proxyModel->setSortCaseSensitivity(Qt::CaseInsensitive);
+
+    QDataWidgetMapper* mapper = new QDataWidgetMapper(this);
+    mapper->setModel(proxyModel);
+
+    EditMediaDialog dialog(indexList, mapper);
+
+    if (dialog.exec() != QDialog::Accepted)
+        return;
+}
+
+
+/** \fn void MediaSpy::finishedUpdateThread()
+ *  \brief Defines what is done when the update thread is done.
+ */
+void MediaSpy::finishedUpdateThread() {
+    sqlTableModel_->select();
+
+    // this may freeze window with long table!
+    while(sqlTableModel_->canFetchMore())
+        sqlTableModel_->fetchMore();
+
+    sqlTableModel_->setList();
+    InfoManager::getInstance()->updateMediaCollectionInfo();
 }
 
 
@@ -334,17 +385,6 @@ void MediaSpy::setProgressbarOff() {
 }
 
 
-/** \fn void MediaSpy::on_actionAbout_MediaSpy_triggered()
- *  \brief Shows the MediaSpy About window.
- */
-void MediaSpy::on_actionAbout_MediaSpy_triggered() {
-    QString myCopyright = QString::fromUtf8(PACKAGE_COPYRIGHTS);
-    QMessageBox::about(this, tr("About ") + PACKAGE_NAME,
-    QString("<h3>") + PACKAGE_NAME + " " + PACKAGE_VERSION + QString("</h3><p>") + myCopyright +
-    tr("<p>MediaSpy is a movie collection cataloging software. Still in heavy development!"));
-}
-
-
 /** \fn void MediaSpy::displayMessage(QString message)
  *  \brief Displays a message in the status bar.
  */
@@ -358,45 +398,6 @@ void MediaSpy::displayMessage(const QString message) {
  */
 void MediaSpy::displayPermanentMessage(const QString message) {
     statusLabel_->setText(message);
-}
-
-
-/** \fn void MediaSpy::finishedUpdateThread()
- *  \brief Defines what is done when the update thread is done.
- */
-void MediaSpy::finishedUpdateThread() {
-    sqlTableModel_->select();
-
-    // this may freeze window with long table!
-    while(sqlTableModel_->canFetchMore())
-        sqlTableModel_->fetchMore();
-
-    sqlTableModel_->setList();
-    InfoManager::getInstance()->updateMediaCollectionInfo();
-}
-
-
-/** \fn void MediaSpy::editDialog()
- *  \brief Opens a EditMediaDialog dialog
- */
-void MediaSpy::editDialog() {
-    QItemSelectionModel* selectionModel = ui_->mediaListView->selectionModel();
-    QModelIndexList indexList = selectionModel->selectedRows();
-
-//    sqlTableModel_->select(); // update data
-
-    QSortFilterProxyModel* proxyModel = new QSortFilterProxyModel(this);
-    proxyModel->setSourceModel(sqlTableModel_);
-    proxyModel->sort(2, Qt::AscendingOrder);
-    proxyModel->setSortCaseSensitivity(Qt::CaseInsensitive);
-
-    QDataWidgetMapper* mapper = new QDataWidgetMapper(this);
-    mapper->setModel(proxyModel);
-
-    EditMediaDialog dialog(indexList, mapper);
-
-    if (dialog.exec() != QDialog::Accepted)
-        return;
 }
 
 
@@ -463,18 +464,6 @@ void MediaSpy::on_progressButton_clicked() {
     updateThread_->quit();
     InfoManager::getInstance()->getImdbThread()->quit();
     displayMessage();
-}
-
-
-/** \fn void MediaSpy::on_actionRescan_triggered()
-  *  \brief Rescans the Collection.
-  */
-void MediaSpy::on_actionRescan_collection_triggered() {
-    QStringList upCollectionList;
-    for(int i = 0; i < Collection::getInstance()->getNDir(); ++i)
-        upCollectionList << Collection::getInstance()->getDirAt(i);
-
-    updateCollections(upCollectionList);
 }
 
 

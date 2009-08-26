@@ -83,7 +83,6 @@ class MediaSpy : public QMainWindow {
 
     // Operations
     void init();
-    void updateCollections(QStringList&);
     void writeSettings();
     void readSettings();
     void closeEvent(QCloseEvent*);
@@ -110,7 +109,6 @@ public:
 private slots:
     void on_filterSeenComboBox_currentIndexChanged(int index);
     void on_filterLineEdit_textChanged(QString );
-    void on_actionRescan_collection_triggered();
     void on_progressButton_clicked();
     void isMediaFound(bool, QString);
     void on_actionAbout_MediaSpy_triggered();
@@ -123,6 +121,7 @@ private slots:
     void finishedUpdateThread();
     void selectedMovie(QModelIndex, QModelIndex);
     void editDialog();
+    void updateCollections();
 
 };
 

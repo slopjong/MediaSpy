@@ -1,6 +1,10 @@
 CHANGELOG.txt
 =============
 
+0.6.6
+- Refactor the CollectionDialog listView and the Collection class
+
+
 0.6.5
 - clean the empty program state
 - media selection is now multiple

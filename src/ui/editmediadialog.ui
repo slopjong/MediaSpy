@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>531</width>
-    <height>332</height>
+    <width>529</width>
+    <height>330</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -59,26 +59,65 @@
         </layout>
        </item>
        <item>
-        <widget class="QCheckBox" name="seenCheckBox">
-         <property name="text">
-          <string>Seen</string>
-         </property>
-         <property name="tristate">
-          <bool>true</bool>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>Tags</string>
          </property>
         </widget>
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <widget class="QLabel" name="tagLabel">
+          <widget class="QLineEdit" name="tagLineEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QComboBox" name="minusComboBox"/>
+         </item>
+         <item>
+          <widget class="QToolButton" name="minusToolButton">
            <property name="text">
-            <string>Tags:</string>
+            <string notr="true">...</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../resources/MediaSpy.qrc">
+             <normaloff>:/icons/minus.png</normaloff>:/icons/minus.png</iconset>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="tagLineEdit"/>
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QComboBox" name="plusComboBox">
+           <property name="editable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="plusToolButton">
+           <property name="text">
+            <string notr="true">...</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../resources/MediaSpy.qrc">
+             <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -95,12 +134,35 @@
          </property>
         </spacer>
        </item>
+       <item>
+        <widget class="QCheckBox" name="seenCheckBox">
+         <property name="text">
+          <string>Seen</string>
+         </property>
+         <property name="tristate">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_2">
+     <widget class="QWidget" name="imdbTab">
       <attribute name="title">
        <string>Imdb</string>
       </attribute>
+      <widget class="QCheckBox" name="removeInfoCheckBox">
+       <property name="geometry">
+        <rect>
+         <x>370</x>
+         <y>230</y>
+         <width>121</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Remove data?</string>
+       </property>
+      </widget>
      </widget>
     </widget>
    </item>
@@ -154,7 +216,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../resources/MediaSpy.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

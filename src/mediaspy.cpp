@@ -301,6 +301,7 @@ void MediaSpy::editDialog() {
     proxyModel->setSortCaseSensitivity(Qt::CaseInsensitive);
 
     QDataWidgetMapper* mapper = new QDataWidgetMapper(this);
+    mapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
     mapper->setModel(proxyModel);
 
     EditMediaDialog dialog(indexList, mapper);

@@ -31,6 +31,8 @@ namespace Ui {
     class EditMediaDialog;
 }
 
+namespace tabPage { enum e { info, imdb }; }
+
 class EditMediaDialog : public QDialog {
     Q_OBJECT
 

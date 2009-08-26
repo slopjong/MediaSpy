@@ -63,10 +63,13 @@ void EditMediaDialog::init() {
     ui_->setupUi(this);
     ui_->previousButton->setEnabled(false);
     ui_->nextButton->setEnabled(false);
+    ui_->tagLineEdit->setEnabled(false);
+    ui_->tabWidget->setTabEnabled(tabPage::imdb, false);
 
     // mapper
     mapper_->addMapping(ui_->mediaNameLabel, tableMedia::baseName, "text"); // baseName field, but in fact fileName
     mapper_->addMapping(ui_->seenCheckBox, tableMedia::seen); // seen field
+    mapper_->addMapping(ui_->removeInfoCheckBox, tableMedia::imdbInfo); // imdbInfo field
     mapper_->setCurrentIndex(selectionPos_);
 
     // filling what mapper cannot get
@@ -82,7 +85,9 @@ void EditMediaDialog::init() {
         setWindowTitle(tr("Details on %1").arg(indexList_.at(0).data(Qt::DisplayRole).toString()) + QString(" - MediaSpy"));
         ui_->parMediaCheckBox->setEnabled(false);
         setTagLineEdit();
+        ui_->tagLineEdit->setEnabled(true);
     }
+qWarning() << indexList_.at(0);
 }
 
 
@@ -130,13 +135,17 @@ void EditMediaDialog::setTagLineEdit() {
 void EditMediaDialog::on_parMediaCheckBox_clicked(bool checked) {
     if(checked) { // per media
         ui_->nextButton->setEnabled(true);
+        ui_->tagLineEdit->setEnabled(true);
         ui_->mediaNameTitleLabel->setEnabled(true);
         mapper_->setCurrentIndex(selectionPos_);
+        ui_->tabWidget->setTabEnabled(tabPage::imdb, ui_->removeInfoCheckBox->isChecked());
     }
     else { // all medias
         ui_->previousButton->setEnabled(false);
         ui_->nextButton->setEnabled(false);
         ui_->mediaNameTitleLabel->setEnabled(false);
+        ui_->tagLineEdit->setEnabled(false);
+        ui_->tabWidget->setTabEnabled(tabPage::imdb, false);
         ui_->mediaNameLabel->setText(QString());
         ui_->tagLineEdit->setText(QString());
         setSeenCheckBoxState();
@@ -147,7 +156,8 @@ void EditMediaDialog::on_parMediaCheckBox_clicked(bool checked) {
 void EditMediaDialog::toNext() {
     selectionPos_++;
     setTagLineEdit();
-    mapper_->setCurrentIndex(selectionPos_);    
+    mapper_->setCurrentIndex(selectionPos_);
+    ui_->tabWidget->setTabEnabled(tabPage::imdb, ui_->removeInfoCheckBox->isChecked());
 
     ui_->previousButton->setEnabled(true);
     if(selectionPos_ == indexList_.at(0).row() + indexList_.count() - 1)
@@ -159,6 +169,7 @@ void EditMediaDialog::toPrevious() {
     selectionPos_--;
     setTagLineEdit();
     mapper_->setCurrentIndex(selectionPos_);
+    ui_->tabWidget->setTabEnabled(tabPage::imdb, ui_->removeInfoCheckBox->isChecked());
 
     ui_->nextButton->setEnabled(true);
     if(selectionPos_ == indexList_.at(0).row())

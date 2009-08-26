@@ -60,9 +60,8 @@ void myQSqlTableModel::setKeyTocheck( bool ok, const QString& fileName ) {
     QFileInfo fileInfo = QFileInfo(fileName);
     QString keyToCheck = fileInfo.completeBaseName();
 
-    for(int row = 0; row < this->rowCount(); ++row) {
-        QModelIndex i = this->index(row, 0);
-        const QString indexString = i.data().toString();
+    for(int row = 0; row < rowCount(); ++row) {
+        const QString indexString = index(row, tableMedia::baseName).data().toString();
         if(keyToCheck == indexString)
             etatList_[row] = (ok) ? 2 : 1;
     }

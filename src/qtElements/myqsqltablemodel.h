@@ -26,6 +26,7 @@
 #include <QFileInfo>
 #include <QSqlTableModel>
 
+#include "../databasemanager.h"
 
 class myQSqlTableModel : public QSqlTableModel {
     Q_OBJECT;

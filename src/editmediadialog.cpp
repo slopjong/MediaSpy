@@ -65,8 +65,8 @@ void EditMediaDialog::init() {
     ui_->nextButton->setEnabled(false);
 
     // mapper
-    mapper_->addMapping(ui_->mediaNameLabel, 3, "text"); // title field
-    mapper_->addMapping(ui_->seenCheckBox, 6); // seen field
+    mapper_->addMapping(ui_->mediaNameLabel, tableMedia::baseName, "text"); // baseName field, but in fact fileName
+    mapper_->addMapping(ui_->seenCheckBox, tableMedia::seen); // seen field
     mapper_->setCurrentIndex(selectionPos_);
 
     // filling what mapper cannot get

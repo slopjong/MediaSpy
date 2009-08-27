@@ -35,19 +35,34 @@ MediaSpy::MediaSpy(QWidget *parent) :
         , updateThread_(new UpdateThread(this))
         , mediaListProxyModel_(new myQSortFilterProxyModel(this))
         , statusLabel_(new QLabel(this))
+        , filterTitleString_(QString(tr("Search")))
+        , filterTagString_(QString(tr("Search tags (comma separated)")))
+        , filtersLineEditStyle_(QString("font: italic; color: darkgray;"))
 {
     // view settings
     ui_->setupUi(this);
+    // progress bar
     ui_->progressBar->setMinimum(0);
     ui_->progressBar->setVisible(false);
     ui_->progressButton->setVisible(false);
+    // splitter
     ui_->splitter->setSizes(QList<int>() << ui_->centralWidget->size().width()/2 << ui_->centralWidget->size().width()/2);
-    ui_->filterLineEdit->setFocus(Qt::MouseFocusReason);
+    // permanent status bar
     ui_->statusBar->addPermanentWidget(statusLabel_);
     statusLabel_->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    // filters style
+    ui_->filterLineEdit->installEventFilter(this);
+    ui_->filterLineEdit->setFocus(Qt::MouseFocusReason);
+    ui_->filterTagLineEdit->installEventFilter(this);
+    ui_->filterTagLineEdit->setStyleSheet(filtersLineEditStyle_);
+    ui_->filterTagLineEdit->setText(filterTagString_);
+    // seen filter combobox
     static const QStringList filterList = QStringList() << tr("All") << tr("Watched") << tr("Unwatched"); // order is important!
     ui_->filterSeenComboBox->addItems(filterList);
     ui_->filterSeenComboBox->setItemData(0, Qt::TextAlignmentRole, Qt::AlignCenter);
+
+
+
 
     // program really begins here!
     readSettings();
@@ -245,6 +260,32 @@ void MediaSpy::closeEvent(QCloseEvent *event) {
 void MediaSpy::updateCollections() {
     Collection::getInstance()->update();
     updateThread_->start();
+}
+
+
+bool MediaSpy::eventFilter(QObject *obj, QEvent *event) {
+    if (obj == ui_->filterTagLineEdit) {
+        if (event->type() == QEvent::FocusIn) {
+            ui_->filterTagLineEdit->clear();
+            ui_->filterTagLineEdit->setStyleSheet(QString());
+        }
+        if (event->type() == QEvent::FocusOut && ui_->filterTagLineEdit->text().isEmpty()) {
+            ui_->filterTagLineEdit->setText(filterTagString_);
+            ui_->filterTagLineEdit->setStyleSheet(filtersLineEditStyle_);
+        }
+    }
+    else if (obj == ui_->filterLineEdit) {
+        if (event->type() == QEvent::FocusIn) {
+            ui_->filterLineEdit->clear();
+            ui_->filterLineEdit->setStyleSheet(QString());
+        }
+        if (event->type() == QEvent::FocusOut && ui_->filterLineEdit->text().isEmpty()) {
+            ui_->filterLineEdit->setText(filterTitleString_);
+            ui_->filterLineEdit->setStyleSheet(filtersLineEditStyle_);
+        }
+    }
+
+    return QMainWindow::eventFilter(obj, event);
 }
 
 
@@ -478,7 +519,8 @@ void MediaSpy::on_progressButton_clicked() {
   *  \brief Puts the text into the filter.
   */
 void MediaSpy::on_filterLineEdit_textChanged(QString newString) {
-    mediaListProxyModel_->setFilterRegExp(QRegExp(newString, Qt::CaseInsensitive, QRegExp::FixedString));
+    if(newString != filterTitleString_)
+        mediaListProxyModel_->setFilterRegExp(QRegExp(newString, Qt::CaseInsensitive, QRegExp::FixedString));
 }
 
 

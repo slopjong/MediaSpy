@@ -79,6 +79,9 @@ class MediaSpy : public QMainWindow {
     myQSortFilterProxyModel* mediaListProxyModel_;
     QLabel* statusLabel_;
     QString errorMessage_;
+    QString filterTitleString_;
+    QString filterTagString_;
+    QString filtersLineEditStyle_;
 
 
     // Operations
@@ -88,6 +91,7 @@ class MediaSpy : public QMainWindow {
     void closeEvent(QCloseEvent*);
     void makeConnections();
     void displayPermanentMessage(const QString = 0);
+    bool eventFilter(QObject*, QEvent*);
 
 
 public:

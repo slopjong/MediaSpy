@@ -87,3 +87,6 @@ INSTALLS += bin translations
 archive.commands = git archive --format=tar --prefix=mediaspy-$${PACKAGE_VERSION}/ HEAD | bzip2 > mediaspy-$${PACKAGE_VERSION}.tar.bz2
 QMAKE_EXTRA_UNIX_TARGETS += archive
 
+# scp to fedora
+hosted.commands = scp mediaspy-$${PACKAGE_VERSION}.tar.bz2 spechard@fedorahosted.org:mediaspy
+QMAKE_EXTRA_UNIX_TARGETS += hosted

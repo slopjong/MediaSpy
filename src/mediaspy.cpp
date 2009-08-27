@@ -160,6 +160,8 @@ void MediaSpy::makeConnections() {
             mediaListProxyModel_, SLOT(invalidateProxyModel()));
     connect(ui_->mediaListView, SIGNAL(updateMedia()),
             InfoManager::getInstance(), SLOT(updateStats()));
+    connect(ui_->mediaListView, SIGNAL(updateMedia()),
+            this, SLOT(updateSqlTableModel()));
 
     // for myqlistview
     connect(ui_->mediaListView->editTagAct_, SIGNAL(triggered()), this, SLOT(editDialog()));
@@ -239,6 +241,14 @@ void MediaSpy::init() {
     // collections init //
     //////////////////////
     Collection::getInstance()->update();
+
+    ////////////////////
+    // completer init //
+    ////////////////////
+    QStringList tagList = DatabaseManager::getInstance()->getTagList();
+    tagsCompleter = new QCompleter(tagList, this);
+    tagsCompleter->setCaseSensitivity(Qt::CaseInsensitive);
+    ui_->filterTagLineEdit->setCompleter(tagsCompleter);
 }
 
 
@@ -264,7 +274,7 @@ void MediaSpy::updateCollections() {
 
 bool MediaSpy::eventFilter(QObject *obj, QEvent *event) {
     if (obj == ui_->filterTagLineEdit) {
-        if (event->type() == QEvent::FocusIn) {
+        if (event->type() == QEvent::FocusIn && ui_->filterTagLineEdit->text() == filterTagString_) {
             ui_->filterTagLineEdit->clear();
             ui_->filterTagLineEdit->setStyleSheet(QString());
         }
@@ -283,7 +293,6 @@ bool MediaSpy::eventFilter(QObject *obj, QEvent *event) {
             ui_->filterLineEdit->setStyleSheet(filtersLineEditStyle_);
         }
     }
-
     return QMainWindow::eventFilter(obj, event);
 }
 
@@ -339,7 +348,7 @@ void MediaSpy::editDialog() {
     if(indexList.count()>0) {
         QSortFilterProxyModel* proxyModel = new QSortFilterProxyModel(this);
         proxyModel->setSourceModel(sqlTableModel_);
-        proxyModel->sort(2, Qt::AscendingOrder);
+        proxyModel->sort(tableMedia::baseName, Qt::AscendingOrder);
         proxyModel->setSortCaseSensitivity(Qt::CaseInsensitive);
 
         QDataWidgetMapper* mapper = new QDataWidgetMapper(this);
@@ -363,6 +372,15 @@ void MediaSpy::editDialog() {
  *  \brief Defines what is done when the update thread is done.
  */
 void MediaSpy::finishedUpdateThread() {
+    updateSqlTableModel();
+    InfoManager::getInstance()->updateMediaCollectionInfo();
+}
+
+
+/** \fn void MediaSpy::updateSqlTableModel()
+ *  \brief Updates the sql table model.
+ */
+void MediaSpy::updateSqlTableModel() {
     sqlTableModel_->select();
 
     // this may freeze window with long table!
@@ -370,7 +388,6 @@ void MediaSpy::finishedUpdateThread() {
         sqlTableModel_->fetchMore();
 
     sqlTableModel_->setList();
-    InfoManager::getInstance()->updateMediaCollectionInfo();
 }
 
 
@@ -520,6 +537,12 @@ void MediaSpy::on_progressButton_clicked() {
 void MediaSpy::on_filterLineEdit_textChanged(QString newString) {
     if(newString != filterTitleString_)
         mediaListProxyModel_->setFilterRegExp(QRegExp(newString, Qt::CaseInsensitive, QRegExp::FixedString));
+}
+
+
+void MediaSpy::on_filterTagLineEdit_textChanged(QString newString) {
+//    if(newString != filterTagString_)
+//        mediaListProxyModel_->setFilterRegExp(QRegExp(newString, Qt::CaseInsensitive, QRegExp::FixedString));
 }
 
 

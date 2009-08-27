@@ -84,15 +84,6 @@ void myQListView::contextMenuEvent(QContextMenuEvent* event) {
 }
 
 
-/*void myQListView::applyTag(QString& tagName) {
-    QItemSelectionModel* selectionModel = this->selectionModel();
-    QModelIndexList indexList = selectionModel->selectedRows();
-    for (int i = 0; i < indexList.size(); ++i)
-        if (indexList.at(i).isValid())
-            DatabaseManager::getInstance()->addTagToMedia(tagName, indexList.at(i).data().toString());
-}*/
-
-
 
 ///////////
 // slots //
@@ -101,9 +92,11 @@ void myQListView::seenMedia(bool checked) {
     QItemSelectionModel* selectionModel = this->selectionModel();
     QModelIndexList indexList = selectionModel->selectedRows();
     QStringList nameList;
+
     for (int i = 0; i < indexList.size(); ++i)
         if (indexList.at(i).isValid())
             nameList << QString(indexList.at(i).data().toString());
+
     if(checked)
         DatabaseManager::getInstance()->setMediaSeen(nameList);
     else
@@ -112,28 +105,4 @@ void myQListView::seenMedia(bool checked) {
     emit updateMedia();
     menu_->setVisible(false);
 }
-
-
-/*void myQListView::newTag() {
-    QString newTagName = editLine_->text();
-    if(!newTagName.isEmpty()) {
-        DatabaseManager::getInstance()->insertTag(newTagName); // add tag to the database
-        applyTag(newTagName); // apply this tag to the selection
-        menu_->setVisible(false);
-    }
-}
-
-
-void myQListView::tagSlot() {
-    QAction* actionSender = (QAction*)this->sender();
-    QString tagName = actionSender->text();
-    applyTag(tagName);
-
-    QItemSelectionModel* selectionModel = this->selectionModel();
-    QModelIndexList indexList = selectionModel->selectedRows();
-    QString s = QString(indexList.at(indexList.count() - 1).data().toString());
-    QString mediaName = DatabaseManager::getInstance()->getMediaFullName(s);
-
-    emit tagApplied(mediaName);
-}*/
 

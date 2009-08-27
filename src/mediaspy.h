@@ -82,7 +82,7 @@ class MediaSpy : public QMainWindow {
     QString filterTitleString_;
     QString filterTagString_;
     QString filtersLineEditStyle_;
-
+    QCompleter* tagsCompleter;
 
     // Operations
     void init();
@@ -111,6 +111,7 @@ public:
 
 
 private slots:
+    void on_filterTagLineEdit_textChanged(QString );
     void on_toggleFilterWidget_clicked();
     void on_filterSeenComboBox_currentIndexChanged(int index);
     void on_filterLineEdit_textChanged(QString );
@@ -127,6 +128,7 @@ private slots:
     void selectedMovie(QModelIndex, QModelIndex);
     void editDialog();
     void updateCollections();
+    void updateSqlTableModel();
 
 };
 

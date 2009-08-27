@@ -312,8 +312,10 @@ void DatabaseManager::setMediaSeen(const QStringList& baseNameList, bool checked
     foreach(baseName, baseNameList) {
         q.bindValue(0, checked);
         q.bindValue(1, baseName);
-        if (!q.exec())
+        if (!q.exec()) {
+            QSqlDatabase::database().rollback();
             throw(q.lastError()); // TODO handle this!
+        }
     }
     QSqlDatabase::database().commit();
 }
@@ -355,6 +357,7 @@ void DatabaseManager::insertMedias(const QList<Media>& mediaList) {
         if (!q.exec()) {
             if(q.lastError().type()==1 && q.lastError().text()=="constraint failed Unable to fetch row")
                 continue;
+            QSqlDatabase::database().rollback();
             throw(q.lastError()); // TODO handle this!
         }
     }
@@ -373,10 +376,11 @@ void DatabaseManager::removeMedias(const QStringList& mediaFileNames) {
     QString s;
     foreach(s, mediaFileNames) {
         q.bindValue(0, s);
-        if (!q.exec())
+        if (!q.exec()) {
+            QSqlDatabase::database().rollback();
             throw(q.lastError()); // TODO handle this!
+        }
     }
-
     QSqlDatabase::database().commit();
 }
 
@@ -436,8 +440,10 @@ void DatabaseManager::insertMovieMedia(MovieMedia movieMedia) {
         q.bindValue(5, movieMedia.isSeen());
         q.bindValue(6, movieMedia.isRecommended());
 
-        if (!q.exec())
+        if (!q.exec()) {
+            QSqlDatabase::database().rollback();
             throw(q.lastError()); // TODO handle this!
+        }
     }
 
     // insert InfoImdb
@@ -457,15 +463,19 @@ void DatabaseManager::insertMovieMedia(MovieMedia movieMedia) {
     q.bindValue(10, movieMedia.getCast());
     q.bindValue(11, movieMedia.getPlot());
 
-    if (!q.exec())
+    if (!q.exec()) {
+        QSqlDatabase::database().rollback();
         throw(q.lastError()); // TODO handle this!
+    }
 
     // change infoImdb in Media
     q.prepare("UPDATE Media SET imdbInfo = 'true' WHERE fileName = ?");
     q.bindValue(0, movieMedia.getFileName());
 
-    if (!q.exec())
+    if (!q.exec()) {
+        QSqlDatabase::database().rollback();
         throw(q.lastError()); // TODO handle this!
+    }
 
     QSqlDatabase::database().commit();
 }

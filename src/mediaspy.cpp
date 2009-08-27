@@ -36,7 +36,6 @@ MediaSpy::MediaSpy(QWidget *parent) :
         , mediaListProxyModel_(new myQSortFilterProxyModel(this))
         , statusLabel_(new QLabel(this))
         , filterTitleString_(QString(tr("Search")))
-        , filterTagString_(QString(tr("Search tags (comma separated)")))
         , filtersLineEditStyle_(QString("font: italic; color: darkgray;"))
         , tagsMenu_(new QMenu(this))
         , selectAllTagsMenu_(new QAction(this))

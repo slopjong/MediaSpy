@@ -80,9 +80,7 @@ class MediaSpy : public QMainWindow {
     QLabel* statusLabel_;
     QString errorMessage_;
     QString filterTitleString_;
-    QString filterTagString_;
     QString filtersLineEditStyle_;
-//    QCompleter* tagsCompleter;
     QStringList tagsList_;
     QMenu* tagsMenu_;
     QAction* selectAllTagsMenu_;

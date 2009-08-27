@@ -4,7 +4,7 @@
 <context>
     <name>Collection</name>
     <message>
-        <location filename="../src/collection.cpp" line="129"/>
+        <location filename="../src/collection.cpp" line="101"/>
         <source>Searching in %1...</source>
         <translation>தற்போதைய  தேடுதல்  %1...</translation>
     </message>
@@ -12,7 +12,7 @@
 <context>
     <name>CollectionDialog</name>
     <message>
-        <location filename="../src/collectiondialog.cpp" line="67"/>
+        <location filename="../src/collectiondialog.cpp" line="57"/>
         <source>Choose a directory</source>
         <translation>அடைவை தெரிவு செய்</translation>
     </message>
@@ -45,13 +45,18 @@
 <context>
     <name>EditMediaDialog</name>
     <message>
-        <location filename="../src/editmediadialog.cpp" line="78"/>
+        <location filename="../src/editmediadialog.cpp" line="88"/>
         <source>Details on %1 medias</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/editmediadialog.cpp" line="83"/>
+        <location filename="../src/editmediadialog.cpp" line="91"/>
         <source>Details on %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/editmediadialog.cpp" line="175"/>
+        <source>New tag &apos;%1&apos; created!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -65,38 +70,43 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/editmediadialog.ui" line="32"/>
-        <source>Full path:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/editmediadialog.ui" line="64"/>
+        <location filename="../src/ui/editmediadialog.ui" line="140"/>
         <source>Seen</source>
         <translation type="unfinished">பார்க்கப்பட்டது</translation>
     </message>
     <message>
-        <location filename="../src/ui/editmediadialog.ui" line="73"/>
-        <source>Tags:</source>
+        <location filename="../src/ui/editmediadialog.ui" line="30"/>
+        <source>Full path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/editmediadialog.ui" line="99"/>
+        <location filename="../src/ui/editmediadialog.ui" line="49"/>
+        <source>Tags</source>
+        <translation type="unfinished">Tags</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/editmediadialog.ui" line="55"/>
+        <source>tags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/editmediadialog.ui" line="155"/>
         <source>Imdb</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/editmediadialog.ui" line="109"/>
+        <location filename="../src/ui/editmediadialog.ui" line="167"/>
+        <source>Remove data?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/editmediadialog.ui" line="178"/>
         <source>previous</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/editmediadialog.ui" line="116"/>
+        <location filename="../src/ui/editmediadialog.ui" line="185"/>
         <source>next</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/ui/editmediadialog.ui" line="123"/>
-        <source>Per media</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -208,7 +218,7 @@
 <context>
     <name>MediaSpy</name>
     <message>
-        <location filename="../src/mediaspy.cpp" line="48"/>
+        <location filename="../src/mediaspy.cpp" line="61"/>
         <source>All</source>
         <translation>அனைத்தும்</translation>
     </message>
@@ -217,37 +227,37 @@
         <translation type="obsolete">பார்க்கப்பட்டது</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="48"/>
+        <location filename="../src/mediaspy.cpp" line="61"/>
         <source>Watched</source>
         <translation>அடைவு கவனிக்கப்படும்</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="48"/>
+        <location filename="../src/mediaspy.cpp" line="61"/>
         <source>Unwatched</source>
         <translation>அடைவு கவனிக்கப்படாது</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="61"/>
+        <location filename="../src/mediaspy.cpp" line="74"/>
         <source>Error</source>
         <translation>பிழை</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="164"/>
+        <location filename="../src/mediaspy.cpp" line="193"/>
         <source>Cannot create local directory!</source>
         <translation>அடைவை உருவாக்க முடியவில்லை</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="171"/>
+        <location filename="../src/mediaspy.cpp" line="200"/>
         <source>Cannot create local style directory!</source>
         <translation>அடைவை உருவாக்க முடியவில்லை </translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="178"/>
+        <location filename="../src/mediaspy.cpp" line="207"/>
         <source>Cannot create local cover directory!</source>
         <translation>அடைவை பரிசோதிக்க முடியவில்லை </translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="194"/>
+        <location filename="../src/mediaspy.cpp" line="223"/>
         <source>This program needs the SQLITE driver.</source>
         <translation>இந்த  மென்பொருள் இயங்க  SQLITE இயக்கி தேவை</translation>
     </message>
@@ -256,16 +266,15 @@
         <translation type="obsolete">சல்லடை</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="34"/>
         <source>Title</source>
-        <translation>தலைப்பு</translation>
+        <translation type="obsolete">தலைப்பு</translation>
     </message>
     <message>
         <source>Title: %1</source>
         <translation type="obsolete">தலைப்பு: %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/mediaspy.cpp" line="321"/>
+        <location filename="../src/mediaspy.cpp" line="495"/>
         <source>%n movie(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -273,12 +282,27 @@
         </translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="332"/>
+        <location filename="../src/mediaspy.cpp" line="335"/>
         <source>About </source>
         <translation>பற்றி</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="334"/>
+        <location filename="../src/mediaspy.cpp" line="38"/>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mediaspy.cpp" line="268"/>
+        <source>Select all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mediaspy.cpp" line="269"/>
+        <source>Deselect all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mediaspy.cpp" line="337"/>
         <source>&lt;p&gt;MediaSpy is a movie collection cataloging software. Still in heavy development!</source>
         <translation>&lt;p&gt;MediaSpy ஒரு திரைப்பட சேகரிப்பு பட்டியல் தயாரிப்பு மென்பொருள்.தற்போது  பலத்த தயாரிப்பு நிலையில் உள்ளது!</translation>
     </message>
@@ -288,9 +312,8 @@
         <translation>MediaSpy</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="48"/>
         <source>Tags</source>
-        <translation>Tags</translation>
+        <translation type="obsolete">Tags</translation>
     </message>
     <message>
         <source>...</source>
@@ -301,8 +324,8 @@
         <translation type="obsolete">தகவல்</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="122"/>
-        <location filename="../src/ui/mediaspy.ui" line="148"/>
+        <location filename="../src/ui/mediaspy.ui" line="135"/>
+        <location filename="../src/ui/mediaspy.ui" line="161"/>
         <source>about:blank</source>
         <translation>about:blank</translation>
     </message>
@@ -315,51 +338,71 @@
         <translation type="obsolete">imdb</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="109"/>
+        <location filename="../src/ui/mediaspy.ui" line="61"/>
+        <source>Tags filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/mediaspy.ui" line="122"/>
         <source>info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="135"/>
+        <location filename="../src/ui/mediaspy.ui" line="148"/>
         <source>stats</source>
         <translation>புள்ளிவிவரங்கள்</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="171"/>
+        <location filename="../src/ui/mediaspy.ui" line="184"/>
         <source>File</source>
         <translation>கோப்பு</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="177"/>
+        <location filename="../src/ui/mediaspy.ui" line="190"/>
         <source>Help</source>
         <translation>உதவி</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="184"/>
+        <location filename="../src/ui/mediaspy.ui" line="197"/>
         <source>Options</source>
         <translation>தேர்வுகள்</translation>
     </message>
     <message>
         <location filename="../src/ui/mediaspy.ui" line="204"/>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/mediaspy.ui" line="220"/>
         <source>About MediaSpy</source>
         <translation>MediaSpyயை பற்றி</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="209"/>
+        <location filename="../src/ui/mediaspy.ui" line="225"/>
         <source>About Qt</source>
         <translation>Qtயை பற்றி</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="214"/>
+        <location filename="../src/ui/mediaspy.ui" line="230"/>
         <source>Quit</source>
         <translation>மூடு</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/mediaspy.ui" line="258"/>
+        <source>Edit information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ui/mediaspy.ui" line="261"/>
+        <source>Edit the information of the selectionned medias.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Ctrl+Q</source>
         <translation type="obsolete">Ctrl+Q</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="222"/>
+        <location filename="../src/ui/mediaspy.ui" line="238"/>
         <source>Select directories</source>
         <translation>அடைவுகளை தெரிவு செய்</translation>
     </message>
@@ -368,7 +411,7 @@
         <translation type="obsolete">Ctrl+D</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="230"/>
+        <location filename="../src/ui/mediaspy.ui" line="246"/>
         <source>Rescan collection</source>
         <translation>தொகுப்பை மீண்டும் பரிசோதி</translation>
     </message>

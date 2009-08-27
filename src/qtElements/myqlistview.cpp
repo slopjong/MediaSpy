@@ -36,7 +36,7 @@ myQListView::myQListView(QWidget *parent)
     checkBox_->setText(tr("Seen"));
 
     // connections
-    connect(this->checkBox_, SIGNAL(clicked(bool)), this, SLOT(seenMedia(bool)));
+    connect(checkBox_, SIGNAL(clicked(bool)), this, SLOT(seenMedia(bool)));
 }
 
 myQListView::~myQListView() {

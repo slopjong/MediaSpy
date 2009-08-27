@@ -31,6 +31,7 @@ class myQSortFilterProxyModel : public QSortFilterProxyModel {
 
     // Fields
     int myIndexChanged_;
+    QStringList tagsSearched_;
 
 public:
     // Constructors
@@ -40,9 +41,12 @@ public:
     // Operations
     bool filterAcceptsRow(int, const QModelIndex&) const;
     bool filterAcceptsColumn(int, const QModelIndex&) const;
+    void addTagToFilter(QString&);
+    void removeTagToFilter(QString&);
 
     // Accessor Methods
     void setIndexChanged(int);
+    void setTagFilterString(QString&);
 
 
 public slots:

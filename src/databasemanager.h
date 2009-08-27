@@ -69,6 +69,7 @@ public:
     int getMediaId(QString&);
 
     QStringList getMediaTagList(int);
+    QStringList getMediaTagList(QString&);
     QStringList getTagList();
     void insertTag(QString&);
     void addTagToMedia(QString&, QString);

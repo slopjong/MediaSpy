@@ -82,7 +82,14 @@ class MediaSpy : public QMainWindow {
     QString filterTitleString_;
     QString filterTagString_;
     QString filtersLineEditStyle_;
-    QCompleter* tagsCompleter;
+//    QCompleter* tagsCompleter;
+    QStringList tagsList_;
+    QMenu* tagsMenu_;
+    QAction* selectAllTagsMenu_;
+    QAction* unselectAllTagsMenu_;
+    QList<QCheckBox*> tagMenuCheckBoxList_;
+    QList<QWidgetAction*> tagMenuActionList_;
+
 
     // Operations
     void init();
@@ -92,6 +99,7 @@ class MediaSpy : public QMainWindow {
     void makeConnections();
     void displayPermanentMessage(const QString = 0);
     bool eventFilter(QObject*, QEvent*);
+    void createTagMenu();
 
 
 public:
@@ -111,7 +119,6 @@ public:
 
 
 private slots:
-    void on_filterTagLineEdit_textChanged(QString );
     void on_toggleFilterWidget_clicked();
     void on_filterSeenComboBox_currentIndexChanged(int index);
     void on_filterLineEdit_textChanged(QString );
@@ -129,6 +136,9 @@ private slots:
     void editDialog();
     void updateCollections();
     void updateSqlTableModel();
+    void tagSearched(bool);
+    void selectAllTags();
+    void unselectAllTags();
 
 };
 

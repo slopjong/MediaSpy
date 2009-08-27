@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>527</width>
-    <height>419</height>
+    <width>521</width>
+    <height>413</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -53,17 +53,17 @@
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout">
              <item>
-              <widget class="QLabel" name="filterTagLabel">
+              <widget class="QComboBox" name="filterSeenComboBox"/>
+             </item>
+             <item>
+              <widget class="QPushButton" name="filterTagButton">
                <property name="text">
-                <string>Tags</string>
+                <string>Tags filter</string>
+               </property>
+               <property name="shortcut">
+                <string notr="true">Ctrl+T</string>
                </property>
               </widget>
-             </item>
-             <item>
-              <widget class="myQLineEdit" name="filterTagLineEdit"/>
-             </item>
-             <item>
-              <widget class="QComboBox" name="filterSeenComboBox"/>
              </item>
             </layout>
            </item>
@@ -175,7 +175,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>527</width>
+     <width>521</width>
      <height>23</height>
     </rect>
    </property>

@@ -322,7 +322,7 @@ void DatabaseManager::setMediaSeen(const QStringList& baseNameList, bool checked
 
 
 /** \fn DatabaseManager::getNMediaSeen()
-  * \brief Sets
+  * \brief Returns the number of media set as seen.
   */
 int DatabaseManager::getNMediaSeen() {
     QSqlQuery q;
@@ -535,6 +535,21 @@ QStringList DatabaseManager::getMediaTagList(int id) {
         list << q.value(0).toString();
 
     return list;
+}
+
+
+QStringList DatabaseManager::getMediaTagList(QString& baseName) {
+    QSqlQuery q;
+    q.prepare("SELECT id FROM Media WHERE Media.baseName = ?");
+    q.bindValue(0, baseName);
+    if (!q.exec())
+        throw(q.lastError()); // TODO handle this!
+
+    int id;
+    while (q.next())
+        id = q.value(0).toInt();
+
+    return getMediaTagList(id);
 }
 
 

@@ -38,6 +38,9 @@ MediaSpy::MediaSpy(QWidget *parent) :
         , filterTitleString_(QString(tr("Search")))
         , filterTagString_(QString(tr("Search tags (comma separated)")))
         , filtersLineEditStyle_(QString("font: italic; color: darkgray;"))
+        , tagsMenu_(new QMenu(this))
+        , selectAllTagsMenu_(new QAction(this))
+        , unselectAllTagsMenu_(new QAction(this))
 {
     // view settings
     ui_->setupUi(this);
@@ -55,9 +58,6 @@ MediaSpy::MediaSpy(QWidget *parent) :
     // filters style
     ui_->filterLineEdit->installEventFilter(this);
     ui_->filterLineEdit->setFocus(Qt::MouseFocusReason);
-    ui_->filterTagLineEdit->installEventFilter(this);
-    ui_->filterTagLineEdit->setStyleSheet(filtersLineEditStyle_);
-    ui_->filterTagLineEdit->setText(filterTagString_);
     // seen filter combobox
     static const QStringList filterList = QStringList() << tr("All") << tr("Watched") << tr("Unwatched"); // order is important!
     ui_->filterSeenComboBox->addItems(filterList);
@@ -85,10 +85,18 @@ MediaSpy::~MediaSpy() {
     delete sqlTableModel_;
     delete mediaListProxyModel_;
     delete statusLabel_;
+    delete tagsMenu_;
+    delete selectAllTagsMenu_;
+    delete unselectAllTagsMenu_;
     InfoManager::getInstance()->kill();
     MediaCollection::getInstance()->kill();
     Collection::getInstance()->kill();
     DatabaseManager::getInstance()->kill();
+
+    qDeleteAll(tagMenuCheckBoxList_.begin(), tagMenuCheckBoxList_.end());
+    tagMenuCheckBoxList_.clear();
+    qDeleteAll(tagMenuActionList_.begin(), tagMenuActionList_.end());
+    tagMenuActionList_.clear();
 }
 
 
@@ -166,6 +174,10 @@ void MediaSpy::makeConnections() {
     // for myqlistview
     connect(ui_->mediaListView->editTagAct_, SIGNAL(triggered()), this, SLOT(editDialog()));
     connect(ui_->actionEdit_information, SIGNAL(triggered()), this, SLOT(editDialog()));
+
+    // for tagMenu
+    connect(selectAllTagsMenu_, SIGNAL(triggered()), this, SLOT(selectAllTags()));
+    connect(unselectAllTagsMenu_, SIGNAL(triggered()), this, SLOT(unselectAllTags()));
 }
 
 
@@ -242,13 +254,38 @@ void MediaSpy::init() {
     //////////////////////
     Collection::getInstance()->update();
 
-    ////////////////////
-    // completer init //
-    ////////////////////
-    QStringList tagList = DatabaseManager::getInstance()->getTagList();
-    tagsCompleter = new QCompleter(tagList, this);
-    tagsCompleter->setCaseSensitivity(Qt::CaseInsensitive);
-    ui_->filterTagLineEdit->setCompleter(tagsCompleter);
+    ///////////////////
+    // tag menu init //
+    ///////////////////
+    createTagMenu();
+}
+
+
+void MediaSpy::createTagMenu() {
+    // initiates the menu
+    tagsMenu_->clear();
+    tagMenuCheckBoxList_.clear();
+    tagMenuActionList_.clear();
+    selectAllTagsMenu_ = tagsMenu_->addAction(tr("Select all"));
+    unselectAllTagsMenu_ = tagsMenu_->addAction(tr("Deselect all"));
+    tagsMenu_->addSeparator();
+
+    // fill it with tags
+    tagsList_ = DatabaseManager::getInstance()->getTagList();
+    QString tag;
+    foreach(tag, tagsList_) {
+        QCheckBox* checkBox = new QCheckBox(this);
+        checkBox->setText(tag);
+        QWidgetAction* action = new QWidgetAction(this);
+        action->setDefaultWidget(checkBox);
+        tagsMenu_->addAction(action);
+
+        // storage for later
+        tagMenuCheckBoxList_.append(checkBox);
+        tagMenuActionList_.append(action);
+        connect(checkBox, SIGNAL(toggled(bool)), this, SLOT(tagSearched(bool)));
+    }
+    ui_->filterTagButton->setMenu(tagsMenu_);
 }
 
 
@@ -273,17 +310,7 @@ void MediaSpy::updateCollections() {
 
 
 bool MediaSpy::eventFilter(QObject *obj, QEvent *event) {
-    if (obj == ui_->filterTagLineEdit) {
-        if (event->type() == QEvent::FocusIn && ui_->filterTagLineEdit->text() == filterTagString_) {
-            ui_->filterTagLineEdit->clear();
-            ui_->filterTagLineEdit->setStyleSheet(QString());
-        }
-        if (event->type() == QEvent::FocusOut && ui_->filterTagLineEdit->text().isEmpty()) {
-            ui_->filterTagLineEdit->setText(filterTagString_);
-            ui_->filterTagLineEdit->setStyleSheet(filtersLineEditStyle_);
-        }
-    }
-    else if (obj == ui_->filterLineEdit) {
+    if (obj == ui_->filterLineEdit) {
         if (event->type() == QEvent::FocusIn) {
             ui_->filterLineEdit->clear();
             ui_->filterLineEdit->setStyleSheet(QString());
@@ -408,6 +435,29 @@ void MediaSpy::selectedMovie(QModelIndex current, QModelIndex previous) {
 }
 
 
+void MediaSpy::selectAllTags() {
+    QCheckBox* checkBox;
+    foreach(checkBox, tagMenuCheckBoxList_)
+        checkBox->setChecked(true);
+}
+
+
+void MediaSpy::unselectAllTags() {
+    QCheckBox* checkBox;
+    foreach(checkBox, tagMenuCheckBoxList_)
+        checkBox->setChecked(false);
+}
+
+
+void MediaSpy::tagSearched(bool checked) {
+    QString tag = tagMenuCheckBoxList_.at(tagMenuCheckBoxList_.indexOf((QCheckBox*)sender()))->text();
+    if(checked)
+        mediaListProxyModel_->addTagToFilter(tag);
+    else
+        mediaListProxyModel_->removeTagToFilter(tag);
+}
+
+
 /** \fn void MediaSpy::isMediaFound(bool ok, QString fileName)
  *  \brief Sets the key to be checked if info has been found on the media.
  */
@@ -510,6 +560,7 @@ const QString MediaSpy::getDefaultCoverName() {
 }
 
 
+
 /////////////////////
 // actions methods //
 /////////////////////
@@ -537,12 +588,6 @@ void MediaSpy::on_progressButton_clicked() {
 void MediaSpy::on_filterLineEdit_textChanged(QString newString) {
     if(newString != filterTitleString_)
         mediaListProxyModel_->setFilterRegExp(QRegExp(newString, Qt::CaseInsensitive, QRegExp::FixedString));
-}
-
-
-void MediaSpy::on_filterTagLineEdit_textChanged(QString newString) {
-//    if(newString != filterTagString_)
-//        mediaListProxyModel_->setFilterRegExp(QRegExp(newString, Qt::CaseInsensitive, QRegExp::FixedString));
 }
 
 

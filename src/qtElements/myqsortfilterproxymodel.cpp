@@ -37,17 +37,24 @@ myQSortFilterProxyModel::~myQSortFilterProxyModel() {}
 // methods //
 /////////////
 bool myQSortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const {
-    QModelIndex index0 = sourceModel()->index(sourceRow, tableMedia::baseName, sourceParent);
-    QString itemValue = sourceModel()->data(index0).toString();
+    QModelIndex index = sourceModel()->index(sourceRow, tableMedia::baseName, sourceParent);
+    QString mediaName = sourceModel()->data(index).toString();
+    QStringList tagsMedia = DatabaseManager::getInstance()->getMediaTagList(mediaName);
+
+    bool baseNameContained = mediaName.contains(filterRegExp());
+    bool tagsContained = true;
+    QString tagTried;
+    foreach(tagTried, tagsSearched_)
+        tagsContained = tagsContained && tagsMedia.contains(tagTried);
 
     if(myIndexChanged_ == 0) // "All"
-        return(itemValue.contains(filterRegExp()));
+        return(baseNameContained && tagsContained);
     else if(myIndexChanged_ == 1) // "Watched"
-        return (DatabaseManager::getInstance()->isMediaSeen(itemValue) &&
-                itemValue.contains(filterRegExp()));
+        return (DatabaseManager::getInstance()->isMediaSeen(mediaName) &&
+                baseNameContained && tagsContained);
     else if(myIndexChanged_ == 2) // "Unwatched"
-        return (!DatabaseManager::getInstance()->isMediaSeen(itemValue) &&
-                itemValue.contains(filterRegExp()));
+        return (!DatabaseManager::getInstance()->isMediaSeen(mediaName) &&
+                baseNameContained && tagsContained);
     else
         return(false);
     return(true);
@@ -55,6 +62,7 @@ bool myQSortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex 
 
 
 bool myQSortFilterProxyModel::filterAcceptsColumn(int sourceColumn, const QModelIndex &sourceParent) const {
+    Q_UNUSED(sourceParent);
     return(sourceColumn==tableMedia::baseName);
 }
 
@@ -69,6 +77,17 @@ void myQSortFilterProxyModel::setIndexChanged(int index) {
     invalidateFilter();
 }
 
+
+void myQSortFilterProxyModel::addTagToFilter(QString& tag) {
+    tagsSearched_.append(tag);
+    invalidateFilter();
+}
+
+
+void myQSortFilterProxyModel::removeTagToFilter(QString& tag) {
+    tagsSearched_.removeOne(tag);
+    invalidateFilter();
+}
 
 
 ///////////

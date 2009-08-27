@@ -528,7 +528,7 @@ QStringList DatabaseManager::getMediaTagList(int id) {
 }
 
 
-QStringList DatabaseManager::getMediaTagList() {
+QStringList DatabaseManager::getTagList() {
     QSqlQuery q;
     if (!q.exec("SELECT name FROM Tag ORDER BY name"))
         throw(q.lastError()); // TODO handle this!
@@ -564,5 +564,15 @@ void DatabaseManager::addTagToMedia(QString& tagName, QString mediaBaseName) {
             return;
         throw(q.lastError()); // TODO handle this!
     }
+}
+
+void DatabaseManager::removeTagFromMedia(QString& tagName, QString mediaBaseName) {
+    QSqlQuery q;
+    q.prepare("DELETE FROM Media_Tag WHERE tagId in (SELECT id FROM Tag WHERE Tag.name = ?)" \
+              "AND mediaId in (SELECT id FROM Media WHERE Media.baseName = ?)");
+    q.bindValue(0, tagName);
+    q.bindValue(1, mediaBaseName);
+    if (!q.exec())
+        throw(q.lastError()); // TODO handle this!
 }
 

@@ -38,6 +38,9 @@ EditMediaDialog::EditMediaDialog(QModelIndexList indexList, QDataWidgetMapper* m
         , nMedia_(indexList_.count())
         , selectionPos_(indexList_.at(0).row())
         , originPos_(selectionPos_)
+        , tagsSet_(new QStringList())
+        , tagsUnset_(new QStringList())
+        , statusBar_(new QStatusBar(this))
 {
     Q_ASSERT(nMedia_>0);
 
@@ -50,6 +53,7 @@ EditMediaDialog::EditMediaDialog(QModelIndexList indexList, QDataWidgetMapper* m
   */
 EditMediaDialog::~EditMediaDialog() {
     delete ui_;
+    delete tagsSet_;
 }
 
 
@@ -62,9 +66,10 @@ EditMediaDialog::~EditMediaDialog() {
 void EditMediaDialog::init() {
     ui_->setupUi(this);
     ui_->previousButton->setEnabled(false);
-    ui_->nextButton->setEnabled(false);
-    ui_->tagLineEdit->setEnabled(false);
-    ui_->tabWidget->setTabEnabled(tabPage::imdb, false);
+
+    // status bar
+    statusBar_->setSizeGripEnabled(false);
+    ui_->statusBarLayout->addWidget(statusBar_);
 
     // mapper
     mapper_->addMapping(ui_->mediaNameLabel, tableMedia::baseName, "text"); // baseName field, but in fact fileName
@@ -72,22 +77,19 @@ void EditMediaDialog::init() {
     mapper_->addMapping(ui_->removeInfoCheckBox, tableMedia::imdbInfo); // imdbInfo field
     mapper_->setCurrentIndex(selectionPos_);
 
-    // filling what mapper cannot get
-    setSeenCheckBoxState();
+    // tabs
+    ui_->tabWidget->setTabEnabled(tabPage::imdb, ui_->removeInfoCheckBox->isChecked());
+
+    // tags
+    setTagsInfo();
 
     // initial setup depending on the number of medias
-    if(nMedia_>1) {
+    if(nMedia_>1)
         setWindowTitle(tr("Details on %1 medias").arg(nMedia_) + QString(" - MediaSpy"));
-        ui_->mediaNameLabel->setText(QString());
-        ui_->mediaNameTitleLabel->setEnabled(false);
-    }
     else {
+        ui_->nextButton->setEnabled(false);
         setWindowTitle(tr("Details on %1").arg(indexList_.at(0).data(Qt::DisplayRole).toString()) + QString(" - MediaSpy"));
-        ui_->parMediaCheckBox->setEnabled(false);
-        setTagLineEdit();
-        ui_->tagLineEdit->setEnabled(true);
     }
-qWarning() << indexList_.at(0);
 }
 
 
@@ -102,62 +104,48 @@ void EditMediaDialog::makeConnections() {
 }
 
 
-void EditMediaDialog::setSeenCheckBoxState() {
-    Qt::CheckState state = Qt::Unchecked;
-    bool storedBool = false;
-    bool changeBool = false;
-    for (int i = 0; i < indexList_.size(); ++i)
-        if (indexList_.at(i).isValid()) {
-            QString indexContent = QString(indexList_.at(i).data().toString());
-            bool b = DatabaseManager::getInstance()->isMediaSeen(indexContent);
-            if(i==0 || changeBool==true)
-                storedBool = b;
-            else
-                changeBool = (b!=storedBool);
-        }
-    state = (changeBool==true) ? Qt::PartiallyChecked : ((storedBool) ? Qt::Checked : Qt::Unchecked);
-    ui_->seenCheckBox->setCheckState(state);
-}
-
-
-void EditMediaDialog::setTagLineEdit() {
+void EditMediaDialog::setTagsInfo() {
     QString mediaName = indexList_.at(selectionPos_ - originPos_).data().toString();
     int mediaId = DatabaseManager::getInstance()->getMediaId(mediaName);
     QStringList tagList = DatabaseManager::getInstance()->getMediaTagList(mediaId);
+    ui_->tagsLabel->setText(tagList.join(", "));
 
-    ui_->tagLineEdit->setText(tagList.join(", "));
+    // set the local lists
+    tagsSet_->clear();
+    tagsSet_->append(tagList);
+
+    tagsUnset_->clear();
+    QStringList allTagList = DatabaseManager::getInstance()->getTagList();
+    for(int i=0; i<allTagList.count(); ++i)
+        if(!tagsSet_->contains(allTagList.at(i)))
+            tagsUnset_->append(allTagList.at(i));
+
+    updateComboBox();
 }
+
+
+void EditMediaDialog::updateComboBox() {
+    ui_->minusComboBox->clear();
+    ui_->minusComboBox->addItems(tagsSet_[0]);
+    ui_->plusComboBox->clear();
+    ui_->plusComboBox->addItems(tagsUnset_[0]);
+
+    // disabled if nothing to show
+    ui_->minusComboBox->setEnabled(tagsSet_[0].count());
+    ui_->minusToolButton->setEnabled(tagsSet_[0].count());
+}
+
 
 
 ///////////
 // slots //
 ///////////
-void EditMediaDialog::on_parMediaCheckBox_clicked(bool checked) {
-    if(checked) { // per media
-        ui_->nextButton->setEnabled(true);
-        ui_->tagLineEdit->setEnabled(true);
-        ui_->mediaNameTitleLabel->setEnabled(true);
-        mapper_->setCurrentIndex(selectionPos_);
-        ui_->tabWidget->setTabEnabled(tabPage::imdb, ui_->removeInfoCheckBox->isChecked());
-    }
-    else { // all medias
-        ui_->previousButton->setEnabled(false);
-        ui_->nextButton->setEnabled(false);
-        ui_->mediaNameTitleLabel->setEnabled(false);
-        ui_->tagLineEdit->setEnabled(false);
-        ui_->tabWidget->setTabEnabled(tabPage::imdb, false);
-        ui_->mediaNameLabel->setText(QString());
-        ui_->tagLineEdit->setText(QString());
-        setSeenCheckBoxState();
-    }
-}
-
-
 void EditMediaDialog::toNext() {
     selectionPos_++;
-    setTagLineEdit();
+    setTagsInfo();
     mapper_->setCurrentIndex(selectionPos_);
     ui_->tabWidget->setTabEnabled(tabPage::imdb, ui_->removeInfoCheckBox->isChecked());
+    statusBar_->showMessage(QString());
 
     ui_->previousButton->setEnabled(true);
     if(selectionPos_ == indexList_.at(0).row() + indexList_.count() - 1)
@@ -167,12 +155,42 @@ void EditMediaDialog::toNext() {
 
 void EditMediaDialog::toPrevious() {
     selectionPos_--;
-    setTagLineEdit();
+    setTagsInfo();
     mapper_->setCurrentIndex(selectionPos_);
     ui_->tabWidget->setTabEnabled(tabPage::imdb, ui_->removeInfoCheckBox->isChecked());
+    statusBar_->showMessage(QString());
 
     ui_->nextButton->setEnabled(true);
     if(selectionPos_ == indexList_.at(0).row())
         ui_->previousButton->setEnabled(false);
 }
 
+
+void EditMediaDialog::on_plusToolButton_clicked() {
+    QString tagName = ui_->plusComboBox->currentText();
+    if(!tagName.isEmpty()) {
+        // add the tag to the db if it's not in
+        if(!tagsSet_->contains(tagName) && !tagsUnset_->contains(tagName)) {
+            DatabaseManager::getInstance()->insertTag(tagName);
+            statusBar_->showMessage(tr("New tag '%1' created!").arg(tagName));
+        }
+
+        // apply it to the current media
+        DatabaseManager::getInstance()->addTagToMedia(tagName, ui_->mediaNameLabel->text());
+
+        // update the tags view
+        setTagsInfo();
+    }
+}
+
+
+void EditMediaDialog::on_minusToolButton_clicked() {
+    QString tagName = ui_->minusComboBox->currentText();
+    if(!tagName.isEmpty()) {
+        // remove it from the current media
+        DatabaseManager::getInstance()->removeTagFromMedia(tagName, ui_->mediaNameLabel->text());
+
+        // update the tags view
+        setTagsInfo();
+    }
+}

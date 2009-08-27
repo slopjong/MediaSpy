@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>535</width>
-    <height>427</height>
+    <width>531</width>
+    <height>423</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -69,7 +69,7 @@
            <bool>true</bool>
           </property>
           <property name="selectionMode">
-           <enum>QAbstractItemView::ExtendedSelection</enum>
+           <enum>QAbstractItemView::ContiguousSelection</enum>
           </property>
          </widget>
         </item>
@@ -162,8 +162,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>535</width>
-     <height>22</height>
+     <width>531</width>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -186,7 +186,14 @@
     <addaction name="actionSelectdirectories"/>
     <addaction name="actionRescan_collection"/>
    </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionEdit_information"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
    <addaction name="menuOptions"/>
    <addaction name="menuHelp"/>
   </widget>
@@ -200,6 +207,10 @@
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionAbout_MediaSpy">
+   <property name="icon">
+    <iconset resource="../resources/MediaSpy.qrc">
+     <normaloff>:/icons/icon.png</normaloff>:/icons/icon.png</iconset>
+   </property>
    <property name="text">
     <string>About MediaSpy</string>
    </property>
@@ -231,6 +242,21 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionEdit_information">
+   <property name="icon">
+    <iconset resource="../resources/MediaSpy.qrc">
+     <normaloff>:/icons/edit.png</normaloff>:/icons/edit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Edit information</string>
+   </property>
+   <property name="toolTip">
+    <string>Edit the information of the selectionned medias.</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
    </property>
   </action>
  </widget>

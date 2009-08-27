@@ -4,6 +4,7 @@ CHANGELOG.txt
 0.6.6
 - Refactor the CollectionDialog listView and the Collection class
 - bugfix: no more colors in the listView
+- tags are editable in EditMediaDialog
 
 
 0.6.5

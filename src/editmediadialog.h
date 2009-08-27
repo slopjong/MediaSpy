@@ -23,6 +23,7 @@
 
 #include <QtGui/QDialog>
 #include <QDataWidgetMapper>
+#include <QStatusBar>
 
 #include "../build/ui/ui_editmediadialog.h"
 #include "databasemanager.h"
@@ -43,12 +44,15 @@ class EditMediaDialog : public QDialog {
     int nMedia_;
     int selectionPos_;
     int originPos_;
+    QStringList* tagsSet_;
+    QStringList* tagsUnset_;
+    QStatusBar* statusBar_;
 
     // operators
     void init();
     void makeConnections();
-    void setSeenCheckBoxState();
-    void setTagLineEdit();
+    void setTagsInfo();
+    void updateComboBox();
 
 
 public:
@@ -57,7 +61,8 @@ public:
 
 
 private slots:
-    void on_parMediaCheckBox_clicked(bool checked);
+    void on_minusToolButton_clicked();
+    void on_plusToolButton_clicked();
     void toNext();
     void toPrevious();
 

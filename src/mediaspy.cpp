@@ -149,6 +149,7 @@ void MediaSpy::makeConnections() {
 
     // for myqlistview
     connect(ui_->mediaListView->editTagAct_, SIGNAL(triggered()), this, SLOT(editDialog()));
+    connect(ui_->actionEdit_information, SIGNAL(triggered()), this, SLOT(editDialog()));
 }
 
 
@@ -295,19 +296,26 @@ void MediaSpy::editDialog() {
     QItemSelectionModel* selectionModel = ui_->mediaListView->selectionModel();
     QModelIndexList indexList = selectionModel->selectedRows();
 
-    QSortFilterProxyModel* proxyModel = new QSortFilterProxyModel(this);
-    proxyModel->setSourceModel(sqlTableModel_);
-    proxyModel->sort(2, Qt::AscendingOrder);
-    proxyModel->setSortCaseSensitivity(Qt::CaseInsensitive);
+    if(indexList.count()>0) {
+        QSortFilterProxyModel* proxyModel = new QSortFilterProxyModel(this);
+        proxyModel->setSourceModel(sqlTableModel_);
+        proxyModel->sort(2, Qt::AscendingOrder);
+        proxyModel->setSortCaseSensitivity(Qt::CaseInsensitive);
 
-    QDataWidgetMapper* mapper = new QDataWidgetMapper(this);
-    mapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
-    mapper->setModel(proxyModel);
+        QDataWidgetMapper* mapper = new QDataWidgetMapper(this);
+        mapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
+        mapper->setModel(proxyModel);
 
-    EditMediaDialog dialog(indexList, mapper);
+        EditMediaDialog dialog(indexList, mapper);
 
-    if (dialog.exec() != QDialog::Accepted)
-        return;
+        QSqlDatabase::database().transaction();
+        if (dialog.exec() != QDialog::Accepted) {
+            QSqlDatabase::database().rollback();
+            return;
+        }
+        QSqlDatabase::database().commit();
+    }
+    return;
 }
 
 

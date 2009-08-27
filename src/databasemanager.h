@@ -69,9 +69,10 @@ public:
     int getMediaId(QString&);
 
     QStringList getMediaTagList(int);
-    QStringList getMediaTagList();
+    QStringList getTagList();
     void insertTag(QString&);
     void addTagToMedia(QString&, QString);
+    void removeTagFromMedia(QString&, QString);
 
     void insertMovieMedia(MovieMedia);
     bool hasImdbInfo(const QString&);

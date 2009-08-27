@@ -50,6 +50,8 @@ MediaSpy::MediaSpy(QWidget *parent) :
     // permanent status bar
     ui_->statusBar->addPermanentWidget(statusLabel_);
     statusLabel_->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    // filter widget
+    ui_->filterWidget->setVisible(false);
     // filters style
     ui_->filterLineEdit->installEventFilter(this);
     ui_->filterLineEdit->setFocus(Qt::MouseFocusReason);
@@ -60,9 +62,6 @@ MediaSpy::MediaSpy(QWidget *parent) :
     static const QStringList filterList = QStringList() << tr("All") << tr("Watched") << tr("Unwatched"); // order is important!
     ui_->filterSeenComboBox->addItems(filterList);
     ui_->filterSeenComboBox->setItemData(0, Qt::TextAlignmentRole, Qt::AlignCenter);
-
-
-
 
     // program really begins here!
     readSettings();
@@ -530,3 +529,19 @@ void MediaSpy::on_filterLineEdit_textChanged(QString newString) {
 void MediaSpy::on_filterSeenComboBox_currentIndexChanged(int index) {
     mediaListProxyModel_->setIndexChanged(index);
 }
+
+
+/** \fn void MediaSpy::on_toggleFilterWidget_clicked()
+  *  \brief Toggles between filter widget visibility and changes icon accordingly.
+  */
+void MediaSpy::on_toggleFilterWidget_clicked() {
+    if(ui_->filterWidget->isVisible()) {
+        ui_->filterWidget->setVisible(false);
+        ui_->toggleFilterWidget->setIcon(QIcon(":/icons/add.png"));
+    }
+    else {
+        ui_->filterWidget->setVisible(true);
+        ui_->toggleFilterWidget->setIcon(QIcon(":/icons/minus.png"));
+    }
+}
+

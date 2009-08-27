@@ -37,7 +37,7 @@ myQSortFilterProxyModel::~myQSortFilterProxyModel() {}
 // methods //
 /////////////
 bool myQSortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const {
-    QModelIndex index0 = sourceModel()->index(sourceRow, 0, sourceParent);
+    QModelIndex index0 = sourceModel()->index(sourceRow, tableMedia::baseName, sourceParent);
     QString itemValue = sourceModel()->data(index0).toString();
 
     if(myIndexChanged_ == 0) // "All"
@@ -55,12 +55,7 @@ bool myQSortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex 
 
 
 bool myQSortFilterProxyModel::filterAcceptsColumn(int sourceColumn, const QModelIndex &sourceParent) const {
-    QModelIndex index0 = sourceModel()->index(0, sourceColumn, sourceParent);
-
-    if(sourceColumn==2) // column of title field in the Media database
-        return true;
-
-    return false;
+    return(sourceColumn==tableMedia::baseName);
 }
 
 

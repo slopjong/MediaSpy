@@ -194,3 +194,10 @@ void EditMediaDialog::on_minusToolButton_clicked() {
         setTagsInfo();
     }
 }
+
+
+void EditMediaDialog::on_seenCheckBox_clicked() {
+    // change the db content accordingly
+    DatabaseManager::getInstance()->setMediaSeen(QStringList() << ui_->mediaNameLabel->text(), ui_->seenCheckBox->isChecked());
+}
+

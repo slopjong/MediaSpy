@@ -61,6 +61,7 @@ public:
 
 
 private slots:
+    void on_seenCheckBox_clicked();
     void on_minusToolButton_clicked();
     void on_plusToolButton_clicked();
     void toNext();

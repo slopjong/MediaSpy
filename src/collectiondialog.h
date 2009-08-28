@@ -25,17 +25,20 @@
 #include <QDir>
 #include <QFileDialog>
 
-#include "../build/ui/ui_collectiondialog.h"
 #include "databasemanager.h"
 
+namespace Ui {
+    class CollectionDialog;
+}
 
 /** \class CollectionDialog
   * \brief The CollectionDialog is the dialog used to add directories in the Collection.
   */
-class CollectionDialog : public QDialog, public Ui_CollectionDialog {
+class CollectionDialog : public QDialog {
     Q_OBJECT
 
     // Fields
+    Ui::CollectionDialog *ui_;
     QSqlTableModel* model_;
 
 

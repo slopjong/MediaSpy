@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>519</width>
-    <height>411</height>
+    <width>517</width>
+    <height>409</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -126,7 +126,7 @@
           <number>2</number>
          </property>
          <item>
-          <widget class="myQWebView" name="infoWebView">
+          <widget class="QWebView" name="infoWebView">
            <property name="contextMenuPolicy">
             <enum>Qt::NoContextMenu</enum>
            </property>
@@ -152,7 +152,7 @@
           <number>2</number>
          </property>
          <item>
-          <widget class="myQWebView" name="statsWebView">
+          <widget class="QWebView" name="statsWebView">
            <property name="contextMenuPolicy">
             <enum>Qt::NoContextMenu</enum>
            </property>
@@ -175,7 +175,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>519</width>
+     <width>517</width>
      <height>23</height>
     </rect>
    </property>
@@ -276,11 +276,6 @@
    <class>myQLineEdit</class>
    <extends>QLineEdit</extends>
    <header>../../src/qtElements/myqlineedit.h</header>
-  </customwidget>
-  <customwidget>
-   <class>myQWebView</class>
-   <extends>QWebView</extends>
-   <header>../../src/qtElements/myqwebview.h</header>
   </customwidget>
   <customwidget>
    <class>myQListView</class>

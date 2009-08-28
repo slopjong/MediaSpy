@@ -18,21 +18,16 @@
  */
 
 
-#ifndef MYQWEBVIEW_H
-#define MYQWEBVIEW_H
+#include "optionsdialog.h"
+#include "ui_optionsdialog.h"
 
-#include <QWebView>
+OptionsDialog::OptionsDialog(QWidget *parent)
+        : QDialog(parent)
+        , ui_(new Ui::OptionsDialog)
+{
+    ui_->setupUi(this);
+}
 
-
-/** \class myQWebView
-  * \brief This view shows media information to the user.
-  */
-class myQWebView : public QWebView {
-    Q_OBJECT;
-
-public:
-    myQWebView(QWidget *parent = 0);
-    virtual ~myQWebView();
-};
-
-#endif // MYQWEBVIEW_H
+OptionsDialog::~OptionsDialog() {
+    delete ui_;
+}

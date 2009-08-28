@@ -19,7 +19,7 @@
 
 
 #include "collectiondialog.h"
-#include "../build/ui/ui_collectiondialog.h"
+#include "ui_collectiondialog.h"
 
 
 /////////////////////////////
@@ -31,17 +31,21 @@
   */
 CollectionDialog::CollectionDialog(QSqlTableModel* model, QWidget *parent)
         : QDialog(parent)
+        , ui_(new Ui::CollectionDialog)
         , model_(model)
 {
-    setupUi(this);
-    listView->setAlternatingRowColors(true);
-    connect(listView, SIGNAL(clicked(const QModelIndex&)), this, SLOT(enableRemoveDirButton()));
+    ui_->setupUi(this);
+    ui_->listView->setModel(model_);
+    ui_->listView->setAlternatingRowColors(true);
+    connect(ui_->listView, SIGNAL(clicked(const QModelIndex&)), this, SLOT(enableRemoveDirButton()));
 }
 
 /** \fn CollectionDialog::~CollectionDialog()
   * \brief class destructor
   */
-CollectionDialog::~CollectionDialog() {}
+CollectionDialog::~CollectionDialog() {
+    delete ui_;
+}
 
 
 
@@ -60,7 +64,7 @@ void CollectionDialog::on_addDirButton_clicked() {
                      QFileDialog::DontResolveSymlinks);
 
     if (newDir.isEmpty())
-        this->buttonBox->setFocus();
+        ui_->buttonBox->setFocus();
     else {
         DatabaseManager::getInstance()->insertDirToCollection(newDir);
         model_->select();
@@ -73,7 +77,7 @@ void CollectionDialog::on_addDirButton_clicked() {
   * Removes the selected directory from the widget.
   */
 void CollectionDialog::on_delDirButton_clicked() {
-    QItemSelectionModel* selectionModel = listView->selectionModel();
+    QItemSelectionModel* selectionModel = ui_->listView->selectionModel();
     QModelIndexList indexList = selectionModel->selectedRows();
     QString oldDir = QString(indexList.at(0).data().toString());
     DatabaseManager::getInstance()->removeDirToCollection(oldDir);
@@ -85,5 +89,5 @@ void CollectionDialog::on_delDirButton_clicked() {
   * \brief Enables the 'remove directory' button when a directory is selected.
   */
 void CollectionDialog::enableRemoveDirButton() {
-    delDirButton->setEnabled(true);
+    ui_->delDirButton->setEnabled(true);
 }

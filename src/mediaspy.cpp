@@ -157,8 +157,6 @@ void MediaSpy::makeConnections() {
             this, SLOT(setProgressbarCurrent(const int)));
     connect(InfoManager::getInstance()->getImdbThread(), SIGNAL(finished()),
             this, SLOT(setProgressbarOff()));
-    connect(ui_->mediaListView, SIGNAL(tagApplied(QString&)),
-            InfoManager::getInstance(), SLOT(updateInfo(QString&)));
 
     // for mediaListView
     connect(ui_->mediaListView->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)),
@@ -351,7 +349,6 @@ void MediaSpy::on_actionSelectdirectories_triggered() {
 
     // the view
     CollectionDialog dialog(model, this);
-    dialog.listView->setModel(model);
 
     QSqlDatabase::database().transaction();
     if (dialog.exec() != QDialog::Accepted) {
@@ -381,7 +378,7 @@ void MediaSpy::editDialog() {
         mapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
         mapper->setModel(proxyModel);
 
-        EditMediaDialog dialog(indexList, mapper);
+        EditMediaDialog dialog(indexList, mapper, this);
 
         QSqlDatabase::database().transaction();
         if (dialog.exec() != QDialog::Accepted) {

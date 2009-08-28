@@ -72,7 +72,7 @@ public:
 public slots:
     void endImdbThread() const;
     void updateStats();
-    void updateInfo(QString&);
+
 
 signals:
     void messageToStatus(QString);

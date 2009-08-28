@@ -113,6 +113,20 @@ QString InfoManager::getStats() {
     view += QString("<div style=\"margin-top:-17px; color:black; text-align:center;\">%1%</div>").arg(pourcent);
     view += "</div>";
 
+    // runtime
+    view += QString("<h2>%1</h2>").arg(tr("Runtime"));
+    // histogram
+    view += QString("<p>%1 %2 - %3 %4 - %5 %6</p>").arg(tr("Min:")).arg(70).arg(tr("Mean:")).arg(80).arg(tr("Max:")).arg(90);
+
+    // genre
+    view += QString("<h2>%1</h2>").arg(tr("Genre"));
+    // histogram
+
+    // year
+    view += QString("<h2>%1</h2>").arg(tr("Year"));
+    // histogram
+
+
     return htmlHeader() + QString("<h1>%1</h1>").arg(tr("Your collection")) + view + htmlFooter();
 }
 
@@ -188,7 +202,7 @@ QString InfoManager::getImdbInfo(MovieMedia* media) {
 
 
 QString InfoManager::noInfo() {
-    QString view = QString("<h1>%1 :-(</h1>").arg(tr("No imdb info available!"));
+    QString view = QString("<h1>%1 :-(</h1>").arg(tr("No info available!"));
     return htmlHeader() + view + htmlFooter();
 }
 
@@ -218,10 +232,6 @@ void InfoManager::endImdbThread() const {
 
 void InfoManager::updateStats() {
     ui_->statsWebView->setHtml(getStats());
-}
-
-void InfoManager::updateInfo(QString& mediaName) {
-    //ui_->infoWebView->setHtml(getInfo(mediaName));
 }
 
 

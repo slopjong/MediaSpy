@@ -16,6 +16,7 @@ SOURCES += src/main.cpp \
     src/collectiondialog.cpp \
     src/databasemanager.cpp \
     src/editmediadialog.cpp \
+    src/optionsdialog.cpp \
     src/updatethread.cpp \
     src/info/imdbthread.cpp \
     src/info/infomanager.cpp \
@@ -26,7 +27,6 @@ SOURCES += src/main.cpp \
     src/media/moviemedia.cpp \
     src/qtElements/myqlineedit.cpp \
     src/qtElements/myqsqltablemodel.cpp \
-    src/qtElements/myqwebview.cpp \
     src/qtElements/myqsortfilterproxymodel.cpp \
     src/qtElements/myqlistview.cpp
 HEADERS += src/mediaspy.h \
@@ -34,6 +34,7 @@ HEADERS += src/mediaspy.h \
     src/collectiondialog.h \
     src/databasemanager.h \
     src/editmediadialog.h \
+    src/optionsdialog.h \
     src/updatethread.h \
     src/info/imdbthread.h \
     src/info/infomanager.h \
@@ -44,12 +45,12 @@ HEADERS += src/mediaspy.h \
     src/media/moviemedia.h \
     src/qtElements/myqlineedit.h \
     src/qtElements/myqsqltablemodel.h \
-    src/qtElements/myqwebview.h \
     src/qtElements/myqsortfilterproxymodel.h \
     src/qtElements/myqlistview.h
 FORMS += src/ui/mediaspy.ui \
     src/ui/collectiondialog.ui \
-    src/ui/editmediadialog.ui
+    src/ui/editmediadialog.ui \
+    src/ui/optionsdialog.ui
 RESOURCES += src/resources/MediaSpy.qrc
 TRANSLATIONS += translations/mediaspy_fr.ts \
     translations/mediaspy_ta.ts
@@ -71,22 +72,30 @@ DEFINES *= "PACKAGE_NAME=\"\\\"$${QMAKE_TARGET_PRODUCT}\\\"\"" \
     "MEDIASPY_HOME=\"\\\"$(MEDIASPY_HOME)\\\"\""
 
 # install
-QMAKE_PROJECT_DEPTH=1
-
+QMAKE_PROJECT_DEPTH = 1
 bin.path = $$(MEDIASPY_HOME)
 bin.files = $${TARGET}
 bin.CONFIG += no_check_exist
-
 translations.path = $$(MEDIASPY_HOME)/translations
 translations.files = translations/mediaspy_*.qm
 translations.CONFIG += no_check_exist
-
-INSTALLS += bin translations
+INSTALLS += bin \
+    translations
 
 # git archive
-archive.commands = git archive --format=tar --prefix=mediaspy-$${PACKAGE_VERSION}/ HEAD | bzip2 > mediaspy-$${PACKAGE_VERSION}.tar.bz2
+archive.commands = git \
+    archive \
+    --format=tar \
+    --prefix=mediaspy-$${PACKAGE_VERSION}/ \
+    HEAD \
+    | \
+    bzip2 \
+    > \
+    mediaspy-$${PACKAGE_VERSION}.tar.bz2
 QMAKE_EXTRA_UNIX_TARGETS += archive
 
 # scp to fedora
-hosted.commands = scp mediaspy-$${PACKAGE_VERSION}.tar.bz2 spechard@fedorahosted.org:mediaspy
+hosted.commands = scp \
+    mediaspy-$${PACKAGE_VERSION}.tar.bz2 \
+    spechard@fedorahosted.org:mediaspy
 QMAKE_EXTRA_UNIX_TARGETS += hosted

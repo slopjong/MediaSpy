@@ -21,7 +21,7 @@
 #include <QDebug>
 
 #include "editmediadialog.h"
-
+#include "ui_editmediadialog.h"
 
 /////////////////////////////
 // constructors/destructor //
@@ -30,8 +30,8 @@
   * \brief class constructor
   * \param parent the inherited QWidget object
   */
-EditMediaDialog::EditMediaDialog(QModelIndexList indexList, QDataWidgetMapper* mapper)
-        : QDialog()
+EditMediaDialog::EditMediaDialog(QModelIndexList indexList, QDataWidgetMapper* mapper, QWidget *parent)
+        : QDialog(parent)
         , ui_(new Ui::EditMediaDialog)
         , mapper_(mapper)
         , indexList_(QModelIndexList(indexList))

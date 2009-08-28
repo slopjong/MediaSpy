@@ -17,29 +17,24 @@
  * along with MediaSpy.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "editmediadialog.h"
-#include "ui_editmediadialog.h"
 
-EditMediaDialog::EditMediaDialog(QWidget *parent) :
-    QDialog(parent),
-    m_ui(new Ui::EditMediaDialog)
-{
-    m_ui->setupUi(this);
+#ifndef OPTIONSDIALOG_H
+#define OPTIONSDIALOG_H
+
+#include <QtGui/QDialog>
+
+namespace Ui {
+    class OptionsDialog;
 }
 
-EditMediaDialog::~EditMediaDialog()
-{
-    delete m_ui;
-}
+class OptionsDialog : public QDialog {
+    Q_OBJECT
+public:
+    OptionsDialog(QWidget *parent = 0);
+    ~OptionsDialog();
 
-void EditMediaDialog::changeEvent(QEvent *e)
-{
-    QDialog::changeEvent(e);
-    switch (e->type()) {
-    case QEvent::LanguageChange:
-        m_ui->retranslateUi(this);
-        break;
-    default:
-        break;
-    }
-}
+private:
+    Ui::OptionsDialog *ui_;
+};
+
+#endif // OPTIONSDIALOG_H

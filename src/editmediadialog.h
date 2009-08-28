@@ -25,7 +25,6 @@
 #include <QDataWidgetMapper>
 #include <QStatusBar>
 
-#include "../build/ui/ui_editmediadialog.h"
 #include "databasemanager.h"
 
 namespace Ui {
@@ -34,6 +33,9 @@ namespace Ui {
 
 namespace tabPage { enum e { info, imdb }; }
 
+/** \class EditMediaDialog
+  * \brief The EditMediaDialog is the dialog used to edit the medias details.
+  */
 class EditMediaDialog : public QDialog {
     Q_OBJECT
 
@@ -56,7 +58,7 @@ class EditMediaDialog : public QDialog {
 
 
 public:
-    EditMediaDialog(QModelIndexList, QDataWidgetMapper*);
+    EditMediaDialog(QModelIndexList, QDataWidgetMapper*, QWidget *parent = 0);
     virtual ~EditMediaDialog();
 
 

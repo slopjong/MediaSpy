@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>517</width>
-    <height>409</height>
+    <width>515</width>
+    <height>407</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -175,7 +175,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>517</width>
+     <width>515</width>
      <height>23</height>
     </rect>
    </property>
@@ -198,6 +198,8 @@
     </property>
     <addaction name="actionSelectdirectories"/>
     <addaction name="actionRescan_collection"/>
+    <addaction name="separator"/>
+    <addaction name="actionOptions"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -262,6 +264,14 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+E</string>
+   </property>
+  </action>
+  <action name="actionOptions">
+   <property name="text">
+    <string>Options</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
    </property>
   </action>
  </widget>

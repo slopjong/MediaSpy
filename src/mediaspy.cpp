@@ -63,7 +63,7 @@ MediaSpy::MediaSpy(QWidget *parent) :
     ui_->filterSeenComboBox->setItemData(0, Qt::TextAlignmentRole, Qt::AlignCenter);
 
     // program really begins here!
-    readSettings();
+    Options::getInstance()->readOptions();
     init();
     makeConnections();
     updateThread_->start();
@@ -84,13 +84,13 @@ MediaSpy::~MediaSpy() {
     delete sqlTableModel_;
     delete mediaListProxyModel_;
     delete statusLabel_;
+    tagsMenu_->clear();
     delete tagsMenu_;
-    delete selectAllTagsMenu_;
-    delete unselectAllTagsMenu_;
     InfoManager::getInstance()->kill();
     MediaCollection::getInstance()->kill();
     Collection::getInstance()->kill();
     DatabaseManager::getInstance()->kill();
+    Options::getInstance()->kill();
 
     qDeleteAll(tagMenuCheckBoxList_.begin(), tagMenuCheckBoxList_.end());
     tagMenuCheckBoxList_.clear();
@@ -103,32 +103,6 @@ MediaSpy::~MediaSpy() {
 /////////////
 // methods //
 /////////////
-/** \fn void MediaSpy::writeSettings()
-  * \brief writes the settings used by MediaSpy
-  */
-void MediaSpy::writeSettings() {
-    QSettings settings;
-
-    settings.beginGroup("MediaSpy");
-    settings.setValue("size", size());
-    settings.setValue("pos", pos());
-    settings.endGroup();
-}
-
-
-/** \fn void MediaSpy::readSettings()
-  * \brief reads the settings used by MediaSpy
-  */
-void MediaSpy::readSettings() {
-    QSettings settings;
-
-    settings.beginGroup("MediaSpy");
-    resize(settings.value("size", QSize(800, 600)).toSize());
-    move(settings.value("pos", QPoint(0, 0)).toPoint());
-    settings.endGroup();
-}
-
-
 /** \fn void MediaSpy::makeConnections()
   * \brief makes the connections used by MediaSpy
   */
@@ -293,7 +267,7 @@ void MediaSpy::createTagMenu() {
   */
 void MediaSpy::closeEvent(QCloseEvent *event) {
     Q_UNUSED(event);
-    writeSettings();
+    Options::getInstance()->writeOptions();
 }
 
 
@@ -607,5 +581,15 @@ void MediaSpy::on_toggleFilterWidget_clicked() {
         ui_->filterWidget->setVisible(true);
         ui_->toggleFilterWidget->setIcon(QIcon(":/icons/minus.png"));
     }
+}
+
+
+void MediaSpy::on_actionOptions_triggered() {
+    OptionsDialog dialog(this);
+    if (dialog.exec() != QDialog::Accepted)
+        return;
+
+    dialog.setOptions();
+    Options::getInstance()->writeOptions();
 }
 

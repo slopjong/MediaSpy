@@ -31,6 +31,8 @@
 #include "collectiondialog.h"
 #include "collection.h"
 #include "editmediadialog.h"
+#include "options.h"
+#include "optionsdialog.h"
 #include "updatethread.h"
 #include "info/infomanager.h"
 #include "media/mediacollection.h"
@@ -91,8 +93,6 @@ class MediaSpy : public QMainWindow {
 
     // Operations
     void init();
-    void writeSettings();
-    void readSettings();
     void closeEvent(QCloseEvent*);
     void makeConnections();
     void displayPermanentMessage(const QString = 0);
@@ -117,6 +117,7 @@ public:
 
 
 private slots:
+    void on_actionOptions_triggered();
     void on_toggleFilterWidget_clicked();
     void on_filterSeenComboBox_currentIndexChanged(int index);
     void on_filterLineEdit_textChanged(QString );

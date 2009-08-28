@@ -18,8 +18,6 @@
  */
 
 
-#include <QDebug>
-
 #include "editmediadialog.h"
 #include "ui_editmediadialog.h"
 

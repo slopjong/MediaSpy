@@ -19,7 +19,6 @@
 
 
 #include "myqlistview.h"
-#include <QDebug>
 
 
 /////////////////////////////

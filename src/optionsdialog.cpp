@@ -21,13 +21,73 @@
 #include "optionsdialog.h"
 #include "ui_optionsdialog.h"
 
+#include <QDebug>
+
+
+/////////////////////////////
+// constructors/destructor //
+/////////////////////////////
 OptionsDialog::OptionsDialog(QWidget *parent)
         : QDialog(parent)
         , ui_(new Ui::OptionsDialog)
 {
     ui_->setupUi(this);
+    init();
+    getOptions();
 }
 
 OptionsDialog::~OptionsDialog() {
     delete ui_;
+    qDeleteAll(optionItems_.begin(), optionItems_.end());
+    optionItems_.clear();
 }
+
+
+
+/////////////
+// methods //
+/////////////
+void OptionsDialog::init() {
+    static const QStringList optionsName = QStringList() << tr("General") << tr("Tags"); // order is important !!
+
+    ui_->optionsTree->setColumnCount(1);
+    for (int i = 0; i < optionsName.count(); ++i)
+        optionItems_.append(new QTreeWidgetItem(QStringList(optionsName.at(i))));
+    ui_->optionsTree->insertTopLevelItems(0, optionItems_);
+}
+
+
+void OptionsDialog::changePage(QTreeWidgetItem* item, int column) {
+    Q_UNUSED(column);
+
+    int index = optionItems_.indexOf(item);
+    if(item != currentItem_) {
+        ui_->optionsStack->setCurrentIndex(index);
+        currentItem_ = item;
+    }
+}
+
+
+void OptionsDialog::getOptions() {
+    ui_->automaticUpdate->setChecked(Options::getInstance()->automaticUpdate());
+    ui_->tagsListLabel->setText(DatabaseManager::getInstance()->getTagList().join(", "));
+
+}
+
+
+void OptionsDialog::setOptions() {
+    Options::getInstance()->setAutomaticUpdate(ui_->automaticUpdate->isChecked());
+}
+
+
+///////////
+// slots //
+///////////
+void OptionsDialog::on_optionsTree_itemActivated(QTreeWidgetItem* item, int column) {
+    changePage(item, column);
+}
+
+void OptionsDialog::on_optionsTree_itemEntered(QTreeWidgetItem* item, int column) {
+    changePage(item, column);
+}
+

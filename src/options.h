@@ -18,41 +18,40 @@
  */
 
 
-#ifndef OPTIONSDIALOG_H
-#define OPTIONSDIALOG_H
+#ifndef OPTIONS_H
+#define OPTIONS_H
 
-#include <QtGui/QDialog>
-#include <QTreeWidgetItem>
+#include <QSettings>
 
-#include "options.h"
-#include "databasemanager.h"
-
-namespace Ui {
-    class OptionsDialog;
-}
+class MediaSpy;
 
 
-class OptionsDialog : public QDialog {
-    Q_OBJECT
+class Options {
 
-    Ui::OptionsDialog *ui_;
-    QList<QTreeWidgetItem *> optionItems_;
-    QTreeWidgetItem* currentItem_;
+    Options(MediaSpy* parent = 0);
+    virtual ~Options();
 
-    void init();
-    void changePage(QTreeWidgetItem*, int);
+    // Fields
+    static Options *singleton_;
+    MediaSpy* parent_;
+
+    // option fields
+    bool automaticUpdate_;
+
 
 public:
-    OptionsDialog(QWidget *parent = 0);
-    ~OptionsDialog();
-    void setOptions();
-    void getOptions();
+    // Operations
+    static Options* getInstance(MediaSpy* parent = 0);
+    static void kill();
 
+    void writeOptions();
+    void readOptions();
 
-private slots:
-    void on_optionsTree_itemEntered(QTreeWidgetItem* item, int column);
-    void on_optionsTree_itemActivated(QTreeWidgetItem* item, int column);
+    // option get/set
+    bool automaticUpdate() const;
+    void setAutomaticUpdate(const bool);
+
 
 };
 
-#endif // OPTIONSDIALOG_H
+#endif // OPTIONS_H

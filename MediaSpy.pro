@@ -28,7 +28,8 @@ SOURCES += src/main.cpp \
     src/qtElements/myqlineedit.cpp \
     src/qtElements/myqsqltablemodel.cpp \
     src/qtElements/myqsortfilterproxymodel.cpp \
-    src/qtElements/myqlistview.cpp
+    src/qtElements/myqlistview.cpp \
+    src/options.cpp
 HEADERS += src/mediaspy.h \
     src/collection.h \
     src/collectiondialog.h \
@@ -46,7 +47,8 @@ HEADERS += src/mediaspy.h \
     src/qtElements/myqlineedit.h \
     src/qtElements/myqsqltablemodel.h \
     src/qtElements/myqsortfilterproxymodel.h \
-    src/qtElements/myqlistview.h
+    src/qtElements/myqlistview.h \
+    src/options.h
 FORMS += src/ui/mediaspy.ui \
     src/ui/collectiondialog.ui \
     src/ui/editmediadialog.ui \
@@ -60,7 +62,7 @@ OTHER_FILES += README.txt \
     CHANGELOG.txt
 
 # define some useful values
-PACKAGE_VERSION = 0.6.6
+PACKAGE_VERSION = 0.6.7-testing
 QMAKE_TARGET_PRODUCT = "MediaSpy"
 QMAKE_TARGET_COPYRIGHT = "Copyright &copy; 2009 Stéphane Péchard"
 win32:QMAKE_TARGET_COPYRIGHT = "Copyright (C) 2009 Stéphane Péchard"

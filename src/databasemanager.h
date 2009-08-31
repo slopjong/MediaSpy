@@ -71,6 +71,7 @@ public:
     QStringList getMediaTagList(int);
     QStringList getMediaTagList(QString&);
     QStringList getTagList();
+    QStringList getOrphanTagList();
     void insertTag(QString&);
     void addTagToMedia(QString&, QString);
     void removeTagFromMedia(QString&, QString);

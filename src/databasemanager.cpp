@@ -540,7 +540,7 @@ QStringList DatabaseManager::getMediaTagList(int id) {
 
 QStringList DatabaseManager::getMediaTagList(QString& baseName) {
     QSqlQuery q;
-    q.prepare("SELECT id FROM Media WHERE Media.baseName = ?");
+    q.prepare("SELECT id FROM Media WHERE baseName = ?");
     q.bindValue(0, baseName);
     if (!q.exec())
         throw(q.lastError()); // TODO handle this!
@@ -556,6 +556,19 @@ QStringList DatabaseManager::getMediaTagList(QString& baseName) {
 QStringList DatabaseManager::getTagList() {
     QSqlQuery q;
     if (!q.exec("SELECT name FROM Tag ORDER BY name"))
+        throw(q.lastError()); // TODO handle this!
+
+    QStringList list;
+    while (q.next())
+        list << q.value(0).toString();
+
+    return list;
+}
+
+
+QStringList DatabaseManager::getOrphanTagList() {
+    QSqlQuery q;
+    if (!q.exec("SELECT name FROM Tag WHERE Tag.id NOT IN (SELECT tagId FROM Media_Tag)"))
         throw(q.lastError()); // TODO handle this!
 
     QStringList list;

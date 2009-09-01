@@ -122,7 +122,6 @@ private slots:
     void on_filterSeenComboBox_currentIndexChanged(int index);
     void on_filterLineEdit_textChanged(QString );
     void on_progressButton_clicked();
-    void isMediaFound(bool, QString);
     void on_actionAbout_MediaSpy_triggered();
     void on_actionAbout_Qt_triggered();
     void on_actionSelectdirectories_triggered();

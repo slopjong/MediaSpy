@@ -102,7 +102,7 @@ void MediaSpy::makeConnections() {
     // for InfoManager
     connect(InfoManager::getInstance()->getImdbThread(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
     connect(InfoManager::getInstance()->getImdbThread(), SIGNAL(searchResult(bool, QString)),
-            this, SLOT(isMediaFound(bool, QString)));
+            sqlTableModel_, SLOT(setKeyTocheck(bool, QString)));
     connect(InfoManager::getInstance()->getImdbThread(), SIGNAL(startSearch(const int)),
             this, SLOT(setProgressbarMaximum(const int)));
     connect(InfoManager::getInstance()->getImdbThread(), SIGNAL(searchProgress(const int)),
@@ -428,14 +428,6 @@ void MediaSpy::tagSearched(bool checked) {
         mediaListProxyModel_->addTagToFilter(tag);
     else
         mediaListProxyModel_->removeTagToFilter(tag);
-}
-
-
-/** \fn void MediaSpy::isMediaFound(bool ok, QString fileName)
- *  \brief Sets the key to be checked if info has been found on the media.
- */
-void MediaSpy::isMediaFound(bool ok, QString fileName) {
-    sqlTableModel_->setKeyTocheck(ok, fileName);
 }
 
 

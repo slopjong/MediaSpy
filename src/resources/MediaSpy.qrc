@@ -10,5 +10,6 @@
         <file>icons/imdb.png</file>
         <file>icons/stats.png</file>
         <file>icons/edit.png</file>
+        <file>icons/play.png</file>
     </qresource>
 </RCC>

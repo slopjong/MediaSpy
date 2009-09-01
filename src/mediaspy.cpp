@@ -111,6 +111,7 @@ void MediaSpy::makeConnections() {
             sqlTableModel_, SLOT(setKeyTocheck(bool, QString)));
 
     // for mediaListView
+    connect(ui_->mediaListView, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
     connect(ui_->mediaListView->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)),
             this, SLOT(selectedMovie(QModelIndex, QModelIndex)));
     connect(ui_->mediaListView, SIGNAL(updateMedia()),

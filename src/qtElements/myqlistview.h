@@ -63,6 +63,7 @@ private slots:
 signals:
     void updateMedia();
     void tagApplied(QString&);
+    void messageToStatus(QString);
 
 };
 

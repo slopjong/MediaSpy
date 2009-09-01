@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>515</width>
-    <height>407</height>
+    <width>511</width>
+    <height>403</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -175,7 +175,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>515</width>
+     <width>511</width>
      <height>23</height>
     </rect>
    </property>
@@ -220,6 +220,9 @@
    </property>
    <property name="text">
     <string>About MediaSpy</string>
+   </property>
+   <property name="shortcut">
+    <string notr="true">Ctrl+H</string>
    </property>
   </action>
   <action name="actionAbout_Qt">
@@ -271,7 +274,7 @@
     <string>Options</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+O</string>
+    <string notr="true">Ctrl+S</string>
    </property>
   </action>
  </widget>

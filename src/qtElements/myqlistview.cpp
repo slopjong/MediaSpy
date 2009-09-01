@@ -34,6 +34,7 @@ myQListView::myQListView(QWidget *parent)
 {
     seenMediaAct_->setDefaultWidget(checkBox_);
     checkBox_->setText(tr("Seen"));
+    editTagAct_->setShortcut(Qt::CTRL + Qt::Key_E);
 
     // connections
     connect(checkBox_, SIGNAL(clicked(bool)), this, SLOT(seenMedia(bool)));
@@ -77,10 +78,12 @@ void myQListView::contextMenuEvent(QContextMenuEvent* event) {
         seenMediaAct_->setChecked(DatabaseManager::getInstance()->isMediaSeen(indexContent));
         editTagAct_->setText(tr("Edit information"));
         editTagAct_->setIcon(QIcon(":/icons/edit.png"));
-        playMediaAct_->setText(tr("Play"));
+        playMediaAct_->setText(tr("Play media(s) (%1)", "", indexList.count()).arg(Options::getInstance()->getPlayer()));
+        playMediaAct_->setIcon(QIcon(":/icons/play.png"));
 
         menu_->addAction(seenMediaAct_);
         menu_->addAction(editTagAct_);
+        menu_->addSeparator();
         menu_->addAction(playMediaAct_);
         menu_->exec(QCursor::pos());
     }
@@ -113,14 +116,25 @@ void myQListView::seenMedia(bool checked) {
 void myQListView::playMedia() {
     QItemSelectionModel* selectionModel = this->selectionModel();
     QModelIndexList indexList = selectionModel->selectedRows();
-    QStringList arguments;
 
-    for (int i = 0; i < indexList.count(); ++i)
-        if (indexList.at(i).isValid())
-            arguments << DatabaseManager::getInstance()->getMediaFullName(indexList.at(i).data().toString());
+    if(indexList.count()>0) {
+        QStringList arguments;
 
-    QString player = Options::getInstance()->getPlayer();
-    QProcess *playProcess = new QProcess(this);
-    playProcess->startDetached(player, arguments);
+        for (int i = 0; i < indexList.count(); ++i)
+            if (indexList.at(i).isValid())
+                arguments << DatabaseManager::getInstance()->getMediaFullName(indexList.at(i).data().toString());
+
+        QString player = Options::getInstance()->getPlayer();
+        if(player.contains("mplayer"))
+            arguments << "-quiet"; // in order 1. to be quiet (!) 2. to *really* detach the process
+
+        QProcess playProcess;
+        bool ok = playProcess.startDetached(player, arguments);
+
+        if(!ok)
+            emit messageToStatus(tr("[ERROR] Player not launched!"));
+    }
+    else
+        emit messageToStatus(tr("[ERROR] No media selected!"));
 }
 

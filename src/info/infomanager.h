@@ -38,7 +38,7 @@ class InfoManager : public QObject {
     Q_OBJECT
 
     // Constructors
-    InfoManager(Ui_MediaSpy* uiParent = 0);
+    InfoManager(Ui_MediaSpy* uiParent = 0, QString coverDir = 0);
     virtual ~InfoManager();
 
     // Fields
@@ -47,16 +47,18 @@ class InfoManager : public QObject {
     ImdbThread* imdbThread_;
     QWebSettings* infoSettings_;
     QWebSettings* statsSettings_;
+    QString coverDir_;
 
     // Operations
     inline QString htmlHeader();
     inline QString htmlFooter();
     QString getStats();
+    QString createFirstPage();
 
 
 public:
     // Operations
-    static InfoManager *getInstance(Ui_MediaSpy* uiParent = 0);
+    static InfoManager *getInstance(Ui_MediaSpy* uiParent = 0, QString coverDir = 0);
     static void kill();
     void init();
     void updateMediaCollectionInfo();
@@ -64,7 +66,6 @@ public:
     QString getInfo(QString&);
     QString getLocalInfo(MovieMedia* media);
     QString getImdbInfo(MovieMedia* media);
-
 
     ImdbThread* getImdbThread() const;
 

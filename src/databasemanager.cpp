@@ -519,6 +519,19 @@ int DatabaseManager::getMediaId(QString& baseName) {
 }
 
 
+QStringList DatabaseManager::getCoverList() {
+    QSqlQuery q;
+    if (!q.exec("SELECT DISTINCT image FROM ImdbInfo"))
+        throw(q.lastError()); // TODO handle this!
+
+    QStringList list;
+    while (q.next())
+        list << q.value(0).toString();
+
+    return list;
+}
+
+
 
 ///////////////////////
 // Tag table methods //

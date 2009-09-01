@@ -26,3 +26,11 @@ img {
     float: right;
     margin-left: 15px;
 }
+
+.firstpage img {
+    margin: 3px;
+    padding: 3px;
+    width: 100px;
+    height: 150px;
+}
+

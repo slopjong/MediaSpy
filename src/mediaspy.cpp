@@ -139,8 +139,6 @@ void MediaSpy::init() {
     // view //
     //////////
     ui_->setupUi(this);
-    // infomanager
-    InfoManager::getInstance(ui_)->init();
     // progress bar
     ui_->progressBar->setMinimum(0);
     ui_->progressBar->setVisible(false);
@@ -230,6 +228,7 @@ void MediaSpy::init() {
     // collections init //
     //////////////////////
     Collection::getInstance()->update();
+    InfoManager::getInstance(ui_, getCoverDirectory())->init();
 
     ///////////////////
     // tag menu init //

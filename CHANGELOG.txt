@@ -1,6 +1,10 @@
 CHANGELOG.txt
 =============
 
+0.7.1
+- new welcome page with all covers shown
+
+
 0.7
 - options dialog
 - media are now playable with two clicks!

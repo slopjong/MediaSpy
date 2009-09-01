@@ -34,9 +34,10 @@ InfoManager* InfoManager::singleton_ = 00;
 /** \fn InfoManager::InfoManager()
   * \brief class constructor
   */
-InfoManager::InfoManager(Ui_MediaSpy* uiParent)
+InfoManager::InfoManager(Ui_MediaSpy* uiParent, QString coverDir)
         : ui_(uiParent)
         , imdbThread_(new ImdbThread(this))
+        , coverDir_(coverDir)
 {
     connect(imdbThread_, SIGNAL(networkError()), this, SLOT(endImdbThread()));
 }
@@ -55,9 +56,9 @@ InfoManager::~InfoManager() {
 /** \fn InfoManager* InfoManager::getInstance()
   * \brief returns the unique instance of InfoManager, creates it the first time
   */
-InfoManager* InfoManager::getInstance(Ui_MediaSpy* uiParent) {
+InfoManager* InfoManager::getInstance(Ui_MediaSpy* uiParent, QString coverDir) {
     if (00 == singleton_)
-        singleton_ =  new InfoManager(uiParent);
+        singleton_ = new InfoManager(uiParent, coverDir);
     return singleton_;
 }
 
@@ -76,8 +77,9 @@ void InfoManager::init() {
     // init the info page
     infoSettings_ = ui_->infoWebView->settings();
     infoSettings_->setUserStyleSheetUrl(QUrl::fromEncoded("qrc:/templates/default.css"));
-    QString infoView = QString("<html><body><h1>%1</h1></body></html>").arg(tr("Welcome in Mediaspy!"));
-    ui_->infoWebView->setHtml(infoView);
+    QString infoView = QString("<html><body><h1>%1</h1>").arg(tr("Welcome in Mediaspy!"));
+    infoView += createFirstPage() + "</body></html>";
+    ui_->infoWebView->setHtml(infoView, QUrl(coverDir_));
 
     // init the stats page
     statsSettings_ = ui_->statsWebView->settings();
@@ -203,6 +205,20 @@ QString InfoManager::getImdbInfo(MovieMedia* media) {
 QString InfoManager::noInfo() {
     QString view = QString("<h1>%1 :-(</h1>").arg(tr("No info available!"));
     return htmlHeader() + view + htmlFooter();
+}
+
+
+QString InfoManager::createFirstPage() {
+    QString cover;
+    QString view = "<div class=\"firstpage\">";
+    QStringList coverList = DatabaseManager::getInstance()->getCoverList();
+    foreach(cover, coverList) {
+        QFileInfo file(MediaSpy::getCoverDirectory() + cover);
+        if(file.exists())
+            view += QString("<img src=\"%1\" />").arg(cover); // width=\"100\" height=\"150\"
+    }
+
+    return view + "</div>";
 }
 
 

@@ -1,6 +1,12 @@
 CHANGELOG.txt
 =============
 
+0.7
+- options dialog
+- media are now playable with two clicks!
+- bugfixes
+
+
 0.6.6
 - Refactor the CollectionDialog listView and the Collection class
 - Tags are editable in EditMediaDialog

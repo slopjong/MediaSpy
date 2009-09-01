@@ -112,7 +112,7 @@ QString InfoManager::getStats() {
     view += QString("<div style=\"width:%1%; height:18px; background-color:#adaa4c; border-right:1px white solid;\"></div>").arg(pourcent);
     view += QString("<div style=\"margin-top:-17px; color:black; text-align:center;\">%1%</div>").arg(pourcent);
     view += "</div>";
-
+/*
     // runtime
     view += QString("<h2>%1</h2>").arg(tr("Runtime"));
     // histogram
@@ -125,7 +125,7 @@ QString InfoManager::getStats() {
     // year
     view += QString("<h2>%1</h2>").arg(tr("Year"));
     // histogram
-
+*/
 
     return htmlHeader() + QString("<h1>%1</h1>").arg(tr("Your collection")) + view + htmlFooter();
 }

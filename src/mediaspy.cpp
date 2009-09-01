@@ -152,9 +152,11 @@ void MediaSpy::init() {
     statusLabel_->setFrameStyle(QFrame::Panel | QFrame::Sunken);
     // filter widget
     ui_->filterWidget->setVisible(false);
+    ui_->toggleFilterWidget->setFocus(Qt::MouseFocusReason);
     // filters style
     ui_->filterLineEdit->installEventFilter(this);
-    ui_->filterLineEdit->setFocus(Qt::MouseFocusReason);
+    ui_->filterLineEdit->setText(filterTitleString_);
+    ui_->filterLineEdit->setStyleSheet(filtersLineEditStyle_);
     // seen filter combobox
     static const QStringList filterList = QStringList() << tr("All") << tr("Watched") << tr("Unwatched"); // order is important!
     ui_->filterSeenComboBox->addItems(filterList);

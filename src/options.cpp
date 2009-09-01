@@ -70,12 +70,13 @@ void Options::kill() {
 
 
 void Options::readOptions() {
+    Q_CHECK_PTR(parent_);
     QSettings settings;
 
-//    settings.beginGroup("MediaSpy");
-//    parent_->resize(settings.value("size", QSize(800, 600)).toSize());
-//    parent_->move(settings.value("pos", QPoint(0, 0)).toPoint());
-//    settings.endGroup();
+    settings.beginGroup("MediaSpy");
+    parent_->resize(settings.value("size", QSize(800, 600)).toSize());
+    parent_->move(settings.value("pos", QPoint(0, 0)).toPoint());
+    settings.endGroup();
 
 //    automaticUpdate_ = settings.value("AutomaticUpdate", automaticUpdate_).toBool();
 }
@@ -84,10 +85,10 @@ void Options::readOptions() {
 void Options::writeOptions() {
     QSettings settings;
 
-//    settings.beginGroup("MediaSpy");
-//    settings.setValue("size", parent_->size());
-//    settings.setValue("pos", parent_->pos());
-//    settings.endGroup();
+    settings.beginGroup("MediaSpy");
+    settings.setValue("size", parent_->size());
+    settings.setValue("pos", parent_->pos());
+    settings.endGroup();
 
 //    settings.setValue("AutomaticUpdate", automaticUpdate_);
 }

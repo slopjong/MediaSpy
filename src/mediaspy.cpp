@@ -162,7 +162,7 @@ void MediaSpy::init() {
     /////////////
     // options //
     /////////////
-    Options::getInstance()->readOptions();
+    Options::getInstance(this)->readOptions();
 
     ////////////////////////////
     // local directories init //

@@ -42,6 +42,7 @@ class OptionsDialog : public QDialog {
     void init();
     void changePage(QTreeWidgetItem*, int);
 
+
 public:
     OptionsDialog(QWidget *parent = 0);
     ~OptionsDialog();

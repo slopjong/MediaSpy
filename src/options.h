@@ -36,7 +36,7 @@ class Options {
     MediaSpy* parent_;
 
     // option fields
-    bool automaticUpdate_;
+//    bool automaticUpdate_;
 
 
 public:
@@ -48,8 +48,8 @@ public:
     void readOptions();
 
     // option get/set
-    bool automaticUpdate() const;
-    void setAutomaticUpdate(const bool);
+//    bool automaticUpdate() const;
+//    void setAutomaticUpdate(const bool);
 
 
 };

@@ -36,7 +36,7 @@ Options* Options::singleton_ = 0;
   */
 Options::Options(MediaSpy* parent)
         : parent_(parent) // default option values
-        , automaticUpdate_(false)
+//        , automaticUpdate_(false)
 {}
 
 /** \fn Options::~Options()
@@ -77,7 +77,7 @@ void Options::readOptions() {
 //    parent_->move(settings.value("pos", QPoint(0, 0)).toPoint());
 //    settings.endGroup();
 
-    automaticUpdate_ = settings.value("AutomaticUpdate", automaticUpdate_).toBool();
+//    automaticUpdate_ = settings.value("AutomaticUpdate", automaticUpdate_).toBool();
 }
 
 
@@ -89,7 +89,7 @@ void Options::writeOptions() {
 //    settings.setValue("pos", parent_->pos());
 //    settings.endGroup();
 
-    settings.setValue("AutomaticUpdate", automaticUpdate_);
+//    settings.setValue("AutomaticUpdate", automaticUpdate_);
 }
 
 
@@ -98,6 +98,6 @@ void Options::writeOptions() {
 ////////////////////
 // option get/set //
 ////////////////////
-bool Options::automaticUpdate() const {return automaticUpdate_;}
-void Options::setAutomaticUpdate(const bool automaticUpdate) {automaticUpdate_ = automaticUpdate;}
+//bool Options::automaticUpdate() const {return automaticUpdate_;}
+//void Options::setAutomaticUpdate(const bool automaticUpdate) {automaticUpdate_ = automaticUpdate;}
 

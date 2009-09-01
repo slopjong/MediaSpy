@@ -48,7 +48,9 @@ OptionsDialog::~OptionsDialog() {
 // methods //
 /////////////
 void OptionsDialog::init() {
-    static const QStringList optionsName = QStringList() << tr("General") << tr("Tags"); // order is important !!
+    static const QStringList optionsName = QStringList()
+            << tr("General")
+            << tr("Tags"); // order is important !!
 
     ui_->optionsTree->setColumnCount(1);
     for (int i = 0; i < optionsName.count(); ++i)
@@ -69,14 +71,16 @@ void OptionsDialog::changePage(QTreeWidgetItem* item, int column) {
 
 
 void OptionsDialog::getOptions() {
-    ui_->automaticUpdate->setChecked(Options::getInstance()->automaticUpdate());
+//    ui_->automaticUpdate->setChecked(Options::getInstance()->automaticUpdate());
     ui_->tagsListLabel->setText(DatabaseManager::getInstance()->getTagList().join(", "));
+    ui_->orphanTagsLabel->setText(DatabaseManager::getInstance()->getOrphanTagList().join(", "));
 
 }
 
 
 void OptionsDialog::setOptions() {
-    Options::getInstance()->setAutomaticUpdate(ui_->automaticUpdate->isChecked());
+//    Options::getInstance()->setAutomaticUpdate(ui_->automaticUpdate->isChecked());
+//    Options::getInstance()->setOrphanTags(ui_->automaticUpdate->isChecked());
 }
 
 

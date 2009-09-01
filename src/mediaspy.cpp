@@ -41,29 +41,7 @@ MediaSpy::MediaSpy(QWidget *parent) :
         , selectAllTagsMenu_(new QAction(this))
         , unselectAllTagsMenu_(new QAction(this))
 {
-    // view settings
-    ui_->setupUi(this);
-    // progress bar
-    ui_->progressBar->setMinimum(0);
-    ui_->progressBar->setVisible(false);
-    ui_->progressButton->setVisible(false);
-    // splitter
-    ui_->splitter->setSizes(QList<int>() << ui_->centralWidget->size().width()/2 << ui_->centralWidget->size().width()/2);
-    // permanent status bar
-    ui_->statusBar->addPermanentWidget(statusLabel_);
-    statusLabel_->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-    // filter widget
-    ui_->filterWidget->setVisible(false);
-    // filters style
-    ui_->filterLineEdit->installEventFilter(this);
-    ui_->filterLineEdit->setFocus(Qt::MouseFocusReason);
-    // seen filter combobox
-    static const QStringList filterList = QStringList() << tr("All") << tr("Watched") << tr("Unwatched"); // order is important!
-    ui_->filterSeenComboBox->addItems(filterList);
-    ui_->filterSeenComboBox->setItemData(0, Qt::TextAlignmentRole, Qt::AlignCenter);
-
-    // program really begins here!
-    Options::getInstance()->readOptions();
+    // multiple initialisations
     init();
     makeConnections();
     updateThread_->start();
@@ -156,6 +134,36 @@ void MediaSpy::makeConnections() {
   * \brief Initiates required parts of the program.
   */
 void MediaSpy::init() {
+    //////////
+    // view //
+    //////////
+    ui_->setupUi(this);
+    // infomanager
+    InfoManager::getInstance(ui_)->init();
+    // progress bar
+    ui_->progressBar->setMinimum(0);
+    ui_->progressBar->setVisible(false);
+    ui_->progressButton->setVisible(false);
+    // splitter
+    ui_->splitter->setSizes(QList<int>() << ui_->centralWidget->size().width()/2 << ui_->centralWidget->size().width()/2);
+    // permanent status bar
+    ui_->statusBar->addPermanentWidget(statusLabel_);
+    statusLabel_->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    // filter widget
+    ui_->filterWidget->setVisible(false);
+    // filters style
+    ui_->filterLineEdit->installEventFilter(this);
+    ui_->filterLineEdit->setFocus(Qt::MouseFocusReason);
+    // seen filter combobox
+    static const QStringList filterList = QStringList() << tr("All") << tr("Watched") << tr("Unwatched"); // order is important!
+    ui_->filterSeenComboBox->addItems(filterList);
+    ui_->filterSeenComboBox->setItemData(0, Qt::TextAlignmentRole, Qt::AlignCenter);
+
+    /////////////
+    // options //
+    /////////////
+    Options::getInstance()->readOptions();
+
     ////////////////////////////
     // local directories init //
     ////////////////////////////
@@ -201,11 +209,6 @@ void MediaSpy::init() {
         errorMessage_ = qError.text();
         return;
     }
-
-    //////////////////////
-    // infomanager init //
-    //////////////////////
-    InfoManager::getInstance(ui_)->init();
 
     ////////////////////
     // tableView init //

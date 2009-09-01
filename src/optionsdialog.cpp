@@ -71,10 +71,25 @@ void OptionsDialog::changePage(QTreeWidgetItem* item, int column) {
 
 
 void OptionsDialog::getOptions() {
-//    ui_->automaticUpdate->setChecked(Options::getInstance()->automaticUpdate());
-    ui_->tagsListLabel->setText(DatabaseManager::getInstance()->getTagList().join(", "));
-    ui_->orphanTagsLabel->setText(DatabaseManager::getInstance()->getOrphanTagList().join(", "));
+    // general panel
     ui_->playerEdit->setText(Options::getInstance()->getPlayer());
+
+    // tags panel
+    ui_->tagsListLabel->setText(DatabaseManager::getInstance()->getTagList().join(", "));
+
+    QStringList orphanTags = DatabaseManager::getInstance()->getOrphanTagList();
+    if(orphanTags.count() > 0) {
+        ui_->orphanTagsLabel->setText(orphanTags.join(", "));
+        ui_->purgeButton->setEnabled(true);
+        ui_->purgeLabel->setVisible(true);
+    }
+    else {
+        ui_->orphanTagsLabel->setText(QString());
+        ui_->orphanTagsTextLabel->setText(tr("No orphan tags."));
+        ui_->purgeButton->setEnabled(false);
+        ui_->purgeLabel->setVisible(false);
+    }
+
 
 }
 
@@ -97,3 +112,8 @@ void OptionsDialog::on_optionsTree_itemEntered(QTreeWidgetItem* item, int column
     changePage(item, column);
 }
 
+
+void OptionsDialog::on_purgeButton_clicked() {
+    DatabaseManager::getInstance()->purgeOrphanTags();
+    getOptions();
+}

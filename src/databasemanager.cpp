@@ -579,6 +579,13 @@ QStringList DatabaseManager::getOrphanTagList() {
 }
 
 
+void DatabaseManager::purgeOrphanTags() {
+    QSqlQuery q;
+    if (!q.exec("DELETE FROM Tag WHERE Tag.id NOT IN (SELECT tagId FROM Media_Tag)"))
+        throw(q.lastError()); // TODO handle this!
+}
+
+
 void DatabaseManager::insertTag(QString& tagName) {
     QSqlQuery q;
     q.prepare("INSERT INTO Tag (name) VALUES(?)");

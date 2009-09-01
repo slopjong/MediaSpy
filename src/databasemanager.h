@@ -75,6 +75,7 @@ public:
     void insertTag(QString&);
     void addTagToMedia(QString&, QString);
     void removeTagFromMedia(QString&, QString);
+    void purgeOrphanTags();
 
     void insertMovieMedia(MovieMedia);
     bool hasImdbInfo(const QString&);

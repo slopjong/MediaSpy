@@ -51,6 +51,7 @@ public:
 
 
 private slots:
+    void on_purgeButton_clicked();
     void on_optionsTree_itemEntered(QTreeWidgetItem* item, int column);
     void on_optionsTree_itemActivated(QTreeWidgetItem* item, int column);
 

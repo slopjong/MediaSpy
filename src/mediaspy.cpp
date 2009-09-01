@@ -582,8 +582,13 @@ void MediaSpy::on_toggleFilterWidget_clicked() {
 
 void MediaSpy::on_actionOptions_triggered() {
     OptionsDialog dialog(this);
-    if (dialog.exec() != QDialog::Accepted)
+
+    QSqlDatabase::database().transaction();
+    if (dialog.exec() != QDialog::Accepted) {
+        QSqlDatabase::database().rollback();
         return;
+    }
+    QSqlDatabase::database().commit();
 
     dialog.setOptions();
     Options::getInstance()->writeOptions();

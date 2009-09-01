@@ -55,7 +55,7 @@ FORMS += src/ui/mediaspy.ui \
     src/ui/optionsdialog.ui
 RESOURCES += src/resources/MediaSpy.qrc
 TRANSLATIONS += translations/mediaspy_fr.ts \
-    translations/mediaspy_en.ts
+    translations/mediaspy_en.ts \
     translations/mediaspy_ta.ts
 OTHER_FILES += README.txt \
     LICENSE.txt \

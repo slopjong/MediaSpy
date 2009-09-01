@@ -27,9 +27,8 @@
         <translation>&amp;அடைவை சேர்</translation>
     </message>
     <message>
-        <location filename="../src/ui/collectiondialog.ui" line="32"/>
         <source>Ctrl+A</source>
-        <translation>Ctrl+A</translation>
+        <translation type="obsolete">Ctrl+A</translation>
     </message>
     <message>
         <location filename="../src/ui/collectiondialog.ui" line="45"/>
@@ -37,9 +36,8 @@
         <translation>&amp;நீக்கு</translation>
     </message>
     <message>
-        <location filename="../src/ui/collectiondialog.ui" line="48"/>
         <source>Ctrl+R</source>
-        <translation>Ctrl+R</translation>
+        <translation type="obsolete">Ctrl+R</translation>
     </message>
 </context>
 <context>
@@ -549,7 +547,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message numerus="yes">
         <location filename="../src/qtElements/myqlistview.cpp" line="81"/>
-        <source>Play media(s)</source>
+        <source>Play media(s) (%1)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
             <numerusform></numerusform>

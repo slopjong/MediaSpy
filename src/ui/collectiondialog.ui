@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>698</width>
-    <height>298</height>
+    <width>696</width>
+    <height>296</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,7 +29,7 @@
             <string>&amp;Add</string>
            </property>
            <property name="shortcut">
-            <string>Ctrl+A</string>
+            <string notr="true">Ctrl+A</string>
            </property>
            <property name="default">
             <bool>true</bool>
@@ -45,7 +45,7 @@
             <string>&amp;Remove</string>
            </property>
            <property name="shortcut">
-            <string>Ctrl+R</string>
+            <string notr="true">Ctrl+R</string>
            </property>
           </widget>
          </item>

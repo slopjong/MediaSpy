@@ -12,7 +12,7 @@
 <context>
     <name>CollectionDialog</name>
     <message>
-        <location filename="../src/collectiondialog.cpp" line="57"/>
+        <location filename="../src/collectiondialog.cpp" line="61"/>
         <source>Choose a directory</source>
         <translation>Choisissez un répertoire</translation>
     </message>
@@ -27,9 +27,8 @@
         <translation>&amp;Ajouter</translation>
     </message>
     <message>
-        <location filename="../src/ui/collectiondialog.ui" line="32"/>
         <source>Ctrl+A</source>
-        <translation>Ctrl+A</translation>
+        <translation type="obsolete">Ctrl+A</translation>
     </message>
     <message>
         <location filename="../src/ui/collectiondialog.ui" line="45"/>
@@ -37,9 +36,8 @@
         <translation>Enleve&amp;r</translation>
     </message>
     <message>
-        <location filename="../src/ui/collectiondialog.ui" line="48"/>
         <source>Ctrl+R</source>
-        <translation>Ctrl+R</translation>
+        <translation type="obsolete">Ctrl+R</translation>
     </message>
 </context>
 <context>
@@ -75,14 +73,6 @@
         <translation>Détails</translation>
     </message>
     <message>
-        <source>Full path:</source>
-        <translation type="obsolete">Chemin :</translation>
-    </message>
-    <message>
-        <source>Tags:</source>
-        <translation type="obsolete">Tags :</translation>
-    </message>
-    <message>
         <location filename="../src/ui/editmediadialog.ui" line="155"/>
         <source>Imdb</source>
         <translation>Imdb</translation>
@@ -103,21 +93,17 @@
         <translation>suivant</translation>
     </message>
     <message>
-        <source>Per media</source>
-        <translation type="obsolete">Par média</translation>
-    </message>
-    <message>
-        <location filename="../src/editmediadialog.cpp" line="88"/>
+        <location filename="../src/editmediadialog.cpp" line="86"/>
         <source>Details on %1 medias</source>
         <translation>Détails sur %1 médias</translation>
     </message>
     <message>
-        <location filename="../src/editmediadialog.cpp" line="91"/>
+        <location filename="../src/editmediadialog.cpp" line="89"/>
         <source>Details on %1</source>
         <translation>Détails sur %1</translation>
     </message>
     <message>
-        <location filename="../src/editmediadialog.cpp" line="175"/>
+        <location filename="../src/editmediadialog.cpp" line="173"/>
         <source>New tag &apos;%1&apos; created!</source>
         <translation>Nouveau tag créé : %1 !</translation>
     </message>
@@ -139,7 +125,7 @@
     <name>InfoManager</name>
     <message>
         <location filename="../src/info/infomanager.cpp" line="85"/>
-        <location filename="../src/info/infomanager.cpp" line="116"/>
+        <location filename="../src/info/infomanager.cpp" line="130"/>
         <source>Your collection</source>
         <translation>Votre collection</translation>
     </message>
@@ -157,44 +143,74 @@
         </translation>
     </message>
     <message>
-        <location filename="../src/info/infomanager.cpp" line="143"/>
+        <location filename="../src/info/infomanager.cpp" line="117"/>
+        <source>Runtime</source>
+        <translation>Durée</translation>
+    </message>
+    <message>
+        <location filename="../src/info/infomanager.cpp" line="119"/>
+        <source>Min:</source>
+        <translation>Min:</translation>
+    </message>
+    <message>
+        <location filename="../src/info/infomanager.cpp" line="119"/>
+        <source>Mean:</source>
+        <translation>Moyenne:</translation>
+    </message>
+    <message>
+        <location filename="../src/info/infomanager.cpp" line="119"/>
+        <source>Max:</source>
+        <translation>Max:</translation>
+    </message>
+    <message>
+        <location filename="../src/info/infomanager.cpp" line="122"/>
+        <source>Genre</source>
+        <translation>Genre</translation>
+    </message>
+    <message>
+        <location filename="../src/info/infomanager.cpp" line="126"/>
+        <source>Year</source>
+        <translation>Année</translation>
+    </message>
+    <message>
+        <location filename="../src/info/infomanager.cpp" line="156"/>
         <source>Your tags: </source>
         <translation>Vos tags : </translation>
     </message>
     <message>
-        <location filename="../src/info/infomanager.cpp" line="167"/>
+        <location filename="../src/info/infomanager.cpp" line="180"/>
         <source>Genre:</source>
         <translation>Genre :</translation>
     </message>
     <message>
-        <location filename="../src/info/infomanager.cpp" line="170"/>
+        <location filename="../src/info/infomanager.cpp" line="183"/>
         <source>Runtime:</source>
         <translation>Durée :</translation>
     </message>
     <message>
-        <location filename="../src/info/infomanager.cpp" line="173"/>
+        <location filename="../src/info/infomanager.cpp" line="186"/>
         <source>With:</source>
         <translation>Avec :</translation>
     </message>
     <message>
-        <location filename="../src/info/infomanager.cpp" line="176"/>
+        <location filename="../src/info/infomanager.cpp" line="189"/>
         <source>Director:</source>
         <translation>Directeur :</translation>
     </message>
     <message>
-        <location filename="../src/info/infomanager.cpp" line="179"/>
+        <location filename="../src/info/infomanager.cpp" line="192"/>
         <source>Country:</source>
         <translation>Pays :</translation>
     </message>
     <message>
-        <location filename="../src/info/infomanager.cpp" line="182"/>
+        <location filename="../src/info/infomanager.cpp" line="195"/>
         <source>Rating:</source>
         <translation>Note :</translation>
     </message>
     <message>
-        <location filename="../src/info/infomanager.cpp" line="191"/>
-        <source>No imdb info available!</source>
-        <translation>Pas de données imdb disponible !</translation>
+        <location filename="../src/info/infomanager.cpp" line="204"/>
+        <source>No info available!</source>
+        <translation>Pas de données disponible !</translation>
     </message>
 </context>
 <context>
@@ -208,51 +224,47 @@
 <context>
     <name>MediaSpy</name>
     <message>
-        <location filename="../src/mediaspy.cpp" line="61"/>
+        <location filename="../src/mediaspy.cpp" line="159"/>
         <source>All</source>
         <translation>Tous</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="61"/>
+        <location filename="../src/mediaspy.cpp" line="159"/>
         <source>Watched</source>
         <translation>Vus</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="61"/>
+        <location filename="../src/mediaspy.cpp" line="159"/>
         <source>Unwatched</source>
         <translation>Non vus</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="74"/>
+        <location filename="../src/mediaspy.cpp" line="52"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="193"/>
+        <location filename="../src/mediaspy.cpp" line="174"/>
         <source>Cannot create local directory!</source>
         <translation>Création du répertoire local impossible !</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="200"/>
+        <location filename="../src/mediaspy.cpp" line="181"/>
         <source>Cannot create local style directory!</source>
         <translation>Création du répertoire de style local impossible !</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="207"/>
+        <location filename="../src/mediaspy.cpp" line="188"/>
         <source>Cannot create local cover directory!</source>
         <translation>Création du répertoire de couvertures locales impossible !</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="223"/>
+        <location filename="../src/mediaspy.cpp" line="204"/>
         <source>This program needs the SQLITE driver.</source>
         <translation>Ce programme nécessite le driver SQLITE.</translation>
     </message>
-    <message>
-        <source>Title</source>
-        <translation type="obsolete">Titre</translation>
-    </message>
     <message numerus="yes">
-        <location filename="../src/mediaspy.cpp" line="495"/>
+        <location filename="../src/mediaspy.cpp" line="462"/>
         <source>%n movie(s)</source>
         <translation>
             <numerusform>%n film</numerusform>
@@ -260,7 +272,7 @@
         </translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="335"/>
+        <location filename="../src/mediaspy.cpp" line="311"/>
         <source>About </source>
         <translation>À propos</translation>
     </message>
@@ -270,17 +282,17 @@
         <translation>Recherche</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="268"/>
+        <location filename="../src/mediaspy.cpp" line="244"/>
         <source>Select all</source>
         <translation>Tout sélectionner</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="269"/>
+        <location filename="../src/mediaspy.cpp" line="245"/>
         <source>Deselect all</source>
         <translation>Tout désélectionner</translation>
     </message>
     <message>
-        <location filename="../src/mediaspy.cpp" line="337"/>
+        <location filename="../src/mediaspy.cpp" line="313"/>
         <source>&lt;p&gt;MediaSpy is a movie collection cataloging software. Still in heavy development!</source>
         <translation>&lt;p&gt;MediaSpy est un logiciel de gestion de catalogue de film, en perpétuel développement !</translation>
     </message>
@@ -288,10 +300,6 @@
         <location filename="../src/ui/mediaspy.ui" line="14"/>
         <source>MediaSpy</source>
         <translation>MediaSpy</translation>
-    </message>
-    <message>
-        <source>Tags</source>
-        <translation type="obsolete">Tags</translation>
     </message>
     <message>
         <location filename="../src/ui/mediaspy.ui" line="135"/>
@@ -326,48 +334,128 @@
     </message>
     <message>
         <location filename="../src/ui/mediaspy.ui" line="197"/>
+        <location filename="../src/ui/mediaspy.ui" line="274"/>
         <source>Options</source>
         <translation>Options</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="204"/>
+        <location filename="../src/ui/mediaspy.ui" line="206"/>
         <source>Edit</source>
         <translation>Éditer</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="220"/>
+        <location filename="../src/ui/mediaspy.ui" line="222"/>
         <source>About MediaSpy</source>
         <translation>À propos de MediaSpy</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="225"/>
+        <location filename="../src/ui/mediaspy.ui" line="230"/>
         <source>About Qt</source>
         <translation>À propos de Qt</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="230"/>
+        <location filename="../src/ui/mediaspy.ui" line="235"/>
         <source>Quit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="238"/>
+        <location filename="../src/ui/mediaspy.ui" line="243"/>
         <source>Select directories</source>
         <translation>Choisissez des répertoires</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="246"/>
+        <location filename="../src/ui/mediaspy.ui" line="251"/>
         <source>Rescan collection</source>
         <translation>Reconstruire la collection</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="258"/>
+        <location filename="../src/ui/mediaspy.ui" line="263"/>
         <source>Edit information</source>
         <translation>Éditer les informations</translation>
     </message>
     <message>
-        <location filename="../src/ui/mediaspy.ui" line="261"/>
+        <location filename="../src/ui/mediaspy.ui" line="266"/>
         <source>Edit the information of the selectionned medias.</source>
         <translation>Éditer les informations des médias sélectionnés.</translation>
+    </message>
+</context>
+<context>
+    <name>OptionsDialog</name>
+    <message>
+        <location filename="../src/optionsdialog.cpp" line="52"/>
+        <location filename="../src/ui/optionsdialog.ui" line="57"/>
+        <source>General</source>
+        <translation>Général</translation>
+    </message>
+    <message>
+        <location filename="../src/optionsdialog.cpp" line="53"/>
+        <location filename="../src/ui/optionsdialog.ui" line="117"/>
+        <source>Tags</source>
+        <translation>Tags</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/optionsdialog.ui" line="14"/>
+        <source>Options - MediaSpy</source>
+        <translation>Options - MediaSpy</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/optionsdialog.ui" line="74"/>
+        <source>Media player:</source>
+        <translation>Lecteur de médias :</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/optionsdialog.ui" line="81"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Select the media player you want to use with your media files.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Common possibilities are mplayer (default), vlc, totem, kaffeine, etc.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If you pick one that is not present on your system, the media won&apos;t launch.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;You can precise the full path of the program, like: &lt;span style=&quot; font-style:italic;&quot;&gt;/usr/bin/mplayer&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Renseignez le lecteur de médias que vous voulez utiliser.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Les choix classiques sont mplayer (valeur par défaut), vlc, totem, kaffeine, etc.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Si votre choix n&apos;est pas disponible sur votre système, le média ne sera pas lu.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Vous pouvez préciser le chemin complet du programme, par exemple : &lt;span style=&quot; font-style:italic;&quot;&gt;/usr/bin/mplayer&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/optionsdialog.ui" line="131"/>
+        <source>Your tags:</source>
+        <translation>Vos tags :</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/optionsdialog.ui" line="147"/>
+        <source>tags</source>
+        <translation>tags</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/optionsdialog.ui" line="165"/>
+        <source>Purge orphan tags</source>
+        <translation>Purger les tags orphelins</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/optionsdialog.ui" line="171"/>
+        <source>The following tags have been created, but are now unused. Here, you can remove them from the database.</source>
+        <translation>Les tags suivant ont été créés mais ne sont plus utilisés. Vous pouvez les supprimer en cliquant sur ce bouton.</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/optionsdialog.ui" line="189"/>
+        <source>Orphan tags:</source>
+        <translation>Tags orphelins :</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/optionsdialog.ui" line="199"/>
+        <source>orphan tags</source>
+        <translation>tags orphelins</translation>
+    </message>
+    <message>
+        <location filename="../src/ui/optionsdialog.ui" line="208"/>
+        <source>Purge now!</source>
+        <translation>Purger !</translation>
     </message>
 </context>
 <context>
@@ -386,9 +474,34 @@
         <translation>Vu</translation>
     </message>
     <message>
-        <location filename="../src/qtElements/myqlistview.cpp" line="77"/>
+        <location filename="../src/qtElements/myqlistview.cpp" line="79"/>
         <source>Edit information</source>
         <translation>Éditer les informations</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/qtElements/myqlistview.cpp" line="81"/>
+        <source>Play media(s) (%1)</source>
+        <translation>
+            <numerusform>Lire le média (%1)</numerusform>
+            <numerusform>Lire les %n médias (%1)</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Play media(s)</source>
+        <translation type="obsolete">
+            <numerusform>Lire le média</numerusform>
+            <numerusform>Lire les %n médias</numerusform>
+        </translation>
+    </message>
+    <message>
+        <location filename="../src/qtElements/myqlistview.cpp" line="135"/>
+        <source>[ERROR] Player not launched!</source>
+        <translation>[ERREUR] Le lecteur n&apos;a pas démarré !</translation>
+    </message>
+    <message>
+        <location filename="../src/qtElements/myqlistview.cpp" line="138"/>
+        <source>[ERROR] No media selected!</source>
+        <translation>[ERREUR] Aucun média sélectionné !</translation>
     </message>
 </context>
 </TS>

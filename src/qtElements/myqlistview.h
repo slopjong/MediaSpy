@@ -30,6 +30,8 @@
 #include <QMainWindow>
 
 #include "../databasemanager.h"
+#include "../options.h"
+
 
 class myQListView : public QListView {
     Q_OBJECT;
@@ -41,7 +43,6 @@ class myQListView : public QListView {
     QWidgetAction* seenMediaAct_;
 
     void contextMenuEvent(QContextMenuEvent*);
-//    void applyTag(QString&);
 
 
 public:
@@ -51,12 +52,12 @@ public:
 
    // Fields
    QAction* editTagAct_;
+   QAction* playMediaAct_;
 
 
 private slots:
     void seenMedia(bool);
-//    void newTag();
-//    void tagSlot();
+    void playMedia();
 
 
 signals:

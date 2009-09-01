@@ -481,10 +481,10 @@ void DatabaseManager::insertMovieMedia(MovieMedia movieMedia) {
 }
 
 
-/** \fn QString DatabaseManager::getMediaFullName(QString& baseName)
+/** \fn QString DatabaseManager::getMediaFullName(QString baseName)
   * \brief Returns the full name of the \var baseName file.
   */
-QString DatabaseManager::getMediaFullName(QString& baseName) {
+QString DatabaseManager::getMediaFullName(QString baseName) {
     QSqlQuery q;
     q.prepare("SELECT fileName FROM Media WHERE baseName = ?");
     q.bindValue(0, baseName);

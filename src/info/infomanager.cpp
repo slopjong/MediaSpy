@@ -131,8 +131,7 @@ QString InfoManager::getStats() {
 }
 
 
-
-// add link to imdb pages (film, actors, director, etc.)
+// TODO add link to imdb pages (film, actors, director, etc.)
 QString InfoManager::getInfo(QString& mediaName) {
     MovieMedia* media = new MovieMedia(mediaName);
     media->getImdbInfoFromDb();
@@ -205,9 +204,6 @@ QString InfoManager::noInfo() {
     QString view = QString("<h1>%1 :-(</h1>").arg(tr("No info available!"));
     return htmlHeader() + view + htmlFooter();
 }
-
-
-
 
 
 QString InfoManager::htmlHeader() {

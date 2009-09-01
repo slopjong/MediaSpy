@@ -26,6 +26,8 @@
 class MediaSpy;
 
 
+static const QString defaultPlayer = "mplayer";
+
 class Options {
 
     Options(MediaSpy* parent = 0);
@@ -36,7 +38,7 @@ class Options {
     MediaSpy* parent_;
 
     // option fields
-//    bool automaticUpdate_;
+    QString player_;
 
 
 public:
@@ -48,9 +50,8 @@ public:
     void readOptions();
 
     // option get/set
-//    bool automaticUpdate() const;
-//    void setAutomaticUpdate(const bool);
-
+    QString getPlayer() const;
+    void setPlayer(const QString);
 
 };
 

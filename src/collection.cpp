@@ -72,7 +72,7 @@ void Collection::kill() {
   */
 void Collection::update() {
     dirList_ = DatabaseManager::getInstance()->getCollectionDir(); // get directories from db
-    nDir_ = dirList_.size();
+    nDir_ = dirList_.count();
 }
 
 
@@ -82,7 +82,7 @@ void Collection::update() {
   */
 QStringList Collection::buildFileList() {
     QStringList fileList;
-    for (int i = 0; i < this->dirList_.size(); ++i)
+    for (int i = 0; i < this->dirList_.count(); ++i)
         fileList << ScanRecDir(this->dirList_.at(i));
 
     return fileList;
@@ -115,7 +115,7 @@ QStringList Collection::ScanRecDir(const QString& dir) {
     QStringList dirList = qdir.entryList(QDir::AllDirs | QDir::Drives | QDir::NoDotAndDotDot);
 
     // recursive call
-    for (int i = 0; i < dirList.size(); ++i)
+    for (int i = 0; i < dirList.count(); ++i)
         fileList << ScanRecDir( dir + QDir::separator() + dirList.at(i) );
 
     return fileList;

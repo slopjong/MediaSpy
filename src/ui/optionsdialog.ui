@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>467</width>
-    <height>306</height>
+    <width>465</width>
+    <height>304</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -41,7 +41,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="generalPage">
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -60,6 +60,26 @@
           <bool>false</bool>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QLabel" name="playerLabel">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Media player:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="playerEdit"/>
+            </item>
+           </layout>
+          </item>
           <item>
            <spacer name="genVerticalSpacer">
             <property name="orientation">

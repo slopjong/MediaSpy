@@ -69,7 +69,7 @@ void myQSqlTableModel::setKeyTocheck( bool ok, const QString& fileName ) {
 
 
 void myQSqlTableModel::setList() {
-    for(int row = 0; row < this->rowCount(); ++row)
+    for(int row = 0; row < rowCount(); ++row)
         etatList_.insert(row, 0);
 }
 

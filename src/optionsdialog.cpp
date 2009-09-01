@@ -74,6 +74,7 @@ void OptionsDialog::getOptions() {
 //    ui_->automaticUpdate->setChecked(Options::getInstance()->automaticUpdate());
     ui_->tagsListLabel->setText(DatabaseManager::getInstance()->getTagList().join(", "));
     ui_->orphanTagsLabel->setText(DatabaseManager::getInstance()->getOrphanTagList().join(", "));
+    ui_->playerEdit->setText(Options::getInstance()->getPlayer());
 
 }
 
@@ -81,6 +82,7 @@ void OptionsDialog::getOptions() {
 void OptionsDialog::setOptions() {
 //    Options::getInstance()->setAutomaticUpdate(ui_->automaticUpdate->isChecked());
 //    Options::getInstance()->setOrphanTags(ui_->automaticUpdate->isChecked());
+    Options::getInstance()->setPlayer(ui_->playerEdit->text());
 }
 
 

@@ -65,7 +65,7 @@ public:
     QSqlQuery queryMediaWhere(QSqlQuery&, QString&, QString&);
     QSqlQuery queryImdbInfoWhere(QSqlQuery&, QString&, QString&);
     QStringList queryMediaWithNoImdbInfo();
-    QString getMediaFullName(QString&);
+    QString getMediaFullName(QString);
     int getMediaId(QString&);
 
     QStringList getMediaTagList(int);

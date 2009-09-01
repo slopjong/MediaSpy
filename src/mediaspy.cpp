@@ -101,14 +101,14 @@ void MediaSpy::makeConnections() {
 
     // for InfoManager
     connect(InfoManager::getInstance()->getImdbThread(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
-    connect(InfoManager::getInstance()->getImdbThread(), SIGNAL(searchResult(bool, QString)),
-            sqlTableModel_, SLOT(setKeyTocheck(bool, QString)));
     connect(InfoManager::getInstance()->getImdbThread(), SIGNAL(startSearch(const int)),
             this, SLOT(setProgressbarMaximum(const int)));
     connect(InfoManager::getInstance()->getImdbThread(), SIGNAL(searchProgress(const int)),
             this, SLOT(setProgressbarCurrent(const int)));
     connect(InfoManager::getInstance()->getImdbThread(), SIGNAL(finished()),
             this, SLOT(setProgressbarOff()));
+    connect(InfoManager::getInstance()->getImdbThread(), SIGNAL(searchResult(bool, QString)),
+            sqlTableModel_, SLOT(setKeyTocheck(bool, QString)));
 
     // for mediaListView
     connect(ui_->mediaListView->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)),

@@ -30,12 +30,14 @@ myQListView::myQListView(QWidget *parent)
         , checkBox_(new QCheckBox(this))
         , seenMediaAct_(new QWidgetAction(this))
         , editTagAct_(new QAction(this))
+        , playMediaAct_(new QAction(this))
 {
     seenMediaAct_->setDefaultWidget(checkBox_);
     checkBox_->setText(tr("Seen"));
 
     // connections
     connect(checkBox_, SIGNAL(clicked(bool)), this, SLOT(seenMedia(bool)));
+    connect(playMediaAct_, SIGNAL(triggered()), this, SLOT(playMedia()));
 }
 
 myQListView::~myQListView() {
@@ -57,7 +59,7 @@ void myQListView::contextMenuEvent(QContextMenuEvent* event) {
     Qt::CheckState state = Qt::Unchecked;
     bool storedBool = false;
     bool changeBool = false;
-    for (int i = 0; i < indexList.size(); ++i)
+    for (int i = 0; i < indexList.count(); ++i)
         if (indexList.at(i).isValid()) {
             QString indexContent = QString(indexList.at(i).data().toString());
             bool b = DatabaseManager::getInstance()->isMediaSeen(indexContent);
@@ -75,9 +77,11 @@ void myQListView::contextMenuEvent(QContextMenuEvent* event) {
         seenMediaAct_->setChecked(DatabaseManager::getInstance()->isMediaSeen(indexContent));
         editTagAct_->setText(tr("Edit information"));
         editTagAct_->setIcon(QIcon(":/icons/edit.png"));
+        playMediaAct_->setText(tr("Play"));
 
         menu_->addAction(seenMediaAct_);
         menu_->addAction(editTagAct_);
+        menu_->addAction(playMediaAct_);
         menu_->exec(QCursor::pos());
     }
 }
@@ -92,7 +96,7 @@ void myQListView::seenMedia(bool checked) {
     QModelIndexList indexList = selectionModel->selectedRows();
     QStringList nameList;
 
-    for (int i = 0; i < indexList.size(); ++i)
+    for (int i = 0; i < indexList.count(); ++i)
         if (indexList.at(i).isValid())
             nameList << QString(indexList.at(i).data().toString());
 
@@ -103,5 +107,20 @@ void myQListView::seenMedia(bool checked) {
 
     emit updateMedia();
     menu_->setVisible(false);
+}
+
+
+void myQListView::playMedia() {
+    QItemSelectionModel* selectionModel = this->selectionModel();
+    QModelIndexList indexList = selectionModel->selectedRows();
+    QStringList arguments;
+
+    for (int i = 0; i < indexList.count(); ++i)
+        if (indexList.at(i).isValid())
+            arguments << DatabaseManager::getInstance()->getMediaFullName(indexList.at(i).data().toString());
+
+    QString player = Options::getInstance()->getPlayer();
+    QProcess *playProcess = new QProcess(this);
+    playProcess->startDetached(player, arguments);
 }
 

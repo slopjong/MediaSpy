@@ -32,7 +32,6 @@
 MediaSpy::MediaSpy(QWidget *parent)
         : QMainWindow(parent)
         , ui_(new Ui::MediaSpy)
-        , collection_(new Collection())
         , updateThread_(new UpdateThread(collection_, this))
         , mediaListProxyModel_(new myQSortFilterProxyModel(this))
         , statusLabel_(new QLabel(this))
@@ -58,7 +57,6 @@ MediaSpy::MediaSpy(QWidget *parent)
   */
 MediaSpy::~MediaSpy() {
     delete ui_;
-    delete collection_;
     delete updateThread_;
     delete sqlTableModel_;
     delete mediaListProxyModel_;
@@ -92,7 +90,7 @@ void MediaSpy::makeConnections() {
     connect(MediaCollection::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
 
     // for Collection
-    connect(collection_, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
+    connect(&collection_, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
     connect(ui_->actionRescan_collection, SIGNAL(triggered()), this, SLOT(updateCollections()));
 
     // for updateThread_
@@ -227,7 +225,7 @@ void MediaSpy::init() {
     //////////////////////
     // collections init //
     //////////////////////
-    collection_->update();
+    collection_.update();
     InfoManager::getInstance(ui_, getCoverDirectory())->init();
 
     ///////////////////
@@ -280,7 +278,7 @@ void MediaSpy::closeEvent(QCloseEvent *event) {
   * \brief Updates the Collections in a dedicated thread.
   */
 void MediaSpy::updateCollections() {
-    collection_->update();
+    collection_.update();
     updateThread_->start();
 }
 

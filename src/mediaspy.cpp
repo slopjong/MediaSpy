@@ -29,8 +29,8 @@
   * \brief class constructor
   * \param parent the inherited QWidget object
   */
-MediaSpy::MediaSpy(QWidget *parent) :
-          QMainWindow(parent)
+MediaSpy::MediaSpy(QWidget *parent)
+        : QMainWindow(parent)
         , ui_(new Ui::MediaSpy)
         , updateThread_(new UpdateThread(this))
         , mediaListProxyModel_(new myQSortFilterProxyModel(this))
@@ -41,7 +41,6 @@ MediaSpy::MediaSpy(QWidget *parent) :
         , selectAllTagsMenu_(new QAction(this))
         , unselectAllTagsMenu_(new QAction(this))
 {
-    // multiple initialisations
     init();
     makeConnections();
     updateThread_->start();

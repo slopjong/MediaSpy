@@ -116,6 +116,7 @@ QString InfoManager::getStats() {
     view += "</div>";
 /*
     // runtime
+    // SELECT MAX(runtime), AVG(runtime), MIN(runtime) FROM ImdbInfo WHERE runtime != 0
     view += QString("<h2>%1</h2>").arg(tr("Runtime"));
     // histogram
     view += QString("<p>%1 %2 - %3 %4 - %5 %6</p>").arg(tr("Min:")).arg(70).arg(tr("Mean:")).arg(80).arg(tr("Max:")).arg(90);
@@ -215,7 +216,7 @@ QString InfoManager::createFirstPage() {
     foreach(cover, coverList) {
         QFileInfo file(MediaSpy::getCoverDirectory() + cover);
         if(file.exists())
-            view += QString("<img src=\"%1\" />").arg(cover); // width=\"100\" height=\"150\"
+            view += QString("<img src=\"%1\" />").arg(cover);
     }
 
     return view + "</div>";

@@ -21,12 +21,6 @@
 #include "collection.h"
 
 
-/** \var Collection* Collection::singleton_
-  * \brief pointer to the unique instance of Collection
-  */
-Collection* Collection::singleton_ = 0;
-
-
 /////////////////////////////
 // constructors/destructor //
 /////////////////////////////
@@ -45,27 +39,6 @@ Collection::~Collection() {}
 /////////////
 // Methods //
 /////////////
-/** \fn Collection* Collection::getInstance()
-  * \brief returns the unique instance of Collection, creates it the first time
-  */
-Collection* Collection::getInstance() {
-    if (0 == singleton_)
-        singleton_ =  new Collection;
-    return singleton_;
-}
-
-
-/** \fn Collection::kill()
-  * \brief Deletes the unique instance of Collection.
-  */
-void Collection::kill() {
-    if (0 != singleton_) {
-        delete singleton_;
-        singleton_ = 0;
-    }
-}
-
-
 /** \fn Collection::update()
   * \brief Updates the local collection with the db directory list.
   * \param QStringList& dirList

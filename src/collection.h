@@ -34,18 +34,15 @@
 class Collection : public QObject {
     Q_OBJECT
 
-    Collection();
-    virtual ~Collection();
-
     // Fields
-    static Collection *singleton_;
     QStringList dirList_;
     int nDir_;
 
 public:
+    Collection();
+    virtual ~Collection();
+
     // Operations
-    static Collection *getInstance();
-    static void kill();
     void update();
     QStringList buildFileList();
     QStringList ScanRecDir(const QString&);

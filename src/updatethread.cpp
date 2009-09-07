@@ -27,7 +27,10 @@
 /** \fn UpdateThread::UpdateThread(QObject* parent)
   * \brief Constructor.
   */
-UpdateThread::UpdateThread(QObject* parent): QThread(parent) {}
+UpdateThread::UpdateThread(Collection *collection, QObject* parent)
+        : QThread(parent)
+        , collection_(collection)
+{}
 
 /** \fn UpdateThread::~UpdateThread()
   * \brief Destructor.
@@ -42,7 +45,7 @@ UpdateThread::~UpdateThread() {
 // methods //
 /////////////
 void UpdateThread::run() {
-    QStringList mediaList = Collection::getInstance()->buildFileList();
+    QStringList mediaList = collection_->buildFileList();
     if(mediaList.count()>0) {
         emit messageToStatus(QString(tr("Updating...")));
         MediaCollection::getInstance()->updateMediaCollection(mediaList);

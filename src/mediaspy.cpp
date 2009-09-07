@@ -32,7 +32,7 @@
 MediaSpy::MediaSpy(QWidget *parent)
         : QMainWindow(parent)
         , ui_(new Ui::MediaSpy)
-        , updateThread_(new UpdateThread(collection_, this))
+        , updateThread_(collection_, this)
         , mediaListProxyModel_(new myQSortFilterProxyModel(this))
         , statusLabel_(new QLabel(this))
         , filterTitleString_(QString(tr("Search")))
@@ -43,7 +43,7 @@ MediaSpy::MediaSpy(QWidget *parent)
 {
     init();
     makeConnections();
-    updateThread_->start();
+    updateThread_.start();
 
     // (light) error management
     if(!(errorMessage_.isEmpty())) {
@@ -57,7 +57,7 @@ MediaSpy::MediaSpy(QWidget *parent)
   */
 MediaSpy::~MediaSpy() {
     delete ui_;
-    delete updateThread_;
+//    delete updateThread_;
     delete sqlTableModel_;
     delete mediaListProxyModel_;
     delete statusLabel_;
@@ -94,8 +94,8 @@ void MediaSpy::makeConnections() {
     connect(ui_->actionRescan_collection, SIGNAL(triggered()), this, SLOT(updateCollections()));
 
     // for updateThread_
-    connect(updateThread_, SIGNAL(finished()), this, SLOT(finishedUpdateThread()) );
-    connect(updateThread_, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
+    connect(&updateThread_, SIGNAL(finished()), this, SLOT(finishedUpdateThread()) );
+    connect(&updateThread_, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
 
     // for InfoManager
     connect(InfoManager::getInstance()->getImdbThread(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
@@ -279,7 +279,7 @@ void MediaSpy::closeEvent(QCloseEvent *event) {
   */
 void MediaSpy::updateCollections() {
     collection_.update();
-    updateThread_->start();
+    updateThread_.start();
 }
 
 
@@ -541,7 +541,7 @@ void MediaSpy::on_actionAbout_Qt_triggered() {
  *  \brief Stops the info research thread.
  */
 void MediaSpy::on_progressButton_clicked() {
-    updateThread_->quit();
+    updateThread_.quit();
     InfoManager::getInstance()->getImdbThread()->quit();
     displayMessage();
 }

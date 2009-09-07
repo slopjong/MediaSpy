@@ -12,6 +12,7 @@ RCC_DIR = build/rcc
 OBJECTS_DIR = build
 SOURCES += src/main.cpp \
     src/mediaspy.cpp \
+    src/applicationfactory.cpp \
     src/collection.cpp \
     src/collectiondialog.cpp \
     src/databasemanager.cpp \
@@ -31,6 +32,7 @@ SOURCES += src/main.cpp \
     src/qtElements/myqlistview.cpp \
     src/options.cpp
 HEADERS += src/mediaspy.h \
+    src/applicationfactory.h \
     src/collection.h \
     src/collectiondialog.h \
     src/databasemanager.h \

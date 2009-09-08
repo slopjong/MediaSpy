@@ -27,9 +27,10 @@
 /////////////////////////////
 // constructors/destructor //
 /////////////////////////////
-OptionsDialog::OptionsDialog(QWidget *parent)
+OptionsDialog::OptionsDialog(Options* options, QWidget *parent)
         : QDialog(parent)
         , ui_(new Ui::OptionsDialog)
+        , options_(options)
 {
     ui_->setupUi(this);
     init();
@@ -72,7 +73,7 @@ void OptionsDialog::changePage(QTreeWidgetItem* item, int column) {
 
 void OptionsDialog::getOptions() {
     // general panel
-    ui_->playerEdit->setText(Options::getInstance()->getPlayer());
+    ui_->playerEdit->setText(options_->getPlayer());
 
     // tags panel
     ui_->tagsListLabel->setText(DatabaseManager::getInstance()->getTagList().join(", "));
@@ -97,7 +98,7 @@ void OptionsDialog::getOptions() {
 void OptionsDialog::setOptions() {
 //    Options::getInstance()->setAutomaticUpdate(ui_->automaticUpdate->isChecked());
 //    Options::getInstance()->setOrphanTags(ui_->automaticUpdate->isChecked());
-    Options::getInstance()->setPlayer(ui_->playerEdit->text());
+    options_->setPlayer(ui_->playerEdit->text());
 }
 
 

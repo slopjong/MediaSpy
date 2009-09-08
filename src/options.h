@@ -28,13 +28,10 @@ class MediaSpy;
 
 static const QString defaultPlayer = "mplayer";
 
-class Options {
-
-    Options(MediaSpy* parent = 0);
-    virtual ~Options();
+class Options : public QObject {
+    Q_OBJECT;
 
     // Fields
-    static Options *singleton_;
     MediaSpy* parent_;
 
     // option fields
@@ -42,16 +39,19 @@ class Options {
 
 
 public:
+    Options(MediaSpy* parent = 0);
+    virtual ~Options();
     // Operations
-    static Options* getInstance(MediaSpy* parent = 0);
-    static void kill();
-
     void writeOptions();
     void readOptions();
 
     // option get/set
     QString getPlayer() const;
     void setPlayer(const QString);
+
+
+signals:
+    void updated();
 
 };
 

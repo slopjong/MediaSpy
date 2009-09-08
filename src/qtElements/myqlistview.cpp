@@ -78,7 +78,7 @@ void myQListView::contextMenuEvent(QContextMenuEvent* event) {
         seenMediaAct_->setChecked(DatabaseManager::getInstance()->isMediaSeen(indexContent));
         editTagAct_->setText(tr("Edit information"));
         editTagAct_->setIcon(QIcon(":/icons/edit.png"));
-        playMediaAct_->setText(tr("Play media(s) (%1)", "", indexList.count()).arg(Options::getInstance()->getPlayer()));
+        playMediaAct_->setText(tr("Play media(s) (%1)", "", indexList.count()).arg(property("player").toString()));
         playMediaAct_->setIcon(QIcon(":/icons/play.png"));
 
         menu_->addAction(seenMediaAct_);
@@ -124,12 +124,12 @@ void myQListView::playMedia() {
             if (indexList.at(i).isValid())
                 arguments << DatabaseManager::getInstance()->getMediaFullName(indexList.at(i).data().toString());
 
-        QString player = Options::getInstance()->getPlayer();
-        if(player.contains("mplayer"))
+        QString playerName = property("player").toString();
+        if(playerName.contains("mplayer"))
             arguments << "-quiet"; // in order 1. to be quiet (!) 2. to *really* detach the process
 
         QProcess playProcess;
-        bool ok = playProcess.startDetached(player, arguments);
+        bool ok = playProcess.startDetached(playerName, arguments);
 
         if(!ok)
             emit messageToStatus(tr("[ERROR] Player not launched!"));

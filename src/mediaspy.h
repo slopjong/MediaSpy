@@ -76,6 +76,7 @@ class MediaSpy : public QMainWindow {
 
     // Fields
     Ui::MediaSpy* ui_;
+    Options* options_;
     Collection* collection_;
     UpdateThread* updateThread_;
     myQSqlTableModel* sqlTableModel_;
@@ -133,11 +134,12 @@ private slots:
     void finishedUpdateThread();
     void selectedMovie(QModelIndex, QModelIndex);
     void editDialog();
-    void updateCollections();
+    void on_actionRescan_collection_triggered();
     void updateSqlTableModel();
     void tagSearched(bool);
     void selectAllTags();
     void unselectAllTags();
+    void optionsUpdated();
 
 };
 

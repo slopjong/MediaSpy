@@ -36,6 +36,7 @@ class OptionsDialog : public QDialog {
     Q_OBJECT
 
     Ui::OptionsDialog *ui_;
+    Options* options_;
     QList<QTreeWidgetItem *> optionItems_;
     QTreeWidgetItem* currentItem_;
 
@@ -44,7 +45,7 @@ class OptionsDialog : public QDialog {
 
 
 public:
-    OptionsDialog(QWidget *parent = 0);
+    OptionsDialog(Options*, QWidget *parent = 0);
     ~OptionsDialog();
     void setOptions();
     void getOptions();

@@ -22,12 +22,6 @@
 #include "mediaspy.h"
 
 
-/** \var Options* Options::singleton_
-  * \brief pointer to the unique instance of Options
-  */
-Options* Options::singleton_ = 0;
-
-
 /////////////////////////////
 // constructors/destructor //
 /////////////////////////////
@@ -35,8 +29,8 @@ Options* Options::singleton_ = 0;
   * \brief Class constructor of the Options object. Note that it defines the default values of the options.
   */
 Options::Options(MediaSpy* parent)
-        : parent_(parent) // default option values
-        , player_(defaultPlayer)
+        : parent_(parent)
+        , player_(defaultPlayer) // default option values
 {}
 
 /** \fn Options::~Options()
@@ -48,27 +42,6 @@ Options::~Options() {}
 /////////////
 // methods //
 /////////////
-/** \fn Options* Options::getInstance()
-  * \brief Returns the unique instance of Options, creates it the first time.
-  */
-Options* Options::getInstance(MediaSpy* parent) {
-    if (0 == singleton_)
-        singleton_ =  new Options(parent);
-    return singleton_;
-}
-
-
-/** \fn Options::kill()
-  * \brief Deletes the unique instance of Options.
-  */
-void Options::kill() {
-    if (0 != singleton_) {
-        delete singleton_;
-        singleton_ = 0;
-    }
-}
-
-
 void Options::readOptions() {
     Q_CHECK_PTR(parent_);
     QSettings settings;
@@ -91,6 +64,7 @@ void Options::writeOptions() {
     settings.endGroup();
 
     settings.setValue("player", player_);
+    emit updated();
 }
 
 

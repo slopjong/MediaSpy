@@ -32,6 +32,7 @@
 MediaSpy::MediaSpy(QWidget *parent)
         : QMainWindow(parent)
         , ui_(new Ui::MediaSpy)
+        , options_(new Options(this))
         , collection_(new Collection())
         , updateThread_(new UpdateThread(collection_, this))
         , mediaListProxyModel_(new myQSortFilterProxyModel(this))
@@ -53,23 +54,30 @@ MediaSpy::MediaSpy(QWidget *parent)
     }
 }
 
+
 /** \fn MediaSpy::~MediaSpy()
   * \brief class destructor
   */
 MediaSpy::~MediaSpy() {
+    // pointers
     delete ui_;
+    delete options_;
     delete collection_;
     delete updateThread_;
     delete sqlTableModel_;
     delete mediaListProxyModel_;
     delete statusLabel_;
+
+    // menus
     tagsMenu_->clear();
     delete tagsMenu_;
+
+    // singletons
     InfoManager::getInstance()->kill();
     MediaCollection::getInstance()->kill();
     DatabaseManager::getInstance()->kill();
-    Options::getInstance()->kill();
 
+    // lists
     qDeleteAll(tagMenuCheckBoxList_.begin(), tagMenuCheckBoxList_.end());
     tagMenuCheckBoxList_.clear();
     qDeleteAll(tagMenuActionList_.begin(), tagMenuActionList_.end());
@@ -93,7 +101,6 @@ void MediaSpy::makeConnections() {
 
     // for Collection
     connect(collection_, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
-    connect(ui_->actionRescan_collection, SIGNAL(triggered()), this, SLOT(updateCollections()));
 
     // for updateThread_
     connect(updateThread_, SIGNAL(finished()), this, SLOT(finishedUpdateThread()) );
@@ -128,6 +135,9 @@ void MediaSpy::makeConnections() {
     // for tagMenu
     connect(selectAllTagsMenu_, SIGNAL(triggered()), this, SLOT(selectAllTags()));
     connect(unselectAllTagsMenu_, SIGNAL(triggered()), this, SLOT(unselectAllTags()));
+
+    // for options
+    connect(options_, SIGNAL(updated()), this, SLOT(optionsUpdated()));
 }
 
 
@@ -163,7 +173,7 @@ void MediaSpy::init() {
     /////////////
     // options //
     /////////////
-    Options::getInstance(this)->readOptions();
+    options_->readOptions();
 
     ////////////////////////////
     // local directories init //
@@ -272,14 +282,14 @@ void MediaSpy::createTagMenu() {
   */
 void MediaSpy::closeEvent(QCloseEvent *event) {
     Q_UNUSED(event);
-    Options::getInstance()->writeOptions();
+    options_->writeOptions();
 }
 
 
 /** \fn void MediaSpy::updateCollections(QStringList& dirList)
   * \brief Updates the Collections in a dedicated thread.
   */
-void MediaSpy::updateCollections() {
+void MediaSpy::on_actionRescan_collection_triggered() {
     collection_->update();
     updateThread_->start();
 }
@@ -336,7 +346,7 @@ void MediaSpy::on_actionSelectdirectories_triggered() {
     }
     QSqlDatabase::database().commit();
 
-    updateCollections();
+    on_actionRescan_collection_triggered();
 }
 
 
@@ -582,7 +592,7 @@ void MediaSpy::on_toggleFilterWidget_clicked() {
 
 
 void MediaSpy::on_actionOptions_triggered() {
-    OptionsDialog dialog(this);
+    OptionsDialog dialog(options_, this);
 
     QSqlDatabase::database().transaction();
     if (dialog.exec() != QDialog::Accepted) {
@@ -592,6 +602,11 @@ void MediaSpy::on_actionOptions_triggered() {
     QSqlDatabase::database().commit();
 
     dialog.setOptions();
-    Options::getInstance()->writeOptions();
+    options_->writeOptions();
+}
+
+
+void MediaSpy::optionsUpdated() {
+    ui_->mediaListView->setProperty("player", QVariant(options_->getPlayer()));
 }
 

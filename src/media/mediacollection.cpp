@@ -29,7 +29,7 @@ static const int MEDIA_TYPE_DOC     = 2;
 /** \var MediaCollection* MediaCollection::singleton_
   * \brief pointer to the unique instance of MediaCollection
   */
-MediaCollection* MediaCollection::singleton_ = 00;
+MediaCollection* MediaCollection::singleton_ = 0;
 
 
 
@@ -57,7 +57,7 @@ MediaCollection::~MediaCollection() {
   * \brief returns the unique instance of MediaCollection, creates it the first time
   */
 MediaCollection* MediaCollection::getInstance() {
-    if (00 == singleton_)
+    if (0 == singleton_)
         singleton_ =  new MediaCollection;
     return singleton_;
 }
@@ -67,9 +67,9 @@ MediaCollection* MediaCollection::getInstance() {
   * \brief deletes the unique instance of MediaCollection
   */
 void MediaCollection::kill() {
-    if (00 != singleton_) {
+    if (0 != singleton_) {
         delete singleton_;
-        singleton_ = 00;
+        singleton_ = 0;
     }
 }
 
@@ -109,7 +109,7 @@ void MediaCollection::updateMediaCollection(QStringList& mediaList) {
             tempMedia.setLoaned(false);
             tempMedia.setSeen(false);
             tempMedia.setRecommended(false);
-            tempMedia.setNotes(00);
+            tempMedia.setNotes(0);
 
             // let's add it!
             insertList << tempMedia;

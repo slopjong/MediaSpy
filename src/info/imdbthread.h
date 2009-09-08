@@ -39,7 +39,7 @@ class ImdbThread : public QThread {
 
 
 public:
-    explicit ImdbThread(QObject* parent = 00);
+    explicit ImdbThread(QObject* parent = 0);
     virtual ~ImdbThread();
     void setInfoList(const QStringList&);
 

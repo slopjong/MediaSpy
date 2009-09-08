@@ -25,7 +25,7 @@
 /** \var InfoManager* InfoManager::singleton_
   * \brief pointer to the unique instance of InfoManager
   */
-InfoManager* InfoManager::singleton_ = 00;
+InfoManager* InfoManager::singleton_ = 0;
 
 
 /////////////////////////////
@@ -57,7 +57,7 @@ InfoManager::~InfoManager() {
   * \brief returns the unique instance of InfoManager, creates it the first time
   */
 InfoManager* InfoManager::getInstance(Ui_MediaSpy* uiParent, QString coverDir) {
-    if (00 == singleton_)
+    if (0 == singleton_)
         singleton_ = new InfoManager(uiParent, coverDir);
     return singleton_;
 }
@@ -66,9 +66,9 @@ InfoManager* InfoManager::getInstance(Ui_MediaSpy* uiParent, QString coverDir) {
   * \brief deletes the unique instance of InfoManager
   */
 void InfoManager::kill() {
-    if (00 != singleton_) {
+    if (0 != singleton_) {
         delete singleton_;
-        singleton_ = 00;
+        singleton_ = 0;
     }
 }
 

@@ -34,7 +34,7 @@ class UpdateThread : public QThread {
     Collection& collection_;
 
 public:
-    UpdateThread(Collection&, QObject* parent = 00);
+    UpdateThread(Collection&, QObject* parent = 0);
     virtual ~UpdateThread();
 
 

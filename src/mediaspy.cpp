@@ -32,7 +32,8 @@
 MediaSpy::MediaSpy(QWidget *parent)
         : QMainWindow(parent)
         , ui_(new Ui::MediaSpy)
-        , updateThread_(collection_, this)
+        , collection_(new Collection())
+        , updateThread_(new UpdateThread(collection_, this))
         , mediaListProxyModel_(new myQSortFilterProxyModel(this))
         , statusLabel_(new QLabel(this))
         , filterTitleString_(QString(tr("Search")))
@@ -43,7 +44,7 @@ MediaSpy::MediaSpy(QWidget *parent)
 {
     init();
     makeConnections();
-    updateThread_.start();
+    updateThread_->start();
 
     // (light) error management
     if(!(errorMessage_.isEmpty())) {
@@ -57,7 +58,8 @@ MediaSpy::MediaSpy(QWidget *parent)
   */
 MediaSpy::~MediaSpy() {
     delete ui_;
-//    delete updateThread_;
+    delete collection_;
+    delete updateThread_;
     delete sqlTableModel_;
     delete mediaListProxyModel_;
     delete statusLabel_;
@@ -90,12 +92,12 @@ void MediaSpy::makeConnections() {
     connect(MediaCollection::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
 
     // for Collection
-    connect(&collection_, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
+    connect(collection_, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
     connect(ui_->actionRescan_collection, SIGNAL(triggered()), this, SLOT(updateCollections()));
 
     // for updateThread_
-    connect(&updateThread_, SIGNAL(finished()), this, SLOT(finishedUpdateThread()) );
-    connect(&updateThread_, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
+    connect(updateThread_, SIGNAL(finished()), this, SLOT(finishedUpdateThread()) );
+    connect(updateThread_, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
 
     // for InfoManager
     connect(InfoManager::getInstance()->getImdbThread(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
@@ -225,7 +227,7 @@ void MediaSpy::init() {
     //////////////////////
     // collections init //
     //////////////////////
-    collection_.update();
+    collection_->update();
     InfoManager::getInstance(ui_, getCoverDirectory())->init();
 
     ///////////////////
@@ -278,8 +280,8 @@ void MediaSpy::closeEvent(QCloseEvent *event) {
   * \brief Updates the Collections in a dedicated thread.
   */
 void MediaSpy::updateCollections() {
-    collection_.update();
-    updateThread_.start();
+    collection_->update();
+    updateThread_->start();
 }
 
 
@@ -541,7 +543,7 @@ void MediaSpy::on_actionAbout_Qt_triggered() {
  *  \brief Stops the info research thread.
  */
 void MediaSpy::on_progressButton_clicked() {
-    updateThread_.quit();
+    updateThread_->quit();
     InfoManager::getInstance()->getImdbThread()->quit();
     displayMessage();
 }

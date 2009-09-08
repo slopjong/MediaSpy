@@ -139,7 +139,7 @@ private slots:
     void tagSearched(bool);
     void selectAllTags();
     void unselectAllTags();
-    void optionsUpdated();
+    void propagateOptions();
 
 };
 

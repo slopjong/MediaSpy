@@ -137,7 +137,7 @@ void MediaSpy::makeConnections() {
     connect(unselectAllTagsMenu_, SIGNAL(triggered()), this, SLOT(unselectAllTags()));
 
     // for options
-    connect(options_, SIGNAL(updated()), this, SLOT(optionsUpdated()));
+    connect(options_, SIGNAL(updated()), this, SLOT(propagateOptions()));
 }
 
 
@@ -174,6 +174,7 @@ void MediaSpy::init() {
     // options //
     /////////////
     options_->readOptions();
+    propagateOptions();
 
     ////////////////////////////
     // local directories init //
@@ -606,7 +607,7 @@ void MediaSpy::on_actionOptions_triggered() {
 }
 
 
-void MediaSpy::optionsUpdated() {
+void MediaSpy::propagateOptions() {
     ui_->mediaListView->setProperty("player", QVariant(options_->getPlayer()));
 }
 

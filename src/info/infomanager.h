@@ -37,10 +37,6 @@
 class InfoManager : public QObject {
     Q_OBJECT
 
-    // Constructors
-    InfoManager(Ui_MediaSpy* uiParent = 0, QString coverDir = 0);
-    virtual ~InfoManager();
-
     // Fields
     Ui_MediaSpy* ui_;
     static InfoManager *singleton_;
@@ -57,9 +53,11 @@ class InfoManager : public QObject {
 
 
 public:
+    // Constructors
+    InfoManager(Ui_MediaSpy* uiParent = 0, QString coverDir = 0);
+    virtual ~InfoManager();
+
     // Operations
-    static InfoManager *getInstance(Ui_MediaSpy* uiParent = 0, QString coverDir = 0);
-    static void kill();
     void init();
     void updateMediaCollectionInfo();
     QString noInfo();

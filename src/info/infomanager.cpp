@@ -22,12 +22,6 @@
 #include "../mediaspy.h"
 
 
-/** \var InfoManager* InfoManager::singleton_
-  * \brief pointer to the unique instance of InfoManager
-  */
-InfoManager* InfoManager::singleton_ = 0;
-
-
 /////////////////////////////
 // constructors/destructor //
 /////////////////////////////
@@ -53,26 +47,6 @@ InfoManager::~InfoManager() {
 //////////////
 // methods //
 //////////////
-/** \fn InfoManager* InfoManager::getInstance()
-  * \brief returns the unique instance of InfoManager, creates it the first time
-  */
-InfoManager* InfoManager::getInstance(Ui_MediaSpy* uiParent, QString coverDir) {
-    if (0 == singleton_)
-        singleton_ = new InfoManager(uiParent, coverDir);
-    return singleton_;
-}
-
-/** \fn InfoManager::kill()
-  * \brief deletes the unique instance of InfoManager
-  */
-void InfoManager::kill() {
-    if (0 != singleton_) {
-        delete singleton_;
-        singleton_ = 0;
-    }
-}
-
-
 void InfoManager::init() {
     // init the info page
     infoSettings_ = ui_->infoWebView->settings();

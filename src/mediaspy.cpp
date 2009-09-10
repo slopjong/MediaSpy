@@ -33,6 +33,7 @@ MediaSpy::MediaSpy(QWidget *parent)
         : QMainWindow(parent)
         , ui_(new Ui::MediaSpy)
         , options_(new Options(this))
+        , infoManager_(new InfoManager(ui_, getCoverDirectory()))
         , collection_(new Collection())
         , updateThread_(new UpdateThread(collection_, this))
         , mediaListProxyModel_(new myQSortFilterProxyModel(this))
@@ -62,6 +63,7 @@ MediaSpy::~MediaSpy() {
     // pointers
     delete ui_;
     delete options_;
+    delete infoManager_;
     delete collection_;
     delete updateThread_;
     delete sqlTableModel_;
@@ -73,7 +75,6 @@ MediaSpy::~MediaSpy() {
     delete tagsMenu_;
 
     // singletons
-    InfoManager::getInstance()->kill();
     MediaCollection::getInstance()->kill();
     DatabaseManager::getInstance()->kill();
 
@@ -107,14 +108,14 @@ void MediaSpy::makeConnections() {
     connect(updateThread_, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
 
     // for InfoManager
-    connect(InfoManager::getInstance()->getImdbThread(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
-    connect(InfoManager::getInstance()->getImdbThread(), SIGNAL(startSearch(const int)),
+    connect(infoManager_->getImdbThread(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
+    connect(infoManager_->getImdbThread(), SIGNAL(startSearch(const int)),
             this, SLOT(setProgressbarMaximum(const int)));
-    connect(InfoManager::getInstance()->getImdbThread(), SIGNAL(searchProgress(const int)),
+    connect(infoManager_->getImdbThread(), SIGNAL(searchProgress(const int)),
             this, SLOT(setProgressbarCurrent(const int)));
-    connect(InfoManager::getInstance()->getImdbThread(), SIGNAL(finished()),
+    connect(infoManager_->getImdbThread(), SIGNAL(finished()),
             this, SLOT(setProgressbarOff()));
-    connect(InfoManager::getInstance()->getImdbThread(), SIGNAL(searchResult(bool, QString)),
+    connect(infoManager_->getImdbThread(), SIGNAL(searchResult(bool, QString)),
             sqlTableModel_, SLOT(setKeyTocheck(bool, QString)));
 
     // for mediaListView
@@ -124,7 +125,7 @@ void MediaSpy::makeConnections() {
     connect(ui_->mediaListView, SIGNAL(updateMedia()),
             mediaListProxyModel_, SLOT(invalidateProxyModel()));
     connect(ui_->mediaListView, SIGNAL(updateMedia()),
-            InfoManager::getInstance(), SLOT(updateStats()));
+            infoManager_, SLOT(updateStats()));
     connect(ui_->mediaListView, SIGNAL(updateMedia()),
             this, SLOT(updateSqlTableModel()));
 
@@ -239,7 +240,7 @@ void MediaSpy::init() {
     // collections init //
     //////////////////////
     collection_->update();
-    InfoManager::getInstance(ui_, getCoverDirectory())->init();
+    infoManager_->init();
 
     ///////////////////
     // tag menu init //
@@ -386,7 +387,7 @@ void MediaSpy::editDialog() {
  */
 void MediaSpy::finishedUpdateThread() {
     updateSqlTableModel();
-    InfoManager::getInstance()->updateMediaCollectionInfo();
+    infoManager_->updateMediaCollectionInfo();
 }
 
 
@@ -413,9 +414,9 @@ void MediaSpy::selectedMovie(QModelIndex current, QModelIndex previous) {
     QString s = QString(current.data().toString());
     QString mediaName = DatabaseManager::getInstance()->getMediaFullName(s);
     if(DatabaseManager::getInstance()->hasImdbInfo(mediaName))
-        ui_->infoWebView->setHtml(InfoManager::getInstance()->getInfo(mediaName), QUrl(getCoverDirectory()));
+        ui_->infoWebView->setHtml(infoManager_->getInfo(mediaName), QUrl(getCoverDirectory()));
     else {
-        QString noImdbView = InfoManager::getInstance()->noInfo();
+        QString noImdbView = infoManager_->noInfo();
         ui_->infoWebView->setHtml(noImdbView);
     }
 }
@@ -474,7 +475,7 @@ void MediaSpy::setProgressbarOff() {
     QString message = QString(tr("%n movie(s)", "", MediaCollection::getInstance()->getNMedia()));
     displayPermanentMessage(message);
     displayMessage();
-    InfoManager::getInstance()->init();
+    infoManager_->init();
 }
 
 
@@ -556,7 +557,7 @@ void MediaSpy::on_actionAbout_Qt_triggered() {
  */
 void MediaSpy::on_progressButton_clicked() {
     updateThread_->quit();
-    InfoManager::getInstance()->getImdbThread()->quit();
+    infoManager_->getImdbThread()->quit();
     displayMessage();
 }
 

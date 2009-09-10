@@ -97,6 +97,7 @@ void InfoManager::updateMediaCollectionInfo() {
         imdbThread_->start();
 
     updateStats();
+    init();
 }
 
 
@@ -211,14 +212,19 @@ QString InfoManager::noInfo() {
 
 QString InfoManager::createFirstPage() {
     QString cover;
-    QString view = "<div class=\"firstpage\">";
+    QString view;
     QStringList coverList = DatabaseManager::getInstance()->getCoverList();
-    foreach(cover, coverList) {
-        QFileInfo file(MediaSpy::getCoverDirectory() + cover);
-        if(file.exists())
-            view += QString("<img src=\"%1\" />").arg(cover);
-    }
 
+    if(coverList.count()>0) {
+        view = "<div class=\"firstpage\">";
+        foreach(cover, coverList) {
+            QFileInfo file(MediaSpy::getCoverDirectory() + cover);
+            if(file.exists())
+                view += QString("<img src=\"%1\" />").arg(cover);
+        }
+    }
+    else
+        view = QString("<div>%1").arg(tr("No movie :-("));
     return view + "</div>";
 }
 

@@ -474,6 +474,7 @@ void MediaSpy::setProgressbarOff() {
     QString message = QString(tr("%n movie(s)", "", MediaCollection::getInstance()->getNMedia()));
     displayPermanentMessage(message);
     displayMessage();
+    InfoManager::getInstance()->init();
 }
 
 

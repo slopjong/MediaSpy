@@ -39,11 +39,11 @@ class InfoManager : public QObject {
 
     // Fields
     Ui_MediaSpy* ui_;
-    static InfoManager *singleton_;
+    MediaCollection* mediaCollection_;
+    QString coverDir_;
     ImdbThread* imdbThread_;
     QWebSettings* infoSettings_;
     QWebSettings* statsSettings_;
-    QString coverDir_;
 
     // Operations
     inline QString htmlHeader();
@@ -54,7 +54,7 @@ class InfoManager : public QObject {
 
 public:
     // Constructors
-    InfoManager(Ui_MediaSpy* uiParent = 0, QString coverDir = 0);
+    InfoManager(MediaCollection*, QString coverDir = 0, Ui_MediaSpy* uiParent = 0);
     virtual ~InfoManager();
 
     // Operations

@@ -32,9 +32,10 @@ class UpdateThread : public QThread {
     Q_OBJECT
 
     Collection* collection_;
+    MediaCollection* mediaCollection_;
 
 public:
-    UpdateThread(Collection*, QObject* parent = 0);
+    UpdateThread(Collection*, MediaCollection*, QObject* parent = 0);
     virtual ~UpdateThread();
 
 

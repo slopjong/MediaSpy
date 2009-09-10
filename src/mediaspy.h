@@ -77,9 +77,10 @@ class MediaSpy : public QMainWindow {
     // Fields
     Ui::MediaSpy* ui_;
     Options* options_;
-    InfoManager* infoManager_;
     Collection* collection_;
+    MediaCollection* mediaCollection_;
     UpdateThread* updateThread_;
+    InfoManager* infoManager_;
     myQSqlTableModel* sqlTableModel_;
     myQSortFilterProxyModel* mediaListProxyModel_;
     QLabel* statusLabel_;

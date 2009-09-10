@@ -28,10 +28,11 @@
 /** \fn InfoManager::InfoManager()
   * \brief class constructor
   */
-InfoManager::InfoManager(Ui_MediaSpy* uiParent, QString coverDir)
+InfoManager::InfoManager(MediaCollection* mediaCollection, QString coverDir, Ui_MediaSpy* uiParent)
         : ui_(uiParent)
-        , imdbThread_(new ImdbThread(this))
+        , mediaCollection_(mediaCollection)
         , coverDir_(coverDir)
+        , imdbThread_(new ImdbThread(this))
 {
     connect(imdbThread_, SIGNAL(networkError()), this, SLOT(endImdbThread()));
 }
@@ -79,7 +80,7 @@ QString InfoManager::getStats() {
     QString view;
     int pourcent    = 0;
     int nMediaSeen  = DatabaseManager::getInstance()->getNMediaSeen();
-    int nMedia      = MediaCollection::getInstance()->getNMedia();
+    int nMedia      = mediaCollection_->getNMedia();
     if(nMedia>0)
         pourcent    = (100*nMediaSeen)/nMedia;
 

@@ -26,13 +26,6 @@ static const int MEDIA_TYPE_MUSIC   = 1;
 static const int MEDIA_TYPE_DOC     = 2;
 
 
-/** \var MediaCollection* MediaCollection::singleton_
-  * \brief pointer to the unique instance of MediaCollection
-  */
-MediaCollection* MediaCollection::singleton_ = 0;
-
-
-
 /////////////////////////////
 // constructors/destructor //
 /////////////////////////////
@@ -53,27 +46,6 @@ MediaCollection::~MediaCollection() {
 /////////////
 // methods //
 /////////////
-/** \fn MediaCollection* MediaCollection::getInstance()
-  * \brief returns the unique instance of MediaCollection, creates it the first time
-  */
-MediaCollection* MediaCollection::getInstance() {
-    if (0 == singleton_)
-        singleton_ =  new MediaCollection;
-    return singleton_;
-}
-
-
-/** \fn void MediaCollection::kill()
-  * \brief deletes the unique instance of MediaCollection
-  */
-void MediaCollection::kill() {
-    if (0 != singleton_) {
-        delete singleton_;
-        singleton_ = 0;
-    }
-}
-
-
 /** \fn void MediaCollection::updateMediaCollection(QStringList& mediaList)
   * \brief updates the database MediaCollection table with the current list of media
   */

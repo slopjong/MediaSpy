@@ -28,12 +28,7 @@
 
 
 class MediaCollection : public QObject {
-
     Q_OBJECT
-
-    // Constructors
-    MediaCollection();
-    virtual ~MediaCollection();
 
     // Fields
     static MediaCollection *singleton_;
@@ -42,9 +37,11 @@ class MediaCollection : public QObject {
 
 
 public:
+    // Constructors
+    MediaCollection();
+    virtual ~MediaCollection();
+
     // Operations
-    static MediaCollection *getInstance();
-    static void kill();
     void updateMediaCollection(QStringList&);
 
     // Accessor Methods

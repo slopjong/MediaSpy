@@ -33,9 +33,10 @@ MediaSpy::MediaSpy(QWidget *parent)
         : QMainWindow(parent)
         , ui_(new Ui::MediaSpy)
         , options_(new Options(this))
-        , infoManager_(new InfoManager(ui_, getCoverDirectory()))
         , collection_(new Collection())
-        , updateThread_(new UpdateThread(collection_, this))
+        , mediaCollection_(new MediaCollection())
+        , updateThread_(new UpdateThread(collection_, mediaCollection_, this))
+        , infoManager_(new InfoManager(mediaCollection_, getCoverDirectory(), ui_))
         , mediaListProxyModel_(new myQSortFilterProxyModel(this))
         , statusLabel_(new QLabel(this))
         , filterTitleString_(QString(tr("Search")))
@@ -65,6 +66,7 @@ MediaSpy::~MediaSpy() {
     delete options_;
     delete infoManager_;
     delete collection_;
+    delete mediaCollection_;
     delete updateThread_;
     delete sqlTableModel_;
     delete mediaListProxyModel_;
@@ -75,7 +77,6 @@ MediaSpy::~MediaSpy() {
     delete tagsMenu_;
 
     // singletons
-    MediaCollection::getInstance()->kill();
     DatabaseManager::getInstance()->kill();
 
     // lists
@@ -95,10 +96,10 @@ MediaSpy::~MediaSpy() {
   */
 void MediaSpy::makeConnections() {
     // for MediaCollection
-    connect(MediaCollection::getInstance(), SIGNAL(startUpdate(const int)), this, SLOT(setProgressbarMaximum(const int)));
-    connect(MediaCollection::getInstance(), SIGNAL(stepUpdate(const int)), this, SLOT(setProgressbarCurrent(const int)));
-    connect(MediaCollection::getInstance(), SIGNAL(finishedUpdate()), this, SLOT(setProgressbarOff()));
-    connect(MediaCollection::getInstance(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
+    connect(mediaCollection_, SIGNAL(startUpdate(const int)), this, SLOT(setProgressbarMaximum(const int)));
+    connect(mediaCollection_, SIGNAL(stepUpdate(const int)), this, SLOT(setProgressbarCurrent(const int)));
+    connect(mediaCollection_, SIGNAL(finishedUpdate()), this, SLOT(setProgressbarOff()));
+    connect(mediaCollection_, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
 
     // for Collection
     connect(collection_, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
@@ -472,7 +473,7 @@ void MediaSpy::setProgressbarCurrent(const int value) const {
 void MediaSpy::setProgressbarOff() {
     ui_->progressBar->setVisible(false);
     ui_->progressButton->setVisible(false);
-    QString message = QString(tr("%n movie(s)", "", MediaCollection::getInstance()->getNMedia()));
+    QString message = QString(tr("%n movie(s)", "", mediaCollection_->getNMedia()));
     displayPermanentMessage(message);
     displayMessage();
     infoManager_->init();

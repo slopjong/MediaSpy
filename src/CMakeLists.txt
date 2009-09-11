@@ -67,5 +67,5 @@ qt4_add_resources( RCS ${RESOURCES} )
 add_executable( mediaspy ${SOURCES} ${RCS} ${MOC} ${UI_H} ) # OK
 # kde4_add_executable( mediaspy ${SOURCES} ${RCS} ${MOC} ${UI_H} ) # NOK
 
-target_link_libraries( mediaspy ${QT_LIBRARIES} )
-# target_link_libraries( mediaspy ${QT_LIBRARIES} ${KDE4_KDEUI_LIBS} ${KDE4_KPARTS_LIBS} )
+target_link_libraries( mediaspy ${QT_LIBRARIES} ) # OK
+# target_link_libraries( mediaspy ${QT_LIBRARIES} ${KDE4_KDEUI_LIBS} ${KDE4_KPARTS_LIBS} ) # NOK

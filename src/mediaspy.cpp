@@ -19,7 +19,7 @@
 
 
 #include "mediaspy.h"
-#include "../build/ui/ui_mediaspy.h"
+#include "ui_mediaspy.h"
 
 
 /////////////////////////////
@@ -315,11 +315,11 @@ bool MediaSpy::eventFilter(QObject *obj, QEvent *event) {
  *  \brief Shows the MediaSpy About window.
  */
 void MediaSpy::on_actionAbout_MediaSpy_triggered() {
-    QString myCopyright = QString::fromUtf8(PACKAGE_COPYRIGHTS);
-    QMessageBox::about(this, tr("About ") + PACKAGE_NAME,
+//    QString myCopyright = QString::fromUtf8(PACKAGE_COPYRIGHTS);
+    /*QMessageBox::about(this, tr("About ") + PACKAGE_NAME,
     QString("<h3>") + PACKAGE_NAME + " " + PACKAGE_VERSION + QString("</h3><p>") + myCopyright +
     tr("<p>MediaSpy is a movie collection cataloging software. Still in heavy development!") +
-    QString("<p><a href=\"http://spechard.wordpress.com/\">http://spechard.wordpress.com/</a>"));
+    QString("<p><a href=\"http://spechard.wordpress.com/\">http://spechard.wordpress.com/</a>"));*/
 }
 
 

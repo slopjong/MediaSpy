@@ -571,9 +571,7 @@ QStringList DatabaseManager::getMediaTagList(QString& baseName) {
     if (!q.exec())
         throw(q.lastError()); // TODO handle this!
 
-    int id;
-    while (q.next())
-        id = q.value(0).toInt();
+    int id = (q.next()) ? q.value(0).toInt() : 0;
 
     return getMediaTagList(id);
 }

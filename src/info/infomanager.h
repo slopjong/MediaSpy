@@ -31,7 +31,7 @@
 #include "../databasemanager.h"
 #include "../media/moviemedia.h"
 #include "../media/mediacollection.h"
-#include "../../build/ui/ui_mediaspy.h"
+#include "ui_mediaspy.h"
 
 
 class InfoManager : public QObject {

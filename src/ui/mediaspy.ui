@@ -6,15 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>509</width>
-    <height>401</height>
+    <width>507</width>
+    <height>399</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MediaSpy</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../resources/MediaSpy.qrc">
+   <iconset>
     <normaloff>:/icons/icon.png</normaloff>:/icons/icon.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -37,7 +37,7 @@
              <string notr="true">...</string>
             </property>
             <property name="icon">
-             <iconset resource="../resources/MediaSpy.qrc">
+             <iconset>
               <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
             </property>
            </widget>
@@ -104,7 +104,7 @@
              <string notr="true"/>
             </property>
             <property name="icon">
-             <iconset resource="../resources/MediaSpy.qrc">
+             <iconset>
               <normaloff>:/icons/close.png</normaloff>:/icons/close.png</iconset>
             </property>
             <property name="shortcut">
@@ -144,7 +144,7 @@
        </widget>
        <widget class="QWidget" name="statsViewTab">
         <attribute name="icon">
-         <iconset resource="../resources/MediaSpy.qrc">
+         <iconset>
           <normaloff>:/icons/stats.png</normaloff>:/icons/stats.png</iconset>
         </attribute>
         <attribute name="title">
@@ -178,7 +178,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>509</width>
+     <width>507</width>
      <height>23</height>
     </rect>
    </property>
@@ -218,7 +218,7 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionAbout_MediaSpy">
    <property name="icon">
-    <iconset resource="../resources/MediaSpy.qrc">
+    <iconset>
      <normaloff>:/icons/icon.png</normaloff>:/icons/icon.png</iconset>
    </property>
    <property name="text">
@@ -259,7 +259,7 @@
   </action>
   <action name="actionEdit_information">
    <property name="icon">
-    <iconset resource="../resources/MediaSpy.qrc">
+    <iconset>
      <normaloff>:/icons/edit.png</normaloff>:/icons/edit.png</iconset>
    </property>
    <property name="text">
@@ -299,9 +299,7 @@
    <header>../../src/qtElements/myqlistview.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../resources/MediaSpy.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>actionQuit</sender>

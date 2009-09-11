@@ -35,6 +35,7 @@ MediaSpy::MediaSpy(QWidget *parent)
         , options_(new Options(this))
         , collection_(new Collection())
         , mediaCollection_(new MediaCollection())
+        , threadLock_(false)
         , updateThread_(new UpdateThread(collection_, mediaCollection_, this))
         , infoManager_(new InfoManager(mediaCollection_, getCoverDirectory(), ui_))
         , mediaListProxyModel_(new myQSortFilterProxyModel(this))
@@ -47,7 +48,10 @@ MediaSpy::MediaSpy(QWidget *parent)
 {
     init();
     makeConnections();
-    updateThread_->start();
+    if(!threadLock_) {
+        threadLock_ = true;
+        updateThread_->start();
+    }
 
     // (light) error management
     if(!(errorMessage_.isEmpty())) {
@@ -95,18 +99,18 @@ MediaSpy::~MediaSpy() {
   * \brief makes the connections used by MediaSpy
   */
 void MediaSpy::makeConnections() {
-    // for MediaCollection
-    connect(mediaCollection_, SIGNAL(startUpdate(const int)), this, SLOT(setProgressbarMaximum(const int)));
-    connect(mediaCollection_, SIGNAL(stepUpdate(const int)), this, SLOT(setProgressbarCurrent(const int)));
-    connect(mediaCollection_, SIGNAL(finishedUpdate()), this, SLOT(setProgressbarOff()));
-    connect(mediaCollection_, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
-
     // for Collection
     connect(collection_, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
 
     // for updateThread_
     connect(updateThread_, SIGNAL(finished()), this, SLOT(finishedUpdateThread()) );
     connect(updateThread_, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
+
+    // for MediaCollection
+    connect(mediaCollection_, SIGNAL(startUpdate(const int)), this, SLOT(setProgressbarMaximum(const int)));
+    connect(mediaCollection_, SIGNAL(stepUpdate(const int)), this, SLOT(setProgressbarCurrent(const int)));
+//    connect(mediaCollection_, SIGNAL(finishedUpdate()), this, SLOT(setProgressbarOff()));
+    connect(mediaCollection_, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
 
     // for InfoManager
     connect(infoManager_->getImdbThread(), SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
@@ -224,6 +228,12 @@ void MediaSpy::init() {
         return;
     }
 
+    //////////////////////
+    // collections init //
+    //////////////////////
+    collection_->update();
+    infoManager_->init();
+
     ////////////////////
     // tableView init //
     ////////////////////
@@ -236,12 +246,6 @@ void MediaSpy::init() {
     mediaListProxyModel_->setSortCaseSensitivity(Qt::CaseInsensitive);
 
     ui_->mediaListView->setModel(mediaListProxyModel_);
-
-    //////////////////////
-    // collections init //
-    //////////////////////
-    collection_->update();
-    infoManager_->init();
 
     ///////////////////
     // tag menu init //
@@ -286,15 +290,6 @@ void MediaSpy::createTagMenu() {
 void MediaSpy::closeEvent(QCloseEvent *event) {
     Q_UNUSED(event);
     options_->writeOptions();
-}
-
-
-/** \fn void MediaSpy::updateCollections(QStringList& dirList)
-  * \brief Updates the Collections in a dedicated thread.
-  */
-void MediaSpy::on_actionRescan_collection_triggered() {
-    collection_->update();
-    updateThread_->start();
 }
 
 
@@ -349,6 +344,7 @@ void MediaSpy::on_actionSelectdirectories_triggered() {
     }
     QSqlDatabase::database().commit();
 
+    collection_->update();
     on_actionRescan_collection_triggered();
 }
 
@@ -383,12 +379,28 @@ void MediaSpy::editDialog() {
 }
 
 
+/** \fn void MediaSpy::on_actionRescan_collection_triggered()
+  * \brief Updates the Collections in a dedicated thread.
+  */
+void MediaSpy::on_actionRescan_collection_triggered() {
+    if(!threadLock_) {
+        threadLock_ = true;
+        updateThread_->start();
+    }
+}
+
+
 /** \fn void MediaSpy::finishedUpdateThread()
  *  \brief Defines what is done when the update thread is done.
  */
 void MediaSpy::finishedUpdateThread() {
+    QString message = QString(tr("%n movie(s)", "", mediaCollection_->getNMedia()));
+    displayPermanentMessage(message);
+
     updateSqlTableModel();
-    infoManager_->updateMediaCollectionInfo();
+    bool stop = infoManager_->updateMediaCollectionInfo();
+    if(stop)
+        setProgressbarOff();
 }
 
 
@@ -473,10 +485,8 @@ void MediaSpy::setProgressbarCurrent(const int value) const {
 void MediaSpy::setProgressbarOff() {
     ui_->progressBar->setVisible(false);
     ui_->progressButton->setVisible(false);
-    QString message = QString(tr("%n movie(s)", "", mediaCollection_->getNMedia()));
-    displayPermanentMessage(message);
     displayMessage();
-    infoManager_->init();
+    threadLock_ = false;
 }
 
 
@@ -485,6 +495,8 @@ void MediaSpy::setProgressbarOff() {
  */
 void MediaSpy::displayMessage(const QString message) {
     ui_->statusBar->showMessage(message);
+    if(sender()==updateThread_ && message.isEmpty())
+        threadLock_ = false;
 }
 
 

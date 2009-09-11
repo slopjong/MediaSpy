@@ -32,7 +32,9 @@ static const int MEDIA_TYPE_DOC     = 2;
 /** \fn MediaCollection::MediaCollection()
   * \brief class constructor
   */
-MediaCollection::MediaCollection() {}
+MediaCollection::MediaCollection()
+        : nMedia_(0)
+{}
 
 /** \fn MediaCollection::~MediaCollection()
   * \brief class destructor
@@ -107,5 +109,10 @@ void MediaCollection::updateMediaCollection(QStringList& mediaList) {
  */
 unsigned int MediaCollection::getNMedia() const {
     return nMedia_;
+}
+
+
+void MediaCollection::setNMedia(const unsigned int n) {
+    nMedia_ = n;
 }
 

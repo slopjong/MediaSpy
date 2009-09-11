@@ -46,6 +46,7 @@ public:
 
     // Accessor Methods
     unsigned int getNMedia() const;
+    void setNMedia(const unsigned int);
 
 
 signals:

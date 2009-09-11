@@ -49,12 +49,7 @@ InfoManager::~InfoManager() {
 // methods //
 //////////////
 void InfoManager::init() {
-    // init the info page
-    infoSettings_ = ui_->infoWebView->settings();
-    infoSettings_->setUserStyleSheetUrl(QUrl::fromEncoded("qrc:/templates/default.css"));
-    QString infoView = QString("<html><body><h1>%1</h1>").arg(tr("Welcome in Mediaspy!"));
-    infoView += createFirstPage() + "</body></html>";
-    ui_->infoWebView->setHtml(infoView, QUrl(coverDir_));
+    setFirstPage();
 
     // init the stats page
     statsSettings_ = ui_->statsWebView->settings();
@@ -64,15 +59,30 @@ void InfoManager::init() {
 }
 
 
-void InfoManager::updateMediaCollectionInfo() {
+// init the info page
+void InfoManager::setFirstPage() {
+    infoSettings_ = ui_->infoWebView->settings();
+    infoSettings_->setUserStyleSheetUrl(QUrl::fromEncoded("qrc:/templates/default.css"));
+    QString infoView = QString("<html><body><h1>%1</h1>").arg(tr("Welcome in Mediaspy!"));
+    infoView += createFirstPage() + "</body></html>";
+    ui_->infoWebView->setHtml(infoView, QUrl(coverDir_));
+}
+
+
+bool InfoManager::updateMediaCollectionInfo() {
+    bool stop = false;
     QStringList mediaList = DatabaseManager::getInstance()->queryMediaWithNoImdbInfo();
     imdbThread_->setInfoList(mediaList);
 
     if(mediaList.count() > 0)
         imdbThread_->start();
+    else
+        stop = true;
 
+    setFirstPage();
     updateStats();
-    init();
+
+    return stop;
 }
 
 
@@ -81,30 +91,32 @@ QString InfoManager::getStats() {
     int pourcent    = 0;
     int nMediaSeen  = DatabaseManager::getInstance()->getNMediaSeen();
     int nMedia      = mediaCollection_->getNMedia();
-    if(nMedia>0)
+    if(nMedia>0) {
         pourcent    = (100*nMediaSeen)/nMedia;
 
-    // seen/unseen
-    view += tr("You've seen %n media(s) on a total of %1.", "", nMediaSeen).arg(nMedia);
-    view += "<div style=\"width:100%; height:18px; background-color:#ffc8c8;\">";//255, 200, 200
-    view += QString("<div style=\"width:%1%; height:18px; background-color:#adaa4c; border-right:1px white solid;\"></div>").arg(pourcent);
-    view += QString("<div style=\"margin-top:-17px; color:black; text-align:center;\">%1%</div>").arg(pourcent);
-    view += "</div>";
-/*
-    // runtime
-    // SELECT MAX(runtime), AVG(runtime), MIN(runtime) FROM ImdbInfo WHERE runtime != 0
-    view += QString("<h2>%1</h2>").arg(tr("Runtime"));
-    // histogram
-    view += QString("<p>%1 %2 - %3 %4 - %5 %6</p>").arg(tr("Min:")).arg(70).arg(tr("Mean:")).arg(80).arg(tr("Max:")).arg(90);
+        // seen/unseen
+        view += tr("You've seen %n media(s) on a total of %1.", "", nMediaSeen).arg(nMedia);
+        view += "<div style=\"width:100%; height:18px; background-color:#ffc8c8;\">";//255, 200, 200
+        view += QString("<div style=\"width:%1%; height:18px; background-color:#adaa4c; border-right:1px white solid;\"></div>").arg(pourcent);
+        view += QString("<div style=\"margin-top:-17px; color:black; text-align:center;\">%1%</div>").arg(pourcent);
+        view += "</div>";
 
-    // genre
-    view += QString("<h2>%1</h2>").arg(tr("Genre"));
-    // histogram
+        // runtime
+        StatsImdb stats = DatabaseManager::getInstance()->getImdbStats();
+        view += QString("<h2>%1</h2>").arg(tr("Runtime"));
+        view += QString("<p>%1 %2 - %3 %4 - %5 %6</p>").arg(tr("Min:")).arg(stats.minRuntime).arg(tr("Mean:")).arg(stats.avgRuntime).arg(tr("Max:")).arg(stats.maxRuntime);
+        // histogram
 
-    // year
-    view += QString("<h2>%1</h2>").arg(tr("Year"));
-    // histogram
-*/
+        // genre
+/*        view += QString("<h2>%1</h2>").arg(tr("Genre"));
+        // histogram
+
+        // year
+        view += QString("<h2>%1</h2>").arg(tr("Year"));*/
+        // histogram
+    }
+    else
+        view = QString("<p>%1</p>").arg(tr("...is empty!"));
 
     return htmlHeader() + QString("<h1>%1</h1>").arg(tr("Your collection")) + view + htmlFooter();
 }

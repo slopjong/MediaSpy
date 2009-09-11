@@ -1,6 +1,14 @@
 CHANGELOG.txt
 =============
 
+0.7.3
+-
+
+
+0.7.2
+- no new features, only code refactoring
+
+
 0.7.1
 - new welcome page with all covers shown
 

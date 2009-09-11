@@ -29,6 +29,13 @@
 namespace tableCollection { enum e { id, directory }; }
 namespace tableMedia { enum e { id, type, baseName, fileName, imdbInfo, loaned, seen, recommended, notes }; }
 
+// StatsImdb structure
+struct StatsImdb {
+    double maxRuntime;
+    double avgRuntime;
+    double minRuntime;
+};
+
 
 /** \class DatabaseManager
   *
@@ -66,6 +73,7 @@ public:
     QSqlQuery queryImdbInfoWhere(QSqlQuery&, QString&, QString&);
     QStringList queryMediaWithNoImdbInfo();
     QStringList getCoverList();
+    StatsImdb getImdbStats();
     QString getMediaFullName(QString);
     int getMediaId(QString&);
 

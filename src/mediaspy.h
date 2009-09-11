@@ -79,6 +79,7 @@ class MediaSpy : public QMainWindow {
     Options* options_;
     Collection* collection_;
     MediaCollection* mediaCollection_;
+    bool threadLock_;
     UpdateThread* updateThread_;
     InfoManager* infoManager_;
     myQSqlTableModel* sqlTableModel_;

@@ -37,6 +37,7 @@ class UpdateThread : public QThread {
 public:
     UpdateThread(Collection*, MediaCollection*, QObject* parent = 0);
     virtual ~UpdateThread();
+    void startIf(bool);
 
 
 protected:

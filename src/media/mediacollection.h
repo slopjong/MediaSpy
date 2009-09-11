@@ -46,12 +46,12 @@ public:
 
     // Accessor Methods
     unsigned int getNMedia() const;
+    void setNMedia(const unsigned int);
 
 
 signals:
     void startUpdate(const int);
     void stepUpdate(const int);
-    void finishedUpdate();
     void messageToStatus(QString);
 
 };

@@ -50,6 +50,7 @@ class InfoManager : public QObject {
     inline QString htmlFooter();
     QString getStats();
     QString createFirstPage();
+    void setFirstPage();
 
 
 public:
@@ -59,7 +60,7 @@ public:
 
     // Operations
     void init();
-    void updateMediaCollectionInfo();
+    bool updateMediaCollectionInfo();
     QString noInfo();
     QString getInfo(QString&);
     QString getLocalInfo(MovieMedia* media);

@@ -95,7 +95,6 @@ void MediaCollection::updateMediaCollection(QStringList& mediaList) {
     // updating the database
     DatabaseManager::getInstance()->removeMedias(removeList);
     DatabaseManager::getInstance()->insertMedias(insertList);
-    emit finishedUpdate();
 }
 
 

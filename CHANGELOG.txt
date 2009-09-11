@@ -2,8 +2,8 @@ CHANGELOG.txt
 =============
 
 0.7.3
+- several bugfixes:
 -
-
 
 0.7.2
 - no new features, only code refactoring

@@ -109,7 +109,6 @@ void MediaSpy::makeConnections() {
     // for MediaCollection
     connect(mediaCollection_, SIGNAL(startUpdate(const int)), this, SLOT(setProgressbarMaximum(const int)));
     connect(mediaCollection_, SIGNAL(stepUpdate(const int)), this, SLOT(setProgressbarCurrent(const int)));
-//    connect(mediaCollection_, SIGNAL(finishedUpdate()), this, SLOT(setProgressbarOff()));
     connect(mediaCollection_, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
 
     // for InfoManager

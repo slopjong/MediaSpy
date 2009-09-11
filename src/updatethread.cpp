@@ -48,14 +48,14 @@ UpdateThread::~UpdateThread() {
 void UpdateThread::run() {
     // first - build the list of medias from the directory Collection
     QStringList mediaList = collection_->buildFileList();
+    mediaCollection_->setNMedia(mediaList.count());
+
     if(mediaList.count()>0) {
         emit messageToStatus(QString(tr("Updating...")));
         mediaCollection_->updateMediaCollection(mediaList); // then, build the media collection
     }
-    else {
+    else
         emit messageToStatus(QString());
-        mediaCollection_->setNMedia(0);
-    }
 }
 
 

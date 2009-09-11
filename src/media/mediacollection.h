@@ -52,7 +52,6 @@ public:
 signals:
     void startUpdate(const int);
     void stepUpdate(const int);
-    void finishedUpdate();
     void messageToStatus(QString);
 
 };

@@ -2,8 +2,10 @@ CHANGELOG.txt
 =============
 
 0.7.3
+- first release using cmake build system
 - several bugfixes:
--
+- add .flv file extension
+
 
 0.7.2
 - no new features, only code refactoring

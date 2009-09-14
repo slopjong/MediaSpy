@@ -7,13 +7,13 @@ project(mediaspy)
 #version of the program for release ready states
 set(MEDIASPY_VERSION_MAJOR 0)
 set(MEDIASPY_VERSION_MINOR 7)
-set(MEDIASPY_VERSION_PATCH 2)
+set(MEDIASPY_VERSION_PATCH 3)
 set(MEDIASPY_VERSION "${MEDIASPY_VERSION_MAJOR}.${MEDIASPY_VERSION_MINOR}.${MEDIASPY_VERSION_PATCH}")
 
 # define some useful values
-# set(ENV{PACKAGE_COPYRIGHTS} "Copyright &copy; 2009 Stéphane Péchard") # NOK
-# set(ENV{PACKAGE_NAME} "MediaSpy")
-# set(ENV{PACKAGE_VERSION} ${MEDIASPY_VERSION})
+add_definitions(-DPACKAGE_COPYRIGHTS="Copyright - 2009 Stéphane Péchard")
+add_definitions(-DPACKAGE_NAME="MediaSpy")
+add_definitions(-DPACKAGE_VERSION="${MEDIASPY_VERSION}")
 
 # build type
 if(NOT CMAKE_BUILD_TYPE)

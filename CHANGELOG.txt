@@ -1,6 +1,11 @@
 CHANGELOG.txt
 =============
 
+0.7.4
+- clean QSqlTableModel
+- network replies for imdbInfo insertions are clearer
+
+
 0.7.3
 - first release using cmake build system
 - several bugfixes:

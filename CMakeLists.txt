@@ -4,7 +4,7 @@ project(mediaspy)
 #version of the program for release ready states
 set(MEDIASPY_VERSION_MAJOR 0)
 set(MEDIASPY_VERSION_MINOR 7)
-set(MEDIASPY_VERSION_PATCH 3)
+set(MEDIASPY_VERSION_PATCH 4)
 set(MEDIASPY_VERSION "${MEDIASPY_VERSION_MAJOR}.${MEDIASPY_VERSION_MINOR}.${MEDIASPY_VERSION_PATCH}")
 
 # some debug def

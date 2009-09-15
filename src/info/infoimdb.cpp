@@ -77,6 +77,10 @@ void InfoImdb::searchImdb(QString& mediaName) {
     imdbRequestName.replace('&', "");
     imdbRequestName.replace(' ', "+");
 
+    // ignore everything after the first _ character, this is for optimize results from imdb
+    imdbRequestName = imdbRequestName.left(imdbRequestName.indexOf('_'));
+    qWarning() << imdbRequestName;
+
     QString url = QString(searchPrefix + imdbRequestName);
     makeRequest(url, iMedia_);
     ++iMedia_;
@@ -141,21 +145,15 @@ void InfoImdb::finishReply(QNetworkReply* networkReply) {
         QUrl urlRedirectedTo = redirectUrl(possibleRedirectUrl.toUrl(), urlRedirectedTo);
 
         // If the URL is not empty, we're being redirected.
-        if(!urlRedirectedTo.isEmpty()) {
+        if(!urlRedirectedTo.isEmpty())
             redirectSearchToMoviePage(possibleRedirectUrl.toUrl(), urlRedirectedTo, replyMap_.key(networkReply));
-            emit searchFinished();
-        }
         else {
             urlRedirectedTo.clear();
-            // process the search page
-            processSearchPage(networkReply);
-            emit searchFinished();
+            processSearchPage(networkReply); // process the search page
         }
     }
     else if(networkReply->url().toString().contains(titlePrefix)) { // this was a getMoviePage() request
-        // process the movie page
-        processMoviePage(networkReply);
-        emit searchFinished();
+        processMoviePage(networkReply); // process the movie page
     }
     else if(networkReply->url().toString().contains(mediaPrefix)) { // this was a copyImage() request
         QString imageFileName = imageMap_.key(networkReply);
@@ -165,16 +163,14 @@ void InfoImdb::finishReply(QNetworkReply* networkReply) {
             file.open(QIODevice::WriteOnly);
             file.write(networkReply->readAll());
             file.close();
-            emit searchFinished();
         }
-        else
-            emit searchFinished();
     }
     else { // this was a strange request! Please, do nothing stupid with it!
-        emit searchFinished();
+
         return;
     }
 
+    emit searchFinished();
     networkReply->close();
     networkReply->deleteLater();
 }

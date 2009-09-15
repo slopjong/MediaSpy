@@ -5,10 +5,7 @@
 ========
 v1.0:
 
-* initial non-blank info view
 * extracting film titles from file names (tough one if files are not properly named)
-* basic settings handling
-* clean and simple gui
 
 DONE :
 * get films information (duration, plot, cover) from imdb
@@ -21,6 +18,9 @@ DONE :
 * browsing and searching film database (+ adding/deleting obviously)
 * color code for movie state (OK, no info from imdb, unreadable, etc.) ?
 * basic filtering
+* initial non-blank info view
+* basic settings handling
+* clean and simple gui
 
 
 ========

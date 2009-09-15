@@ -1,6 +1,3 @@
-
-include_directories(${KDE4_INCLUDES} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
-
 set(SOURCES
     collection.cpp
     collectiondialog.cpp
@@ -65,7 +62,6 @@ qt4_add_resources( RCS ${RESOURCES} )
 
 # create an exe
 add_executable( mediaspy ${SOURCES} ${RCS} ${MOC} ${UI_H} ) # OK
-# kde4_add_executable( mediaspy ${SOURCES} ${RCS} ${MOC} ${UI_H} ) # NOK
+#kde4_add_executable( mediaspy ${SOURCES} ${RCS} ${MOC} ${UI_H} ) # NOK
 
-target_link_libraries( mediaspy ${QT_LIBRARIES} ) # OK
-# target_link_libraries( mediaspy ${QT_LIBRARIES} ${KDE4_KDEUI_LIBS} ${KDE4_KPARTS_LIBS} ) # NOK
+target_link_libraries( mediaspy ${QT_QTCORE_LIBRARY} ${QT_QTSQL_LIBRARY} ${QT_QTWEBKIT_LIBRARY} ${QT_QTNETWORK_LIBRARY})

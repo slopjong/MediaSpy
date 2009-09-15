@@ -28,7 +28,6 @@
 /////////////////////////////
 myQSqlTableModel::myQSqlTableModel(QObject *parent)
         : QSqlTableModel(parent)
-        , etatList_()
 {}
 
 myQSqlTableModel::~myQSqlTableModel() {}
@@ -42,45 +41,21 @@ QVariant myQSqlTableModel::data( const QModelIndex& index, int role) const {
         return QVariant();
 
     if (role == Qt::BackgroundRole) {
-        const int indexRow = index.row();
-
-        if(etatList_[indexRow] == 1)
-            return QBrush( QColor(255, 200, 200) ); // red
-        else if(etatList_[indexRow] == 2)
-            return QBrush( QColor(200, 255, 200) ); // green
-        else
+        if(this->record(index.row()).value("imdbInfo").toBool())
             return QBrush( Qt::transparent );
+        else
+            return QBrush( QColor(255, 200, 200) ); // no info (red)
     }
 
     return QSqlTableModel::data( index, role );
 }
 
 
-void myQSqlTableModel::setKeyTocheck( bool ok, const QString& fileName ) {
-    QFileInfo fileInfo = QFileInfo(fileName);
-    QString keyToCheck = fileInfo.completeBaseName();
 
-    for(int row = 0; row < rowCount(); ++row) {
-        const QString indexString = index(row, tableMedia::baseName).data().toString();
-        if(keyToCheck == indexString)
-            etatList_[row] = (ok) ? 2 : 1;
-    }
+///////////
+// slots //
+///////////
+void myQSqlTableModel::updateModel() {
+    select();
 }
-
-
-void myQSqlTableModel::setList() {
-    for(int row = 0; row < rowCount(); ++row)
-        etatList_.insert(row, 0);
-}
-
-
-/*bool myQSqlTableModel::submit() {
-    bool ret=QSqlTableModel::submit();
-    if (ret==false)
-        emit submitRejected (lastError().number (), lastError().text ());
-    return ret;
-}*/
-
-
-
 

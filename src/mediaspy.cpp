@@ -119,8 +119,7 @@ void MediaSpy::makeConnections() {
             this, SLOT(setProgressbarCurrent(const int)));
     connect(infoManager_->getImdbThread(), SIGNAL(finished()),
             this, SLOT(setProgressbarOff()));
-    connect(infoManager_->getImdbThread(), SIGNAL(searchResult(bool, QString)),
-            sqlTableModel_, SLOT(setKeyTocheck(bool, QString)));
+    connect(infoManager_->getImdbThread(), SIGNAL(searchResult()), sqlTableModel_, SLOT(updateModel()));
 
     // for mediaListView
     connect(ui_->mediaListView, SIGNAL(messageToStatus(QString)), this, SLOT(displayMessage(QString)));
@@ -412,8 +411,6 @@ void MediaSpy::updateSqlTableModel() {
     // this may freeze window with long table!
     while(sqlTableModel_->canFetchMore())
         sqlTableModel_->fetchMore();
-
-    sqlTableModel_->setList();
 }
 
 

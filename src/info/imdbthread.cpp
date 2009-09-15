@@ -46,7 +46,7 @@ void ImdbThread::run() {
     emit startSearch(3*nImdbSearch_); // because there is 3 requests per media (search - page - image)
 
     infoImdb_ = new InfoImdb(nImdbSearch_);
-    connect(infoImdb_, SIGNAL(searchFinished(bool, QString)), this, SLOT(searchReply(bool, QString)));
+    connect(infoImdb_, SIGNAL(searchFinished()), this, SLOT(searchReply()));
     connect(infoImdb_, SIGNAL(replyError()), this, SLOT(threadError()));
 
     foreach(mediaId, mediaIdWithNoInfoList_)
@@ -59,8 +59,8 @@ void ImdbThread::run() {
 /** \fn void ImdbThread::searchReply(bool ok, QString reply)
   * \brief Emits signal for the MediaSpy class and closes the thread.
   */
-void ImdbThread::searchReply(bool ok, QString reply) {
-    emit searchResult(ok, reply);
+void ImdbThread::searchReply() {
+    emit searchResult();
     emit searchProgress(++indexImdbSearch_);
     if(indexImdbSearch_ == 3*nImdbSearch_) {
         emit searchEnd();

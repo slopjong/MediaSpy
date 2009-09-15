@@ -91,8 +91,8 @@ void InfoImdb::searchImdb(QString& mediaName) {
 void InfoImdb::getMoviePage(unsigned int imdbId, int movieMediaIndex) {
 
     if(imdbId == 0) {
-        emit searchFinished(false, movieMedia_[movieMediaIndex].getFileName()); // signals for page
-        emit searchFinished(false, movieMedia_[movieMediaIndex].getFileName()); // and image request
+        emit searchFinished(); // signals for page
+        emit searchFinished(); // and image request
         return;
     }
     // id is padded to 7 char to avoid infinite redirection loop
@@ -130,10 +130,6 @@ void InfoImdb::finishReply(QNetworkReply* networkReply) {
     }
 
     if(networkReply->url().toString().contains(searchPrefix)) { // this was a searchImdb() request
-        // get the movieMedia index from one of the map
-        QList<int> movieMediaKeys = replyMap_.keys(networkReply);
-        int movieMediaIndex = movieMediaKeys.last();
-
         // Reply is finished! We'll ask for the reply about the Redirection attribute
         // http://doc.trolltech.com/qnetworkrequest.html#Attribute-enum
         // Code snippet from:
@@ -147,23 +143,19 @@ void InfoImdb::finishReply(QNetworkReply* networkReply) {
         // If the URL is not empty, we're being redirected.
         if(!urlRedirectedTo.isEmpty()) {
             redirectSearchToMoviePage(possibleRedirectUrl.toUrl(), urlRedirectedTo, replyMap_.key(networkReply));
-            emit searchFinished(false, movieMedia_[movieMediaIndex].getFileName());
+            emit searchFinished();
         }
         else {
             urlRedirectedTo.clear();
             // process the search page
-            bool ok = processSearchPage(networkReply);
-            emit searchFinished(ok, movieMedia_[movieMediaIndex].getFileName());
+            processSearchPage(networkReply);
+            emit searchFinished();
         }
     }
     else if(networkReply->url().toString().contains(titlePrefix)) { // this was a getMoviePage() request
-        // get the movieMedia index from one of the map
-        QList<int> movieMediaKeys = replyMap_.keys(networkReply);
-        int movieMediaIndex = movieMediaKeys.last();
-
         // process the movie page
-        bool ok = processMoviePage(networkReply);
-        emit searchFinished(ok, movieMedia_[movieMediaIndex].getFileName());
+        processMoviePage(networkReply);
+        emit searchFinished();
     }
     else if(networkReply->url().toString().contains(mediaPrefix)) { // this was a copyImage() request
         QString imageFileName = imageMap_.key(networkReply);
@@ -173,13 +165,13 @@ void InfoImdb::finishReply(QNetworkReply* networkReply) {
             file.open(QIODevice::WriteOnly);
             file.write(networkReply->readAll());
             file.close();
-            emit searchFinished(true, imageFileName);
+            emit searchFinished();
         }
         else
-            emit searchFinished(false, imageFileName);
+            emit searchFinished();
     }
     else { // this was a strange request! Please, do nothing stupid with it!
-        emit searchFinished(false, "");
+        emit searchFinished();
         return;
     }
 
@@ -215,29 +207,14 @@ bool InfoImdb::processSearchPage(QNetworkReply* networkReply) {
             getMoviePage(mediaImdbId, movieMediaIndex);
             return true;
         }
-        else if(line.contains("<b>No Matches.</b>")) {
-            emit searchFinished(false, movieMedia_[movieMediaIndex].getFileName()); // signals for page
-            emit searchFinished(false, movieMedia_[movieMediaIndex].getFileName()); // and image request
-            return false;
-        }
-        else if(line.contains("(Approx Matches)</b>")) {
-            emit searchFinished(false, movieMedia_[movieMediaIndex].getFileName()); // signals for page
-            emit searchFinished(false, movieMedia_[movieMediaIndex].getFileName()); // and image request
-            return false;
-        }
-        else if(line.contains("Enter a word or phrase to search on.")) {
-            emit searchFinished(false, movieMedia_[movieMediaIndex].getFileName()); // signals for page
-            emit searchFinished(false, movieMedia_[movieMediaIndex].getFileName()); // and image request
-            return false;
-        }
-        else if(line.contains("<h2>Popular Results</h2>")) {
-            emit searchFinished(false, movieMedia_[movieMediaIndex].getFileName()); // signals for page
-            emit searchFinished(false, movieMedia_[movieMediaIndex].getFileName()); // and image request
-            return false;
-        }
-        else if(line.contains("<b>Names (Exact Matches)</b>")) {
-            emit searchFinished(false, movieMedia_[movieMediaIndex].getFileName()); // signals for page
-            emit searchFinished(false, movieMedia_[movieMediaIndex].getFileName()); // and image request
+        else if(line.contains("<b>No Matches.</b>") ||
+                line.contains("(Approx Matches)</b>") ||
+                line.contains("Enter a word or phrase to search on.") ||
+                line.contains("<h2>Popular Results</h2>") ||
+                line.contains("<b>Names (Exact Matches)</b>"))
+        {
+            emit searchFinished(); // signals for page
+            emit searchFinished(); // and image request
             return false;
         }
     } while (!line.isNull());
@@ -381,7 +358,7 @@ bool InfoImdb::processMoviePage(QNetworkReply* networkReply) {
     // processing image
     if(imageUrlString.isEmpty() || imageUrlString == ".jpg") {
         movieMedia_[movieMediaIndex].setImageUrl(MediaSpy::getDefaultCoverName());
-        emit searchFinished(true, "");
+        emit searchFinished();
     }
     else {
         movieMedia_[movieMediaIndex].setImageUrl(imageUrlString);

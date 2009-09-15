@@ -49,14 +49,14 @@ protected:
 
 
 public slots:
-    void searchReply(bool, QString);
+    void searchReply();
     void threadError();
 
 
 signals:
     void messageToStatus(QString);
     void startSearch(const int);
-    void searchResult(bool, QString);
+    void searchResult();
     void searchProgress(const int);
     void searchEnd();
     void networkError();

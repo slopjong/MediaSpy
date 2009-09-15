@@ -55,8 +55,8 @@ QUrl InfoSupplier::redirectUrl(const QUrl& possibleRedirectUrl, const QUrl& oldR
 bool InfoSupplier::replyOk(QNetworkReply* networkReply) {
     if(networkReply->error() != QNetworkReply::NoError) {
         qDebug("[%p] Network request failed: %s", networkReply, networkReply->errorString().toAscii().constData());
-        emit searchFinished(false, "[ERROR] Network request failed");
-        emit searchFinished(false, "[ERROR] Network request failed");
+        emit searchFinished();
+        emit searchFinished();
         return false;
     }
     else

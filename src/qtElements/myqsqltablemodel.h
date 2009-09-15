@@ -31,18 +31,14 @@
 class myQSqlTableModel : public QSqlTableModel {
     Q_OBJECT;
 
-    QList<int> etatList_;
-
-
 public:
     explicit myQSqlTableModel(QObject *parent = 0);
     virtual ~myQSqlTableModel();
-    QVariant data ( const QModelIndex&, int role = Qt::DisplayRole) const;
-    void setList();
+    QVariant data (const QModelIndex&, int role = Qt::DisplayRole) const;
 
 
 public slots:
-    void setKeyTocheck( bool, const QString& );
+    void updateModel();
 
 };
 

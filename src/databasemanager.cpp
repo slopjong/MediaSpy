@@ -531,15 +531,23 @@ QStringList DatabaseManager::getCoverList() {
 
 
 StatsImdb DatabaseManager::getImdbStats() {
+    StatsImdb stats;
     QSqlQuery q;
+
+    // nImdbInfo
+    if (!q.exec("SELECT COUNT(id) FROM ImdbInfo"))
+        throw(q.lastError()); // TODO handle this!
+    q.next();
+    stats.nImdbInfo     = q.value(0).toDouble();
+
+    // runtime
     if (!q.exec("SELECT MAX(runtime), AVG(runtime), MIN(runtime) FROM ImdbInfo WHERE runtime != 0"))
         throw(q.lastError()); // TODO handle this!
     q.next();
+    stats.maxRuntime    = q.value(0).toDouble();
+    stats.avgRuntime    = q.value(1).toDouble();
+    stats.minRuntime    = q.value(2).toDouble();
 
-    StatsImdb stats;
-    stats.maxRuntime = q.value(0).toDouble();
-    stats.avgRuntime = q.value(1).toDouble();
-    stats.minRuntime = q.value(2).toDouble();
 
     return stats;
 }

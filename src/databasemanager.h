@@ -31,9 +31,10 @@ namespace tableMedia { enum e { id, type, baseName, fileName, imdbInfo, loaned, 
 
 // StatsImdb structure
 struct StatsImdb {
-    double maxRuntime;
-    double avgRuntime;
-    double minRuntime;
+    int     nImdbInfo;
+    double  maxRuntime;
+    double  avgRuntime;
+    double  minRuntime;
 };
 
 

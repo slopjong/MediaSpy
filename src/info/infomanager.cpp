@@ -101,18 +101,20 @@ QString InfoManager::getStats() {
         view += QString("<div style=\"margin-top:-17px; color:black; text-align:center;\">%1%</div>").arg(pourcent);
         view += "</div>";
 
-        // runtime
+        // imdb stats
         StatsImdb stats = DatabaseManager::getInstance()->getImdbStats();
-        view += QString("<h2>%1</h2>").arg(tr("Runtime"));
+        view += QString("<h2>%1 (%2/%3)</h2>").arg(tr("Imdb stats")).arg(stats.nImdbInfo).arg(nMedia);
+
+        view += QString("<h3>%1</h3>").arg(tr("Runtime"));
         view += QString("<p>%1 %2 - %3 %4 - %5 %6</p>").arg(tr("Min:")).arg(stats.minRuntime).arg(tr("Mean:")).arg(stats.avgRuntime).arg(tr("Max:")).arg(stats.maxRuntime);
         // histogram
 
         // genre
-/*        view += QString("<h2>%1</h2>").arg(tr("Genre"));
+        /*view += QString("<h3>%1</h3>").arg(tr("Genre"));
         // histogram
 
         // year
-        view += QString("<h2>%1</h2>").arg(tr("Year"));*/
+        view += QString("<h3>%1</h3>").arg(tr("Year"));*/
         // histogram
     }
     else

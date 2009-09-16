@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>480</width>
-    <height>318</height>
+    <width>449</width>
+    <height>357</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,7 +25,7 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QGroupBox" name="groupBox">
+        <widget class="QGroupBox" name="pathGroupBox">
          <property name="title">
           <string>Full path</string>
          </property>
@@ -37,6 +37,32 @@
             </property>
             <property name="text">
              <string notr="true">path</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="mediaNameGroupBox">
+         <property name="title">
+          <string>Media name</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <widget class="QLineEdit" name="mediaNameLineEdit">
+            <property name="toolTip">
+             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'DejaVu Sans'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;In order to ease gathering information from websites, the media name is composed of &lt;span style=&quot; font-weight:600;&quot;&gt;two parts&lt;/span&gt;:&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- the &lt;span style=&quot; font-weight:600;&quot;&gt;title&lt;/span&gt; itself used to make queries on websites, it should be as close as possible to the actual title ;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- a &lt;span style=&quot; font-weight:600;&quot;&gt;free part&lt;/span&gt; where you can put any additional information (like a number, a year, etc. or even nothing).&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The character '_' (underscore) is used to separate the two parts. Please don't use it in the title.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;For example: &lt;span style=&quot; font-style:italic;&quot;&gt;Star Wars_(&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;1977)_Georges.Lucas_dvdRip&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
           </item>
@@ -64,7 +90,7 @@
                <string notr="true">...</string>
               </property>
               <property name="icon">
-               <iconset resource="../resources/MediaSpy.qrc">
+               <iconset>
                 <normaloff>:/icons/minus.png</normaloff>:/icons/minus.png</iconset>
               </property>
              </widget>
@@ -111,7 +137,7 @@
                <string notr="true">...</string>
               </property>
               <property name="icon">
-               <iconset resource="../resources/MediaSpy.qrc">
+               <iconset>
                 <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
               </property>
              </widget>
@@ -148,7 +174,7 @@
      </widget>
      <widget class="QWidget" name="imdbTab">
       <attribute name="icon">
-       <iconset resource="../resources/MediaSpy.qrc">
+       <iconset>
         <normaloff>:/icons/imdb.png</normaloff>:/icons/imdb.png</iconset>
       </attribute>
       <attribute name="title">
@@ -216,9 +242,7 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../resources/MediaSpy.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>buttonBox</sender>

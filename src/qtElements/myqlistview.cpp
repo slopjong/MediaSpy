@@ -33,7 +33,7 @@ myQListView::myQListView(QWidget *parent)
         , playMediaAct_(new QAction(this))
 {
     seenMediaAct_->setDefaultWidget(checkBox_);
-    checkBox_->setText(tr("Seen"));
+    checkBox_->setText(tr("Mark as seen"));
     editTagAct_->setShortcut(Qt::CTRL + Qt::Key_E);
 
     // connections

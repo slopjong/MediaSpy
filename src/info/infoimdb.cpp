@@ -77,9 +77,8 @@ void InfoImdb::searchImdb(QString& mediaName) {
     imdbRequestName.replace('&', "");
     imdbRequestName.replace(' ', "+");
 
-    // ignore everything after the first _ character, this is for optimize results from imdb
+    // ignore everything after the first _ character (underscore), done to optimize results from imdb
     imdbRequestName = imdbRequestName.left(imdbRequestName.indexOf('_'));
-    qWarning() << imdbRequestName;
 
     QString url = QString(searchPrefix + imdbRequestName);
     makeRequest(url, iMedia_);

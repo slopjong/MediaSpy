@@ -35,7 +35,6 @@
 
 class myQListView : public QListView {
     Q_OBJECT;
-//    Q_PROPERTY(QString player READ player WRITE setPlayer)
 
     // Fields
     QModelIndex contextMenuIndex_;

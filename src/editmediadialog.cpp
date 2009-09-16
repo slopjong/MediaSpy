@@ -64,13 +64,15 @@ EditMediaDialog::~EditMediaDialog() {
 void EditMediaDialog::init() {
     ui_->setupUi(this);
     ui_->previousButton->setEnabled(false);
+    ui_->pathGroupBox->setVisible(false);
 
     // status bar
     statusBar_->setSizeGripEnabled(false);
     ui_->statusBarLayout->addWidget(statusBar_);
 
     // mapper
-    mapper_->addMapping(ui_->mediaNameLabel, tableMedia::baseName, "text"); // baseName field, but in fact fileName
+//    mapper_->addMapping(ui_->mediaNameLabel, tableMedia::fileName, "text"); // path
+    mapper_->addMapping(ui_->mediaNameLineEdit, tableMedia::baseName, "text"); // baseName field
     mapper_->addMapping(ui_->seenCheckBox, tableMedia::seen); // seen field
     mapper_->addMapping(ui_->removeInfoCheckBox, tableMedia::imdbInfo); // imdbInfo field
     mapper_->setCurrentIndex(selectionPos_);

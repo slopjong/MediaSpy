@@ -98,7 +98,7 @@ QSqlError DatabaseManager::init(const QString &dbFilePath) {
 
     // !! be careful if changing the order of these fields !!
     if (!q.exec(QString("create table Media(id INTEGER PRIMARY KEY AUTOINCREMENT," \
-            "type INTEGER, baseName VARCHAR(255) UNIQUE, fileName VARCHAR(255) UNIQUE, imdbInfo BOOLEAN," \
+            "baseName VARCHAR(255), fileName VARCHAR(255) UNIQUE, type INTEGER, imdbInfo BOOLEAN," \
             "loaned BOOLEAN, seen BOOLEAN, recommended BOOLEAN, notes TEXT)")))
         return q.lastError();
 
@@ -251,7 +251,7 @@ QStringList DatabaseManager::queryMediaNames() {
 
 
 /** \fn DatabaseManager::hasMedia(const QString& fileName)
-  * \brief Returns whether the media \var fileName is in the MediaCollection table or not.
+  * \brief Returns whether the media \var fileName is in the Media table or not.
   */
 bool DatabaseManager::hasMedia(const QString& fileName) {
     QSqlQuery q;
@@ -262,6 +262,34 @@ bool DatabaseManager::hasMedia(const QString& fileName) {
         return true;
 
     return q.next();
+}
+
+
+/** \fn DatabaseManager::hasMediaName(const QString& baseName)
+  * \brief Returns whether the media \var baseName is in the Media table or not.
+  */
+bool DatabaseManager::hasMediaBaseName(const QString& baseName) {
+    QSqlQuery q;
+    q.prepare("SELECT id FROM Media WHERE baseName = ?");
+    q.bindValue(0, baseName);
+
+    if (!q.exec())
+        return true;
+
+    return q.next();
+}
+
+
+void DatabaseManager::updateMediaBaseName(const QString& oldName, const QString& newName) {
+    QSqlQuery q;
+    q.prepare("UPDATE Media SET baseName=? WHERE baseName=?");
+    q.bindValue(0, newName);
+    q.bindValue(1, oldName);
+
+    if (!q.exec())
+        throw(q.lastError()); // TODO handle this!
+
+    q.next();
 }
 
 
@@ -630,12 +658,12 @@ void DatabaseManager::insertTag(QString& tagName) {
 }
 
 
-void DatabaseManager::addTagToMedia(QString& tagName, QString mediaBaseName) {
+void DatabaseManager::addTagToMedia(QString& tagName, QString mediaFileName) {
     QSqlQuery q;
     q.prepare("INSERT INTO Media_Tag (tagId, mediaId) " \
-              "SELECT Tag.id, Media.id FROM Tag, Media WHERE Tag.name = ? AND Media.baseName = ?");
+              "SELECT Tag.id, Media.id FROM Tag, Media WHERE Tag.name = ? AND Media.fileName = ?");
     q.bindValue(0, tagName);
-    q.bindValue(1, mediaBaseName);
+    q.bindValue(1, mediaFileName);
     if (!q.exec()) {
         if(q.lastError().type()==1 && q.lastError().text()=="constraint failed Unable to fetch row")
             return;
@@ -643,12 +671,12 @@ void DatabaseManager::addTagToMedia(QString& tagName, QString mediaBaseName) {
     }
 }
 
-void DatabaseManager::removeTagFromMedia(QString& tagName, QString mediaBaseName) {
+void DatabaseManager::removeTagFromMedia(QString& tagName, QString mediaFileName) {
     QSqlQuery q;
     q.prepare("DELETE FROM Media_Tag WHERE tagId in (SELECT id FROM Tag WHERE Tag.name = ?)" \
-              "AND mediaId in (SELECT id FROM Media WHERE Media.baseName = ?)");
+              "AND mediaId in (SELECT id FROM Media WHERE Media.fileName = ?)");
     q.bindValue(0, tagName);
-    q.bindValue(1, mediaBaseName);
+    q.bindValue(1, mediaFileName);
     if (!q.exec())
         throw(q.lastError()); // TODO handle this!
 }

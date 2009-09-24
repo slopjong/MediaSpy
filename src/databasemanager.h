@@ -27,7 +27,7 @@
 #include "media/moviemedia.h"
 
 namespace tableCollection { enum e { id, directory }; }
-namespace tableMedia { enum e { id, type, baseName, fileName, imdbInfo, loaned, seen, recommended, notes }; }
+namespace tableMedia { enum e { id, baseName, fileName, type, imdbInfo, loaned, seen, recommended, notes }; }
 
 // StatsImdb structure
 struct StatsImdb {
@@ -64,6 +64,8 @@ public:
     void insertMedias(const QList<Media>&);
     void removeMedias(const QStringList&);
     bool hasMedia(const QString&);
+    bool hasMediaBaseName(const QString&);
+    void updateMediaBaseName(const QString&, const QString&);
     bool isMediaSeen(const QString&);
     void setMediaSeen(const QStringList&, bool checked = true);
     int getNMediaSeen();

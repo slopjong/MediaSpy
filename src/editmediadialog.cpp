@@ -71,11 +71,11 @@ void EditMediaDialog::init() {
     statusBar_->setSizeGripEnabled(false);
     ui_->statusBarLayout->addWidget(statusBar_);
 
-    // mapper (-1 because we removed a column)
-    mapper_->addMapping(ui_->mediaNameLabel, tableMedia::fileName - 1, "text"); // path
-    mapper_->addMapping(ui_->mediaNameLineEdit, tableMedia::baseName - 1, "text"); // baseName field
-    mapper_->addMapping(ui_->seenCheckBox, tableMedia::seen - 1); // seen field
-    mapper_->addMapping(ui_->removeInfoCheckBox, tableMedia::imdbInfo - 1); // imdbInfo field
+    // mapper
+    mapper_->addMapping(ui_->mediaNameLabel, tableMedia::fileName, "text"); // path
+    mapper_->addMapping(ui_->mediaNameLineEdit, tableMedia::baseName, "text"); // baseName field
+    mapper_->addMapping(ui_->seenCheckBox, tableMedia::seen); // seen field
+    mapper_->addMapping(ui_->removeInfoCheckBox, tableMedia::imdbInfo); // imdbInfo field
     mapper_->setCurrentIndex(selectionPos_);
 
     // tabs

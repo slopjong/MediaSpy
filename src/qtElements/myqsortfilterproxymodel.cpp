@@ -64,7 +64,7 @@ bool myQSortFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex 
 // the proxy only considers the baseName column
 bool myQSortFilterProxyModel::filterAcceptsColumn(int sourceColumn, const QModelIndex &sourceParent) const {
     Q_UNUSED(sourceParent);
-    return(sourceColumn>=tableMedia::baseName);
+    return(sourceColumn==tableMedia::baseName);
 }
 
 

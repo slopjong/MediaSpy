@@ -39,6 +39,7 @@ EditMediaDialog::EditMediaDialog(QModelIndexList indexList, QDataWidgetMapper* m
         , tagsSet_(new QStringList())
         , tagsUnset_(new QStringList())
         , statusBar_(new QStatusBar(this))
+        , currentMediaName_(QString())
 {
     Q_ASSERT(nMedia_>0);
 
@@ -70,11 +71,11 @@ void EditMediaDialog::init() {
     statusBar_->setSizeGripEnabled(false);
     ui_->statusBarLayout->addWidget(statusBar_);
 
-    // mapper
-//    mapper_->addMapping(ui_->mediaNameLabel, tableMedia::fileName, "text"); // path
-    mapper_->addMapping(ui_->mediaNameLineEdit, tableMedia::baseName, "text"); // baseName field
-    mapper_->addMapping(ui_->seenCheckBox, tableMedia::seen); // seen field
-    mapper_->addMapping(ui_->removeInfoCheckBox, tableMedia::imdbInfo); // imdbInfo field
+    // mapper (-1 because we removed a column)
+    mapper_->addMapping(ui_->mediaNameLabel, tableMedia::fileName - 1, "text"); // path
+    mapper_->addMapping(ui_->mediaNameLineEdit, tableMedia::baseName - 1, "text"); // baseName field
+    mapper_->addMapping(ui_->seenCheckBox, tableMedia::seen - 1); // seen field
+    mapper_->addMapping(ui_->removeInfoCheckBox, tableMedia::imdbInfo - 1); // imdbInfo field
     mapper_->setCurrentIndex(selectionPos_);
 
     // tabs
@@ -90,6 +91,8 @@ void EditMediaDialog::init() {
         ui_->nextButton->setEnabled(false);
         setWindowTitle(tr("Details on %1").arg(indexList_.at(0).data(Qt::DisplayRole).toString()) + QString(" - MediaSpy"));
     }
+
+    currentMediaName_ = ui_->mediaNameLineEdit->text();
 }
 
 
@@ -97,9 +100,9 @@ void EditMediaDialog::init() {
   * \brief makes the connections used by EditMediaDialog
   */
 void EditMediaDialog::makeConnections() {
-    connect(ui_->nextButton, SIGNAL(clicked()), mapper_, SLOT(toNext()));
+//    connect(ui_->nextButton, SIGNAL(clicked()), mapper_, SLOT(toNext()));
     connect(ui_->nextButton, SIGNAL(clicked()), this, SLOT(toNext()));
-    connect(ui_->previousButton, SIGNAL(clicked()), mapper_, SLOT(toPrevious()));
+//    connect(ui_->previousButton, SIGNAL(clicked()), mapper_, SLOT(toPrevious()));
     connect(ui_->previousButton, SIGNAL(clicked()), this, SLOT(toPrevious()));
 }
 
@@ -136,11 +139,23 @@ void EditMediaDialog::updateComboBox() {
 }
 
 
+/** \fn void EditMediaDialog::updateMediaName(QString oldName, QString newName)
+  * \brief Updates the media base name in the database
+  */
+void EditMediaDialog::updateMediaName(QString oldName, QString newName) {
+    if(!newName.isEmpty() && !DatabaseManager::getInstance()->hasMediaBaseName(newName))
+        DatabaseManager::getInstance()->updateMediaBaseName(oldName, newName);
+}
+
+
 
 ///////////
 // slots //
 ///////////
 void EditMediaDialog::toNext() {
+    if(currentMediaName_ != ui_->mediaNameLineEdit->text())
+        updateMediaName(currentMediaName_, ui_->mediaNameLineEdit->text());
+
     selectionPos_++;
     setTagsInfo();
     mapper_->setCurrentIndex(selectionPos_);
@@ -150,10 +165,16 @@ void EditMediaDialog::toNext() {
     ui_->previousButton->setEnabled(true);
     if(selectionPos_ == indexList_.at(0).row() + indexList_.count() - 1)
         ui_->nextButton->setEnabled(false);
+
+    // update current name
+    currentMediaName_ = ui_->mediaNameLineEdit->text();
 }
 
 
 void EditMediaDialog::toPrevious() {
+    if(currentMediaName_ != ui_->mediaNameLineEdit->text())
+        updateMediaName(currentMediaName_, ui_->mediaNameLineEdit->text());
+
     selectionPos_--;
     setTagsInfo();
     mapper_->setCurrentIndex(selectionPos_);
@@ -163,6 +184,9 @@ void EditMediaDialog::toPrevious() {
     ui_->nextButton->setEnabled(true);
     if(selectionPos_ == indexList_.at(0).row())
         ui_->previousButton->setEnabled(false);
+
+    // update current name
+    currentMediaName_ = ui_->mediaNameLineEdit->text();
 }
 
 
@@ -198,6 +222,6 @@ void EditMediaDialog::on_minusToolButton_clicked() {
 
 void EditMediaDialog::on_seenCheckBox_clicked() {
     // change the db content accordingly
-    DatabaseManager::getInstance()->setMediaSeen(QStringList() << ui_->mediaNameLabel->text(), ui_->seenCheckBox->isChecked());
+    DatabaseManager::getInstance()->setMediaSeen(QStringList() << ui_->mediaNameLineEdit->text(), ui_->seenCheckBox->isChecked());
 }
 

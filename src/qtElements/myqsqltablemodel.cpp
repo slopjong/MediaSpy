@@ -60,7 +60,7 @@ Qt::ItemFlags myQSqlTableModel::flags(const QModelIndex &index) const {
 
 
 bool myQSqlTableModel::setData(const QModelIndex &index, const QVariant &value, int role) {
-    if (index.isValid() && role == Qt::EditRole) {
+    if (index.isValid() && role == Qt::EditRole && !DatabaseManager::getInstance()->hasMediaBaseName(value.toString())) {
         DatabaseManager::getInstance()->updateMediaBaseName(index.data(Qt::DisplayRole).toString(), value.toString());
         emit dataChanged(index, index);
         return true;

@@ -49,14 +49,12 @@ class EditMediaDialog : public QDialog {
     QStringList* tagsSet_;
     QStringList* tagsUnset_;
     QStatusBar* statusBar_;
-    QString currentMediaName_;
 
     // operators
     void init();
     void makeConnections();
     void setTagsInfo();
     void updateComboBox();
-    void updateMediaName(QString, QString);
 
 
 public:

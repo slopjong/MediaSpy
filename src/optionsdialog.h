@@ -21,8 +21,9 @@
 #ifndef OPTIONSDIALOG_H
 #define OPTIONSDIALOG_H
 
-#include <QtGui/QDialog>
 #include <QTreeWidgetItem>
+
+#include <KDialog>
 
 #include "options.h"
 #include "databasemanager.h"
@@ -32,7 +33,7 @@ namespace Ui {
 }
 
 
-class OptionsDialog : public QDialog {
+class OptionsDialog : public KDialog {
     Q_OBJECT
 
     Ui::OptionsDialog *ui_;

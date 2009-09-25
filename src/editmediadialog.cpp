@@ -29,7 +29,7 @@
   * \param parent the inherited QWidget object
   */
 EditMediaDialog::EditMediaDialog(QModelIndexList indexList, QDataWidgetMapper* mapper, QWidget *parent)
-        : QDialog(parent)
+        : KDialog(parent)
         , ui_(new Ui::EditMediaDialog)
         , mapper_(mapper)
         , indexList_(QModelIndexList(indexList))

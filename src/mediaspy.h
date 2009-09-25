@@ -21,12 +21,15 @@
 #ifndef MEDIASPY_H
 #define MEDIASPY_H
 
-#include <QtGui/QMainWindow>
+//#include <QtGui/QMainWindow>
 #include <QDir>
 #include <QSqlDatabase>
 #include <QMessageBox>
 #include <QSqlTableModel>
 #include <QToolButton>
+
+#include <KMainWindow>
+#include <KMenu>
 
 #include "collectiondialog.h"
 #include "collection.h"
@@ -71,7 +74,7 @@ namespace Ui {
 /** \class MediaSpy
   *
   */
-class MediaSpy : public QMainWindow {
+class MediaSpy : public KMainWindow {// : public QMainWindow {
     Q_OBJECT
 
     // Fields
@@ -84,7 +87,7 @@ class MediaSpy : public QMainWindow {
     InfoManager* infoManager_;
     myQSqlTableModel* sqlTableModel_;
     myQSortFilterProxyModel* mediaListProxyModel_;
-    QLabel* statusLabel_;
+//    QLabel* statusLabel_;
     QString errorMessage_;
     QString filterTitleString_;
     QString filtersLineEditStyle_;
@@ -127,8 +130,6 @@ private slots:
     void on_filterSeenComboBox_currentIndexChanged(int index);
     void on_filterLineEdit_textChanged(QString );
     void on_progressButton_clicked();
-    void on_actionAbout_MediaSpy_triggered();
-    void on_actionAbout_Qt_triggered();
     void on_actionSelectdirectories_triggered();
     void setProgressbarMaximum(const int) const;
     void setProgressbarCurrent(const int) const;

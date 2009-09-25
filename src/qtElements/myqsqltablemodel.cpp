@@ -51,6 +51,24 @@ QVariant myQSqlTableModel::data( const QModelIndex& index, int role) const {
 }
 
 
+Qt::ItemFlags myQSqlTableModel::flags(const QModelIndex &index) const {
+    if (!index.isValid())
+        return Qt::ItemIsEnabled;
+
+    return QSqlTableModel::flags(index) | Qt::ItemIsEditable;
+}
+
+
+bool myQSqlTableModel::setData(const QModelIndex &index, const QVariant &value, int role) {
+    if (index.isValid() && role == Qt::EditRole) {
+        DatabaseManager::getInstance()->updateMediaBaseName(index.data(Qt::DisplayRole).toString(), value.toString());
+        emit dataChanged(index, index);
+        return true;
+    }
+    return false;
+}
+
+
 
 ///////////
 // slots //

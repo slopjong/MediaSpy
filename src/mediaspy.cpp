@@ -136,6 +136,9 @@ void MediaSpy::makeConnections() {
     connect(ui_->mediaListView->editTagAct_, SIGNAL(triggered()), this, SLOT(editDialog()));
     connect(ui_->actionEdit_information, SIGNAL(triggered()), this, SLOT(editDialog()));
 
+    // for myQSqlTableModel
+    connect(sqlTableModel_, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(updateSqlTableModel()));
+
     // for tagMenu
     connect(selectAllTagsMenu_, SIGNAL(triggered()), this, SLOT(selectAllTags()));
     connect(unselectAllTagsMenu_, SIGNAL(triggered()), this, SLOT(unselectAllTags()));

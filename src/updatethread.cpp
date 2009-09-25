@@ -58,9 +58,3 @@ void UpdateThread::run() {
         emit messageToStatus(QString());
 }
 
-
-void UpdateThread::startIf(bool threadLock) {
-    if(!threadLock)
-        start();
-}
-

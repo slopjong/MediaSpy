@@ -98,7 +98,7 @@ QSqlError DatabaseManager::init(const QString &dbFilePath) {
 
     // !! be careful if changing the order of these fields !!
     if (!q.exec(QString("create table Media(id INTEGER PRIMARY KEY AUTOINCREMENT," \
-            "baseName VARCHAR(255), fileName VARCHAR(255) UNIQUE, type INTEGER, imdbInfo BOOLEAN," \
+            "baseName VARCHAR(255) UNIQUE, fileName VARCHAR(255) UNIQUE, type INTEGER, imdbInfo BOOLEAN," \
             "loaned BOOLEAN, seen BOOLEAN, recommended BOOLEAN, notes TEXT)")))
         return q.lastError();
 
@@ -280,6 +280,9 @@ bool DatabaseManager::hasMediaBaseName(const QString& baseName) {
 }
 
 
+/** \fn DatabaseManager::updateMediaBaseName(const QString& oldName, const QString& newName)
+  * \brief Updates the media base name \var oldName with \var newName.
+  */
 void DatabaseManager::updateMediaBaseName(const QString& oldName, const QString& newName) {
     QSqlQuery q;
     q.prepare("UPDATE Media SET baseName=? WHERE baseName=?");

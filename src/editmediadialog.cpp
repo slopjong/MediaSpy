@@ -66,15 +66,17 @@ void EditMediaDialog::init() {
     ui_->setupUi(this);
     ui_->previousButton->setEnabled(false);
     ui_->pathGroupBox->setVisible(false);
+    ui_->mediaNameLineEdit->setVisible(false);
+    ui_->tabWidget->removeTab(tabPage::imdb);
 
     // status bar
     statusBar_->setSizeGripEnabled(false);
     ui_->statusBarLayout->addWidget(statusBar_);
 
     // mapper
-    mapper_->addMapping(ui_->mediaNameLabel, tableMedia::fileName, "text"); // path
-    mapper_->addMapping(ui_->mediaNameLineEdit, tableMedia::baseName, "text"); // baseName field
-    mapper_->addMapping(ui_->seenCheckBox, tableMedia::seen); // seen field
+    mapper_->addMapping(ui_->fullPathLabel, tableMedia::fileName, "text"); // path
+    mapper_->addMapping(ui_->mediaNameLabel, tableMedia::baseName, "text"); // baseName field
+//    mapper_->addMapping(ui_->mediaNameLineEdit, tableMedia::baseName, "text"); // baseName field
     mapper_->addMapping(ui_->removeInfoCheckBox, tableMedia::imdbInfo); // imdbInfo field
     mapper_->setCurrentIndex(selectionPos_);
 
@@ -100,9 +102,7 @@ void EditMediaDialog::init() {
   * \brief makes the connections used by EditMediaDialog
   */
 void EditMediaDialog::makeConnections() {
-//    connect(ui_->nextButton, SIGNAL(clicked()), mapper_, SLOT(toNext()));
     connect(ui_->nextButton, SIGNAL(clicked()), this, SLOT(toNext()));
-//    connect(ui_->previousButton, SIGNAL(clicked()), mapper_, SLOT(toPrevious()));
     connect(ui_->previousButton, SIGNAL(clicked()), this, SLOT(toPrevious()));
 }
 
@@ -200,7 +200,7 @@ void EditMediaDialog::on_plusToolButton_clicked() {
         }
 
         // apply it to the current media
-        DatabaseManager::getInstance()->addTagToMedia(tagName, ui_->mediaNameLabel->text());
+        DatabaseManager::getInstance()->addTagToMedia(tagName, ui_->fullPathLabel->text());
 
         // update the tags view
         setTagsInfo();
@@ -212,16 +212,10 @@ void EditMediaDialog::on_minusToolButton_clicked() {
     QString tagName = ui_->minusComboBox->currentText();
     if(!tagName.isEmpty()) {
         // remove it from the current media
-        DatabaseManager::getInstance()->removeTagFromMedia(tagName, ui_->mediaNameLabel->text());
+        DatabaseManager::getInstance()->removeTagFromMedia(tagName, ui_->fullPathLabel->text());
 
         // update the tags view
         setTagsInfo();
     }
-}
-
-
-void EditMediaDialog::on_seenCheckBox_clicked() {
-    // change the db content accordingly
-    DatabaseManager::getInstance()->setMediaSeen(QStringList() << ui_->mediaNameLineEdit->text(), ui_->seenCheckBox->isChecked());
 }
 

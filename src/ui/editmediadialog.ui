@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>449</width>
-    <height>357</height>
+    <width>445</width>
+    <height>319</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,7 +31,7 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
-           <widget class="QLabel" name="mediaNameLabel">
+           <widget class="QLabel" name="fullPathLabel">
             <property name="styleSheet">
              <string notr="true"/>
             </property>
@@ -49,6 +49,13 @@
           <string>Media name</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <widget class="QLabel" name="mediaNameLabel">
+            <property name="text">
+             <string>TextLabel</string>
+            </property>
+           </widget>
+          </item>
           <item>
            <widget class="QLineEdit" name="mediaNameLineEdit">
             <property name="toolTip">
@@ -159,16 +166,6 @@ p, li { white-space: pre-wrap; }
           </size>
          </property>
         </spacer>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="seenCheckBox">
-         <property name="text">
-          <string>Seen</string>
-         </property>
-         <property name="tristate">
-          <bool>false</bool>
-         </property>
-        </widget>
        </item>
       </layout>
      </widget>

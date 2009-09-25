@@ -4,6 +4,8 @@ CHANGELOG.txt
 0.7.4
 - clean QSqlTableModel
 - network replies for imdbInfo insertions are clearer
+- table is now editable
+- edit dialog has been simplified to only edit tags
 
 
 0.7.3

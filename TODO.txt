@@ -5,7 +5,10 @@
 ========
 v1.0:
 
-* extracting film titles from file names (tough one if files are not properly named)
+* stats page
+* css template option ?
+* kde-api transition ?
+
 
 DONE :
 * get films information (duration, plot, cover) from imdb
@@ -21,6 +24,7 @@ DONE :
 * initial non-blank info view
 * basic settings handling
 * clean and simple gui
+* extracting film titles from file names (tough one if files are not properly named, but names are editable)
 
 
 ========

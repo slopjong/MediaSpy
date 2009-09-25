@@ -54,7 +54,6 @@ class InfoImdb : public InfoSupplier {
 
 public:
     // Constructors
-    InfoImdb();
     explicit InfoImdb(int);
     virtual ~InfoImdb();
 

@@ -31,15 +31,6 @@ static const QString mediaPrefix  = "http://ia.media-imdb.com/images/";
 /////////////////////////////
 // constructors/destructor //
 /////////////////////////////
-/** \fn InfoImdb::InfoImdb()
-  * \brief class constructor
-  */
-InfoImdb::InfoImdb() :
-    networkManager_(new QNetworkAccessManager(this))
-{
-    connect(networkManager_, SIGNAL(finished(QNetworkReply*)), this, SLOT(finishReply(QNetworkReply*)));
-}
-
 /** \fn InfoImdb::InfoImdb(unsigned int nMedia)
   * \brief class constructor
   * \param nMedia the number of media to be created
@@ -165,7 +156,6 @@ void InfoImdb::finishReply(QNetworkReply* networkReply) {
         }
     }
     else { // this was a strange request! Please, do nothing stupid with it!
-
         return;
     }
 
@@ -200,18 +190,21 @@ bool InfoImdb::processSearchPage(QNetworkReply* networkReply) {
 
             int mediaImdbId = linkString.toInt();
             getMoviePage(mediaImdbId, movieMediaIndex);
+
             return true;
         }
-        else if(line.contains("<b>No Matches.</b>") ||
-                line.contains("(Approx Matches)</b>") ||
-                line.contains("Enter a word or phrase to search on.") ||
-                line.contains("<h2>Popular Results</h2>") ||
-                line.contains("<b>Names (Exact Matches)</b>"))
+        else //if(line.contains("<b>No Matches.</b>") ||
+             //   line.contains("(Approx Matches)</b>") ||
+             //   line.contains("Enter a word or phrase to search on.") ||
+             //   line.contains("<h2>Popular Results</h2>") ||
+             //   line.contains("<b>Names (Exact Matches)</b>") ||
+             //   line.contains("<b>Titles (Exact Matches)</b>"))
         {
             emit searchFinished(); // signals for page
             emit searchFinished(); // and image request
             return false;
         }
+
     } while (!line.isNull());
 
     delete textStream;

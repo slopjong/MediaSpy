@@ -76,7 +76,7 @@ void myQListView::contextMenuEvent(QContextMenuEvent* event) {
     if (contextMenuIndex_.isValid()) {
         QString indexContent = QString(contextMenuIndex_.data().toString());
         seenMediaAct_->setChecked(DatabaseManager::getInstance()->isMediaSeen(indexContent));
-        editTagAct_->setText(tr("Edit information"));
+        editTagAct_->setText(tr("Edit tags"));
         editTagAct_->setIcon(QIcon(":/icons/edit.png"));
         playMediaAct_->setText(tr("Play media(s) (%1)", "", indexList.count()).arg(property("player").toString()));
         playMediaAct_->setIcon(QIcon(":/icons/play.png"));

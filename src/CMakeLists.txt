@@ -61,7 +61,9 @@ qt4_wrap_cpp( MOC ${HEADERS} )
 qt4_add_resources( RCS ${RESOURCES} )
 
 # create an exe
-add_executable( mediaspy ${SOURCES} ${RCS} ${MOC} ${UI_H} ) # OK
+add_executable(mediaspy ${SOURCES} ${RCS} ${MOC} ${UI_H}) # OK
 #kde4_add_executable( mediaspy ${SOURCES} ${RCS} ${MOC} ${UI_H} ) # NOK
 
-target_link_libraries( mediaspy ${QT_QTCORE_LIBRARY} ${QT_QTSQL_LIBRARY} ${QT_QTWEBKIT_LIBRARY} ${QT_QTNETWORK_LIBRARY})
+target_link_libraries(mediaspy ${QT_QTCORE_LIBRARY} ${QT_QTSQL_LIBRARY} ${QT_QTWEBKIT_LIBRARY} ${QT_QTNETWORK_LIBRARY})
+
+install(TARGETS mediaspy  ${INSTALL_TARGETS_DEFAULT_ARGS})

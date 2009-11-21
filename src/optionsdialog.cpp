@@ -26,7 +26,7 @@
 // constructors/destructor //
 /////////////////////////////
 OptionsDialog::OptionsDialog(Options* options, QWidget *parent)
-        : KDialog(parent)
+        : QDialog(parent)
         , ui_(new Ui::OptionsDialog)
         , options_(options)
 {

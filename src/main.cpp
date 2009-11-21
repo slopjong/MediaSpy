@@ -17,29 +17,31 @@
  * along with MediaSpy.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <KApplication>
-#include <KAboutData>
-#include <KCmdLineArgs>
+#include <QtGui/QApplication>
+//#include <KApplication>
+//#include <KAboutData>
+//#include <KCmdLineArgs>
 //#include <KLocale>
 
 #include "mediaspy.h"
 
-
-int main (int argc, char *argv[]) {
-    KAboutData aboutData("mediaspy", 0,
-                         ki18n("MediaSpy"), PACKAGE_VERSION,
-                         ki18n("A movie collection cataloging software. Still in heavy development!"),
-                         KAboutData::License_GPL_V3,
-                         ki18n("Copyright (c) 2009 Stéphane Péchard"),
-                         ki18n("Build Date: %1").subs( __DATE__ ),
-                         "http://spechard.wordpress.com/");
+int main(int argc, char *argv[]) {
+    QApplication MediaSpyApp(argc, argv);
+//int main (int argc, char *argv[]) {
+//    KAboutData aboutData("mediaspy", 0,
+//                         ki18n("MediaSpy"), PACKAGE_VERSION,
+//                         ki18n("A movie collection cataloging software. Still in heavy development!"),
+//                         KAboutData::License_GPL_V3,
+//                         ki18n("Copyright (c) 2009 Stéphane Péchard"),
+//                         ki18n("Build Date: %1").subs( __DATE__ ),
+//                         "http://spechard.wordpress.com/");
     //Authors
 //    aboutData.addAuthor(ki18n("Stéphane Péchard"),
 //                        ki18n("Developer (spechard)"), "stephanepechard@gmail.com", "http://spechard.wordpress.com/" );
 
-    KCmdLineArgs::init( argc, argv, &aboutData );
+//    KCmdLineArgs::init( argc, argv, &aboutData );
 
-    KApplication MediaSpyApp;
+//    KApplication MediaSpyApp;
     MediaSpyApp.connect(&MediaSpyApp, SIGNAL(lastWindowClosed()), &MediaSpyApp, SLOT(quit()));
 
     // MediaSpyHome handling
@@ -53,6 +55,12 @@ int main (int argc, char *argv[]) {
             MediaSpyHome = QCoreApplication::applicationDirPath();
         #endif
     }
+
+    // translations handling via locale
+    const QString languageFile = MediaSpyHome + QString("/translations/mediaspy_%1").arg(QLocale::system().name());
+    QTranslator mediaspyTranslator;
+    mediaspyTranslator.load(languageFile);
+    MediaSpyApp.installTranslator(&mediaspyTranslator);
 
     // settings
     MediaSpyApp.setOrganizationName("spechard");

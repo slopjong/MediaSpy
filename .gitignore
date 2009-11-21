@@ -1,4 +1,5 @@
 mediaspy
-CMakeLists.txt.user
+Makefile
+MediaSpy.pro.user
 build/
 translations/mediaspy_*.qm

@@ -30,7 +30,7 @@
   * \param parent the inherited QWidget object
   */
 CollectionDialog::CollectionDialog(QSqlTableModel* model, QWidget *parent)
-        : KDialog(parent)
+        : QDialog(parent)
         , ui_(new Ui::CollectionDialog)
         , model_(model)
 {

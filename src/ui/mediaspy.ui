@@ -201,6 +201,13 @@ p, li { white-space: pre-wrap; }
     </property>
     <addaction name="actionQuit"/>
    </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout_MediaSpy"/>
+    <addaction name="actionAbout_Qt"/>
+   </widget>
    <widget class="QMenu" name="menuOptions">
     <property name="title">
      <string>Options</string>
@@ -219,8 +226,26 @@ p, li { white-space: pre-wrap; }
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuOptions"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+   <action name="actionAbout_MediaSpy">
+    <property name="icon">
+     <iconset>
+      <normaloff>:/icons/icon.png</normaloff>:/icons/icon.png</iconset>
+    </property>
+    <property name="text">
+     <string>About MediaSpy</string>
+    </property>
+    <property name="shortcut">
+     <string notr="true">Ctrl+H</string>
+    </property>
+   </action>
+   <action name="actionAbout_Qt">
+    <property name="text">
+     <string>About Qt</string>
+    </property>
+  </action>
   <action name="actionQuit">
    <property name="text">
     <string>Quit</string>

@@ -30,7 +30,7 @@
   * \param parent the inherited QWidget object
   */
 MediaSpy::MediaSpy(QWidget *parent)
-        : KMainWindow(parent)//QMainWindow(parent)
+        : QMainWindow(parent)//QMainWindow(parent)
         , ui_(new Ui::MediaSpy)
         , options_(new Options(this))
         , collection_(new Collection())
@@ -157,7 +157,7 @@ void MediaSpy::init() {
     //////////
     ui_->setupUi(this);
     // kde specific help menu
-    ui_->menuBar->addMenu( helpMenu() );
+//    ui_->menuBar->addMenu( helpMenu() );
     // progress bar
     ui_->progressBar->setMinimum(0);
     ui_->progressBar->setVisible(false);
@@ -315,6 +315,18 @@ bool MediaSpy::eventFilter(QObject *obj, QEvent *event) {
 ///////////
 // slots //
 ///////////
+/** \fn void MediaSpy::on_actionAbout_MediaSpy_triggered()
+ *  \brief Shows the MediaSpy About window.
+ */
+void MediaSpy::on_actionAbout_MediaSpy_triggered() {
+    QString myCopyright = QString::fromUtf8(PACKAGE_COPYRIGHTS);
+    QMessageBox::about(this, tr("About ") + PACKAGE_NAME,
+    QString("<h3>") + PACKAGE_NAME + " " + PACKAGE_VERSION + QString("</h3><p>") + myCopyright +
+    tr("<p>MediaSpy is a movie collection cataloging software. Still in heavy development!") +
+    QString("<p><a href=\"http://spechard.wordpress.com/\">http://spechard.wordpress.com/</a>"));
+}
+
+
 /** \fn void MediaSpy::on_actionSelectdirectories_triggered()
  *  \brief Opens the CollectionDialog dialog and gets the user's choice into the Collection.
  */
@@ -546,6 +558,14 @@ const QString MediaSpy::getDefaultCoverName() {
 /////////////////////
 // actions methods //
 /////////////////////
+/** \fn void MediaSpy::on_actionAbout_Qt_triggered()
+ *  \brief Simply shows the built-in Qt About window.
+ */
+void MediaSpy::on_actionAbout_Qt_triggered() {
+    qApp->aboutQt();
+}
+
+
 /** \fn void MediaSpy::on_progressButton_clicked()
  *  \brief Stops the info research thread.
  */

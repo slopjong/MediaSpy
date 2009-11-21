@@ -74,7 +74,7 @@ QStringList Collection::ScanRecDir(const QString& dir) {
     emit messageToStatus(QString(tr("Searching in %1...").arg(dir)));
 
     // filtering the names of the files in the directory
-    QStringList nameFilterMovie = QStringList() << "*.avi" << "*.mpeg" << "*.mpg" << "*.mkv" << "*.mp4" << "*.wmv" << "*.flv";
+    QStringList nameFilterMovie = QStringList() << "*.avi" << "*.mpeg" << "*.mpg" << "*.mkv" << "*.mp4" << "*.wmv" << "*.flv" << "*.iso";
     qdir.setNameFilters(nameFilterMovie);
     qdir.setFilter(QDir::Files | QDir::Readable | QDir::Hidden | QDir::NoSymLinks);
     qdir.setSorting(QDir::Name);

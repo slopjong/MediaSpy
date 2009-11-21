@@ -1,3 +1,5 @@
+set(CMAKE_BUILD_TYPE "Release")
+
 #project name
 project(mediaspy)
 

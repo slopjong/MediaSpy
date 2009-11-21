@@ -18,8 +18,6 @@ include(KDE4Defaults)
 include(MacroLibrary)
 
 # CPack definitions
-add_definitions(-DPACKAGE_COPYRIGHTS="\\"Copyright - 2009 Stéphane Péchard\\"")
-add_definitions(-DPACKAGE_NAME="\\"MediaSpy\\"")
 add_definitions(-DPACKAGE_VERSION="\\"${MEDIASPY_VERSION}\\"")
 
 # includes
@@ -30,4 +28,3 @@ add_subdirectory(src)
 
 # for something
 macro_display_feature_log()
-

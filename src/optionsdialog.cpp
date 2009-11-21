@@ -21,14 +21,12 @@
 #include "optionsdialog.h"
 #include "ui_optionsdialog.h"
 
-#include <QDebug>
-
 
 /////////////////////////////
 // constructors/destructor //
 /////////////////////////////
 OptionsDialog::OptionsDialog(Options* options, QWidget *parent)
-        : QDialog(parent)
+        : KDialog(parent)
         , ui_(new Ui::OptionsDialog)
         , options_(options)
 {

@@ -21,9 +21,10 @@
 #ifndef EDITMEDIADIALOG_H
 #define EDITMEDIADIALOG_H
 
-#include <QtGui/QDialog>
 #include <QDataWidgetMapper>
 #include <QStatusBar>
+
+#include <KDialog>
 
 #include "databasemanager.h"
 
@@ -36,7 +37,7 @@ namespace tabPage { enum e { info, imdb }; }
 /** \class EditMediaDialog
   * \brief The EditMediaDialog is the dialog used to edit the medias details.
   */
-class EditMediaDialog : public QDialog {
+class EditMediaDialog : public KDialog {
     Q_OBJECT
 
     // Fields

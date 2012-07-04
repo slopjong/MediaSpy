@@ -1,5 +1,25 @@
+#######################
+# the original mediaspy ignore rules
+
 mediaspy
 Makefile
 MediaSpy.pro.user
 build/
 translations/mediaspy_*.qm
+
+#######################
+# additional rules auto-generated
+# from github
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+
+# Compiled Dynamic libraries
+*.so
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
